@@ -739,6 +739,8 @@ void TerminalDisplay::drawCursor(QPainter& painter,
        else
            painter.setPen(foregroundColor);
 
+       const qreal halfWidth = 0.5;
+
        if ( _cursorShape == Emulation::KeyboardCursorShape::BlockCursor )
        {
             if ( hasFocus() )
@@ -765,17 +767,17 @@ void TerminalDisplay::drawCursor(QPainter& painter,
             }
        }
        else if ( _cursorShape == Emulation::KeyboardCursorShape::UnderlineCursor )
-            painter.drawLine(QLineF(
-                                 QPointF(cursorRect.left(),
-                                         cursorRect.bottom()),
-                                 QPointF(cursorRect.right(),
-                                         cursorRect.bottom())));
+       {
+           QLineF line(cursorRect.left() + halfWidth, cursorRect.bottom() - halfWidth,
+                       cursorRect.right() - halfWidth, cursorRect.bottom() - halfWidth);
+           painter.drawLine(line);
+       }
        else if ( _cursorShape == Emulation::KeyboardCursorShape::IBeamCursor )
-            painter.drawLine(QLineF(
-                                QPointF(cursorRect.left(),
-                             		cursorRect.top()),
-                                QPointF(cursorRect.left(),
-                             		cursorRect.bottom())));
+       {
+           QLineF line(cursorRect.left() + halfWidth, cursorRect.top() + halfWidth,
+                       cursorRect.left() + halfWidth, cursorRect.bottom() - halfWidth);
+           painter.drawLine(line);
+       }
     }
 }
 
@@ -1868,7 +1870,7 @@ QRect TerminalDisplay::widgetToImage(const QRect &widgetArea) const
 void TerminalDisplay::updateCursor()
 {
     QRect cursorRect = imageToWidget( QRect(cursorPosition(),QSize(1,1)) );
-    update(cursorRect);
+    update(cursorRect.adjusted(-_leftMargin, -_topMargin, 0, 0));
 }
 
 void TerminalDisplay::blinkCursorEvent()
