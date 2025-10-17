@@ -14,6 +14,11 @@
 #include <DSysInfo>
 #include <DWindowManagerHelper>
 #include <DTitlebar>
+#include <DListView>
+#include <DStyledItemDelegate>
+#include <DPaletteHelper>
+#include <DStyleHelper>
+#include <DGuiApplicationHelper>
 
 #include <QDebug>
 #include <QDateTime>
@@ -22,10 +27,41 @@
 #include <QScroller>
 #include <QJsonObject>
 #include <QLoggingCategory>
+#include <QPainter>
+#include <QAbstractItemView>
 
 Service *Service::g_pService = nullptr;
 
 Q_DECLARE_LOGGING_CATEGORY(mainprocess)
+// 自定义委托：用于设置窗口左侧列表在深色模式下也有明显的 hover 背景
+class SettingsNavHoverDelegate final : public Dtk::Widget::DStyledItemDelegate
+{
+public:
+    using DStyledItemDelegate = Dtk::Widget::DStyledItemDelegate;
+    explicit SettingsNavHoverDelegate(QAbstractItemView *parent = nullptr)
+        : DStyledItemDelegate(parent) {}
+
+    void paint(QPainter *painter, const QStyleOptionViewItem &opt, const QModelIndex &index) const override
+    {
+        QStyleOptionViewItem option(opt);
+        initStyleOption(&option, index);
+
+        painter->save();
+        // 先绘制一个基于调色板的背景，确保深色模式下 hover 可见
+        Dtk::Widget::DPalette pa = Dtk::Widget::DPaletteHelper::instance()->palette(option.widget);
+        Dtk::Widget::DStyleHelper styleHelper;
+        const auto role = (option.state & QStyle::State_MouseOver)
+                          ? Dtk::Widget::DPalette::ObviousBackground
+                          : Dtk::Widget::DPalette::ItemBackground;
+        const QColor bg = styleHelper.getColor(static_cast<const QStyleOption *>(&option), pa, role);
+        painter->fillRect(option.rect.adjusted(1, 0, -1, 0), bg);
+
+        // 交给基类绘制文本、图标等
+        DStyledItemDelegate::paint(painter, option, index);
+        painter->restore();
+    }
+};
+
 
 Service *Service::instance()
 {
@@ -139,6 +175,28 @@ void Service::initSetting(MainWindow *pOwner)
     m_settingDialog->setWindowModality(Qt::NonModal);
     moveToCenter(m_settingDialog);
     QDateTime endTime = QDateTime::currentDateTime();
+
+    // 为左侧列表设置 hover 样式（不替换其原有委托，避免丢失标题样式）
+    auto leftList = m_settingDialog->findChild<Dtk::Widget::DListView *>();
+    if (leftList) {
+        // 若之前版本设置过我们的委托，这里恢复为默认，以还原标题样式
+        if (dynamic_cast<SettingsNavHoverDelegate *>(leftList->itemDelegate()) != nullptr) {
+            leftList->setItemDelegate(new Dtk::Widget::DStyledItemDelegate(leftList));
+        }
+        auto applyHoverStyle = [leftList]() {
+            using DT = Dtk::Gui::DGuiApplicationHelper;
+            const auto type = DT::instance()->paletteType();
+            // 浅色：接近系统默认的淡灰；深色：用白色低透明度，在黑底清晰可见
+            const char *hoverColor = (type == DT::DarkType)
+                                     ? "rgba(255,255,255,0.09)"  // 深色下浅灰（白色 9% 透明）
+                                     : "rgba(0,0,0,0.06)";        // 浅色下淡灰（黑色 6% 透明）
+            leftList->setStyleSheet(QString("QListView::item:hover { background-color: %1; }").arg(hoverColor));
+            leftList->viewport()->setAttribute(Qt::WA_Hover, true);
+        };
+        applyHoverStyle();
+        QObject::connect(Dtk::Gui::DGuiApplicationHelper::instance(), &Dtk::Gui::DGuiApplicationHelper::themeTypeChanged,
+                         leftList, [applyHoverStyle](int){ applyHoverStyle(); });
+    }
 
     //判断未开启窗口特效时，隐藏透明度/背景模糊选项
     showHideOpacityAndBlurOptions(DWindowManagerHelper::instance()->hasComposite());
