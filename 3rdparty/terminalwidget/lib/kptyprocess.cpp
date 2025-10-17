@@ -36,6 +36,7 @@
 #include <unistd.h>
 #include <csignal>
 #include <QDebug>
+#include <dirent.h>
 
 KPtyProcess::KPtyProcess(QObject *parent) :
     KProcess(new KPtyProcessPrivate, parent)
@@ -137,6 +138,22 @@ void KPtyProcess::setupChildProcess()
 
     if (d->ptyChannels & StderrChannel)
         dup2(d->pty->slaveFd(), 2);
+
+    DIR *dir = opendir("/proc/self/fd");
+    if (dir) {
+        int dir_fd = dirfd(dir);
+        struct dirent *entry;
+
+        while ((entry = readdir(dir)) != nullptr) {
+            if (entry->d_name[0] == '.') continue;
+
+            int fd = atoi(entry->d_name);
+            if (fd > 2 && fd != dir_fd && fd != d->pty->slaveFd()) {
+                ::close(fd);
+            }
+        }
+        closedir(dir);
+    }
 
     KProcess::setupChildProcess();
 }
