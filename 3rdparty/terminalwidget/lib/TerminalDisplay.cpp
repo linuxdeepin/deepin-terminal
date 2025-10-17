@@ -769,6 +769,8 @@ void TerminalDisplay::drawCursor(QPainter& painter,
        else
            painter.setPen(foregroundColor);
 
+       const qreal halfWidth = 0.5;
+
        if ( _cursorShape == Emulation::KeyboardCursorShape::BlockCursor )
        {
             if ( hasFocus() )
@@ -780,8 +782,8 @@ void TerminalDisplay::drawCursor(QPainter& painter,
                     // invert the colour used to draw the text to ensure that the character at
                     // the cursor position is readable
                     invertCharacterColor = true;
-       }
-    }
+                }
+            }
             else
             {
                 // draw the cursor outline, adjusting the area so that
