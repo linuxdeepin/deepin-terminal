@@ -746,13 +746,23 @@ void TerminalDisplay::drawBackground(QPainter& painter, const QRect& rect, const
 void TerminalDisplay::drawCursor(QPainter& painter,
                                  const QRect& rect,
                                  const QColor& foregroundColor,
-                                 const QColor& /*backgroundColor*/,
+                                 const QColor& backgroundColor,
                                  bool& invertCharacterColor)
 {
     QRectF cursorRect = rect;
-    cursorRect.setHeight(_fontHeight - _lineSpacing - 1);
+    // 覆盖整行高度，避免底部/顶部 1px 漏刷
+    cursorRect.setHeight(_fontHeight);
 
-    if (!_cursorBlinking)
+    if (_cursorBlinking)
+    {
+       // 隐藏帧：用传入的背景色清除光标所在单元格（水平扩 1px 覆盖描边）
+       painter.save();
+       painter.setPen(Qt::NoPen);
+       painter.fillRect(cursorRect.adjusted(-1, 0, 1, 0), backgroundColor);
+       painter.restore();
+       return;
+    }
+    else
     {
        if ( _cursorColor.isValid() )
            painter.setPen(_cursorColor);
@@ -770,8 +780,8 @@ void TerminalDisplay::drawCursor(QPainter& painter,
                     // invert the colour used to draw the text to ensure that the character at
                     // the cursor position is readable
                     invertCharacterColor = true;
-                }
-            }
+       }
+    }
             else
             {
                 // draw the cursor outline, adjusting the area so that
@@ -904,16 +914,28 @@ void TerminalDisplay::drawTextFragment(QPainter& painter ,
         drawBackground(painter,rect,backgroundColor,
                        false /* do not use transparency */);
 
+    // 光标隐藏帧：在绘制光标前先清除当前单元格，避免上一帧轮廓残留
+    if (!_hideCursor && (style->rendition & RE_CURSOR) && _cursorBlinking)
+    {
+        drawBackground(painter, rect, backgroundColor, false /* do not use transparency */);
+    }
+
+    if (!_hideCursor && (style->rendition & RE_CURSOR) && _cursorBlinking)
+    {
+        drawBackground(painter, rect, backgroundColor, false /* do not use transparency */);
+    }
+
     // draw cursor shape if the current character is the cursor
-    // this may alter the foreground and background colors
+    // 处于隐藏帧时，先用 cell 背景清除，避免上一帧轮廓残留
     bool invertCharacterColor = false;
 
     if (!_hideCursor)
     {
         if ( style->rendition & RE_CURSOR )
         {
-            const QColor cursorBackground = _colorTable[DEFAULT_BACK_COLOR].color;
-            const QColor cursorForeground = _colorTable[DEFAULT_FORE_COLOR].color;
+            // 传入 cell 的真实前景/背景色，确保清除与绘制一致
+            const QColor cursorBackground = style->backgroundColor.color(_colorTable);
+            const QColor cursorForeground = style->foregroundColor.color(_colorTable);
             drawCursor(painter,rect,cursorForeground,cursorBackground,invertCharacterColor);
         }
     }
@@ -1922,7 +1944,8 @@ QRect TerminalDisplay::widgetToImage(const QRect &widgetArea) const
 void TerminalDisplay::updateCursor()
 {
     QRect cursorRect = imageToWidget( QRect(cursorPosition(),QSize(1,1)) );
-    update(cursorRect);
+    const int margin = 1;
+    update(cursorRect.adjusted(-margin, -margin, margin, margin));
 }
 
 void TerminalDisplay::blinkCursorEvent()
