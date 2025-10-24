@@ -795,32 +795,41 @@ void TerminalDisplay::drawCursor(QPainter& painter,
             }
        }
        else if ( _cursorShape == Emulation::KeyboardCursorShape::UnderlineCursor )
-            painter.drawLine(QLineF(
-                                 QPointF(cursorRect.left(),
-                                         cursorRect.bottom()),
-                                 QPointF(cursorRect.right(),
-                                         cursorRect.bottom())));
+       {
+            // 使用整数像素并用 1px 高矩形绘制，避免端点抗锯齿导致的残留点
+            const QRect intRect = cursorRect.toAlignedRect();
+            const QColor lineColor = _cursorColor.isValid() ? _cursorColor : foregroundColor;
+            painter.save();
+            painter.setRenderHint(QPainter::Antialiasing, false);
+            painter.setPen(Qt::NoPen);
+            painter.fillRect(QRect(intRect.left(), intRect.bottom(), intRect.width(), 1), lineColor);
+            painter.restore();
+       }
        else if ( _cursorShape == Emulation::KeyboardCursorShape::IBeamCursor )
-            painter.drawLine(QLineF(
-                                QPointF(cursorRect.left(),
-                             		cursorRect.top()),
-                                QPointF(cursorRect.left(),
-                             		cursorRect.bottom())));
+       {
+            // 同样使用整数像素矩形绘制 1px 宽竖线，避免端点残留
+            const QRect intRect = cursorRect.toAlignedRect();
+            const QColor lineColor = _cursorColor.isValid() ? _cursorColor : foregroundColor;
+            painter.save();
+            painter.setRenderHint(QPainter::Antialiasing, false);
+            painter.setPen(Qt::NoPen);
+            painter.fillRect(QRect(intRect.left(), intRect.top(), 1, intRect.height()), lineColor);
+            painter.restore();
+       }
        else if ( _cursorShape == Emulation::KeyboardCursorShape::BoldUnderlineCursor )
-        { 
+        {
+            const QRect intRect = cursorRect.toAlignedRect();
+            const int thickness = qMin(4, intRect.height());
+            const int topY = intRect.bottom() - (thickness - 1);
             if ( hasFocus() )
             {
-                cursorRect.translate(0,cursorRect.height());
-                cursorRect.setHeight(4);
-                painter.fillRect(cursorRect, _cursorColor.isValid() ? _cursorColor : foregroundColor);
+                painter.fillRect(QRect(intRect.left(), topY, intRect.width(), thickness),
+                                 _cursorColor.isValid() ? _cursorColor : foregroundColor);
             }
             else
             {
-                painter.drawRect(
-                                cursorRect.left(),
-                                cursorRect.bottom(),
-                                cursorRect.width(),
-                                4);
+                const QColor penColor = painter.pen().color();
+                painter.fillRect(QRect(intRect.left(), topY, intRect.width(), thickness), penColor);
             }
         }
     }
