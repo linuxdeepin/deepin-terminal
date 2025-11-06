@@ -32,6 +32,7 @@
 // #include <DImageButton>
 #include <DLog>
 #include <DWindowManagerHelper>
+#include <DSysInfo>
 
 #include <QApplication>
 #include <QInputDialog>
@@ -72,6 +73,17 @@ DWIDGET_USE_NAMESPACE
 
 // 定义雷神窗口边缘,接近边缘光标变化图标
 #define QUAKE_EDGE 5
+
+// Edition helpers
+static inline bool isCommunityEdition()
+{
+    return Dtk::Core::DSysInfo::uosEditionType() == Dtk::Core::DSysInfo::UosCommunity;
+}
+
+static inline bool isProfessionalEdition()
+{
+    return Dtk::Core::DSysInfo::uosEditionType() == Dtk::Core::DSysInfo::UosProfessional;
+}
 
 #ifdef QT_DEBUG
 Q_LOGGING_CATEGORY(mainprocess,"org.deepin.terminal")
@@ -2323,6 +2335,8 @@ void MainWindow::checkExtendThemeItem(const QString &expandThemeStr, QAction *&a
         action = themeTenAction;
     else if (Settings::instance()->m_configCustomThemePath == expandThemeStr)
         action = themeCustomAction;
+    else if (themeBuiltinActionMap.contains(expandThemeStr))
+        action = themeBuiltinActionMap[expandThemeStr];
 }
 
 void MainWindow::checkThemeItem()
@@ -2400,7 +2414,6 @@ void MainWindow::addThemeMenuItems()
         themeEightAction = switchThemeMenu->addAction(tr(THEME_EIGHT_NAME));
         themeNineAction = switchThemeMenu->addAction(tr(THEME_NINE_NAME));
         themeTenAction = switchThemeMenu->addAction(tr(THEME_TEN_NAME));
-        themeCustomAction = switchThemeMenu->addAction(tr("Custom Theme"));
 
 
         //设置主题项可选
@@ -2418,7 +2431,7 @@ void MainWindow::addThemeMenuItems()
         themeEightAction->setCheckable(true);
         themeNineAction->setCheckable(true);
         themeTenAction->setCheckable(true);
-        themeCustomAction->setCheckable(true);
+        // 自定义主题稍后添加（放在列表最底部）
 
         //初始化时读取配置改变主题颜色
         QString  expandThemeStr = Settings::instance()->extendColorScheme();
@@ -2449,6 +2462,15 @@ void MainWindow::addThemeMenuItems()
         group->addAction(themeEightAction);
         group->addAction(themeNineAction);
         group->addAction(themeTenAction);
+
+        // 动态添加额外的颜色主题（仅社区版）
+        if (isCommunityEdition()) {
+            addThemeFromConfig();
+        }
+
+        // 最后再添加“自定义主题”，确保位于列表底部
+        themeCustomAction = switchThemeMenu->addAction(tr("Custom Theme"));
+        themeCustomAction->setCheckable(true);
         group->addAction(themeCustomAction);
 
         menu->addMenu(switchThemeMenu);
@@ -2471,6 +2493,31 @@ void MainWindow::addThemeMenuItems()
 
         connect(switchThemeMenu, SIGNAL(mainWindowCheckThemeItemSignal()), this, SLOT(setThemeCheckItemSlot()));
         connect(switchThemeMenu, SIGNAL(menuHideSetThemeSignal()), this, SLOT(menuHideSetThemeSlot()));
+    }
+}
+
+void MainWindow::addThemeFromConfig()
+{
+    QStringList themeList = QTermWidget::availableColorSchemes();
+    themeList.sort();
+    for (const QString &strTheme : themeList) {
+        // 过滤基础项和已存在的内置项，避免重复
+        if (strTheme == THEME_DARK || strTheme == THEME_LIGHT || strTheme == QLatin1String("customTheme"))
+            continue;
+        if (strTheme == QLatin1String("Theme1") || strTheme == QLatin1String("Theme2") ||
+            strTheme == QLatin1String("Theme3") || strTheme == QLatin1String("Theme4") ||
+            strTheme == QLatin1String("Theme5") || strTheme == QLatin1String("Theme6") ||
+            strTheme == QLatin1String("Theme7") || strTheme == QLatin1String("Theme8") ||
+            strTheme == QLatin1String("Theme9") || strTheme == QLatin1String("Theme10"))
+            continue;
+
+        if (themeBuiltinActionMap.contains(strTheme))
+            continue;
+
+        QAction *themeItem = switchThemeMenu->addAction(strTheme);
+        themeItem->setCheckable(true);
+        group->addAction(themeItem);
+        themeBuiltinActionMap.insert(strTheme, themeItem);
     }
 }
 
@@ -2541,6 +2588,20 @@ void MainWindow::setThemeCheckItemSlot()
         return;
     }
 
+    // 动态主题回退（仅社区版）
+    if (isCommunityEdition() &&
+        !Settings::instance()->extendThemeStr.isEmpty() &&
+        Settings::instance()->extendThemeStr != THEME_ONE && Settings::instance()->extendThemeStr != THEME_TWO &&
+        Settings::instance()->extendThemeStr != THEME_THREE && Settings::instance()->extendThemeStr != THEME_FOUR &&
+        Settings::instance()->extendThemeStr != THEME_FIVE && Settings::instance()->extendThemeStr != THEME_SIX &&
+        Settings::instance()->extendThemeStr != THEME_SEVEN && Settings::instance()->extendThemeStr != THEME_EIGHT &&
+        Settings::instance()->extendThemeStr != THEME_NINE && Settings::instance()->extendThemeStr != THEME_TEN &&
+        Settings::instance()->extendThemeStr != Settings::instance()->m_configCustomThemePath) {
+
+        Settings::instance()->setExtendColorScheme(Settings::instance()->extendThemeStr);
+        emit DGuiApplicationHelper::instance()->themeTypeChanged(DGuiApplicationHelper::instance()->themeType());
+        return;
+    }
 }
 
 void MainWindow::menuHideSetThemeSlot()
@@ -2614,6 +2675,18 @@ void MainWindow::menuHideSetThemeSlot()
         }
 
         return;
+    } else {
+        // 动态主题（非 Theme1~Theme10、自定义、基础项，仅社区版）
+        if (isCommunityEdition()) {
+            for (auto it = themeBuiltinActionMap.constBegin(); it != themeBuiltinActionMap.constEnd(); ++it) {
+                if (it.value() == currCheckThemeAction) {
+                    Settings::instance()->setExtendColorScheme(it.key());
+                    // 触发终端根据 extendColorScheme 立即应用
+                    emit DGuiApplicationHelper::instance()->themeTypeChanged(DGuiApplicationHelper::instance()->themeType());
+                    return;
+                }
+            }
+        }
     }
 }
 
@@ -2705,6 +2778,19 @@ void MainWindow::switchThemeAction(QAction *action)
     if (action == themeTenAction) {
         switchThemeAction(action, THEME_TEN);
         return;
+    }
+
+    // 动态主题（通过配置扫描生成，仅社区版）
+    if (isCommunityEdition()) {
+        for (auto it = themeBuiltinActionMap.begin(); it != themeBuiltinActionMap.end(); ++it) {
+            if (it.value() == action) {
+                const QString name = it.key();
+                Settings::instance()->setExtendColorScheme(name);
+                // 触发立即应用（TermWidget 监听 themeTypeChanged 内应用 extendColorScheme）
+                emit DGuiApplicationHelper::instance()->themeTypeChanged(DGuiApplicationHelper::instance()->themeType());
+                return;
+            }
+        }
     }
 
     //自定义主题

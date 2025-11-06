@@ -540,6 +540,10 @@ protected:
      * @author ut000125 sunchengxi
      */
     void addThemeMenuItems();
+    /**
+     * @brief 根据可用配色方案动态添加主题项
+     */
+    void addThemeFromConfig();
 public:
     /**
      * @brief 选择主题项
@@ -899,6 +903,9 @@ public:
     QAction         *themeTenAction         = nullptr;
     //自定义主题快捷键
     QAction        *themeCustomAction      = nullptr;
+
+    // 动态内置主题快捷键（由配置扫描生成）
+    QMap<QString, QAction *> themeBuiltinActionMap;
 
     //主题快捷键组
     QActionGroup    *group                  = nullptr;
