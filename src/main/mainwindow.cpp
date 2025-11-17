@@ -2440,7 +2440,16 @@ void MainWindow::addThemeMenuItems()
                 //选中了内置主题在9-10项之间 // 浅色方案系列
                 DGuiApplicationHelper::instance()->setPaletteType(DGuiApplicationHelper::LightType);
                 emit DGuiApplicationHelper::instance()->themeTypeChanged(DGuiApplicationHelper::LightType);
-            }else{
+            } else if (expandThemeStr == Settings::instance()->m_configCustomThemePath) {
+                // 自定义主题：根据 TitleStyle 决定浅/深
+                if (THEME_LIGHT == Settings::instance()->themeSetting->value("CustomTheme/TitleStyle")) {
+                    DGuiApplicationHelper::instance()->setPaletteType(DGuiApplicationHelper::LightType);
+                    emit DGuiApplicationHelper::instance()->themeTypeChanged(DGuiApplicationHelper::LightType);
+                } else {
+                    DGuiApplicationHelper::instance()->setPaletteType(DGuiApplicationHelper::DarkType);
+                    emit DGuiApplicationHelper::instance()->themeTypeChanged(DGuiApplicationHelper::DarkType);
+                }
+            } else {
                 DGuiApplicationHelper::instance()->setPaletteType(DGuiApplicationHelper::DarkType);
                 emit DGuiApplicationHelper::instance()->themeTypeChanged(DGuiApplicationHelper::DarkType);
             }
@@ -2581,10 +2590,17 @@ void MainWindow::setThemeCheckItemSlot()
 
     if (Settings::instance()->extendThemeStr == Settings::instance()->m_configCustomThemePath) {
 
-        Settings::instance()->setColorScheme(THEME_DARK);
+        // 自定义主题：根据 TitleStyle 决定浅/深
         Settings::instance()->setExtendColorScheme(Settings::instance()->extendThemeStr);
-        DGuiApplicationHelper::instance()->setPaletteType(DGuiApplicationHelper::DarkType);
-        emit DGuiApplicationHelper::instance()->themeTypeChanged(DGuiApplicationHelper::DarkType);
+        if (THEME_LIGHT == Settings::instance()->themeSetting->value("CustomTheme/TitleStyle")) {
+            Settings::instance()->setColorScheme(THEME_LIGHT);
+            DGuiApplicationHelper::instance()->setPaletteType(DGuiApplicationHelper::LightType);
+            emit DGuiApplicationHelper::instance()->themeTypeChanged(DGuiApplicationHelper::LightType);
+        } else {
+            Settings::instance()->setColorScheme(THEME_DARK);
+            DGuiApplicationHelper::instance()->setPaletteType(DGuiApplicationHelper::DarkType);
+            emit DGuiApplicationHelper::instance()->themeTypeChanged(DGuiApplicationHelper::DarkType);
+        }
         return;
     }
 
