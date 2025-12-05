@@ -3350,6 +3350,8 @@ QVariant TerminalDisplay::inputMethodQuery( Qt::InputMethodQuery query ) const
             {
                 // return the text from the current line
                 QString lineText;
+                if (_lineProperties.isEmpty())
+                    return lineText;
                 QTextStream stream(&lineText);
                 PlainTextDecoder decoder;
                 decoder.begin(&stream);
