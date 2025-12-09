@@ -41,7 +41,7 @@
     <message>
         <location filename="../Filter.cpp" line="538"/>
         <source>Open link</source>
-        <translation type="unfinished"/>
+        <translation>Åpne link</translation>
     </message>
     <message>
         <location filename="../Filter.cpp" line="539"/>
@@ -51,12 +51,12 @@
     <message>
         <location filename="../Filter.cpp" line="543"/>
         <source>Send email to...</source>
-        <translation type="unfinished"/>
+        <translation>Send e-post til...</translation>
     </message>
     <message>
         <location filename="../Filter.cpp" line="544"/>
         <source>Copy email address</source>
-        <translation type="unfinished"/>
+        <translation>Kopier e-postadresse</translation>
     </message>
 </context>
 <context>
@@ -97,7 +97,7 @@
     <message>
         <location filename="../SearchBar.ui" line="20"/>
         <source>X</source>
-        <translation type="unfinished"/>
+        <translation>X</translation>
     </message>
     <message>
         <location filename="../SearchBar.ui" line="32"/>
@@ -107,17 +107,17 @@
     <message>
         <location filename="../SearchBar.ui" line="42"/>
         <source>&lt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;</translation>
     </message>
     <message>
         <location filename="../SearchBar.ui" line="54"/>
         <source>&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&gt;</translation>
     </message>
     <message>
         <location filename="../SearchBar.ui" line="66"/>
         <source>...</source>
-        <translation type="unfinished"/>
+        <translation>...</translation>
     </message>
 </context>
 </TS>

@@ -117,7 +117,7 @@
     <message>
         <location filename="../SearchBar.ui" line="66"/>
         <source>...</source>
-        <translation>…</translation>
+        <translation>...</translation>
     </message>
 </context>
 </TS>

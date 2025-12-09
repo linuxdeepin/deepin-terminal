@@ -138,7 +138,7 @@
     <message>
         <location filename="../src/views/customthemesettingdialog.cpp" line="325"/>
         <source>Fore color:</source>
-        <translation>لون الصوت</translation>
+        <translation>اللون الامامي</translation>
     </message>
     <message>
         <location filename="../src/views/customthemesettingdialog.cpp" line="332"/>
@@ -148,12 +148,12 @@
     <message>
         <location filename="../src/views/customthemesettingdialog.cpp" line="350"/>
         <source>Prompt PS1:</source>
-        <translation>تحذير PS1</translation>
+        <translation>موجه PS1</translation>
     </message>
     <message>
         <location filename="../src/views/customthemesettingdialog.cpp" line="354"/>
         <source>Prompt PS2:</source>
-        <translation>تحذير PS2</translation>
+        <translation>موجه PS2</translation>
     </message>
     <message>
         <location filename="../src/views/customthemesettingdialog.cpp" line="424"/>
@@ -332,7 +332,7 @@
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="35"/>
         <source>Use on starting</source>
-        <translation>استخدامه عند البدء</translation>
+        <translation>استخدام عند البدء</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="37"/>
@@ -426,112 +426,112 @@
         <location filename="../src/main/mainwindow.cpp" line="1638"/>
         <location filename="../src/settings/settings_translation.cpp" line="101"/>
         <source>New tab</source>
-        <translation>لسان جديد</translation>
+        <translation>نافذة جديدة</translation>
     </message>
     <message>
         <location filename="../src/main/mainwindow.cpp" line="1638"/>
         <location filename="../src/settings/settings_translation.cpp" line="103"/>
         <source>Next tab</source>
-        <translation>اللسان التالي</translation>
+        <translation>النافذة التالية</translation>
     </message>
     <message>
         <location filename="../src/main/mainwindow.cpp" line="1638"/>
         <location filename="../src/settings/settings_translation.cpp" line="105"/>
         <source>Previous tab</source>
-        <translation>اللسان التالي</translation>
+        <translation>النافذة السابقة</translation>
     </message>
     <message>
         <location filename="../src/main/mainwindow.cpp" line="1640"/>
         <location filename="../src/settings/settings_translation.cpp" line="107"/>
         <source>Select left workspace</source>
-        <translation>حدد arbetsbereich  اليسار</translation>
+        <translation>حدد مساحة العمل اليسرى</translation>
     </message>
     <message>
         <location filename="../src/main/mainwindow.cpp" line="1639"/>
         <location filename="../src/settings/settings_translation.cpp" line="109"/>
         <source>Select lower workspace</source>
-        <translation>حدد workspace السفلي</translation>
+        <translation>حدد مساحة العمل السفلى</translation>
     </message>
     <message>
         <location filename="../src/main/mainwindow.cpp" line="1640"/>
         <location filename="../src/settings/settings_translation.cpp" line="111"/>
         <source>Select right workspace</source>
-        <translation>حدد workspace الأيمن</translation>
+        <translation>حدد مساحة العمل اليمنى</translation>
     </message>
     <message>
         <location filename="../src/main/mainwindow.cpp" line="1639"/>
         <location filename="../src/settings/settings_translation.cpp" line="113"/>
         <source>Select upper workspace</source>
-        <translation>حدد workspace العلوي</translation>
+        <translation>حدد مساحة العمل العليا</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="119"/>
         <source>Tab titles</source>
-        <translation>عنواين الألسنة</translation>
+        <translation>عنواين النوافذ</translation>
     </message>
     <message>
         <location filename="../src/main/mainwindow.cpp" line="1641"/>
         <location filename="../src/settings/settings_translation.cpp" line="125"/>
         <source>Go to tab 1</source>
-        <translation>الذهاب إلى اللسان رقم 1</translation>
+        <translation>الذهاب إلى النافذة رقم 1</translation>
     </message>
     <message>
         <location filename="../src/main/mainwindow.cpp" line="1641"/>
         <location filename="../src/settings/settings_translation.cpp" line="127"/>
         <source>Go to tab 2</source>
-        <translation>الذهاب إلى اللسان رقم 2</translation>
+        <translation>الذهاب إلى النافذة رقم 2</translation>
     </message>
     <message>
         <location filename="../src/main/mainwindow.cpp" line="1641"/>
         <location filename="../src/settings/settings_translation.cpp" line="129"/>
         <source>Go to tab 3</source>
-        <translation>الذهاب إلى اللسان رقم 3</translation>
+        <translation>الذهاب إلى النافذة رقم 3</translation>
     </message>
     <message>
         <location filename="../src/main/mainwindow.cpp" line="1642"/>
         <location filename="../src/settings/settings_translation.cpp" line="131"/>
         <source>Go to tab 4</source>
-        <translation>الذهاب إلى اللسان رقم 4</translation>
+        <translation>الذهاب إلى النافذة رقم 4</translation>
     </message>
     <message>
         <location filename="../src/main/mainwindow.cpp" line="1642"/>
         <location filename="../src/settings/settings_translation.cpp" line="133"/>
         <source>Go to tab 5</source>
-        <translation>الذهاب إلى اللسان رقم 5</translation>
+        <translation>الذهاب إلى النافذة رقم 5</translation>
     </message>
     <message>
         <location filename="../src/main/mainwindow.cpp" line="1642"/>
         <location filename="../src/settings/settings_translation.cpp" line="135"/>
         <source>Go to tab 6</source>
-        <translation>الذهاب إلى اللسان رقم 6</translation>
+        <translation>الذهاب إلى النافذة رقم 6</translation>
     </message>
     <message>
         <location filename="../src/main/mainwindow.cpp" line="1643"/>
         <location filename="../src/settings/settings_translation.cpp" line="137"/>
         <source>Go to tab 7</source>
-        <translation>الذهاب إلى اللسان رقم 7</translation>
+        <translation>الذهاب إلى النافذة رقم 7</translation>
     </message>
     <message>
         <location filename="../src/main/mainwindow.cpp" line="1643"/>
         <location filename="../src/settings/settings_translation.cpp" line="139"/>
         <source>Go to tab 8</source>
-        <translation>الذهاب إلى اللسان رقم 8</translation>
+        <translation>الذهاب إلى النافذة رقم 8</translation>
     </message>
     <message>
         <location filename="../src/main/mainwindow.cpp" line="1643"/>
         <location filename="../src/settings/settings_translation.cpp" line="141"/>
         <source>Go to tab 9</source>
-        <translation>الذهاب إلى اللسان رقم 9</translation>
+        <translation>الذهاب إلى النافذة رقم 9</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="143"/>
         <source>Disable flow control using Ctrl+S, Ctrl+Q</source>
-        <translation>تعطيل ضبط التدفق باستخدام Ctrl+S، Ctrl+Q</translation>
+        <translation>تعطيل التحكم بالتدفق باستخدام Ctrl+S، Ctrl+Q</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="145"/>
         <source>Shell profile</source>
-        <translation>ملف تعريف سطح المكتب</translation>
+        <translation>ملف تعريف الصدفة</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="147"/>
@@ -551,7 +551,7 @@
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="153"/>
         <source>The HTTP file server used for transmitting debugging information resources</source>
-        <translation>خادم الملف HTTP المستخدم لإرسال موارد معلومات التحرير</translation>
+        <translation>خادم ملفات HTTP المستخدم لنقل موارد معلومات تصحيح الأخطاء.</translation>
     </message>
     <message>
         <location filename="../src/main/mainwindow.cpp" line="1658"/>
@@ -690,23 +690,23 @@
     <message>
         <location filename="../src/main/terminalapplication.cpp" line="28"/>
         <source>Terminal is an advanced terminal emulator with workspace, multiple windows, remote management, quake mode and other features.</source>
-        <translation> الطرفية عبارة عن محاكي مطور متقدم مزود بمساحة عمل ، ونوافذ متعددة ، والإدارة عن بعد ، ووضع متحول ، وغيرها من الميزات.</translation>
+        <translation>الطرفية هي محاكي طرفية متقدم يدعم مساحات العمل والنوافذ المتعددة والإدارة عن بُعد ووضع كويك وميزات أخرى.</translation>
     </message>
     <message>
         <location filename="../src/main/mainwindow.cpp" line="1590"/>
         <source>Tabs</source>
-        <translation>الألسنة</translation>
+        <translation>النوافذ</translation>
     </message>
     <message>
         <location filename="../src/main/mainwindow.cpp" line="1638"/>
         <location filename="../src/views/tabbar.cpp" line="480"/>
         <source>Close tab</source>
-        <translation>إغلاق اللسان</translation>
+        <translation>إغلاق النافذة</translation>
     </message>
     <message>
         <location filename="../src/main/mainwindow.cpp" line="1639"/>
         <source>Select tab</source>
-        <translation>اختيار اللسان</translation>
+        <translation>اختيار النافذة</translation>
     </message>
     <message>
         <location filename="../src/main/mainwindow.cpp" line="1610"/>
@@ -728,7 +728,7 @@
     <message>
         <location filename="../src/common/utils.cpp" line="230"/>
         <source>Programs are still running in terminal</source>
-        <translation>لا تزال هناك برامج تعمل في الطرفية</translation>
+        <translation>لا تزال البرامج تعمل في الطرفية</translation>
     </message>
     <message>
         <location filename="../src/common/utils.cpp" line="182"/>
@@ -740,25 +740,25 @@
         <location filename="../src/common/utils.cpp" line="183"/>
         <location filename="../src/common/utils.cpp" line="217"/>
         <source>There is still a process running in this terminal. Closing the terminal will terminate it.</source>
-        <translation>لا يزال هناك عملية واحدة تعمل في هذا المحطة. سيؤدي إغلاق المحطة إنهاء هذه العملية.</translation>
+        <translation>لا تزال هناك عملية قيد التشغيل في هذه الطرفية. سيؤدي إغلاق الطرفية إلى إنهائها.</translation>
     </message>
     <message>
         <location filename="../src/common/utils.cpp" line="187"/>
         <location filename="../src/common/utils.cpp" line="221"/>
         <source>There are still %1 processes running in this terminal. Closing the terminal will terminate all of them.</source>
-        <translation>لا يزال هناك %1 عملية واحدة تعمل في هذا المحطة. سيؤدي إغلاق المحطة إلى إنهاء جميع العمليات.</translation>
+        <translation>لا تزال هناك %1 عملية قيد التشغيل في هذه الطرفية. سيؤدي إغلاق الطرفية إلى إنهاء جميعها.</translation>
     </message>
     <message>
         <location filename="../src/common/utils.cpp" line="192"/>
         <location filename="../src/common/utils.cpp" line="212"/>
         <source>Close this window?</source>
-        <translation>هل تريد إغلاق هذه النافذة؟</translation>
+        <translation>إغلاق هذه النافذة؟</translation>
     </message>
     <message>
         <location filename="../src/common/utils.cpp" line="193"/>
         <location filename="../src/common/utils.cpp" line="213"/>
         <source>There are still processes running in this window. Closing the window will terminate all of them.</source>
-        <translation>لا يزال هناك عمليات تعمل في هذا النافذة. سيؤدي إغلاق النافذة إلى إنهاء جميع العمليات.</translation>
+        <translation>لا تزال هناك عمليات قيد التشغيل في هذه النافذة. سيؤدي إغلاق النافذة إلى إنهاء جميعها.</translation>
     </message>
     <message>
         <location filename="../src/common/utils.cpp" line="136"/>
@@ -822,7 +822,7 @@
     <message>
         <location filename="../src/common/utils.cpp" line="344"/>
         <source>Run in quake mode</source>
-        <translation>ابدأ في وضع الزلزال</translation>
+        <translation>التشغيل في وضع كويك</translation>
     </message>
     <message>
         <location filename="../src/common/utils.cpp" line="347"/>
@@ -851,19 +851,19 @@
         <location filename="../src/settings/settings_translation.cpp" line="121"/>
         <location filename="../src/views/tabrenamewidget.cpp" line="111"/>
         <source>Tab title format</source>
-        <translation>تنسيق عنوان علامة تبويب</translation>
+        <translation>تنسيق عنوان النافذة</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="123"/>
         <location filename="../src/views/tabrenamewidget.cpp" line="113"/>
         <source>Remote tab title format</source>
-        <translation>تنسيق عنوان علامة تبويب عن بعد</translation>
+        <translation>تنسيق عنوان النافذة عن بعد</translation>
     </message>
     <message>
         <location filename="../src/main/mainwindow.cpp" line="1638"/>
         <location filename="../src/views/tabbar.cpp" line="483"/>
         <source>Close other tabs</source>
-        <translation>إغلاق الألسنة الأخرى</translation>
+        <translation>إغلاق النوافذ الأخرى</translation>
     </message>
     <message>
         <location filename="../src/views/listview.cpp" line="894"/>
@@ -983,7 +983,7 @@
     <message>
         <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="189"/>
         <source>No Group</source>
-        <translation>لا مجموعة</translation>
+        <translation>بدون مجموعة</translation>
     </message>
     <message>
         <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="193"/>
@@ -1155,7 +1155,7 @@
         <location filename="../src/views/tabrenamewidget.cpp" line="75"/>
         <location filename="../src/views/tabrenamewidget.cpp" line="89"/>
         <source>title set by shell: %w</source>
-        <translation>العنوان الذي حددته الساري: %w</translation>
+        <translation>العنوان المحدد بواسطة الصدفة %w</translation>
     </message>
     <message>
         <location filename="../src/views/tabrenamewidget.cpp" line="86"/>
@@ -1216,7 +1216,7 @@
         <location filename="../src/views/termwidget.cpp" line="503"/>
         <location filename="../src/views/termwidget.cpp" line="549"/>
         <source>New tab</source>
-        <translation>لسان جديد</translation>
+        <translation>نافذة جديد</translation>
     </message>
     <message>
         <location filename="../src/views/termwidget.cpp" line="510"/>
@@ -1271,7 +1271,7 @@
     <message>
         <location filename="../src/views/termwidget.cpp" line="1200"/>
         <source>The debuginfod settings will be effective after restart</source>
-        <translation>سيصبح إعداد debuginfod فعليًا بعد إعادة التشغيل</translation>
+        <translation>سيصبح إعداد debuginfod ساري المفعول بعد إعادة التشغيل</translation>
     </message>
 </context>
 <context>
