@@ -30,11 +30,14 @@ class FocusFrame : public DFrame
 {
     Q_OBJECT
 public:
-    explicit FocusFrame(QWidget *parent = nullptr);
+    explicit FocusFrame(QWidget *parent = nullptr, bool isWideFrame = false);
     // 鼠标是否悬浮
     bool m_isHover = false;
 
 protected:
+
+    bool showBackground = true;
+
     /**
      * @brief 处理重绘事件，绘制圆角和边框
      * @author ut000610 戴正文
@@ -70,6 +73,7 @@ protected:
 private:
     // 焦点是否在 用于背景和边框
     bool m_isFocus = false;
+    bool m_isWideFrame = false;
     /**
      * @brief 画一个圆角矩形,根据矩形大小 => 获取圆角矩形
      * @author ut000610 戴正文

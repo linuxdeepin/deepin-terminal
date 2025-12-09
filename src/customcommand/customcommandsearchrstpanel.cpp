@@ -12,6 +12,7 @@
 #include "mainwindow.h"
 
 #include <DApplicationHelper>
+#include <DPaletteHelper>
 #include <DMessageBox>
 
 #include <QAction>
@@ -37,7 +38,7 @@ void CustomCommandSearchRstPanel::initUI()
     m_rebackButton->setObjectName("CustomRebackButton");
     m_backButton = m_rebackButton;
     m_backButton->setIcon(DStyle::StandardPixmap::SP_ArrowLeave);
-    m_backButton->setFixedSize(QSize(36, 36));
+    m_backButton->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Preferred);
     m_backButton->setFocusPolicy(Qt::TabFocus);
 
     m_label = new DLabel(this);
@@ -46,7 +47,7 @@ void CustomCommandSearchRstPanel::initUI()
     // 字体颜色随主题变化变化
     DPalette palette = m_label->palette();
     QColor color;
-    if (DApplicationHelper::DarkType == DApplicationHelper::instance()->themeType())
+    if (DGuiApplicationHelper::DarkType == DGuiApplicationHelper::instance()->themeType())
         color = QColor::fromRgb(192, 198, 212, 102);
     else
         color = QColor::fromRgb(85, 85, 85, 102);
@@ -76,7 +77,7 @@ void CustomCommandSearchRstPanel::initUI()
     connect(m_cmdListWidget, &ListView::itemClicked, this, &CustomCommandSearchRstPanel::doCustomCommand);
     connect(m_backButton, &DIconButton::clicked, this, &CustomCommandSearchRstPanel::showCustomCommandPanel);
     // 字体颜色随主题变化变化
-    connect(DApplicationHelper::instance(), &DGuiApplicationHelper::themeTypeChanged, this, &CustomCommandSearchRstPanel::handleThemeTypeChanged);
+    connect(DGuiApplicationHelper::instance(), &DGuiApplicationHelper::themeTypeChanged, this, &CustomCommandSearchRstPanel::handleThemeTypeChanged);
 
     connect(m_rebackButton, &IconButton::focusOut, this, &CustomCommandSearchRstPanel::handleIconButtonFocusOut);
 
@@ -87,7 +88,7 @@ inline void CustomCommandSearchRstPanel::handleThemeTypeChanged(DGuiApplicationH
 {
     DPalette palette = m_label->palette();
     QColor color;
-    if (DApplicationHelper::DarkType == themeType)
+    if (DGuiApplicationHelper::DarkType == themeType)
         color = QColor::fromRgb(192, 198, 212, 102);
     else
         color = QColor::fromRgb(85, 85, 85, 102);

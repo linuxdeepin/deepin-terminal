@@ -6,7 +6,9 @@
 #ifndef TERMWIDGET_H
 #define TERMWIDGET_H
 
-#include "qtermwidget.h"
+#include <DFloatingMessage>
+
+#include  "qtermwidget.h"
 #include "termwidgetpage.h"
 
 /*******************************************************************************
@@ -65,6 +67,8 @@ class TermWidget : public QTermWidget
 {
     Q_OBJECT
 public:
+    bool canSplit(Qt::Orientation ori);
+
     TermWidget(const TermProperties &properties, QWidget *parent = nullptr);
     ~TermWidget();
     /**
@@ -79,6 +83,7 @@ public:
      * @return
      */
     bool isInRemoteServer();
+
 public:
     /**
      * @brief 设置不透明度
@@ -190,13 +195,6 @@ public:
     void setDeleteMode(const EraseMode &deleteMode);
 
     /**
-     * @brief 获取当前terminal距离page的层次．用于限定分屏
-     * @author ut000439 王培利
-     * @return
-     */
-    int getTermLayer();
-
-    /**
      * @brief 设置标签标题格式（全局设置）
      * @author ut000610 戴正文
      * @param tabFormat
@@ -268,6 +266,18 @@ public:
      */
     void inputRemotePassword(const QString &remotePassword);
 
+    /**
+     * @brief 根据背景的亮度值改变标题的颜色
+     * @param lightness 亮度
+     */
+    void changeTitleColor(int lightness);
+
+    /**
+     * @brief 设置系统主题和主题
+     * @param colorTheme
+     */
+    void setTheme(const QString &colorTheme);
+
 public slots:
     /**
      * @brief Terminal的各项设置生效
@@ -335,7 +345,8 @@ private slots:
     void onTermWidgetReceivedData(QString value);
     void onExitRemoteServer();
     void onUrlActivated(const QUrl &url, bool fromContextMenu);
-    void onThemeTypeChanged(DGuiApplicationHelper::ColorType builtInTheme);
+    void onColorThemeChanged(const QString &colorTheme);
+    void onThemeChanged(DApplicationHelper::ColorType themeType);
     void onTermIsIdle(bool bIdle);
     void onTitleChanged();
     void onWindowEffectEnabled(bool isWinEffectEnabled);
@@ -452,6 +463,10 @@ private:
     QString m_remotePassword;
     //是否准备远程
     bool m_remotePasswordIsReady = false;
+
+    // 9:6
+    static const int MIN_WIDTH = 180;
+    static const int MIN_HEIGHT = 120;
 };
 
 #endif  // TERMWIDGET_H

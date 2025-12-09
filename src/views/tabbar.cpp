@@ -8,7 +8,6 @@
 #include "termwidget.h"
 #include "termwidgetpage.h"
 #include "windowsmanager.h"
-#include "terminalapplication.h"
 #include "private/qtabbar_p.h"
 
 #include <DApplication>
@@ -25,6 +24,11 @@
 #include <QMouseEvent>
 #include <QDesktopWidget>
 #include <QPainterPath>
+#include <QMimeData>
+
+#ifdef DTKWIDGET_CLASS_DSizeMode
+#include <DSizeMode>
+#endif
 
 //TermTabStyle类开始，该类用于设置tab标签样式
 TermTabStyle::TermTabStyle() : m_tabCount(0)
@@ -161,7 +165,6 @@ TabBar::TabBar(QWidget *parent) : DTabBar(parent), m_rightClickTab(-1)
     setFocusPolicy(Qt::TabFocus);
     setStartDragDistance(40);
 
-    setTabHeight(36);
     setTabItemMinWidth(110);
     setTabItemMaxWidth(450);
 
@@ -189,12 +192,6 @@ TabBar::~TabBar()
 
     if (m_termTabStyle != nullptr)
         delete m_termTabStyle;
-}
-
-void TabBar::setTabHeight(int tabHeight)
-{
-    m_tabHeight = tabHeight;
-    setFixedHeight(tabHeight);
 }
 
 void TabBar::setTabItemMinWidth(int tabItemMinWidth)
@@ -226,7 +223,7 @@ int TabBar::addTab(const QString &tabIdentifier, const QString &tabName)
 
 int TabBar::insertTab(const int &index, const QString &tabIdentifier, const QString &tabName)
 {
-    qInfo() << "insertTab at index: " << index << " with id::" << tabIdentifier << endl;
+    qInfo() << "insertTab at index: " << index << " with id::" << tabIdentifier;
     int insertIndex = DTabBar::insertTab(index, tabName);
     setTabData(insertIndex, QVariant::fromValue(tabIdentifier));
 
@@ -468,7 +465,7 @@ inline bool TabBar::handleRightButtonClick(QMouseEvent *mouseEvent)
             break;
         }
     }
-    qInfo() << "currIndex" << m_rightClickTab << endl;
+    qInfo() << "currIndex" << m_rightClickTab;
 
     // 弹出tab标签的右键菜单
     if (m_rightClickTab >= 0) {
@@ -803,12 +800,12 @@ void TabBar::handleTabDroped(int index, Qt::DropAction dropAction, QObject *targ
 {
     Q_UNUSED(dropAction)
 
-    qInfo() << "handleTabDroped index:" << index << ", target:" << target << endl;
+    qInfo() << "handleTabDroped index:" << index << ", target:" << target;
     TabBar *tabbar = qobject_cast<TabBar *>(target);
 
     //拖出的标签--需要新建窗口
     if (nullptr == tabbar) {
-        qInfo() << "tabbar == nullptr " << index << endl;
+        qInfo() << "tabbar == nullptr " << index;
         MainWindow *window = static_cast<MainWindow *>(this->window());
         //窗口不为雷神模式才允许移动
         if (!window->isQuakeMode())
@@ -818,7 +815,7 @@ void TabBar::handleTabDroped(int index, Qt::DropAction dropAction, QObject *targ
         window->activateWindow();
     } else {
         //拖入的标签--需要关闭拖入窗口的标签页
-        qInfo() << "tabbar != nullptr " << index << endl;
+        qInfo() << "tabbar != nullptr " << index;
         closeTab(index);
     }
 
@@ -828,13 +825,21 @@ void TabBar::handleTabDroped(int index, Qt::DropAction dropAction, QObject *targ
 QSize TabBar::minimumTabSizeHint(int index) const
 {
     Q_UNUSED(index)
-    return QSize(m_tabItemMinWidth, m_tabHeight);
+#ifdef DTKWIDGET_CLASS_DSizeMode
+    return QSize(m_tabItemMinWidth, DSizeModeHelper::element(COMMONHEIGHT_COMPACT, COMMONHEIGHT));
+#else
+    return QSize(m_tabItemMinWidth, COMMONHEIGHT);
+#endif
 }
 
 QSize TabBar::maximumTabSizeHint(int index) const
 {
     Q_UNUSED(index)
-    return QSize(m_tabItemMaxWidth, m_tabHeight);
+#ifdef DTKWIDGET_CLASS_DSizeMode
+    return QSize(m_tabItemMaxWidth, DSizeModeHelper::element(COMMONHEIGHT_COMPACT, COMMONHEIGHT));
+#else
+    return QSize(m_tabItemMinWidth, COMMONHEIGHT);
+#endif
 }
 
 void TabBar::setNeedChangeTextColor(const QString &tabIdentifier, const QColor &color)

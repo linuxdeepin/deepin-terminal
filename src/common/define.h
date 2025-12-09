@@ -18,6 +18,8 @@
 
 #define SEARCHBAR_RIGHT_MARGIN 382
 
+#define STEP_OPACITY 5
+
 // qterminal
 const QString TERM_WIDGET_NAME = "Konsole::TerminalScreen";
 
@@ -61,7 +63,8 @@ const QStringList FONT_BLACKLIST = {
     QStringLiteral("MT Extra"),
     QStringLiteral("Wingdings"),
     QStringLiteral("Wingdings 2"),
-    QStringLiteral("Wingdings 3")
+    QStringLiteral("Wingdings 3"),
+    QStringLiteral("Noto Sans SignWriting"),
 };
 
 #endif // DTNG_DEFINE_H

@@ -14,9 +14,31 @@
 
 #include <DLog>
 #include <DDialog>
+#include <DPaletteHelper>
 
 #include <QVBoxLayout>
 #include <QApplication>
+
+// Find the previous term widget in the widget tree.
+static TermWidget* WidgetTreeReverseFindTerm(QWidget *widget)
+{
+    QList<TermWidget*> termList = widget->findChildren<TermWidget *>();
+    for (TermWidget *t : termList) {
+        if (t) {
+            qInfo() << "TermWidget found in current widget:" << t;
+            return t;
+        }
+    }
+
+    QWidget *parent = widget->parentWidget();
+    if (parent) {
+        qInfo() << "Searching in parent widget:" << parent;
+        return WidgetTreeReverseFindTerm(parent);
+    }
+    qInfo() << "No TermWidget found in the widget tree.";
+    return nullptr;
+}
+
 
 TermWidgetPage::TermWidgetPage(const TermProperties &properties, QWidget *parent)
     : QWidget(parent), m_findBar(new PageSearchBar(this))
@@ -44,16 +66,22 @@ TermWidgetPage::TermWidgetPage(const TermProperties &properties, QWidget *parent
     connect(m_findBar, &PageSearchBar::findNext, this, &TermWidgetPage::handleFindNext);
     connect(m_findBar, &PageSearchBar::findPrev, this, &TermWidgetPage::handleFindPrev);
     connect(m_findBar, &PageSearchBar::keywordChanged, this, &TermWidgetPage::handleKeywordChanged);
-    connect(DApplicationHelper::instance(), &DApplicationHelper::themeTypeChanged, this, &TermWidgetPage::handleThemeTypeChanged);
+    connect(DGuiApplicationHelper::instance(), &DGuiApplicationHelper::themeTypeChanged, this, &TermWidgetPage::handleThemeTypeChanged);
 
     /******** Modify by nt001000 renfeixiang 2020-05-27:修改 增加参数区别remove和purge卸载命令 2020-05-28 优化代码 Begin***************/
     connect(this, &TermWidgetPage::uninstallTerminal, this, &TermWidgetPage::handleUninstallTerminal);
     /******** Modify by nt001000 renfeixiang 2020-05-27:修改 增加参数区别remove和purge卸载命令 Begin***************/
 
     m_currentTerm = w;
+
+#ifdef DTKWIDGET_CLASS_DSizeMode
+    connect(DGuiApplicationHelper::instance(), &DGuiApplicationHelper::sizeModeChanged, this, [this](){
+        m_findBar->move(width() - m_findBar->width(), 0);
+    }, Qt::QueuedConnection);
+#endif
 }
 
-inline void TermWidgetPage::handleKeywordChanged(QString keyword)
+inline void TermWidgetPage::handleKeywordChanged(const QString &keyword)
 {
     handleUpdateSearchKeyword(keyword);
 }
@@ -84,21 +112,26 @@ void TermWidgetPage::setParentMainWindow(MainWindow *mainWin)
     m_MainWindow = mainWin;
 }
 
+// TODO(hualet): maybe implement a subclass of DSplitter and
+// override the createHandle method, all setSplitStyle should
+// be removed.
 void TermWidgetPage::setSplitStyle(DSplitter *splitter)
 {
     splitter->setHandleWidth(1);
-    QSplitterHandle *handle = splitter->handle(1);
 
-    if (handle) {
-        //分割线颜色暂时设置为Highlight颜色，需要和UI确认下
-        //此处代码暂时保留  //DPalette pa = DApplicationHelper::instance()->palette(handle);
-        //bug#57044 中的分割线颜色，保留的代码对默认主题，和十个内置主题的颜色是正确获取，但是在自定义的颜色获取存在异常，采取如下方式获取
-        DPalette pa = DApplicationHelper::instance()->applicationPalette();
-        QColor splitBrush = pa.color(DPalette::Highlight);
-        pa.setBrush(DPalette::Background, splitBrush);
-        handle->setPalette(pa);
-        handle->setBackgroundRole(QPalette::Background);
-        handle->setAutoFillBackground(true);
+    for (int i = 1; i < splitter->count(); ++i) {
+        QSplitterHandle *handle = splitter->handle(i);
+        if (handle) {
+            //分割线颜色暂时设置为Highlight颜色，需要和UI确认下
+            //此处代码暂时保留  //DPalette pa = DPaletteHelper::instance()->palette(handle);
+            //bug#57044 中的分割线颜色，保留的代码对默认主题，和十个内置主题的颜色是正确获取，但是在自定义的颜色获取存在异常，采取如下方式获取
+            DPalette pa = DGuiApplicationHelper::instance()->applicationPalette();
+            QColor splitBrush = pa.color(DPalette::Highlight);
+            pa.setBrush(DPalette::Background, splitBrush);
+            handle->setPalette(pa);
+            handle->setBackgroundRole(QPalette::Background);
+            handle->setAutoFillBackground(true);
+        }
     }
 }
 
@@ -118,22 +151,42 @@ void TermWidgetPage::split(Qt::Orientation orientation)
 {
     parentMainWindow()->showPlugin(MainWindow::PLUGIN_TYPE_NONE);
     TermWidget *term = m_currentTerm;
-    if (1 == getTerminalCount()) {
-        qInfo() << "first split";
-        QSplitter *firstSplit = createSubSplit(term, orientation);
-        m_layout->addWidget(firstSplit);
-        //return ;
-    } else {
-        qInfo() << "not first split";
-        QSplitter *upSplit = qobject_cast<QSplitter *>(term->parent());
-        int index = upSplit->indexOf(term);
-        QList<int> parentSizes = upSplit->sizes();
 
-        // 用新的Split分割布局替换原来的位置
-        QSplitter *subSplit = createSubSplit(term, orientation);
-        upSplit->insertWidget(index, subSplit);
-        upSplit->setSizes(parentSizes);
-        setSplitStyle(upSplit);
+    QSplitter *splitter = qobject_cast<QSplitter *>(term->parent());
+    int index = splitter ? splitter->indexOf(term) : m_layout->indexOf(term);
+
+    // if there's already a splitter, and the orientation is correct,
+    // just add a new term to the splitter.
+    if (splitter && splitter->orientation() != orientation) {
+        TermProperties properties(term->workingDirectory());
+        TermWidget *newTerm  = createTerm(properties);
+
+        // copy the size of the current term to the new term, so the new term will
+        // keep the same size portion as the current term after the splitter relayout.
+        // this behavior is copied form iTerm2.
+        QList<int> sizes = splitter->sizes();
+        sizes.insert(index+1, sizes.at(index));
+        splitter->insertWidget(index+1, newTerm);  // insert after the current term
+        splitter->setSizes(sizes);
+
+        setSplitStyle(splitter);
+        setCurrentTerminal(newTerm);
+    } else {
+    // if there's no splitter, or the orientation is not correct,
+    // create a new splitter, put the 2 terms into the splitter,
+    // and replace the old term with the splitter.
+        if (splitter) {
+            // see above splitter->insertWidget part to know why.
+            QList<int> sizes = splitter->sizes();
+            sizes.insert(index, sizes.at(index));
+            QSplitter *newSplitter = createSubSplit(term, orientation);
+            splitter->insertWidget(index, newSplitter);
+            splitter->setSizes(sizes);
+            setSplitStyle(splitter);
+        } else {
+            QSplitter *newSplitter = createSubSplit(term, orientation);
+            m_layout->insertWidget(index, newSplitter);
+        }
     }
 
     /******** Add by ut001000 renfeixiang 2020-08-07:新增分屏时改变大小，bug#41436***************/
@@ -143,7 +196,7 @@ void TermWidgetPage::split(Qt::Orientation orientation)
     QString  expandThemeStr = "";
     expandThemeStr = Settings::instance()->extendColorScheme();
     if (!expandThemeStr.isEmpty())
-        emit DApplicationHelper::instance()->themeTypeChanged(DGuiApplicationHelper::instance()->themeType());
+        emit DGuiApplicationHelper::instance()->themeTypeChanged(DGuiApplicationHelper::instance()->themeType());
 
     return ;
 }
@@ -153,6 +206,7 @@ DSplitter *TermWidgetPage::createSubSplit(TermWidget *term, Qt::Orientation orie
     TermProperties properties(term->workingDirectory());
     term->setParent(nullptr);
     TermWidget *newTerm  = createTerm(properties);
+    newTerm->resize(term->size());
 
     // 意义与名称是相反的
     DSplitter *subSplit = new DSplitter(orientation == Qt::Horizontal ? Qt::Vertical : Qt::Horizontal,
@@ -161,7 +215,6 @@ DSplitter *TermWidgetPage::createSubSplit(TermWidget *term, Qt::Orientation orie
     subSplit->setFocusPolicy(Qt::NoFocus);
     subSplit->insertWidget(0, term);
     subSplit->insertWidget(1, newTerm);
-    subSplit->setSizes({ 1, 1 });
     setSplitStyle(subSplit);
     setCurrentTerminal(newTerm);
     /******** Modify by ut000439 wangpeili 2020-07-27: fix bug 39371: 分屏线可以拉到边****/
@@ -179,40 +232,31 @@ void TermWidgetPage::closeSplit(TermWidget *term, bool hasConfirmed)
             showExitConfirmDialog(Utils::CloseType_Terminal, 1, parentMainWindow());
             return;
         }
-        QSplitter *upSplit = qobject_cast<QSplitter *>(term->parent());
-        term->setParent(nullptr);
 
-        // 另一个兄弟也可能是终端，也可能是split,
-        QWidget *brother = upSplit->widget(0);
-        TermWidget *nextTerm =  upSplit->findChild<TermWidget *>();
-        // 如果上级是分屏
-        if ("QSplitter" == QString(upSplit->parent()->metaObject()->className())) {
-            QSplitter *upupSplit = qobject_cast<QSplitter *>(upSplit->parent());
-            //兄弟替换parent split
-            upupSplit->replaceWidget(upupSplit->indexOf(upSplit), brother);
-        }
-        // 上级不是分屏控件，就是布局在控制了
-        else {
-            qInfo() << "TermWidgetPage only one term exist!";
-            m_layout->addWidget(brother);
-        }
+        QWidget *parentWidget = term->parentWidget();
 
-        // 子控件的变化会引起焦点的变化，控制焦点要放在最后
-        if (nextTerm != nullptr) {
-            qInfo() << "nextTerm change" << m_currentTerm->getSessionId();
-            nextTerm->setFocus();
-        } else {
-            qInfo() << "can not found nextTerm in TermWidget";
-        }
-
+        // step1, delete the term
         // 释放控件,并隐藏term、upSplit，避免出现闪现窗口bug#80809
+        term->setParent(nullptr);
         term->hide();
         term->deleteLater();
         // 断开相关的连接：(UT_MainWindow_Test, slotShortcutCloseWorkspace)出现的崩溃问题
         Settings::instance()->disconnect(term);
-        upSplit->hide();
-        upSplit->setParent(nullptr);
-        upSplit->deleteLater();
+
+        // step2, find the next term to get focus
+        TermWidget *nextTerm = WidgetTreeReverseFindTerm(parentWidget);
+        if (nextTerm) {
+            setCurrentTerminal(nextTerm);
+        }
+
+        // step3, futurer clean the parent splitter if it's empty
+        QSplitter *upSplit = qobject_cast<QSplitter *>(parentWidget);
+        if (upSplit && upSplit->count() == 0) {
+            upSplit->setParent(nullptr);
+            upSplit->deleteLater();
+            upSplit = nullptr;
+        }
+
         qInfo() << "page terminal count =" << getTerminalCount();
         /******** Add by ut001000 renfeixiang 2020-08-07:关闭分屏时改变大小，bug#41436***************/
         parentMainWindow()->updateMinHeight();
@@ -524,7 +568,7 @@ void TermWidgetPage::showSearchBar(int state)
         //Add by ut001000 renfeixiang 2020-12-02 在搜索框弹出时，添加设置Term的m_bHasSelect为false函数
         if (m_currentTerm != nullptr)
             m_currentTerm->setNoHasSelect();
-        m_findBar->move(width() - SEARCHBAR_RIGHT_MARGIN, 0);
+        m_findBar->move(width() - m_findBar->width(), 0);
         QTimer::singleShot(10, this, [ = ] { m_findBar->focus(); });
     } else if (SearchBar_Hide == state) {
         m_findBar->hide();
@@ -708,6 +752,7 @@ void TermWidgetPage::setCurrentTerminal(TermWidget *term)
     TermWidget *oldTerm = m_currentTerm;
     m_currentTerm = term;
     if (oldTerm != m_currentTerm) {
+        m_currentTerm->setFocus();
         // 当前界面切换
         qInfo() << "m_currentTerm change" << m_currentTerm->getSessionId();
         QString tabTitle = term->getTabTitle();

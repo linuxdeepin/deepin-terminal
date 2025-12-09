@@ -1,5 +1,4 @@
-// Copyright (C) 2019 ~ 2020 Uniontech Software Technology Co.,Ltd
-// SPDX-FileCopyrightText: 2023 UnionTech Software Technology Co., Ltd.
+// SPDX-FileCopyrightText: 2019 ~ 2023 UnionTech Software Technology Co., Ltd.
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
@@ -17,10 +16,13 @@
 #include <DDesktopServices>
 #include <DInputDialog>
 #include <DApplicationHelper>
+#include <DPaletteHelper>
 #include <DLog>
 #include <DDialog>
 #include <DFloatingMessage>
 #include <DMessageManager>
+#include <DWindowManagerHelper>
+#include <DSettingsOption>
 
 #include <QApplication>
 #include <QKeyEvent>
@@ -32,6 +34,7 @@
 #include <QApplication>
 #include <QClipboard>
 #include <QFileInfo>
+#include <QProcess>
 
 DWIDGET_USE_NAMESPACE
 using namespace Konsole;
@@ -45,7 +48,18 @@ TermWidget::TermWidget(const TermProperties &properties, QWidget *parent) : QTer
     m_page = static_cast<TermWidgetPage *>(parentWidget());
     setContextMenuPolicy(Qt::CustomContextMenu);
 
-    setHistorySize(5000);
+    qInfo() << "Setting initial history size:" << Settings::instance()->historySize();
+    setHistorySize(Settings::instance()->historySize());
+    setTerminalWordCharacters(Settings::instance()->wordCharacters());
+
+    // 设置debuginfod
+    if (Settings::instance()->enableDebuginfod()) {
+        QProcessEnvironment env = QProcessEnvironment::systemEnvironment();
+        if (!env.contains("DEBUGINFOD_URLS")) {
+            env.insert("DEBUGINFOD_URLS", Settings::instance()->debuginfodUrls());
+            setEnvironment(env.toStringList());
+        }
+    }
 
     QString strShellPath = Settings::instance()->shellPath();
     // set shell program
@@ -59,24 +73,17 @@ TermWidget::TermWidget(const TermProperties &properties, QWidget *parent) : QTer
     // setTermOpacity(Settings::instance()->opacity());
 
     // 底层方法，设置当前窗口的透明度
-    if (Service::instance()->isWindowEffectEnabled()) {
+    if (DWindowManagerHelper::instance()->hasComposite()) {
         // 判断当前是否有窗口特效
         setTerminalOpacity(Settings::instance()->opacity());
     }
     /********************* Modify by ut000610 daizhengwen End ************************/
-    //setScrollBarPosition(QTermWidget::ScrollBarRight);//commend byq nyq
-
-    /******** Modify by n014361 wangpeili 2020-01-13:              ****************/
-    // theme
-    QString theme = "Dark";
-    /************************ Mod by sunchengxi 2020-09-16:Bug#48226#48230#48236#48241 终端默认主题色应改为深色修改引起的系列问题修复 Begin************************/
-    //theme = Settings::instance()->colorScheme();
-    if (DGuiApplicationHelper::instance()->themeType() == DGuiApplicationHelper::LightType) {
-        theme = "Light";
+    QString colorTheme = "Dark";
+    // 没有主题配置
+    if (!Settings::instance()->colorScheme().isEmpty()) {
+        colorTheme = Settings::instance()->colorScheme();
     }
-    /************************ Mod by sunchengxi 2020-09-16:Bug#48226#48230#48236#48241 终端默认主题色应改为深色修改引起的系列问题修复 End ************************/
-    setColorScheme(theme);
-    Settings::instance()->setColorScheme(theme);
+    setTheme(colorTheme);
 
     // 这个参数启动为默认值UTF-8
     setTextCodec(QTextCodec::codecForName("UTF-8"));
@@ -117,15 +124,13 @@ TermWidget::TermWidget(const TermProperties &properties, QWidget *parent) : QTer
     setKeyboardCursorShape(static_cast<QTermWidget::KeyboardCursorShape>(Settings::instance()->cursorShape()));
     // 光标闪烁
     setBlinkingCursor(Settings::instance()->cursorBlink());
+    // 是否允许移动光标
+    enableSetCursorPosition(Settings::instance()->enableSetCursorPosition());
 
     // 按键滚动
     setPressingScroll(Settings::instance()->PressingScroll());
 
-    /******** Modify by ut000439 wangpeili 2020-07-27: fix bug 39371: 分屏线可以拉到边****/
-    // 以最小mainwindow分4屏为标准的最小大小
-    /******** Modify by ut001000 renfeixiang 2020-08-07:修改成根据全局变量m_MinWidth，m_MinHeight计算出term的最小高度和宽度***************/
-    setMinimumSize(MainWindow::m_MinWidth / 2, (MainWindow::m_MinHeight - WIN_TITLE_BAR_HEIGHT) / 2);
-    /********************* Modify by n014361 wangpeili End ************************/
+    setMinimumSize(MIN_WIDTH, MIN_HEIGHT);
 
     QString currentEnvLanguage = Utils::getCurrentEnvLanguage();
     // 判断是维吾尔语或者藏语时
@@ -153,8 +158,10 @@ TermWidget::TermWidget(const TermProperties &properties, QWidget *parent) : QTer
 
     setFocusPolicy(Qt::NoFocus);
 
+    setFlowControlEnabled(!Settings::instance()->disableControlFlow());
+
     TermWidgetPage *parentPage = qobject_cast<TermWidgetPage *>(parent);
-    //qInfo() << parentPage << endl;
+    //qInfo() << parentPage;
     connect(this, &QTermWidget::uninstallTerminal, parentPage, &TermWidgetPage::uninstallTerminal);
 }
 
@@ -173,10 +180,9 @@ void TermWidget::initConnections()
 
     connect(this, &QWidget::customContextMenuRequested, this, &TermWidget::customContextMenuCall);
 
-    connect(DApplicationHelper::instance(),
-            &DApplicationHelper::themeTypeChanged,
-            this,
-            &TermWidget::onThemeTypeChanged);
+    // 主题变化只能从公共方法发出信号通知全局
+    connect(Service::instance(), &Service::changeColorTheme, this, &TermWidget::onColorThemeChanged);
+    connect(DGuiApplicationHelper::instance(), &DGuiApplicationHelper::themeTypeChanged, this, &TermWidget::onThemeChanged);
 
     // 未找到搜索的匹配结果
     connect(this, &QTermWidget::sig_noMatchFound, this, &TermWidget::onSig_noMatchFound);
@@ -193,13 +199,16 @@ void TermWidget::initConnections()
     connect(this, &TermWidget::copyAvailable, this, &TermWidget::onCopyAvailable);
 
     connect(Settings::instance(), &Settings::terminalSettingChanged, this, &TermWidget::onSettingValueChanged);
+    connect(Settings::instance(), &Settings::historySizeChanged, this, [this](int newHistorySize) {
+        qInfo() << "Setting new history size:" << newHistorySize;
+        setHistorySize(newHistorySize);
+    });
 
     //窗口特效开启则使用设置的透明度，窗口特效关闭时直接把窗口置为不透明
     connect(Service::instance(), &Service::onWindowEffectEnabled, this, &TermWidget::onWindowEffectEnabled);
 
     // 接收触控板事件
     connect(Service::instance(), &Service::touchPadEventSignal, this, &TermWidget::onTouchPadSignal);
-
     connect(Service::instance(), &Service::hostnameChanged, this, &TermWidget::onHostnameChanged);
 }
 
@@ -245,23 +254,23 @@ inline void TermWidget::onTermWidgetReceivedData(QString value)
     //远程开始时，快速ctrl+c，也会有ForegroundPid：A-》B-》A的过程
 
     //准备输入密码，且 ForegroundPid 不等于A时，为有效准备
-    if(m_remotePasswordIsReady && getForegroundProcessId() != m_remoteMainPid) {
+    if (m_remotePasswordIsReady && getForegroundProcessId() != m_remoteMainPid) {
         //匹配关键字
-        if(value.toLower().contains("password:")
+        if (value.toLower().contains("password:")
                 || value.toLower().contains("enter passphrase for key")) {
-        //输入密码,密码不为空，则发送
-            if(!m_remotePassword.isEmpty())
+            //输入密码,密码不为空，则发送
+            if (!m_remotePassword.isEmpty())
                 sendText(m_remotePassword + "\r");
             emit remotePasswordHasInputed();
         }
         //第一次远程时，需要授权
-        if(value.toLower().contains("yes/no")) {
+        if (value.toLower().contains("yes/no")) {
             sendText("yes\r");
         }
 
     }
     //若ForegroundPid等于A，则代表远程结束，如开始连接时立刻ctrl+c
-    if(m_remotePasswordIsReady && getForegroundProcessId() == m_remoteMainPid) {
+    if (m_remotePasswordIsReady && getForegroundProcessId() == m_remoteMainPid) {
         m_remotePasswordIsReady = false;
     }
 
@@ -301,30 +310,22 @@ inline void TermWidget::onUrlActivated(const QUrl &url, bool fromContextMenu)
         QDesktopServices::openUrl(url);
 }
 
-inline void TermWidget::onThemeTypeChanged(DGuiApplicationHelper::ColorType builtInTheme)
+inline void TermWidget::onColorThemeChanged(const QString &colorTheme)
 {
-    qInfo() << "themeChanged" << builtInTheme;
-    // ThemePanelPlugin *plugin = qobject_cast<ThemePanelPlugin *>(getPluginByName("Theme"));
-    QString theme = "Dark";
-    /************************ Mod by sunchengxi 2020-09-16:Bug#48226#48230#48236#48241 终端默认主题色应改为深色修改引起的系列问题修复 Begin************************/
-    //Mod by sunchengxi 2020-09-17:Bug#48349 主题色选择跟随系统异常
-    if (builtInTheme == DGuiApplicationHelper::LightType)
-        theme = "Light";
+    setTheme(colorTheme);
+}
 
-    /************************ Mod by sunchengxi 2020-09-16:Bug#48226#48230#48236#48241 终端默认主题色应改为深色修改引起的系列问题修复 End ************************/
-    //setColorScheme(theme);
-    //Settings::instance()->setColorScheme(theme);
-    QString  expandThemeStr = "";
-    expandThemeStr = Settings::instance()->extendColorScheme();
-    if (expandThemeStr.isEmpty()) {
-        if (DGuiApplicationHelper::instance()->paletteType() == DGuiApplicationHelper::LightType)
+inline void TermWidget::onThemeChanged(DGuiApplicationHelper::ColorType themeType)
+{
+    Q_UNUSED(themeType);
+    if ("System Theme" == Settings::instance()->colorScheme()) {
+        QString theme;
+        if (DGuiApplicationHelper::DarkType == DGuiApplicationHelper::instance()->themeType()) {
+            theme = "Dark";
+        } else {
             theme = "Light";
-
+        }
         setColorScheme(theme);
-        Settings::instance()->setColorScheme(theme);
-    } else {
-        setColorScheme(expandThemeStr, Settings::instance()->m_customThemeModify);
-        Settings::instance()->m_customThemeModify = false;
     }
 }
 
@@ -384,7 +385,7 @@ void TermWidget::onTitleArgsChange(QString key, QString value)
             // 出现家目录~的情况
             QString homePath = QDir::homePath();
             QStringList pathList;
-            if("~" == dir)
+            if ("~" == dir)
                 pathList = homePath.split("/");
             else
                 pathList = dir.split("/");
@@ -430,25 +431,25 @@ inline void TermWidget::onOpenFileInFileManager()
 {
     //DDesktopServices::showFolder(QUrl::fromLocalFile(workingDirectory()));
 
-    //打开文件夹的方式 和  打开文件夹 并勾选文件的方式 如下
-    //dde-file-manager -n /data/home/lx777/my-wjj/git/2020-08/18-zoudu/build-deepin-terminal-unknown-Debug
-    //dde-file-manager --show-item a.pdf
-
     QProcess process;
     //未选择内容
     if (selectedText().isEmpty()) {
-        process.startDetached("dde-file-manager", {"-n", workingDirectory()});
+        DDesktopServices::showFolder(QUrl::fromLocalFile(workingDirectory()));
         return;
     }
 
     QFileInfo fi(workingDirectory() + "/" + selectedText());
     //选择的内容是文件或者文件夹
-    if (fi.isFile() || fi.isDir()) {
-        process.startDetached("dde-file-manager", {"--show-item", workingDirectory() + "/" + selectedText()});
+    if (fi.isDir()) {
+        DDesktopServices::showFolder(QUrl::fromLocalFile(fi.filePath()));
+        return;
+    } else if (fi.isFile()) {
+        DDesktopServices::showFileItem(QUrl::fromLocalFile(fi.filePath()));
         return;
     }
+
     //选择的文本不是文件也不是文件夹
-    process.startDetached("dde-file-manager", {"-n", workingDirectory()});
+    DDesktopServices::showFolder(QUrl::fromLocalFile(workingDirectory()));
 }
 
 /*** 修复 bug 28162 鼠标左右键一起按终端会退出 ***/
@@ -485,15 +486,11 @@ void TermWidget::addMenuActions(const QPoint &pos)
 
     m_menu->addSeparator();
 
-
-    DSplitter *splitter = qobject_cast<DSplitter *>(parentWidget());
-    int layer = getTermLayer();
-
-    if (1 == layer || (2 == layer && splitter && Qt::Horizontal == splitter->orientation()))
-        m_menu->addAction(tr("Horizontal split"), this, &TermWidget::onHorizontalSplit);
-
-    if (1 == layer || (2 == layer && splitter && Qt::Vertical == splitter->orientation()))
-        m_menu->addAction(tr("Vertical split"), this, &TermWidget::onVerticalSplit);
+    QAction *action = 0;
+    action = m_menu->addAction(tr("Horizontal split"), this, &TermWidget::onHorizontalSplit);
+    action->setEnabled(canSplit(Qt::Vertical));
+    action = m_menu->addAction(tr("Vertical split"), this, &TermWidget::onVerticalSplit);
+    action->setEnabled(canSplit(Qt::Horizontal));
 
     /******** Modify by n014361 wangpeili 2020-02-21: 增加关闭窗口和关闭其它窗口菜单    ****************/
     m_menu->addAction(QObject::tr("Close workspace"), this, &TermWidget::onCloseCurrWorkSpace);
@@ -559,14 +556,12 @@ void TermWidget::addMenuActions(const QPoint &pos)
 
 inline void TermWidget::onHorizontalSplit()
 {
-    getTermLayer();
     // menu关闭与分屏同时进行时，会导致QT计算光标位置异常。
     QTimer::singleShot(10, this, &TermWidget::splitHorizontal);
 }
 
 inline void TermWidget::onVerticalSplit()
 {
-    getTermLayer();
     // menu关闭与分屏同时进行时，会导致QT计算光标位置异常。
     QTimer::singleShot(10, this, &TermWidget::splitVertical);
 }
@@ -708,6 +703,47 @@ void TermWidget::inputRemotePassword(const QString &remotePassword)
     m_remotePasswordIsReady = false;
 }
 
+void TermWidget::changeTitleColor(int lightness)
+{
+    if (lightness >= 192) {
+        DGuiApplicationHelper::instance()->setPaletteType(DGuiApplicationHelper::LightType);
+    } else {
+        DGuiApplicationHelper::instance()->setPaletteType(DGuiApplicationHelper::DarkType);
+    }
+}
+
+void TermWidget::setTheme(const QString &colorTheme)
+{
+    QString theme = colorTheme;
+    // 跟随系统
+    if ("System Theme" == colorTheme) {
+        DGuiApplicationHelper::instance()->setPaletteType(DGuiApplicationHelper::UnknownType);
+        if (DGuiApplicationHelper::DarkType == DGuiApplicationHelper::instance()->themeType()) {
+            theme = "Dark";
+        } else {
+            theme = "Light";
+        }
+        setColorScheme(theme);
+        return;
+    }
+
+    // 自定义主题
+    if (colorTheme == Settings::instance()->m_configCustomThemePath) {
+        DGuiApplicationHelper::ColorType systemTheme = DGuiApplicationHelper::DarkType;
+        if ("Light" == Settings::instance()->themeSetting->value("CustomTheme/TitleStyle")) {
+            systemTheme = DGuiApplicationHelper::LightType;
+        }
+        DGuiApplicationHelper::instance()->setPaletteType(systemTheme);
+        setColorScheme(theme);
+        return;
+    }
+
+    // 设置主题
+    int lightness = setColorScheme(theme);
+    // 设置系统主题
+    changeTitleColor(lightness);
+}
+
 inline void TermWidget::onOpenFile()
 {
     QString fileName = getFormatFileName(selectedText());
@@ -785,18 +821,6 @@ void TermWidget::setDeleteMode(const EraseMode &deleteMode)
         return;
     }
     QTermWidget::setDeleteMode(&ch, length);
-}
-
-int TermWidget::getTermLayer()
-{
-    int layer = 1;
-    QWidget *currentW = this;
-    while (currentW->parentWidget() != parentPage()) {
-        layer++;
-        currentW = currentW->parentWidget();
-    }
-    qInfo() << "getTermLayer = " << layer;
-    return  layer;
 }
 
 void TermWidget::setTabFormat(const QString &tabFormat)
@@ -996,11 +1020,43 @@ bool TermWidget::isInRemoteServer()
     return false;
 }
 
+bool TermWidget::canSplit(Qt::Orientation ori) {
+    qDebug() << "CanSplit:" << ori;
+    QSplitter *splitter = qobject_cast<QSplitter *>(this->parentWidget());
+    int minimumSize = ori == Qt::Horizontal ? TermWidget::MIN_WIDTH : TermWidget::MIN_HEIGHT;
+    if (splitter) {
+        if (splitter->orientation() == ori) {
+            QList<int> sizes = splitter->sizes();
+            // new term has same size portion as the current one.
+            sizes.append(sizes.at(splitter->indexOf(this)));
+
+            double sum = 0;
+            for (int i = 0; i < sizes.count(); i++) {
+                sum += sizes.at(i);
+            }
+
+            for(int i = 0; i < sizes.count(); i++) {
+                int totalSize = ori == Qt::Horizontal ? splitter->width() : splitter->height();
+                int actualSize = (totalSize) * (sizes.at(i) / sum);
+                if (actualSize < minimumSize)
+                    return false;
+            }
+        } else {
+            int splitterSize = ori == Qt::Horizontal ? splitter->width() : splitter->height();
+            if (splitterSize / 2.0 < minimumSize)
+                return false;
+        }
+    }
+
+    return true;
+}
+
+
 void TermWidget::setTermOpacity(qreal opacity)
 {
     //这里再次判断一遍，因为刚启动时，还是需要判断一次当前是否开启了窗口特效
     qreal termOpacity = opacity;
-    if (!Service::instance()->isWindowEffectEnabled())
+    if (!DWindowManagerHelper::instance()->hasComposite())
         termOpacity = 1.0;
 
     setTerminalOpacity(termOpacity);
@@ -1093,12 +1149,17 @@ void TermWidget::onSettingValueChanged(const QString &keyName)
         return;
     }
 
+    if ("advanced.cursor.set_cursor_position" == keyName) {
+        enableSetCursorPosition(Settings::instance()->enableSetCursorPosition());
+    }
+
     if ("advanced.scroll.scroll_on_key" == keyName) {
         setPressingScroll(Settings::instance()->PressingScroll());
         return;
     }
 
     if ("basic.interface.theme" == keyName) {
+        setTheme(Settings::instance()->colorScheme());
         return;
     }
     // 这里只是立即生效一次，真正生效起作用的地方在初始的connect中
@@ -1114,6 +1175,30 @@ void TermWidget::onSettingValueChanged(const QString &keyName)
     if ("advanced.scroll.scroll_on_output" == keyName) {
         qInfo() << "settingValue[" << keyName << "] changed to " << Settings::instance()->OutputtingScroll()
                 << ", auto effective when happen";
+        return;
+    }
+
+    if ("advanced.cursor.include_special_characters_in_double_click_selections" == keyName) {
+        setTerminalWordCharacters(Settings::instance()->wordCharacters());
+        return;
+    }
+
+    if ("advanced.shell.disable_ctrl_flow" == keyName) {
+        setFlowControlEnabled(!Settings::instance()->disableControlFlow());
+        return;
+    }
+
+    if ("advanced.debuginfod.enable_debuginfod" == keyName) {
+        if (!hasRunningProcess()) {
+            if (Settings::instance()->enableDebuginfod()) {
+                sendText(QString("test -z $DEBUGINFOD_URLS && export DEBUGINFOD_URLS=\"%1\"\n").arg(Settings::instance()->debuginfodUrls()));
+            } else {
+                sendText("test -z $DEBUGINFOD_URLS || unset DEBUGINFOD_URLS\n");
+            }
+        } else {
+            // Todo(ArchieMeng): Should handle the situation when there is a running process. It should wait until all running processes being exited.
+            showShellMessage(tr("The debuginfod settings will be effective after restart"));
+        }
         return;
     }
 
@@ -1164,7 +1249,7 @@ void TermWidget::onShellMessage(QString currentShell, bool isSuccess)
     } else {
         // 启动shell失败
         QString strShellNoFound;
-        if(QFile::exists(currentShell))
+        if (QFile::exists(currentShell))
             strShellNoFound = QObject::tr("Could not open \"%1\", unable to run it").arg(currentShell);
         else
             strShellNoFound = QObject::tr("Could not find \"%1\", unable to run it").arg(currentShell);
@@ -1175,10 +1260,10 @@ void TermWidget::onShellMessage(QString currentShell, bool isSuccess)
 
 void TermWidget::wheelEvent(QWheelEvent *event)
 {
+    int directionY = event->angleDelta().y();
     // 当前窗口被激活,且有焦点
-    if (isActiveWindow() && hasFocus() && Settings::instance()->ScrollWheelZoom()) {
-        if (Qt::ControlModifier == event->modifiers()) {
-            int directionY = event->angleDelta().y();
+    if (isActiveWindow() && hasFocus()) {
+        if (Qt::ControlModifier == event->modifiers() && Settings::instance()->ScrollWheelZoom()) {
             if (directionY < 0) {
                 // 向下缩小
                 zoomOut();  // zoom out 缩小
@@ -1186,10 +1271,23 @@ void TermWidget::wheelEvent(QWheelEvent *event)
                 // 向上放大
                 zoomIn();   // zoom in 放大
             }
-            return;
+        } else if ((Qt::ControlModifier | Qt::ShiftModifier) == event->modifiers()) {
+            int newOpacity;
+            if (directionY < 0) {
+                newOpacity = Settings::instance()->settings->option("basic.interface.opacity")->value().toInt() - STEP_OPACITY;
+            } else {
+                newOpacity = Settings::instance()->settings->option("basic.interface.opacity")->value().toInt() + STEP_OPACITY;
+            }
+            newOpacity = qBound(0, newOpacity, 100);
+            qInfo() << Q_FUNC_INFO << "new opacity:" << newOpacity;
+            setTerminalOpacity(newOpacity / 100.f);
+            Settings::instance()->settings->option("basic.interface.opacity")->setValue((int)(newOpacity));
+        } else {
+            QTermWidget::wheelEvent(event);
         }
+    } else {
+        QTermWidget::wheelEvent(event);
     }
-    QTermWidget::wheelEvent(event);
 }
 
 void TermWidget::showFlowMessage(bool show)

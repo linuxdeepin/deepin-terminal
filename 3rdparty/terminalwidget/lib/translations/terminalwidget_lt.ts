@@ -51,12 +51,12 @@
     <message>
         <location filename="../Filter.cpp" line="543"/>
         <source>Send email to...</source>
-        <translation type="unfinished"/>
+        <translation>Išsiųsti el. pašto į...</translation>
     </message>
     <message>
         <location filename="../Filter.cpp" line="544"/>
         <source>Copy email address</source>
-        <translation type="unfinished"/>
+        <translation>Kopijuoti el. pašto adresą</translation>
     </message>
 </context>
 <context>

@@ -103,12 +103,16 @@ private:
      * @author ut000610 daizhengwen
      */
     void initSearchEdit();
+    /**
+     * @brief 根据布局模式更新界面布局
+     */
+    Q_SLOT void updateSizeMode();
 
     DIconButton *m_findNextButton = nullptr;
     DIconButton *m_findPrevButton = nullptr;
     DSearchEdit *m_searchEdit = nullptr;
 
-    const int barHight = 50;
+    const int barHight = 62;
     const int barWidth = 382;
     const int layoutMargins = 7;
     const int widgetHight = 36;
@@ -117,9 +121,18 @@ private:
     const int iconHight = 6;
     const int iconWidth = 12;
 
+    // 紧凑模式下控件调整
+    const int defaultMarigin = 6;
+    const int compactMarigin = 3;
+    const QMargins defaultLayoutMarigins = {7, 7, 7, 7};
+    const QMargins compactLayoutMarigins = {11, 0, 10, 0};
+    const int barWidthCompact = 358 + 5;
+    const int barHeightCompact = 40;
+    const int btnWidthCompact = 24;
+    const int btnHeightCompact = 22;
+
     const qreal opacity = 0.9;
     QString m_originalPlaceHolder; //原文字
-
 
     // 方便性能测试，记住查找开始时间
     qint64 m_searchStartTime = 0;

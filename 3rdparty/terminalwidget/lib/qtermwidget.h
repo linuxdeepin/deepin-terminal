@@ -119,13 +119,15 @@ public:
     // Text codec, default is UTF-8
     void setTextCodec(QTextCodec *codec);
 
+    void setTerminalWordCharacters(const QString &wc);
+
     /** @brief Sets the color scheme, default is white on black
      *
      * @param[in] name The name of the color scheme, either returned from
      * availableColorSchemes() or a full path to a color scheme.
      */
     //设置主题的配色方案
-    void setColorScheme(const QString &name, bool needReloadTheme = false);
+    int setColorScheme(const QString &name);
     static QStringList availableColorSchemes();
     static void addCustomColorSchemeDir(const QString &custom_dir);
 
@@ -196,7 +198,7 @@ public:
      * @param preserveLineBreaks Specifies whether new line characters should
      * be inserted into the returned text at the end of each terminal line.
      */
-    QString selectedText(const Screen::DecodingOptions options=Screen::PreserveLineBreaks);
+    QString selectedText(const Screen::DecodingOptions options = Screen::PreserveLineBreaks);
 
     void setMonitorActivity(bool);
     void setMonitorSilence(bool);
@@ -282,6 +284,8 @@ public:
     //避免搜索框隐藏再显示之后，继续走m_bHasSelect为true流程，导致崩溃
     void setNoHasSelect();
 
+    // 是否允许ctrl + 鼠标左键移动光标
+    void enableSetCursorPosition(bool enable);
 signals:
     void finished();
     void copyAvailable(bool);

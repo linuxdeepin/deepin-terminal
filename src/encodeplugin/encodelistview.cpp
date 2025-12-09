@@ -12,6 +12,7 @@
 
 //dtk
 #include <DLog>
+#include <DPaletteHelper>
 
 //qt
 #include <QScrollBar>
@@ -42,9 +43,6 @@ EncodeListView::EncodeListView(QWidget *parent) : DListView(parent), m_encodeMod
     setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
     setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 
-    //add by ameng 设置属性，修复BUG#20074
-    setItemSize(QSize(ENCODE_ITEM_WIDTH, ENCODE_ITEM_HEIGHT));
-
     /***add by ut001121 zhangmeng 20200628 设置视图边距,留出空间给滚动条显示 修复BUG35378***/
     setViewportMargins(MARGINS_LEFT, MARGINS_TOP, MARGINS_RIGHT, MARGINS_BOTTOM);
 
@@ -63,6 +61,16 @@ EncodeListView::EncodeListView(QWidget *parent) : DListView(parent), m_encodeMod
 
     /** add by ut001121 zhangmeng 20200811 for sp3 Touch screen interaction */
     Service::instance()->setScrollerTouchGesture(this);
+
+#ifdef DTKWIDGET_CLASS_DSizeMode
+    setItemSize(QSize(ENCODE_ITEM_WIDTH, DGuiApplicationHelper::isCompactMode() ? ENCODE_ITEM_HEIGHT_COMPACT : ENCODE_ITEM_HEIGHT));
+    connect(DGuiApplicationHelper::instance(), &DGuiApplicationHelper::sizeModeChanged, this, [this](){
+        setItemSize(QSize(ENCODE_ITEM_WIDTH, DGuiApplicationHelper::isCompactMode() ? ENCODE_ITEM_HEIGHT_COMPACT : ENCODE_ITEM_HEIGHT));
+    });
+#else
+    //add by ameng 设置属性，修复BUG#20074
+    setItemSize(QSize(ENCODE_ITEM_WIDTH, ENCODE_ITEM_HEIGHT));
+#endif
 }
 
 void EncodeListView::initEncodeItems()
@@ -246,12 +254,13 @@ void EncodeDelegate::paint(QPainter *painter, const QStyleOptionViewItem &opt,
         option.state = option.state & (~QStyle::State_Selected);
         initStyleOption(&option, index);
 
+        /// Note: 实际绘制的选项框相较设置值 -10px 以达到间距，没有采用 setSpacing() 设置，存疑
         // 背景区域
         QRect bgRect;
         bgRect.setX(option.rect.x() + 1/* + 10*/);
         bgRect.setY(option.rect.y() + 1/* + 10*/);
         bgRect.setWidth(option.rect.width() - 1);
-        bgRect.setHeight(option.rect.height() - 10);
+        bgRect.setHeight(option.rect.height() - 9);
 
         // 绘画路径
         QPainterPath path;
@@ -272,14 +281,14 @@ void EncodeDelegate::paint(QPainter *painter, const QStyleOptionViewItem &opt,
         // 悬浮状态
         if (option.state & QStyle::State_MouseOver) {
             /*** mod begin by ut001121 zhangmeng 20200729 鼠标悬浮在编码插件时使用突出背景处理 修复BUG40078***/
-            DPalette pa = DApplicationHelper::instance()->palette(m_parentView);
+            DPalette pa = DPaletteHelper::instance()->palette(m_parentView);
             DStyleHelper styleHelper;
             QColor fillColor = styleHelper.getColor(static_cast<const QStyleOption *>(&option), pa, DPalette::ObviousBackground);
             /*** mod end by ut001121 zhangmeng 20200729***/
             painter->setBrush(QBrush(fillColor));
             painter->fillPath(path, fillColor);
         } else {
-            DPalette pa = DApplicationHelper::instance()->palette(m_parentView);
+            DPalette pa = DPaletteHelper::instance()->palette(m_parentView);
             DStyleHelper styleHelper;
             QColor fillColor = styleHelper.getColor(static_cast<const QStyleOption *>(&option), pa, DPalette::ItemBackground);
             painter->setBrush(QBrush(fillColor));
@@ -300,7 +309,7 @@ void EncodeDelegate::paint(QPainter *painter, const QStyleOptionViewItem &opt,
         // 绘画文本
         int checkIconSize = 16;
         QString strCmdName = index.data().toString();
-        QRect cmdNameRect = QRect(10, bgRect.top(), bgRect.width() - checkIconSize, 50);
+        QRect cmdNameRect = QRect(10, bgRect.top(), bgRect.width() - checkIconSize, bgRect.height());
         painter->drawText(cmdNameRect, Qt::AlignLeft | Qt::AlignVCenter, strCmdName);
 
         // 绘画边框
@@ -308,7 +317,7 @@ void EncodeDelegate::paint(QPainter *painter, const QStyleOptionViewItem &opt,
         // mod by ut001121 zhangmeng 20200731 有效效焦点原因下绘制边框 修复BUG40390
         if ((option.state & QStyle::State_Selected) && (focusReason != INVALID_FOCUS_REASON)) {
             QPen framePen;
-            DPalette pax = DApplicationHelper::instance()->palette(m_parentView);
+            DPalette pax = DPaletteHelper::instance()->palette(m_parentView);
             if (option.state & QStyle::State_Selected) {
                 painter->setOpacity(1);
                 framePen = QPen(pax.color(DPalette::Highlight), 2);
@@ -349,6 +358,11 @@ QSize EncodeDelegate::sizeHint(const QStyleOptionViewItem &option,
 {
     Q_UNUSED(index)
 
+#ifdef DTKWIDGET_CLASS_DSizeMode
+    int height = DGuiApplicationHelper::isCompactMode() ? ENCODE_ITEM_HEIGHT_COMPACT : ENCODE_ITEM_HEIGHT;
+    return QSize(option.rect.width() - 100, height);
+#else
     return QSize(option.rect.width() - 100, 60);
+#endif
 }
 

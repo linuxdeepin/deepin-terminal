@@ -74,10 +74,8 @@ pkg_search_module(DtkWidget REQUIRED dtkwidget)
 pkg_search_module(DtkGui REQUIRED dtkgui)
 pkg_search_module(DtkCore REQUIRED dtkcore)
 pkg_search_module(GOBJECT REQUIRED gobject-2.0)
-pkg_check_modules(DFrameworkDBus REQUIRED dframeworkdbus)
 pkg_check_modules(LIBSECRET REQUIRED libsecret-1)
 pkg_check_modules(XCB_EWMH REQUIRED xcb-ewmh x11)
-
 
 # Compile definitions for TerminalWidget
 # So we can use QT_VERSION_CHECK
@@ -110,7 +108,6 @@ set(LINK_LIBS
     ${DtkWidget_LIBRARIES}
     ${DtkCore_LIBRARIES}
     ${DtkGUI_LIBRARIES}
-    ${DFrameworkDBus_LIBRARIES}
     ${GOBJECT_LIBRARIES}
     ${LIBSECRET_LIBRARIES}
     ${XCB_EWMH_LIBRARIES}
@@ -140,6 +137,7 @@ set (DTNG_CPP_FILES
     src/main/terminalapplication.cpp
     src/main/termproperties.cpp    
     src/main/dbusmanager.cpp
+    src/remotemanage/groupconfigoptdlg.cpp
     src/remotemanage/remotemanagementpanel.cpp
     src/remotemanage/remotemanagementplugn.cpp
     src/remotemanage/remotemanagementsearchpanel.cpp
@@ -168,6 +166,7 @@ set (DTNG_CPP_FILES
     src/views/listview.cpp
     src/views/customthemesettingdialog.cpp
     src/views/themepreviewarea.cpp
+    src/views/switchthememenu.cpp
 )
 
 set (DTNG_HEADER_FILES
@@ -218,6 +217,7 @@ set (DTNG_HEADER_FILES
     src/views/listview.h
     src/views/customthemesettingdialog.h
     src/views/themepreviewarea.h
+    src/views/switchthememenu.h
 )
 
 set (DTNG_QRC_FILES
@@ -251,8 +251,6 @@ target_include_directories(${EXE_NAME} PUBLIC ${Qt5Widgets_LIBRARIES}
                                               ${DtkWidget_INCLUDE_DIRS}
                                               ${DtkCore_LIBRARIES}
                                               ${DtkGUI_INCLUDE_DIRS}
-                                              ${DFrameworkDBus_INCLUDE_DIRS}
-                                              ${ATSPI2_INCLUDE_DIRS}
                                               ${GOBJECT_INCLUDE_DIRS}
                                               ${LIBSECRET_INCLUDE_DIRS}
                                               ${XCB_EWMH_INCLUDE_DIRS})
@@ -279,8 +277,3 @@ install(FILES ${DTNG_QM_FILES} DESTINATION ${CMAKE_INSTALL_DATADIR}/deepin-termi
 
 install(DIRECTORY src/assets/deepin-terminal
         DESTINATION ${CMAKE_INSTALL_DATADIR}/deepin-manual/manual-assets/application/)
-
-# Unit Test
-if (CMAKE_BUILD_TYPE MATCHES Debug)
-  add_subdirectory(tests)
-endif()

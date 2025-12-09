@@ -1,5 +1,4 @@
-// Copyright (C) 2019 ~ 2020 Uniontech Software Technology Co.,Ltd
-// SPDX-FileCopyrightText: 2023 UnionTech Software Technology Co., Ltd.
+// SPDX-FileCopyrightText: 2019 ~ 2023 UnionTech Software Technology Co., Ltd.
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
@@ -68,6 +67,11 @@ public:
      */
     bool cursorBlink() const;
     /**
+     * @brief enableSetCursorPosition
+     * @return
+     */
+    bool enableSetCursorPosition() const;
+    /**
      * @brief 设置界面获取背景模糊属性
      * @author ut001121 zhangmeng
      * @return
@@ -102,6 +106,7 @@ public:
      * @author ut001121 zhangmeng
      * @return
      */
+    QString wordCharacters() const;
     bool PressingScroll();
     /**
      * @brief 设置界面获取输出时是否是滚动
@@ -207,13 +212,19 @@ public:
      * @author 朱科伟
      * @return
      */
-    bool enableControlFlow(void);
+    bool disableControlFlow(void);
+    // 是否启用debuginfod：设置或取消DEBUGINFOD_URLS环境变量
+    bool enableDebuginfod();
+    // deepin-terminal设置的DEBUGINFOD_URLS环境变量值
+    QString debuginfodUrls();
 
-    //选择主题，false:选择主题未确定，读写缓存； true:选择主题已确定，读写settings
-    //这里默认true是为了：启动时读取settings的值
-    bool bSwitchTheme           = true;
-    //选择主题未确定的缓存
-    QMap<QString, QString> switchThemeMap;
+    /**
+     * @brief 历史记录行数
+     * @author Archie Meng
+     * @return
+     */
+    int historySize() const;
+
     //主题名称
     QString themeStr            = "";
     //内置主题名称
@@ -295,11 +306,14 @@ signals:
     void opacityChanged(qreal opacity);
     void cursorShapeChanged(int shape);
     void cursorBlinkChanged(bool blink);
+    void enableSetCursorPosition(bool enable);
     void backgroundBlurChanged(bool enabled);
     void pressingScrollChanged(bool enabled);
     void OutputScrollChanged(bool enabled);
     void fontSizeChanged(int fontSize);
     void fontChanged(QString fontName);
+    void wordCharactersChanged(QString wordCharacters);
+    void historySizeChanged(int historySize);
 
     // 设置中的标签标题格式变化
     void tabFormatChanged(const QString &tabFormat);

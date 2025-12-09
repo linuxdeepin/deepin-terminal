@@ -20,6 +20,7 @@
 #include "windowsmanager.h"
 #include "service.h"
 #include "terminalapplication.h"
+#include "switchthememenu.h"
 
 #include <DSettings>
 #include <DSettingsGroup>
@@ -65,40 +66,6 @@ DWIDGET_USE_NAMESPACE
 
 // 定义雷神窗口边缘,接近边缘光标变化图标
 #define QUAKE_EDGE 5
-
-SwitchThemeMenu::SwitchThemeMenu(const QString &title, QWidget *parent): QMenu(title, parent)
-{
-}
-
-void SwitchThemeMenu::leaveEvent(QEvent *)
-{
-    //鼠标停靠悬浮判断
-    bool ishover = this->property("hover").toBool();
-    if (!ishover)
-        emit mainWindowCheckThemeItemSignal();
-}
-
-void SwitchThemeMenu::hideEvent(QHideEvent *)
-{
-    hoveredThemeStr = "";
-    emit menuHideSetThemeSignal();
-}
-
-void SwitchThemeMenu::enterEvent(QEvent *event)
-{
-    hoveredThemeStr = "";
-    return QMenu::enterEvent(event);
-}
-
-void SwitchThemeMenu::keyPressEvent(QKeyEvent *event)
-{
-    //fix bug#64969主题中点击tab键不可以切换主题
-    //内置主题屏蔽 除了 上下左右回车键的其他按键响应 处理bug#53439
-    if (event->key() != Qt::Key_Space) {
-        emit mainWindowCheckThemeItemSignal();
-        return QMenu::keyPressEvent(event);
-    }
-}
 
 MainWindow::MainWindow(TermProperties properties, QWidget *parent)
     : DMainWindow(parent)
@@ -183,7 +150,9 @@ inline void MainWindow::slotTabBarClicked(int index, QString tabIdentifier)
 
 inline void MainWindow::slotTabCurrentChanged(int index)
 {
-    focusPage(m_tabbar->identifier(index));
+    const QString identifier = m_tabbar->identifier(index);
+    focusPage(identifier);
+    updateWindowTitle();
 }
 
 inline void MainWindow::slotTabAddRequested()
@@ -257,9 +226,6 @@ inline void MainWindow::slotOptionButtonPressed()
             item->setEnabled(Service::instance()->isCountEnable());
         }
     }
-
-    //选中当前的主题项
-    checkThemeItem();
 }
 
 inline void MainWindow::slotClickNewWindowTimeout()
@@ -480,27 +446,22 @@ void MainWindow::endAddTab(TermWidgetPage *termPage, bool activeTab, int index, 
     qint64 endTime = QDateTime::currentMSecsSinceEpoch();
     QString strNewTabTime = GRAB_POINT + LOGO_TYPE + CREATE_NEW_TAB_TIME + QString::number(endTime - startTime);
     qInfo() << qPrintable(strNewTabTime);
-
-    QString  expandThemeStr = "";
-    expandThemeStr = Settings::instance()->extendColorScheme();
-    if (!expandThemeStr.isEmpty())
-        emit DApplicationHelper::instance()->themeTypeChanged(DGuiApplicationHelper::instance()->themeType());
 }
 
 bool MainWindow::hasRunningProcesses()
 {
     for (int i = 0, count = m_termStackWidget->count(); i < count; i++) {
         TermWidgetPage *tabPage = qobject_cast<TermWidgetPage *>(m_termStackWidget->widget(i));
-        if(!tabPage)
+        if (!tabPage)
             continue;
         /******** Modify by nt001000 renfeixiang 2020-05-28:修改 判断当前tab中是否有其它分屏正在执行 bug#28910 Begin***************/
         //没有校验当前tab中是否有其它正在执行的分屏
         if (tabPage->runningTerminalCount() != 0) {
             /******** Modify by nt001000 renfeixiang 2020-05-28:修改 判断当前tab中是否有其它分屏正在执行 End***************/
-            qInfo() << "here are processes running in this terminal tab... " << tabPage->identifier() << endl;
+            qInfo() << "here are processes running in this terminal tab... " << tabPage->identifier();
             return true;
         } else {
-            qInfo() << "no processes running in this terminal tab... " << tabPage->identifier() << endl;
+            qInfo() << "no processes running in this terminal tab... " << tabPage->identifier();
         }
     }
 
@@ -797,7 +758,7 @@ TermWidgetPage *MainWindow::getPageByIdentifier(const QString &identifier)
 
 TermWidget *MainWindow::currentActivatedTerminal()
 {
-    if(currentPage())
+    if (currentPage())
         return currentPage()->currentTerminal();
     return nullptr;
 }
@@ -845,10 +806,10 @@ void MainWindow::resizeEvent(QResizeEvent *event)
         return;
 
     // 保存窗口位置
-    if(nullptr == resizeFinishedTimer) {
+    if (nullptr == resizeFinishedTimer) {
         resizeFinishedTimer = new QTimer(this);
         resizeFinishedTimer->setSingleShot(true);
-        connect(resizeFinishedTimer, &QTimer::timeout, this, [this](){
+        connect(resizeFinishedTimer, &QTimer::timeout, this, [this]() {
             saveWindowSize();
         });
     }
@@ -899,7 +860,7 @@ void MainWindow::closeEvent(QCloseEvent *event)
     if ((!m_hasConfirmedClose) && (runningCount != 0)) {
         // 如果不能马上关闭，并且还在没有最小化．
         if ((runningCount != 0)  && isMinimized()) {
-            qInfo() << "isMinimized........... " << endl;
+            qInfo() << "isMinimized........... ";
             setWindowState((windowState() & ~Qt::WindowMinimized) | Qt::WindowActive);
         }
 
@@ -932,6 +893,7 @@ void MainWindow::onTermTitleChanged(QString title)
     const bool customName = tabPage->property("TAB_CUSTOM_NAME_PROPERTY").toBool();
     if (!customName)
         m_tabbar->setTabText(tabPage->identifier(), title);
+    updateWindowTitle();
 
     // 判定第一次修改标题的时候，认为终端已经创建成功
     // 以此认为第一次打开终端窗口结束，记录时间
@@ -967,12 +929,18 @@ QString MainWindow::getConfigWindowState()
 
 QSize MainWindow::halfScreenSize()
 {
-    int w = qApp->desktop()->availableGeometry().width();
-    int h = qApp->desktop()->availableGeometry().height();
+    QScreen *screen = QGuiApplication::screenAt(QCursor::pos());
+    if (!screen) {
+        qCritical() << "Can't get the screen where the cursor is located!";
+        return QSize(0 ,0);
+    }
+
+    int w = screen->availableGeometry().width();
+    int h = screen->availableGeometry().height();
 
     QSize size;
     //开启窗管特效时会有1px的border
-    if(!DWindowManagerHelper::instance()->hasComposite())
+    if (!DWindowManagerHelper::instance()->hasComposite())
         size = QSize(w / 2 - 2, h - 2 - 1);
     else
         size = QSize(w / 2, h - 1);
@@ -1107,11 +1075,11 @@ inline void MainWindow::slotShortcutSwitchActivated()
         }
 
         if (i - 1 >= m_tabbar->count()) {
-            qInfo() << "i - 1 > tabcount" << i - 1 << m_tabbar->count() << endl;
+            qInfo() << "i - 1 > tabcount" << i - 1 << m_tabbar->count();
             return;
         }
 
-        qInfo() << "index" << i - 1 << endl;
+        qInfo() << "index" << i - 1;
         m_tabbar->setCurrentIndex(i - 1);
         return;
     }
@@ -1168,15 +1136,9 @@ inline void MainWindow::slotShortcutHorizonzalSplit()
     // 判读数量是否允许分屏
     if (Service::instance()->isCountEnable()) {
         TermWidgetPage *page = currentPage();
-        if (page) {
-            if (page->currentTerminal()) {
-                int layer = page->currentTerminal()->getTermLayer();
-                DSplitter *splitter = qobject_cast<DSplitter *>(page->currentTerminal()->parentWidget());
-                if (1 == layer  || (2 == layer  &&  splitter && Qt::Horizontal == splitter->orientation())) {
-                    page->split(Qt::Horizontal);
-                    return ;
-                }
-            }
+        if (page && page->currentTerminal()->canSplit(Qt::Vertical)) {
+            page->split(Qt::Horizontal);
+            return ;
         }
     }
     qInfo() << "can't split vertical  again";
@@ -1187,15 +1149,9 @@ inline void MainWindow::slotShortcutVerticalSplit()
     // 判读数量是否允许分屏
     if (Service::instance()->isCountEnable()) {
         TermWidgetPage *page = currentPage();
-        if (page) {
-            if (page->currentTerminal()) {
-                int layer = page->currentTerminal()->getTermLayer();
-                DSplitter *splitter = qobject_cast<DSplitter *>(page->currentTerminal()->parentWidget());
-                if (1 == layer  || (2 == layer  &&  splitter && Qt::Vertical == splitter->orientation())) {
-                    page->split(Qt::Vertical);
-                    return ;
-                }
-            }
+        if (page && page->currentTerminal()->canSplit(Qt::Horizontal)) {
+            page->split(Qt::Vertical);
+            return ;
         }
     }
     qInfo() << "can't split vertical  again";
@@ -1376,6 +1332,7 @@ inline void MainWindow::slotShortcutBuiltinCopy()
 void MainWindow::initConnections()
 {
     connect(this, &MainWindow::mainwindowClosed, WindowsManager::instance(), &WindowsManager::onMainwindowClosed);
+    connect(Settings::instance(), &Settings::terminalSettingChanged, this, &MainWindow::onTerminalSettingChanged);
     connect(Settings::instance(), &Settings::windowSettingChanged, this, &MainWindow::onWindowSettingChanged);
     connect(Settings::instance(), &Settings::shortcutSettingChanged, this, &MainWindow::onShortcutSettingChanged);
     connect(this, &MainWindow::newWindowRequest, this, &MainWindow::onCreateNewWindow);
@@ -1473,17 +1430,15 @@ bool MainWindow::eventFilter(QObject *watched, QEvent *event)
         }
         /********************* Modify by ut000610 daizhengwen End ************************/
         if ((Qt::ControlModifier == keyEvent->modifiers()) && (Qt::Key_S == keyEvent->key())) {
-            if (!Settings::instance()->enableControlFlow())
-                return true;
 
             assert(term);
-            if (term->isActiveWindow())
+            if (term->isActiveWindow() && term->flowControlEnabled())
                 term->showFlowMessage(true);
         }
 
         if ((Qt::ControlModifier == keyEvent->modifiers()) && (Qt::Key_Q == keyEvent->key())) {
             assert(term);
-            if (term->isActiveWindow())
+            if (term->isActiveWindow() && term->flowControlEnabled())
                 term->showFlowMessage(false);
         }
     }
@@ -1492,21 +1447,6 @@ bool MainWindow::eventFilter(QObject *watched, QEvent *event)
     if (QEvent::KeyPress == event->type()) {
         //将事件转化为键盘事件
         QKeyEvent *key_event = static_cast<QKeyEvent *>(event);
-        //按下Tab键执行焦点切换事件，如果个别控件需要特殊处理TAB的话，在这里加代码
-#if 0
-        if (key_event->key() == Qt::Key_Tab) {
-            bool realm_edit_focus = false;  //= realm_line_edit->hasFocus();
-            bool user_edit_focus = false;   // user_line_edit->hasFocus();
-            focusNextChild();
-            if (realm_edit_focus) {
-                // user_line_edit->setFocus();
-            } else {
-                // password_line_edit->setFocus();
-            }
-
-            return true;
-        }
-#endif
         // 全局按下ESC键返回终端，过滤掉个别情况
         if (Qt::Key_Escape == key_event->key()) {
             QString filterReason; // 过滤原因
@@ -1550,14 +1490,16 @@ bool MainWindow::eventFilter(QObject *watched, QEvent *event)
     return DMainWindow::eventFilter(watched, event);
 }
 
-
-void MainWindow::onWindowSettingChanged(const QString &keyName)
+void MainWindow::onTerminalSettingChanged(const QString &keyName)
 {
-    if (QStringLiteral("advanced.window.blurred_background") == keyName) {
+    if (QStringLiteral("basic.interface.blurred_background") == keyName) {
         setEnableBlurWindow(Settings::instance()->backgroundBlur());
         return;
     }
+}
 
+void MainWindow::onWindowSettingChanged(const QString &keyName)
+{
     // use_on_starting重启生效
     if (keyName == QStringLiteral("advanced.window.use_on_starting")) {
         QString state = Settings::instance()->settings->option("advanced.window.use_on_starting")->value().toString();
@@ -1744,7 +1686,7 @@ QShortcut *MainWindow::createNewShotcut(const QString &key, bool AutoRepeat)
 {
     QString value = Settings::instance()->settings->option(key)->value().toString();
     //bug#89372，"显示快捷键"选项，在设置界面隐藏，仅默认值生效
-    if("shortcuts.advanced.display_shortcuts" == key)
+    if ("shortcuts.advanced.display_shortcuts" == key)
         value = "Ctrl+Shift+?";
     // 初始化设置中的快捷键,使用小写 up2down dzw 20201215
     QShortcut *shortcut = new QShortcut(Utils::converUpToDown(value), this);
@@ -1942,14 +1884,14 @@ void MainWindow::executeDownloadFile()
 void MainWindow::pressCtrlAt()
 {
     QKeyEvent keyPress(QEvent::KeyPress, Qt::Key_At, Qt::ControlModifier);
-    if(focusWidget())
+    if (focusWidget())
         QApplication::sendEvent(focusWidget(), &keyPress);
 }
 
 void MainWindow::pressCtrlU()
 {
     QKeyEvent keyPress(QEvent::KeyPress, Qt::Key_U, Qt::ControlModifier);
-    if(focusWidget())
+    if (focusWidget())
         QApplication::sendEvent(focusWidget(), &keyPress);
 }
 
@@ -1966,7 +1908,7 @@ void MainWindow::sleep(int msec)
 void MainWindow::pressEnterKey(const QString &text)
 {
     QKeyEvent event(QEvent::KeyPress, 0, Qt::NoModifier, text);
-    if(focusWidget())
+    if (focusWidget())
         QApplication::sendEvent(focusWidget(), &event);  // expose as a big fat keypress event
 }
 
@@ -1987,11 +1929,11 @@ void MainWindow::firstTerminalComplete()
 QObjectList MainWindow::getNamedChildren(QObject *obj)
 {
     QObjectList list;
-    if(nullptr == obj)
+    if (nullptr == obj)
         return list;
 
-    foreach(QObject *o, obj->children()) {
-        if(!o->objectName().isEmpty()) {
+    foreach (QObject *o, obj->children()) {
+        if (!o->objectName().isEmpty()) {
             list << o;
         }
         list << getNamedChildren(o);
@@ -2001,9 +1943,9 @@ QObjectList MainWindow::getNamedChildren(QObject *obj)
 
 void MainWindow::setTitlebarNoFocus(QWidget *titlebar)
 {
-    foreach(QObject *obj, getNamedChildren(titlebar)) {
+    foreach (QObject *obj, getNamedChildren(titlebar)) {
         QWidget *w = qobject_cast<QWidget *>(obj);
-        if(w)
+        if (w)
             w->setFocusPolicy(Qt::NoFocus);
     }
 }
@@ -2021,28 +1963,23 @@ int MainWindow::getDesktopIndex() const
 
 void MainWindow::checkExtendThemeItem(const QString &expandThemeStr, QAction *&action)
 {
-    if (THEME_ONE == expandThemeStr)
-        action = themeOneAction;
-    else if (THEME_TWO == expandThemeStr)
-        action = themeTwoAction;
-    else if (THEME_THREE == expandThemeStr)
-        action = themeThreeAction;
-    else if (THEME_FOUR == expandThemeStr)
-        action = themeFourAction;
-    else if (THEME_FIVE == expandThemeStr)
-        action = themeFiveAction;
-    else if (THEME_SIX == expandThemeStr)
-        action = themeSixAction;
-    else if (THEME_SEVEN == expandThemeStr)
-        action = themeSevenAction;
-    else if (THEME_EIGHT == expandThemeStr)
-        action = themeEightAction;
-    else if (THEME_NINE == expandThemeStr)
-        action = themeNineAction;
-    else if (THEME_TEN == expandThemeStr)
-        action = themeTenAction;
-    else if (Settings::instance()->m_configCustomThemePath == expandThemeStr)
+
+    if (Settings::instance()->m_configCustomThemePath == expandThemeStr) {
+        // 判断是否是自定义
         action = themeCustomAction;
+    }
+    if (themeBuiltinActionMap.contains(expandThemeStr)) {
+        // 判断是否是内置项
+        action = themeBuiltinActionMap[expandThemeStr];
+    }
+    if (expandThemeStr == THEME_SYSTEN) {
+        action = autoThemeAction;
+    }
+
+    // 默认深色主题
+    if (expandThemeStr.isEmpty()) {
+        action = darkThemeAction;
+    }
 }
 
 void MainWindow::checkThemeItem()
@@ -2054,38 +1991,28 @@ void MainWindow::checkThemeItem()
         return;
 
     QAction *action;
-    QString  expandThemeStr = THEME_NO;
-    expandThemeStr = Settings::instance()->extendColorScheme();
-
-    Settings::instance()->themeStr = THEME_NO;
-    Settings::instance()->extendThemeStr = expandThemeStr;
-
-
+    // 从配置取值
+    QString  expandThemeStr = Settings::instance()->extendColorScheme();
+    // 兼容处理
+    if (expandThemeStr.isEmpty()) {
+        expandThemeStr = Settings::instance()->colorScheme();
+    } else {
+        Settings::instance()->setExtendColorScheme(THEME_NO);
+    }
+    // 根据当前系统主题先选择默认选项
     switch (DGuiApplicationHelper::instance()->paletteType()) {
-    case DGuiApplicationHelper::LightType: {
-        action = lightThemeAction;
-        Settings::instance()->themeStr = THEME_LIGHT;
-        checkExtendThemeItem(expandThemeStr, action);
-        break;
-
-    }
-    case DGuiApplicationHelper::DarkType: {
-        action = darkThemeAction;
-        Settings::instance()->themeStr = THEME_DARK;
-        checkExtendThemeItem(expandThemeStr, action);
-        break;
-    }
-
-    default: {
+    case DGuiApplicationHelper::LightType:
+        action = lightThemeAction; break;
+    case DGuiApplicationHelper::DarkType:
+        action = darkThemeAction; break;
+    default:
         //默认是跟随系统
-        action = autoThemeAction;
-        checkExtendThemeItem(expandThemeStr, action);
-        break;
+        action = autoThemeAction; break;
     }
+    // 根据配置校验选项
+    checkExtendThemeItem(expandThemeStr, action);
 
-    }
-
-    //勾选主题项
+    //勾选主题项 => 初始化
     action->setChecked(true);
     currCheckThemeAction = action;
 }
@@ -2108,53 +2035,26 @@ void MainWindow::addThemeMenuItems()
         switchThemeMenu->addSeparator();
 
         //添加内置主题项列表
-        themeOneAction = switchThemeMenu->addAction(tr(THEME_ONE_NAME));
-        themeTwoAction = switchThemeMenu->addAction(tr(THEME_TWO_NAME));
-        themeThreeAction = switchThemeMenu->addAction(tr(THEME_THREE_NAME));
-        themeFourAction = switchThemeMenu->addAction(tr(THEME_FOUR_NAME));
-        themeFiveAction = switchThemeMenu->addAction(tr(THEME_FIVE_NAME));
-        themeSixAction = switchThemeMenu->addAction(tr(THEME_SIX_NAME));
-        themeSevenAction = switchThemeMenu->addAction(tr(THEME_SEVEN_NAME));
-        themeEightAction = switchThemeMenu->addAction(tr(THEME_EIGHT_NAME));
-        themeNineAction = switchThemeMenu->addAction(tr(THEME_NINE_NAME));
-        themeTenAction = switchThemeMenu->addAction(tr(THEME_TEN_NAME));
-        themeCustomAction = switchThemeMenu->addAction(tr("Custom Theme"));
-
-
         //设置主题项可选
         autoThemeAction->setCheckable(true);
+        autoThemeAction->setData(THEME_SYSTEN);
         lightThemeAction->setCheckable(true);
+        lightThemeAction->setData(THEME_LIGHT);
         darkThemeAction->setCheckable(true);
-
-        themeOneAction->setCheckable(true);
-        themeTwoAction->setCheckable(true);
-        themeThreeAction->setCheckable(true);
-        themeFourAction->setCheckable(true);
-        themeFiveAction->setCheckable(true);
-        themeSixAction->setCheckable(true);
-        themeSevenAction->setCheckable(true);
-        themeEightAction->setCheckable(true);
-        themeNineAction->setCheckable(true);
-        themeTenAction->setCheckable(true);
-        themeCustomAction->setCheckable(true);
-
+        darkThemeAction->setData(THEME_DARK);
 
         //创建主题项快捷键组
         group = new QActionGroup(switchThemeMenu);
         group->addAction(autoThemeAction);
         group->addAction(lightThemeAction);
-        group->addAction(darkThemeAction);
 
-        group->addAction(themeOneAction);
-        group->addAction(themeTwoAction);
-        group->addAction(themeThreeAction);
-        group->addAction(themeFourAction);
-        group->addAction(themeFiveAction);
-        group->addAction(themeSixAction);
-        group->addAction(themeSevenAction);
-        group->addAction(themeEightAction);
-        group->addAction(themeNineAction);
-        group->addAction(themeTenAction);
+        addThemeFromConfig();
+
+        // 自定义主题
+        themeCustomAction = switchThemeMenu->addAction(tr("Custom Theme"));
+        themeCustomAction->setData(THEME_CUSTOM);
+        group->addAction(darkThemeAction);
+        themeCustomAction->setCheckable(true);
         group->addAction(themeCustomAction);
 
         menu->addMenu(switchThemeMenu);
@@ -2170,323 +2070,102 @@ void MainWindow::addThemeMenuItems()
 
         checkThemeItem();
 
-        connect(switchThemeMenu, SIGNAL(mainWindowCheckThemeItemSignal()), this, SLOT(setThemeCheckItemSlot()));
-        connect(switchThemeMenu, SIGNAL(menuHideSetThemeSignal()), this, SLOT(menuHideSetThemeSlot()));
+        connect(switchThemeMenu, SIGNAL(mainWindowCheckThemeItemSignal()), this, SLOT(themeRecovery()));
+        connect(switchThemeMenu, SIGNAL(menuHideSetThemeSignal()), this, SLOT(themeRecovery()));
+        connect(switchThemeMenu, &SwitchThemeMenu::aboutToShow, this, &MainWindow::checkThemeItem);
     }
 }
 
-void MainWindow::setThemeCheckItemSlot()
+void MainWindow::addThemeFromConfig()
 {
-    //如果是手动选中了主题项，直接返回
-    if (true == Settings::instance()->bSwitchTheme)
-        return;
-
-    //以下都是鼠标离开主题项时，还原到之前勾选的主题的处理
-
-    //选中了浅色主题项
-    if (THEME_LIGHT == Settings::instance()->themeStr  &&  THEME_NO == Settings::instance()->extendThemeStr) {
-        Settings::instance()->setColorScheme(THEME_LIGHT);
-        Settings::instance()->setExtendColorScheme(THEME_NO);
-        DGuiApplicationHelper::instance()->setPaletteType(DGuiApplicationHelper::LightType);
-        emit DApplicationHelper::instance()->themeTypeChanged(DGuiApplicationHelper::LightType);
-        return;
-    }
-
-    //选中了深色主题项
-    if (THEME_DARK == Settings::instance()->themeStr && THEME_NO == Settings::instance()->extendThemeStr) {
-        Settings::instance()->setColorScheme(THEME_DARK);
-        Settings::instance()->setExtendColorScheme(THEME_NO);
-        DGuiApplicationHelper::instance()->setPaletteType(DGuiApplicationHelper::DarkType);
-        emit DApplicationHelper::instance()->themeTypeChanged(DGuiApplicationHelper::DarkType);
-        return;
-    }
-
-    //选中了跟随系统主题项
-    if (autoThemeAction->isChecked()) {
-        Settings::instance()->setExtendColorScheme(THEME_NO);
-        DGuiApplicationHelper::ColorType type = DGuiApplicationHelper::UnknownType;
-        DGuiApplicationHelper::instance()->setPaletteType(type);
-        emit DApplicationHelper::instance()->themeTypeChanged(DGuiApplicationHelper::instance()->themeType());
-        return;
-    }
-
-    //选中了内置主题在1-8项之间 // 深色方案系列
-    if (THEME_ONE == Settings::instance()->extendThemeStr  || THEME_TWO == Settings::instance()->extendThemeStr  || THEME_THREE == Settings::instance()->extendThemeStr
-            || THEME_FOUR == Settings::instance()->extendThemeStr || THEME_FIVE == Settings::instance()->extendThemeStr
-            || THEME_SIX == Settings::instance()->extendThemeStr || THEME_SEVEN == Settings::instance()->extendThemeStr || THEME_EIGHT == Settings::instance()->extendThemeStr) {
-
-        Settings::instance()->setColorScheme(THEME_DARK);
-        Settings::instance()->setExtendColorScheme(Settings::instance()->extendThemeStr);
-        DGuiApplicationHelper::instance()->setPaletteType(DGuiApplicationHelper::DarkType);
-        emit DApplicationHelper::instance()->themeTypeChanged(DGuiApplicationHelper::DarkType);
-        return;
-    }
-
-    //选中了内置主题在9-10项之间 // 浅色方案系列
-    if (THEME_NINE == Settings::instance()->extendThemeStr || THEME_TEN == Settings::instance()->extendThemeStr) {
-
-        Settings::instance()->setColorScheme(THEME_LIGHT);
-        Settings::instance()->setExtendColorScheme(Settings::instance()->extendThemeStr);
-        DGuiApplicationHelper::instance()->setPaletteType(DGuiApplicationHelper::LightType);
-        emit DApplicationHelper::instance()->themeTypeChanged(DGuiApplicationHelper::LightType);
-        return;
-    }
-
-    if (Settings::instance()->extendThemeStr == Settings::instance()->m_configCustomThemePath) {
-
-        Settings::instance()->setColorScheme(THEME_DARK);
-        Settings::instance()->setExtendColorScheme(Settings::instance()->extendThemeStr);
-        DGuiApplicationHelper::instance()->setPaletteType(DGuiApplicationHelper::DarkType);
-        emit DApplicationHelper::instance()->themeTypeChanged(DGuiApplicationHelper::DarkType);
-        return;
-    }
-
-}
-
-void MainWindow::menuHideSetThemeSlot()
-{
-    if (currCheckThemeAction == lightThemeAction) {
-        Settings::instance()->setColorScheme(THEME_LIGHT);
-        Settings::instance()->setExtendColorScheme(THEME_NO);
-        DGuiApplicationHelper::instance()->setPaletteType(DGuiApplicationHelper::LightType);
-        emit DApplicationHelper::instance()->themeTypeChanged(DGuiApplicationHelper::LightType);
-        return;
-    } else if (currCheckThemeAction == darkThemeAction) {
-        Settings::instance()->setColorScheme(THEME_DARK);
-        Settings::instance()->setExtendColorScheme(THEME_NO);
-        DGuiApplicationHelper::instance()->setPaletteType(DGuiApplicationHelper::DarkType);
-        emit DApplicationHelper::instance()->themeTypeChanged(DGuiApplicationHelper::DarkType);
-        return;
-    } else if (currCheckThemeAction == autoThemeAction) {
-        Settings::instance()->setExtendColorScheme(THEME_NO);
-        DGuiApplicationHelper::ColorType type = DGuiApplicationHelper::UnknownType;
-        DGuiApplicationHelper::instance()->setPaletteType(type);
-        emit DApplicationHelper::instance()->themeTypeChanged(DGuiApplicationHelper::instance()->themeType());
-        return;
-    }
-
-    else if (currCheckThemeAction == themeOneAction || currCheckThemeAction == themeTwoAction || currCheckThemeAction == themeThreeAction || currCheckThemeAction == themeFourAction
-             || currCheckThemeAction == themeFiveAction || currCheckThemeAction == themeSixAction || currCheckThemeAction == themeSevenAction || currCheckThemeAction == themeEightAction
-            ) {
-        Settings::instance()->setColorScheme(THEME_DARK);
-
-        if (currCheckThemeAction == themeOneAction)
-            Settings::instance()->setExtendColorScheme(THEME_ONE);
-        else if (currCheckThemeAction == themeTwoAction)
-            Settings::instance()->setExtendColorScheme(THEME_TWO);
-        else if (currCheckThemeAction == themeThreeAction)
-            Settings::instance()->setExtendColorScheme(THEME_THREE);
-        else if (currCheckThemeAction == themeFourAction)
-            Settings::instance()->setExtendColorScheme(THEME_FOUR);
-        else if (currCheckThemeAction == themeFiveAction)
-            Settings::instance()->setExtendColorScheme(THEME_FIVE);
-        else if (currCheckThemeAction == themeSixAction)
-            Settings::instance()->setExtendColorScheme(THEME_SIX);
-        else if (currCheckThemeAction == themeSevenAction)
-            Settings::instance()->setExtendColorScheme(THEME_SEVEN);
-        else if (currCheckThemeAction == themeEightAction)
-            Settings::instance()->setExtendColorScheme(THEME_EIGHT);
-
-        DGuiApplicationHelper::instance()->setPaletteType(DGuiApplicationHelper::DarkType);
-        emit DApplicationHelper::instance()->themeTypeChanged(DGuiApplicationHelper::DarkType);
-        return;
-    } else if (currCheckThemeAction == themeNineAction || currCheckThemeAction == themeTenAction) {
-        Settings::instance()->setColorScheme(THEME_LIGHT);
-        if (currCheckThemeAction == themeNineAction)
-            Settings::instance()->setExtendColorScheme(THEME_NINE);
-        else
-            Settings::instance()->setExtendColorScheme(THEME_TEN);
-
-        DGuiApplicationHelper::instance()->setPaletteType(DGuiApplicationHelper::LightType);
-        emit DApplicationHelper::instance()->themeTypeChanged(DGuiApplicationHelper::LightType);
-        return;
-    } else if (currCheckThemeAction == themeCustomAction) {
-        Settings::instance()->setExtendColorScheme(Settings::instance()->m_configCustomThemePath);
-        if (THEME_LIGHT == Settings::instance()->themeSetting->value("CustomTheme/TitleStyle")) {
-            Settings::instance()->setColorScheme(THEME_LIGHT);
-            DGuiApplicationHelper::instance()->setPaletteType(DGuiApplicationHelper::LightType);
-            emit DApplicationHelper::instance()->themeTypeChanged(DGuiApplicationHelper::LightType);
-        } else {
-            Settings::instance()->setColorScheme(THEME_DARK);
-            DGuiApplicationHelper::instance()->setPaletteType(DGuiApplicationHelper::DarkType);
-            emit DApplicationHelper::instance()->themeTypeChanged(DGuiApplicationHelper::DarkType);
+    QStringList themeList = QTermWidget::availableColorSchemes();
+    themeList.sort();
+    int themeCount = themeList.count();
+    for (int i = 0; i < themeCount; ++i) {
+        QString strTheme = themeList[i];
+        if (strTheme == THEME_DARK || strTheme == THEME_LIGHT
+                || strTheme == "customTheme") {
+            // 将深、浅色和自定义主题主题抛弃
+            continue;
         }
-
-        return;
+        QAction *themeItem = switchThemeMenu->addAction(strTheme);
+        themeItem->setCheckable(true);
+        group->addAction(themeItem);
+        themeBuiltinActionMap.insert(strTheme, themeItem);
     }
 }
 
 void MainWindow::switchThemeAction(QAction *action)
 {
-    //浅色主题
-    if (action == lightThemeAction) {
-
-        if (Settings::instance()->bSwitchTheme) {
-            Settings::instance()->themeStr = THEME_LIGHT;
-            Settings::instance()->extendThemeStr = THEME_NO;
-        }
-
-        Settings::instance()->setColorScheme(THEME_LIGHT);
-        Settings::instance()->setExtendColorScheme(THEME_NO);
-        DGuiApplicationHelper::instance()->setPaletteType(DGuiApplicationHelper::LightType);
-        emit DApplicationHelper::instance()->themeTypeChanged(DGuiApplicationHelper::LightType);
-        return;
-    }
-    //深色主题
-    if (action == darkThemeAction) {
-
-        if (Settings::instance()->bSwitchTheme) {
-            Settings::instance()->themeStr = THEME_DARK;
-            Settings::instance()->extendThemeStr = THEME_NO;
-        }
-
-        Settings::instance()->setColorScheme(THEME_DARK);
-        Settings::instance()->setExtendColorScheme(THEME_NO);
-        DGuiApplicationHelper::instance()->setPaletteType(DGuiApplicationHelper::DarkType);
-        emit DApplicationHelper::instance()->themeTypeChanged(DGuiApplicationHelper::DarkType);
-        return;
-
-    }
-    //跟随系统
-    if (action == autoThemeAction) {
-        Settings::instance()->setExtendColorScheme(THEME_NO);
-        DGuiApplicationHelper::instance()->setPaletteType(DGuiApplicationHelper::UnknownType);
-        emit DApplicationHelper::instance()->themeTypeChanged(DGuiApplicationHelper::instance()->themeType());
-        return;
-    }
-    //内置主题1
-    if (action == themeOneAction) {
-        switchThemeAction(action, THEME_ONE);
-        return;
-    }
-    //内置主题2
-    if (action == themeTwoAction) {
-        switchThemeAction(action, THEME_TWO);
-        return;
-    }
-    //内置主题3
-    if (action == themeThreeAction) {
-        switchThemeAction(action, THEME_THREE);
-        return;
-    }
-    //内置主题4
-    if (action == themeFourAction) {
-        switchThemeAction(action, THEME_FOUR);
-        return;
-    }
-    //内置主题5
-    if (action == themeFiveAction) {
-        switchThemeAction(action, THEME_FIVE);
-        return;
-    }
-    //内置主题6
-    if (action == themeSixAction) {
-        switchThemeAction(action, THEME_SIX);
-        return;
-    }
-    //内置主题7
-    if (action == themeSevenAction) {
-        switchThemeAction(action, THEME_SEVEN);
-        return;
-    }
-    //内置主题8
-    if (action == themeEightAction) {
-        switchThemeAction(action, THEME_EIGHT);
-        return;
-    }
-    //内置主题9
-    if (action == themeNineAction) {
-        switchThemeAction(action, THEME_NINE);
-        return;
-    }
-    //内置主题10
-    if (action == themeTenAction) {
-        switchThemeAction(action, THEME_TEN);
-        return;
-    }
-
-    //自定义主题
+    bool isCustom = false;
+    QString colorthemeName = action->text();
     if (action == themeCustomAction) {
-        if (Settings::instance()->bSwitchTheme) {
-            Service::instance()->showCustomThemeSettingDialog(this);
-        } else {
-            switchThemeAction(action, Settings::instance()->m_configCustomThemePath);
-        }
-        return;
+        isCustom = true;
     }
+    if (action == lightThemeAction) {
+        colorthemeName = THEME_LIGHT;
+    }
+    if (action == darkThemeAction) {
+        colorthemeName = THEME_DARK;
+    }
+    if (action == autoThemeAction) {
+        colorthemeName = THEME_SYSTEN;
+    }
+
+    setTheme(isCustom, colorthemeName);
 }
 
-void MainWindow::switchThemeAction(QAction *&action, const QString &themeNameStr)
+void MainWindow::setTheme(bool isCustom, const QString &themeName)
 {
-    //内置深色主题 1-8 之间
-    if (action == themeOneAction || action == themeTwoAction || action == themeThreeAction
-            || action == themeFourAction || action == themeFiveAction || action == themeSixAction
-            || action == themeSevenAction || action == themeEightAction) {
-
-        if (Settings::instance()->bSwitchTheme) {
-            Settings::instance()->themeStr = THEME_DARK;
-            Settings::instance()->extendThemeStr = themeNameStr;
-        }
-
-        Settings::instance()->setColorScheme(THEME_DARK);
-        Settings::instance()->setExtendColorScheme(themeNameStr);
-        DGuiApplicationHelper::instance()->setPaletteType(DGuiApplicationHelper::DarkType);
-        emit DApplicationHelper::instance()->themeTypeChanged(DGuiApplicationHelper::DarkType);
+    if (isCustom) {
+        Service::instance()->showCustomThemeSettingDialog(this);
         return;
     }
-    //内置浅色主题 9-10 之间
-    if (action == themeNineAction || action == themeTenAction) {
+    QString strColorTheme = themeName;
+    Settings::instance()->themeStr = strColorTheme;
+    // 写配置文件
+    Settings::instance()->setColorScheme(strColorTheme);
+}
 
-        if (Settings::instance()->bSwitchTheme) {
-            Settings::instance()->themeStr = THEME_LIGHT;
-            Settings::instance()->extendThemeStr = themeNameStr;
-        }
-
-        Settings::instance()->setColorScheme(THEME_LIGHT);
-        Settings::instance()->setExtendColorScheme(themeNameStr);
-        DGuiApplicationHelper::instance()->setPaletteType(DGuiApplicationHelper::LightType);
-        emit DApplicationHelper::instance()->themeTypeChanged(DGuiApplicationHelper::LightType);
-        return;
+void MainWindow::customTheme(const QString &themeNameStr)
+{
+    if (themeNameStr != Settings::instance()->colorScheme()) {
+        // 写配置文件
+        Settings::instance()->setColorScheme(themeNameStr);
+    } else {
+        // 修改了自定义配置
+        emit Service::instance()->changeColorTheme(themeNameStr);
     }
 
-    if (action == themeCustomAction) {
-        if (Settings::instance()->bSwitchTheme) {
-            if (THEME_LIGHT == Settings::instance()->themeSetting->value("CustomTheme/TitleStyle"))
-                Settings::instance()->themeStr = THEME_LIGHT;
-            else
-                Settings::instance()->themeStr = THEME_DARK;
-
-            Settings::instance()->extendThemeStr = themeNameStr;
-        }
-
-        Settings::instance()->setExtendColorScheme(themeNameStr);
-        if (THEME_LIGHT == Settings::instance()->themeSetting->value("CustomTheme/TitleStyle")) {
-            Settings::instance()->setColorScheme(THEME_LIGHT);
-            DGuiApplicationHelper::instance()->setPaletteType(DGuiApplicationHelper::LightType);
-            emit DApplicationHelper::instance()->themeTypeChanged(DGuiApplicationHelper::LightType);
-        } else {
-            Settings::instance()->setColorScheme(THEME_DARK);
-            DGuiApplicationHelper::instance()->setPaletteType(DGuiApplicationHelper::DarkType);
-            emit DApplicationHelper::instance()->themeTypeChanged(DGuiApplicationHelper::DarkType);
-        }
-
-        return;
-    }
 }
 
 void MainWindow::themeActionTriggeredSlot(QAction *action)
 {
-    Settings::instance()->bSwitchTheme = true;
     switchThemeAction(action);
+    currCheckThemeAction = action;
 }
 
 void MainWindow::themeActionHoveredSlot(QAction *action)
 {
-    if (switchThemeMenu->hoveredThemeStr != action->text()) {
-        switchThemeMenu->hoveredThemeStr = action->text();
-        Settings::instance()->bSwitchTheme = false;
-        switchThemeAction(action);
+    QString strColorTheme = action->text();
+    if (!themeBuiltinActionMap.contains(strColorTheme)) {
+        if (action->data().toString() == THEME_CUSTOM) {
+            // 选到自定义主题
+            strColorTheme = Settings::instance()->m_configCustomThemePath;
+        } else {
+            strColorTheme = action->data().toString();
+        }
+
     }
+    if (switchThemeMenu->hoveredThemeStr != strColorTheme) {
+        switchThemeMenu->hoveredThemeStr = strColorTheme;
+        emit Service::instance()->changeColorTheme(strColorTheme);
+    }
+}
+
+void MainWindow::themeRecovery()
+{
+    emit Service::instance()->changeColorTheme(Settings::instance()->colorScheme());
 }
 
 void MainWindow::onCommandActionTriggered()
@@ -2502,6 +2181,11 @@ void MainWindow::onCommandActionTriggered()
         command.append('\n');
 
     this->currentPage()->sendTextToCurrentTerm(command);
+}
+
+inline void MainWindow::updateWindowTitle()
+{
+    setWindowTitle(QString("%1 - %2").arg(m_tabbar->tabText(m_tabbar->currentIndex())).arg(QObject::tr("Terminal")));
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -2545,51 +2229,6 @@ void NormalWindow::initTitleBar()
     // 清理titlebar、titlebar所有控件不可获取焦点
     Utils::clearChildrenFocus(titlebar());
     Utils::clearChildrenFocus(m_tabbar);
-    // 重新设置可见控件焦点
-    DIconButton *addButton = m_tabbar->findChild<DIconButton *>("AddButton");
-    if (addButton != nullptr)
-        addButton->setFocusPolicy(Qt::TabFocus);
-    else
-        qInfo() << "can not found AddButton in DIconButton";
-
-    DIconButton *optionBtn = titlebar()->findChild<DIconButton *>("DTitlebarDWindowOptionButton");
-    if (optionBtn != nullptr)
-        optionBtn->setFocusPolicy(Qt::TabFocus);
-    else
-        qInfo() << "can not found DTitlebarDWindowOptionButton in DTitlebar";
-
-    QWidget *quitFullscreenBtn = titlebar()->findChild<QWidget *>("DTitlebarDWindowQuitFullscreenButton");
-    if (quitFullscreenBtn != nullptr)
-        quitFullscreenBtn->setFocusPolicy(Qt::TabFocus);
-    else
-        qInfo() << "can not found DTitlebarDWindowQuitFullscreenButton in DTitlebar";
-
-    DIconButton *minBtn = titlebar()->findChild<DIconButton *>("DTitlebarDWindowMinButton");
-    if (minBtn != nullptr)
-        minBtn->setFocusPolicy(Qt::TabFocus);
-    else
-        qInfo() << "can not found DTitlebarDWindowMinButton in DTitlebar";
-
-    DIconButton *maxBtn = titlebar()->findChild<DIconButton *>("DTitlebarDWindowMaxButton");
-    if (maxBtn != nullptr)
-        maxBtn->setFocusPolicy(Qt::TabFocus);
-    else
-        qInfo() << "can not found DTitlebarDWindowMaxButton in DTitlebar";
-
-    DIconButton *closeBtn = titlebar()->findChild<DIconButton *>("DTitlebarDWindowCloseButton");
-    if (closeBtn != nullptr)
-        closeBtn->setFocusPolicy(Qt::TabFocus);
-    else
-        qInfo() << "can not found DTitlebarDWindowCloseButton in DTitlebar";
-
-    if (addButton != nullptr && optionBtn != nullptr && quitFullscreenBtn != nullptr && minBtn != nullptr && maxBtn != nullptr && closeBtn != nullptr) {
-        QWidget::setTabOrder(addButton, optionBtn);
-        QWidget::setTabOrder(optionBtn, quitFullscreenBtn);
-        QWidget::setTabOrder(quitFullscreenBtn, minBtn);
-        QWidget::setTabOrder(minBtn, maxBtn);
-        QWidget::setTabOrder(maxBtn, closeBtn);
-    }
-
     /********************* Modify by n014361 wangpeili End ************************/
 }
 
@@ -2636,10 +2275,10 @@ void NormalWindow::saveWindowSize()
         return;
 
     //bug#110002：正常窗口，wayland的windowState为WindowActive 而非 WindowNoState，故按下面方法判断窗口的正常状态：非最大、非最小、非全屏
-    if(!windowState().testFlag(Qt::WindowMaximized)
+    if (!windowState().testFlag(Qt::WindowMaximized)
             && !windowState().testFlag(Qt::WindowFullScreen)
             && !windowState().testFlag(Qt::WindowMinimized)
-            ) {
+       ) {
         /******** Modify by nt001000 renfeixiang 2020-05-25: 文件wininfo-config.conf中参数,使用定义更换window_width，window_height Begin***************/
         // 记录最后一个正常窗口的大小
         m_winInfoConfig->setValue(CONFIG_WINDOW_WIDTH, width());
@@ -2773,16 +2412,9 @@ void QuakeWindow::initTitleBar()
 
 void QuakeWindow::slotWorkAreaResized()
 {
-    qInfo() << "workAreaResized" << QApplication::desktop()->availableGeometry();
-    /******** Modify by nt001000 renfeixiang 2020-05-20:修改成只需要设置雷神窗口宽度,根据字体高度设置雷神最小高度 Begin***************/
-    setMinimumWidth(QApplication::desktop()->availableGeometry().width());
+    resizeByCurrentScreen(true);
     setWindowMinHeightForFont();
-    /******** Add by ut001000 renfeixiang 2020-08-07:workAreaResized时改变大小，bug#41436***************/
     updateMinHeight();
-    /******** Modify by nt001000 renfeixiang 2020-05-20:修改成只需要设置雷神窗口宽度,根据字体高度设置雷神最小高度 End***************/
-    move(QApplication::desktop()->availableGeometry().x(), QApplication::desktop()->availableGeometry().y());
-    qInfo() << "size" << size();
-    setFixedWidth(QApplication::desktop()->availableGeometry().width());
     return ;
 }
 
@@ -2790,44 +2422,22 @@ void QuakeWindow::initWindowAttribute()
 {
     /************************ Add by m000743 sunchengxi 2020-04-27:雷神窗口任务栏移动后位置异常问题 Begin************************/
     setWindowRadius(0);
-    //QRect deskRect = QApplication::desktop()->availableGeometry();//获取可用桌面大小
-    QDesktopWidget *desktopWidget = QApplication::desktop();
-    QRect screenRect = desktopWidget->screenGeometry(); //获取设备屏幕大小
+
     Qt::WindowFlags windowFlags = this->windowFlags();
     setWindowFlags(windowFlags | Qt::WindowStaysOnTopHint/* | Qt::FramelessWindowHint | Qt::BypassWindowManagerHint*/ /*| Qt::Dialog*/);
     //wayland时需要隐藏WindowTitle
-    if(Utils::isWayLand()) {
+    if (Utils::isWayLand()) {
         setWindowFlag(Qt::FramelessWindowHint);
         m_titleBar->setVerResized(true);
     }
     //add a line by ut001121 zhangmeng 2020-04-27雷神窗口禁用移动(修复bug#22975)
     setEnableSystemMove(false);//    setAttribute(Qt::WA_Disabled, true);
 
-    /******** Modify by m000714 daizhengwen 2020-03-26: 窗口高度超过２／３****************/
-    setMinimumSize(screenRect.size().width(), 60);
-    setMaximumHeight(screenRect.size().height() * 2 / 3);
     /********************* Modify by m000714 daizhengwen End ************************/
-    setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-    // 计算屏幕宽度，设置雷神终端宽度
-    QList<QScreen *> screenList = qApp->screens();
-    int w = screenList[0]->geometry().width();
-    for (auto it = screenList.constBegin(); it != screenList.constEnd(); ++it) {
-        QRect rect = (*it)->geometry();
-        if (rect.x() == 0 && rect.y() == 0) {
-            w = rect.width();
-            break;
-        }
-    }
-    setFixedWidth(w);
-    connect(desktopWidget, &QDesktopWidget::workAreaResized, this, &QuakeWindow::slotWorkAreaResized);
 
-    int saveHeight = getQuakeHeight();
-    int saveWidth = screenRect.size().width();
-    resize(QSize(saveWidth, saveHeight));
-    // 记录雷神高度
-    m_quakeWindowHeight = saveHeight;
-    move(0, 0);
-    /************************ Add by m000743 sunchengxi 2020-04-27:雷神窗口任务栏移动后位置异常问题 End  ************************/
+    resizeByCurrentScreen(true);
+    // FIXME(hualet): don't know why, just keep it for now.
+    getQuakeHeight();
 
     /******** Add by nt001000 renfeixiang 2020-05-20:增加setQuakeWindowMinHeight函数，设置雷神最小高度 Begin***************/
     setWindowMinHeightForFont();
@@ -2942,7 +2552,7 @@ void QuakeWindow::topToBottomAnimation()
         return;
 
     isNotAnimation = false;
-    this->setMinimumHeight(0);//设置最小高度为0,让动画效果流畅
+    this->setMinimumHeight(2); // 避免窗管强制取消模糊。
     currentPage()->setMinimumHeight(currentPage()->height());//设置page的最小高度，让动画效果时，page上信息不因为外框的变小而变小
 
     //动画代码
@@ -2950,7 +2560,7 @@ void QuakeWindow::topToBottomAnimation()
     m_heightAni->setEasingCurve(QEasingCurve::Linear);
     int durationTime = getQuakeAnimationTime();
     m_heightAni->setDuration(durationTime);
-    m_heightAni->setStartValue(1);
+    m_heightAni->setStartValue(2);
     m_heightAni->setEndValue(getQuakeHeight());
     m_heightAni->start(QAbstractAnimation::DeleteWhenStopped);
 
@@ -3044,7 +2654,7 @@ xcb_atom_t QuakeWindow::internAtom(const char *name, bool only_if_exists)
  */
 void QuakeWindow::sendWindowForhibitMove(bool forhibit)
 {
-    if(!QX11Info::connection()){
+    if (!QX11Info::connection()) {
         qWarning() << "QX11Info::connection() is " << QX11Info::connection();
         return ;
     }
@@ -3055,17 +2665,32 @@ void QuakeWindow::sendWindowForhibitMove(bool forhibit)
                         reply, reply, 32, 1, &ldata);
 }
 
+void QuakeWindow::resizeByCurrentScreen(bool force)
+{
+    QPoint cursorPoint = QCursor::pos();
+    const QScreen *quakeScreen = QGuiApplication::screenAt(pos());
+    const QScreen *cursorScreen = QGuiApplication::screenAt(cursorPoint);
+    if (force || (!isVisible() && quakeScreen->serialNumber() != cursorScreen->serialNumber())) {
+        int windowWidth = cursorScreen->geometry().width();
+        move(cursorScreen->geometry().topLeft());
+        setFixedWidth(windowWidth);
+        setMinimumHeight(60);
+        setMaximumHeight(cursorScreen->geometry().height() * 2 / 3);
+        connect(cursorScreen, &QScreen::availableGeometryChanged, this, &QuakeWindow::slotWorkAreaResized);
+    }
+}
+
 void QuakeWindow::changeEvent(QEvent *event)
 {
     // 不是激活事件,不处理
     if (QEvent::ActivationChange == event->type()) {
         bool checkIsActiveWindow = true;
-if(qVersion() >= QString("5.15.0")) {
-        if(DeActivationChangeEventList.contains(event)) {
-            DeActivationChangeEventList.removeOne(event);
-            checkIsActiveWindow = false;
+        if (qVersion() >= QString("5.15.0")) {
+            if (DeActivationChangeEventList.contains(event)) {
+                DeActivationChangeEventList.removeOne(event);
+                checkIsActiveWindow = false;
+            }
         }
-}
         onAppFocusChangeForQuake(checkIsActiveWindow);
     }
 
@@ -3105,17 +2730,18 @@ bool QuakeWindow::eventFilter(QObject *watched, QEvent *event)
         if (event->type() == QEvent::WindowStateChange) {
             event->ignore();
             this->activateWindow();
-if(qVersion() >= QString("5.15.0")) {
+#if QT_VERSION >= QT_VERSION_CHECK(5, 15, 0)
             //queue的方式发送事件
-            QTimer::singleShot(0, this, [this](){
+            QTimer::singleShot(0, this, [this]() {
                 QEvent *event = new QEvent(QEvent::ActivationChange);
                 DeActivationChangeEventList << event;
                 qApp->postEvent(this, event);
             });
-}
+#endif
             return true;
         }
     }
+
 #if 0
     // 由于MainWindow是qApp注册的时间过滤器,所以这里需要判断
     // 只处理雷神的事件 QuakeWindowWindow是Qt内置用来管理QuakeWindow的Mouse事件的object
@@ -3153,7 +2779,7 @@ if(qVersion() >= QString("5.15.0")) {
             // 延时发送,避免resize过于频繁,导致titlebar抖动
             m_resizeTimer->start(5);
             break;
-            // 若没到边缘或者到边缘还没点击
+        // 若没到边缘或者到边缘还没点击
         default:
             // 判断鼠标位置
             if (qAbs(margin) < QUAKE_EDGE) {

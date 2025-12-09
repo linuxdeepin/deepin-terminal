@@ -1,5 +1,4 @@
-// Copyright (C) 2019 ~ 2023 Uniontech Software Technology Co.,Ltd
-// SPDX-FileCopyrightText: 2023 UnionTech Software Technology Co., Ltd.
+// SPDX-FileCopyrightText: 2019 ~ 2023 UnionTech Software Technology Co., Ltd.
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
@@ -24,6 +23,9 @@
 #include <QStringList>
 #include <QFontDatabase>
 #include <QHBoxLayout>
+#include <QCollator>
+#include <QProcessEnvironment>
+#include <QJsonDocument>
 
 DWIDGET_USE_NAMESPACE
 #define PRIVATE_PROPERTY_translateContext "_d_DSettingsWidgetFactory_translateContext"
@@ -41,7 +43,7 @@ Settings::Settings() : QObject(qApp)
 
 Settings *Settings::instance()
 {
-    if(nullptr == m_settings_instance) {
+    if (nullptr == m_settings_instance) {
         m_settings_instance = new Settings();
         m_settings_instance->init();
     }
@@ -70,7 +72,7 @@ void Settings::init()
 
     // 默认配置
     QFile configFile(":/other/default-config.json");
-    if(!configFile.open(QFile::ReadOnly)) {
+    if (!configFile.open(QFile::ReadOnly)) {
         qInfo() << "can not open default-config.json";
     }
     QByteArray json = configFile.readAll();
@@ -79,7 +81,7 @@ void Settings::init()
     QJsonDocument doc = QJsonDocument::fromJson(json);
     QVariant jsonVar = doc.toVariant();
     //龙芯 且 服务器企业版
-    if(Utils::isLoongarch() && DSysInfo::uosEditionType() == DSysInfo::UosEnterprise) {
+    if (Utils::isLoongarch() && DSysInfo::uosEditionType() == DSysInfo::UosEnterprise) {
         //隐藏透明度界面
         Utils::insertToDefaultConfigJson(jsonVar, "basic", "interface", "opacity", "hide", true);
         //隐藏背景模糊界面
@@ -90,7 +92,7 @@ void Settings::init()
     QString systemFixedFont = QFontDatabase::systemFont(QFontDatabase::FixedFont).family();
 
     //无效字体时，exactMatch：Returns true if a window system font exactly matching the settings of this font is available.
-    if(!QFont(defaultFont).exactMatch())
+    if (!QFont(defaultFont).exactMatch())
         Utils::insertToDefaultConfigJson(jsonVar, "basic", "interface", "font", "default", systemFixedFont);
     //更新json
     json = QJsonDocument::fromVariant(jsonVar).toJson();
@@ -108,13 +110,12 @@ void Settings::init()
      * 要求以下三个场景启动时，主题为Dark
      * 1.首次运行终端，colorScheme=""
      * 2.删除conf文件，colorScheme=""
-     * 3.人为修改conf，colorScheme=不可预知
+     * 3.人为修改conf，colorScheme=为空
      * 综上即colorScheme非Light且非Dark时，修改主题为Dark
      */
-    if("Light" != colorScheme() && "Dark" != colorScheme()) {
+    if (colorScheme().isEmpty()) {
         DGuiApplicationHelper::instance()->setPaletteType(DGuiApplicationHelper::DarkType);
         setColorScheme("Dark");
-        setExtendColorScheme("");
     }
     /******** Modify by n014361 wangpeili 2020-01-10:   增加窗口状态选项  ************/
     auto windowState = settings->option("advanced.window.use_on_starting");
@@ -251,7 +252,7 @@ void Settings::addShellOption()
     // 初始值
     keysList << DEFAULT_SHELL;
     // 数据转换
-    for (const QString key : shellsMap.keys())
+    for (const QString &key : shellsMap.keys())
         keysList << key;
     g_shellConfigCombox->addItems(keysList);
 }
@@ -287,7 +288,7 @@ void Settings::initConnection()
 {
     connect(settings, &Dtk::Core::DSettings::valueChanged, this, [ = ](const QString & key, const QVariant & value) {
         Q_UNUSED(value)
-        if (key.contains("basic.interface.") || key.contains("advanced.cursor.") || key.contains("advanced.scroll."))
+        if (key.contains("basic.interface.") || key.contains("advanced.cursor.") || key.contains("advanced.scroll.") || key.contains("advanced.shell.") || key.contains("advanced.debuginfod."))
             emit terminalSettingChanged(key);
         else if (key.contains("shortcuts."))
             emit shortcutSettingChanged(key);
@@ -310,7 +311,17 @@ void Settings::initConnection()
         emit cursorBlinkChanged(value.toBool());
     });
 
-    QPointer<DSettingsOption> backgroundBlur = settings->option("advanced.window.blurred_background");
+    QPointer<DSettingsOption> wordCharacters = settings->option("advanced.cursor.include_special_characters_in_double_click_selections");
+    connect(wordCharacters, &Dtk::Core::DSettingsOption::valueChanged, this, [ = ](QVariant value) {
+        emit wordCharactersChanged(value.toString());
+    });
+
+    QPointer<DSettingsOption> cursorPositionSet = settings->option("advanced.cursor.set_cursor_position");
+    connect(cursorPositionSet, &Dtk::Core::DSettingsOption::valueChanged, this, [ = ](QVariant value) {
+        emit enableSetCursorPosition(value.toBool());
+    });
+
+    QPointer<DSettingsOption> backgroundBlur = settings->option("basic.interface.blurred_background");
     connect(backgroundBlur, &Dtk::Core::DSettingsOption::valueChanged, this, [ = ](QVariant value) {
         emit backgroundBlurChanged(value.toBool());
     });
@@ -319,6 +330,12 @@ void Settings::initConnection()
     QPointer<DSettingsOption> fontSize = settings->option("basic.interface.font_size");
     connect(fontSize, &Dtk::Core::DSettingsOption::valueChanged, this, [ = ](QVariant value) {
         emit fontSizeChanged(value.toInt());
+    });
+
+    QPointer<DSettingsOption> historySize = settings->option("advanced.scroll.history_size");
+    connect(historySize, &Dtk::Core::DSettingsOption::valueChanged, this, [ = ](QVariant value) {
+        qInfo() << "History size changed to" << value.toInt();
+        emit historySizeChanged(value.toInt());
     });
 
     QPointer<DSettingsOption> family = settings->option("basic.interface.font");
@@ -347,7 +364,7 @@ void Settings::initConnection()
 
 void Settings::releaseInstance()
 {
-    if(nullptr != m_settings_instance) {
+    if (nullptr != m_settings_instance) {
         delete m_settings_instance;
         m_settings_instance = nullptr;
     }
@@ -460,48 +477,45 @@ bool Settings::cursorBlink() const
     return settings->option("advanced.cursor.cursor_blink")->value().toBool();
 }
 
+bool Settings::enableSetCursorPosition() const
+{
+    return settings->option("advanced.cursor.set_cursor_position")->value().toBool();
+}
+
 bool Settings::backgroundBlur() const
 {
-    return settings->option("advanced.window.blurred_background")->value().toBool();
+    return settings->option("basic.interface.blurred_background")->value().toBool();
+}
+
+int Settings::historySize() const
+{
+    return settings->option("advanced.scroll.history_size")->value().toInt();
 }
 
 
 QString Settings::colorScheme() const
 {
-    //选择主题未确定
-    if(!bSwitchTheme) {
-        return switchThemeMap["basic.interface.theme"];
-    }
     return settings->option("basic.interface.theme")->value().toString();
 }
 
 void Settings::setColorScheme(const QString &name)
 {
-    //选择主题未确定
-    if(!bSwitchTheme) {
-        switchThemeMap["basic.interface.theme"] = name;
-        return;
-    }
     settings->option("basic.interface.theme")->setValue(name);
 }
 
 QString Settings::extendColorScheme() const
 {
-    //选择主题未确定
-    if(!bSwitchTheme) {
-        return switchThemeMap["basic.interface.expand_theme"];
-    }
     return settings->option("basic.interface.expand_theme")->value().toString();
 }
 
 void Settings::setExtendColorScheme(const QString &name)
 {
-    //选择主题未确定
-    if(!bSwitchTheme) {
-        switchThemeMap["basic.interface.expand_theme"] = name;
-        return;
-    }
     settings->option("basic.interface.expand_theme")->setValue(name);
+}
+
+QString Settings::wordCharacters() const
+{
+    return settings->option("advanced.cursor.include_special_characters_in_double_click_selections")->value().toString();
 }
 
 /*******************************************************************************
@@ -582,16 +596,26 @@ void Settings::handleWidthFont()
     //更新设置界面的字体信息
     QVariant fontname = comboBox->currentData();
     comboBox->clear();
-    for(int k = 0; k < Whitelist.count(); k ++) {
+    for (int k = 0; k < Whitelist.count(); k ++) {
         comboBox->addItem(Whitelist[k].value, Whitelist[k].key);
     }
     comboBox->setCurrentIndex(comboBox->findData(fontname));
 }
 
 
-bool Settings::enableControlFlow(void)
+bool Settings::disableControlFlow(void)
 {
-    return !settings->option("advanced.shell.enable_ctrl_flow")->value().toBool();
+    return settings->option("advanced.shell.disable_ctrl_flow")->value().toBool();
+}
+
+bool Settings::enableDebuginfod()
+{
+    return settings->option("advanced.debuginfod.enable_debuginfod")->value().toBool();
+}
+
+QString Settings::debuginfodUrls()
+{
+    return settings->option("advanced.debuginfod.debuginfod_urls")->value().toString();
 }
 
 /******** Add by ut001000 renfeixiang 2020-06-15:增加 每次显示设置界面时，更新设置的等宽字体 End***************/
@@ -637,7 +661,7 @@ QPair<QWidget *, QWidget *> Settings::createFontComBoBoxHandle(QObject *obj)
                  << "Noto Sans Mono CJK TC";
         Whitelist.appendValues(fontlist);
     }
-    for(int k = 0; k < Whitelist.count(); k ++) {
+    for (int k = 0; k < Whitelist.count(); k ++) {
         comboBox->addItem(Whitelist[k].value, Whitelist[k].key);
     }
 
@@ -652,7 +676,7 @@ QPair<QWidget *, QWidget *> Settings::createFontComBoBoxHandle(QObject *obj)
     });
 
     option->connect(
-        comboBox, QOverload<int>::of(&QComboBox::currentIndexChanged), option, [ = ](int index) {
+    comboBox, QOverload<int>::of(&QComboBox::currentIndexChanged), option, [ = ](int index) {
         option->setValue(comboBox->itemData(index));
     });
 
@@ -696,8 +720,7 @@ QPair<QWidget *, QWidget *> Settings::createValSliderHandle(QObject *obj)
     const int step = option->data("step").toInt();
 
     valTicksList << tr("Fast");
-    for (int i = 0; i < ((maxVal - minVal) / step - 1); i++)
-    {
+    for (int i = 0; i < ((maxVal - minVal) / step - 1); i++) {
         valTicksList << "";
     }
     valTicksList << tr("Slow");
@@ -725,6 +748,9 @@ QPair<QWidget *, QWidget *> Settings::createSpinButtonHandle(QObject *obj)
     auto option = qobject_cast<DTK_CORE_NAMESPACE::DSettingsOption *>(obj);
     auto rightWidget = new NewDspinBox();
 
+    rightWidget->setMinimum(option->data("min").toInt());
+    rightWidget->setMaximum(option->data("max").toInt());
+    rightWidget->setSingleStep(option->data("step").toInt());
     rightWidget->setValue(option->value().toInt());
 
     QPair<QWidget *, QWidget *> optionWidget =

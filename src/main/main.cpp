@@ -20,7 +20,8 @@
 #include <QDebug>
 #include <QCommandLineParser>
 #include <QTranslator>
-#include <QTime>
+#include <QElapsedTimer>
+#include <QUrl>
 
 DWIDGET_USE_NAMESPACE
 
@@ -28,11 +29,8 @@ DCORE_USE_NAMESPACE
 
 int main(int argc, char *argv[])
 {
-    if (!QString(qgetenv("XDG_CURRENT_DESKTOP")).toLower().startsWith("deepin")) {
-        setenv("XDG_CURRENT_DESKTOP", "Deepin", 1);
-    }
     // 应用计时
-    QTime useTime;
+    QElapsedTimer useTime;
     useTime.start();
     //为了更精准，起动就度量时间
     qint64 startTime = QDateTime::currentDateTime().toMSecsSinceEpoch();
@@ -48,8 +46,19 @@ int main(int argc, char *argv[])
 
     // 参数解析
     TermProperties properties;
-    Utils::parseCommandLine(app.arguments(), properties, true);
     QStringList args = app.arguments();
+
+    for (int i = 0; i < args.size(); i++) {
+        if (args[i].startsWith("dsg-terminal-exec://")) {
+            QString execCMD = args[i];
+            execCMD.remove("dsg-terminal-exec://");
+            args += "-e";
+            args += QUrl::fromPercentEncoding(execCMD.toUtf8());
+            break;
+        }
+    }
+
+    Utils::parseCommandLine(app.arguments(), properties, true);
 
     if(!(args.contains("-w") || args.contains("--work-directory"))) {
         args += "-w";
@@ -57,10 +66,12 @@ int main(int argc, char *argv[])
     }
 
     DBusManager manager;
+
     if (!manager.initDBus()) {
-        // 非第一次启动
+#ifndef QT_DEBUG // 非第一次启动则退出，调试编译情况不执行这个逻辑
         DBusManager::callTerminalEntry(args);
         return 0;
+#endif
     }
     // 第一次启动
     // 这行不要删除

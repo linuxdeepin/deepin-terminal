@@ -1,5 +1,4 @@
-// Copyright (C) 2019 ~ 2020 Uniontech Software Technology Co.,Ltd
-// SPDX-FileCopyrightText: 2023 UnionTech Software Technology Co., Ltd.
+// SPDX-FileCopyrightText: 2019 ~ 2023 UnionTech Software Technology Co., Ltd.
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
@@ -25,12 +24,14 @@ void GenerateSettingTranslate()
     Q_UNUSED(advanced_scroll_scroll_on_keyText);
     auto advanced_scroll_scroll_on_outputText = QObject::tr("Scroll on output");
     Q_UNUSED(advanced_scroll_scroll_on_outputText);
+    auto advanced_scroll_zoom_on_ctrl_scrollwheel = QObject::tr("Allow Ctrl+scrollwheel to zoom text size");
+    Q_UNUSED(advanced_scroll_zoom_on_ctrl_scrollwheel);
     auto advanced_window_auto_hide_raytheon_windowText = QObject::tr("Hide Quake window after losing focus");
     Q_UNUSED(advanced_window_auto_hide_raytheon_windowText);
     auto advanced_window_quake_window_durationText = QObject::tr("Quake window animation speed");
     Q_UNUSED(advanced_window_quake_window_durationText);
-    auto advanced_window_blurred_backgroundText = QObject::tr("Blur background");
-    Q_UNUSED(advanced_window_blurred_backgroundText);
+    auto basic_interface_blurred_backgroundText = QObject::tr("Blur background");
+    Q_UNUSED(basic_interface_blurred_backgroundText);
     auto advanced_window_use_on_startingName = QObject::tr("Use on starting");
     Q_UNUSED(advanced_window_use_on_startingName);
     auto basic_interface_fontName = QObject::tr("Font");
@@ -143,4 +144,12 @@ void GenerateSettingTranslate()
     Q_UNUSED(disable_flow_control_using_ctrl_s_ctrl_q);
     auto shell_profile = QObject::tr("Shell profile");
     Q_UNUSED(shell_profile);
+    auto history_size = QObject::tr("History size");
+    Q_UNUSED(history_size);
+    auto include_special_characters_in_double_click_selectionisText = QObject::tr("Include special character(s) in double click selections");
+    Q_UNUSED(include_special_characters_in_double_click_selectionisText);
+    auto set_cursor_position = QObject::tr("Allow Ctrl + left mouse click to set cursor position");
+    Q_UNUSED(set_cursor_position);
+    auto enable_debuginfod = QObject::tr("The HTTP file server used for transmitting debugging information resources");
+    Q_UNUSED(enable_debuginfod);
 }

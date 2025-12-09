@@ -9,24 +9,35 @@
 #include "iconbutton.h"
 
 // dtk
+#include <DPaletteHelper>
 
 // qt
 #include <QDebug>
 #include <QApplication>
 
+// 不同布局模式配置
+const int s_ItemHeight = 60;
+const QMargins s_ItemIconContentMargins = {8, 8, 8, 8};
+const int s_ItemHeightCompact = 52;
+const QMargins s_ItemIconContentMarginsCompact = {4, 4, 4, 4};
+
 // 需要选择Item类型
 ItemWidget::ItemWidget(ItemFuncType itemType, QWidget *parent)
-    : FocusFrame(parent)
+    : FocusFrame(parent, ItemFuncType_UngroupedItem == itemType)
     , m_mainLayout(new QHBoxLayout(this))
     , m_iconLayout(new QVBoxLayout)
     , m_textLayout(new QVBoxLayout)
-    , m_funcLayout(new QVBoxLayout)
+    , m_funcLayout(new QHBoxLayout)
+    , m_checkBox(new DCheckBox(this))
     , m_iconButton(new DIconButton(this))
     , m_firstline(new DLabel(this))
     , m_secondline(new DLabel(this))
+    , m_deleteButton(new IconButton(this))
     , m_funcButton(new IconButton(this))
     , m_functType(itemType)
 {
+    showBackground = (itemType != ItemFuncType_GroupLabel && itemType != ItemFuncType_ItemLabel);
+
     /******** Add by ut001000 renfeixiang 2020-08-13:增加 Begin***************/
     Utils::set_Object_Name(this);
     m_mainLayout->setObjectName("ItemWidgetMainLayout");
@@ -44,6 +55,7 @@ ItemWidget::ItemWidget(ItemFuncType itemType, QWidget *parent)
 
     /***add begin by ut001121 zhangmeng 20200924 安装过滤器 修复BUG48618***/
     m_iconButton->installEventFilter(this);
+    m_deleteButton->installEventFilter(this);
     m_funcButton->installEventFilter(this);
     installEventFilter(this);
     /***add end by ut001121***/
@@ -67,14 +79,19 @@ void ItemWidget::setFuncIcon(ItemFuncType iconType)
 {
     // 统一设置大小
     m_funcButton->setIconSize(QSize(20, 20));
+    m_deleteButton->setIconSize(QSize(20, 20));
+    m_deleteButton->hide();
     switch (iconType) {
     case ItemFuncType_Item:
+    case ItemFuncType_Group:
         m_funcButton->setIcon(QIcon::fromTheme("dt_edit"));
         m_funcButton->hide();
         break;
-    case ItemFuncType_Group:
-        m_funcButton->setIcon(QIcon::fromTheme("dt_arrow_right"));
-        m_funcButton->show();
+    case ItemFuncType_UngroupedItem:
+        m_funcButton->hide();
+        m_deleteButton->hide();
+        break;
+    default:
         break;
     }
 
@@ -94,10 +111,11 @@ void ItemWidget::setText(const QString &firstline, const QString &secondline)
     // 第二行信息
     switch (m_functType) {
     case ItemFuncType_Item:
+    case ItemFuncType_UngroupedItem:
         // 输入的第二行信息
         m_secondText = secondline;
         break;
-    case ItemFuncType_Group:
+    case ItemFuncType_Group:{
         // 第二行 组内服务器个数
         int serverCount = ServerConfigManager::instance()->getServerCount(firstline);
         if (serverCount <= 0) {
@@ -107,13 +125,26 @@ void ItemWidget::setText(const QString &firstline, const QString &secondline)
         m_secondText = QString("%1 server").arg(serverCount);
         break;
     }
+    default:
+        break;
+    }
     // 设置第二行信息
     m_secondline->setText(m_secondText);
 }
 
-const QString ItemWidget::getFirstText()
+const QString ItemWidget::getFirstText() const
 {
     return m_firstText;
+}
+
+void ItemWidget::setChecked(bool checked)
+{
+    m_checkBox->setChecked(checked);
+}
+
+bool ItemWidget::isChecked() const
+{
+    return m_checkBox->isChecked();
 }
 
 bool ItemWidget::isEqual(ItemFuncType type, const QString &key)
@@ -126,9 +157,9 @@ void ItemWidget::getFocus()
 {
     m_isFocus = true;
     // 项显示功能键
-    if (ItemFuncType_Item == m_functType) {
+    if (ItemFuncType_Item == m_functType || ItemFuncType_Group == m_functType) {
         m_funcButton->show();
-        m_funcButton->setFocus();
+        m_deleteButton->show();
         qInfo() << "edit button show";
     }
 }
@@ -137,8 +168,10 @@ void ItemWidget::lostFocus()
 {
     m_isFocus = false;
     // 项影藏功能键
-    if ((ItemFuncType_Item == m_functType) && (!m_isHover))
+    if ((ItemFuncType_Item == m_functType || ItemFuncType_Group == m_functType) && (!m_isHover)) {
         m_funcButton->hide();
+        m_deleteButton->hide();
+    }
 }
 
 bool operator >(const ItemWidget &item1, const ItemWidget &item2)
@@ -182,7 +215,7 @@ void ItemWidget::onFuncButtonClicked()
         // 显示分组
         qInfo() << "group show" << m_firstText;
         // 第一个参数是分组名，第二个参数是当前是否有焦点
-        emit groupClicked(m_firstText, m_isFocus);
+        emit groupModify(m_firstText, m_isFocus);
         break;
     case ItemFuncType_Item: {
         // 修改项
@@ -223,6 +256,8 @@ void ItemWidget::onIconButtonClicked()
         qInfo() << "item clicked" << m_firstText;
         emit itemClicked(m_firstText);
         break;
+    default:
+        break;
     }
 }
 
@@ -243,17 +278,53 @@ void ItemWidget::onFocusOut(Qt::FocusReason type)
         qInfo() << "set focus back itemwidget";
     }
     // 项
-    if (ItemFuncType_Item == m_functType) {
-        if (type != Qt::OtherFocusReason && !m_isHover)
-            m_funcButton->hide();
+    if (type != Qt::OtherFocusReason && !m_isHover) {
+        if (ItemFuncType_Item == m_functType || ItemFuncType_Group == m_functType) {
+                m_funcButton->hide();
+                m_deleteButton->hide();
+        }
     }
+}
+
+/**
+ * @brief 根据布局模式(紧凑)变更更新界面布局，ItemWidget 不绑定变更信号，
+ *      而是通过外部 ListView 处理。
+ */
+void ItemWidget::updateSizeMode()
+{
+#ifdef DTKWIDGET_CLASS_DSizeMode
+    if (DGuiApplicationHelper::isCompactMode()) {
+        m_iconLayout->setContentsMargins(s_ItemIconContentMarginsCompact);
+        setFixedSize(220, s_ItemHeightCompact);
+        setFont(m_firstline, DFontSizeManager::T6, ItemTextColor_Text);
+        setFont(m_secondline, DFontSizeManager::T7, ItemTextColor_TextTips);
+    } else {
+        m_iconLayout->setContentsMargins(s_ItemIconContentMargins);
+        setFixedSize(220, s_ItemHeight);
+        setFont(m_firstline, DFontSizeManager::T7, ItemTextColor_Text);
+        setFont(m_secondline, DFontSizeManager::T8, ItemTextColor_TextTips);
+    }
+#endif
 }
 
 void ItemWidget::initUI()
 {
-    // 初始化控件大小
-    setGeometry(0, 0, 220, 60);
-    setFixedSize(220, 60);
+    if (m_functType != ItemFuncType_GroupLabel && m_functType != ItemFuncType_ItemLabel)
+    {
+        // 初始化控件大小
+        if (m_functType == ItemFuncType_UngroupedItem) {
+            setGeometry(0, 0, 360, 60);
+            setFixedSize(360, 60);
+        } else {
+            setGeometry(0, 0, 220, 60);
+            setFixedSize(220, 60);
+        }
+    }
+    else
+    {
+        setFixedSize(220, 40);
+    }
+
     setContentsMargins(0, 0, 0, 0);
     // 圆角
     setFrameRounded(true);
@@ -281,32 +352,60 @@ void ItemWidget::initUI()
     m_textLayout->addStretch(13);
     m_textLayout->addWidget(m_firstline, 13);
     m_textLayout->addStretch(9);
-    m_textLayout->addWidget(m_secondline, 13);
-    m_textLayout->addStretch(13);
+    if (m_functType != ItemFuncType_GroupLabel && m_functType != ItemFuncType_ItemLabel)
+    {
+        m_textLayout->addWidget(m_secondline, 13);
+        m_textLayout->addStretch(13);
+    }
 
     // 功能键布局
+    // Todo (Yutao Meng): 建议删除键采用自定义图标，以免某些主题中没有合适的明暗色图标
+    m_deleteButton->setIcon(QIcon::fromTheme("edit-delete"));
+    m_deleteButton->setFlat(true);
+    m_deleteButton->setFocusPolicy(Qt::NoFocus);
     setFuncIcon(ItemFuncType(m_functType));
     m_funcButton->setFlat(true);
     m_funcButton->setFocusPolicy(Qt::NoFocus);
     m_funcLayout->addStretch();
     m_funcLayout->setContentsMargins(5, 0, 5, 0);
+    m_funcLayout->addWidget(m_deleteButton);
     m_funcLayout->addWidget(m_funcButton);
     m_funcLayout->addStretch();
 
     // 整体布局
     m_mainLayout->setContentsMargins(0, 0, 0, 0);
     m_mainLayout->setSpacing(0);
-    m_mainLayout->addLayout(m_iconLayout);
-    m_mainLayout->addLayout(m_textLayout);
-    m_mainLayout->addLayout(m_funcLayout);
+    if (m_functType != ItemFuncType_GroupLabel && m_functType != ItemFuncType_ItemLabel) {
+        if (m_functType == ItemFuncType_UngroupedItem) {
+            m_mainLayout->addWidget(m_checkBox);
+        } else {
+            m_checkBox->hide();
+        }
+        m_mainLayout->addLayout(m_iconLayout);
+        m_mainLayout->addLayout(m_textLayout);
+        m_mainLayout->addLayout(m_funcLayout);
+    } else {
+        m_checkBox->hide();
+        m_iconButton->hide();
+        m_mainLayout->addLayout(m_textLayout);
+        m_deleteButton->hide();
+        m_funcButton->hide();
+    }
     m_mainLayout->addStretch();
     setLayout(m_mainLayout);
+
+    // 根据不同布局初始化界面
+    updateSizeMode();
 }
 
 void ItemWidget::initConnections()
 {
     // 颜色随主题变化
-    connect(DApplicationHelper::instance(), &DGuiApplicationHelper::themeTypeChanged, this, &ItemWidget::slotThemeChange);
+    connect(DGuiApplicationHelper::instance(), &DGuiApplicationHelper::themeTypeChanged, this, &ItemWidget::slotThemeChange);
+    // 删除键被点击
+    connect(m_deleteButton, &DIconButton::clicked, this, [this] {
+        emit itemDelete(m_firstText, m_functType);
+    });
     // 功能键被点击
     connect(m_funcButton, &DIconButton::clicked, this, &ItemWidget::onFuncButtonClicked);
     // 焦点从小图标切出，但在控件上
@@ -315,7 +414,6 @@ void ItemWidget::initConnections()
     connect(m_funcButton, &IconButton::focusOut, this, &ItemWidget::onFocusOut);
     // 图标被点击
     connect(m_iconButton, &DIconButton::clicked, this, &ItemWidget::onIconButtonClicked);
-
 }
 
 void ItemWidget::paintEvent(QPaintEvent *event)
@@ -324,8 +422,15 @@ void ItemWidget::paintEvent(QPaintEvent *event)
     QFont firstFont = m_firstline->font();
     QFont secondFont = m_secondline->font();
     // 限制文字长度,防止超出
-    QString firstText = Utils::getElidedText(firstFont, m_firstText, ITEMMAXWIDTH);
-    QString secondText = Utils::getElidedText(secondFont, m_secondText, ITEMMAXWIDTH);
+    QString firstText;
+    QString secondText;
+    if (!m_funcButton->isVisible()) {
+        firstText = Utils::getElidedText(firstFont, m_firstText, ITEMMAXWIDTH);
+        secondText = Utils::getElidedText(secondFont, m_secondText, ITEMMAXWIDTH);
+    } else {
+        firstText = Utils::getElidedText(firstFont, m_firstText, ITEMMAXWIDTH - m_funcButton->width());
+        secondText = Utils::getElidedText(secondFont, m_secondText, ITEMMAXWIDTH - m_funcButton->width());
+    }
     // 设置显示的文字
     m_firstline->setText(firstText);
     m_secondline->setText(secondText);
@@ -336,8 +441,10 @@ void ItemWidget::paintEvent(QPaintEvent *event)
 void ItemWidget::enterEvent(QEvent *event)
 {
     // 编辑按钮现
-    if (ItemFuncType_Item == m_functType)
+    if (ItemFuncType_Item == m_functType || ItemFuncType_Group == m_functType) {
         m_funcButton->show();
+        m_deleteButton->show();
+    }
 
     FocusFrame::enterEvent(event);
 }
@@ -347,8 +454,10 @@ void ItemWidget::leaveEvent(QEvent *event)
     // 判断焦点是否是选中状态，不是的话，清除选中效果
     if (!m_isFocus && !m_funcButton->hasFocus()) {
         // 编辑按钮出
-        if (ItemFuncType_Item == m_functType)
+        if (ItemFuncType_Item == m_functType || ItemFuncType_Group == m_functType) {
             m_funcButton->hide();
+            m_deleteButton->hide();
+        }
     }
 
     FocusFrame::leaveEvent(event);
@@ -425,8 +534,10 @@ void ItemWidget::keyPressEvent(QKeyEvent *event)
 void ItemWidget::focusInEvent(QFocusEvent *event)
 {
     m_isFocus = true;
-    if (ItemFuncType_Item == m_functType)
+    if (ItemFuncType_Item == m_functType || ItemFuncType_Group == m_functType) {
         m_funcButton->show();
+        m_deleteButton->show();
+    }
 
     FocusFrame::focusInEvent(event);
 }
@@ -439,10 +550,12 @@ void ItemWidget::focusOutEvent(QFocusEvent *event)
     if (Qt::TabFocusReason == type || Qt::BacktabFocusReason == type)
         emit focusOut(type);
 
-    if (ItemFuncType_Item == m_functType) {
+    if (ItemFuncType_Item == m_functType || ItemFuncType_Group == m_functType) {
         // 编辑按钮也没焦点，则隐藏编辑按钮
-        if (!m_funcButton->hasFocus() && !m_isHover)
+        if (!m_funcButton->hasFocus() && !m_isHover) {
             m_funcButton->hide();
+            m_deleteButton->hide();
+        }
     }
     FocusFrame::focusOutEvent(event);
 }
@@ -461,7 +574,7 @@ void ItemWidget::setFontSize(DLabel *label, DFontSizeManager::SizeType fontSize)
 
 void ItemWidget::setFontColor(DLabel *label, ItemTextColor colorType)
 {
-    DPalette fontPalette = DApplicationHelper::instance()->palette(label);
+    DPalette fontPalette = DPaletteHelper::instance()->palette(label);
     QColor color = getColor(colorType);
     if (color.isValid()) {
         fontPalette.setBrush(DPalette::Text, color);
@@ -534,6 +647,11 @@ void ItemWidget::onItemClicked()
         // 项被点击
         qInfo() << "item clicked" << m_firstText;
         emit itemClicked(m_firstText);
+        break;
+    case ItemFuncType_UngroupedItem:
+        m_checkBox->setChecked(!m_checkBox->isChecked());
+        break;
+    default:
         break;
     }
 }

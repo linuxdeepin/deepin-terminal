@@ -16,6 +16,7 @@
 #include <DSuggestButton>
 #include <DFontSizeManager>
 #include <DApplicationHelper>
+#include <DPaletteHelper>
 #include <DVerticalLine>
 
 #include <QVBoxLayout>
@@ -75,7 +76,7 @@ void ColorPushButton::paintEvent(QPaintEvent *event)
     painter.setOpacity(1);
 
     QColor borderColor;
-    if (DApplicationHelper::LightType == DApplicationHelper::instance()->themeType())
+    if (DGuiApplicationHelper::LightType == DGuiApplicationHelper::instance()->themeType())
         borderColor = QColor::fromRgb(0, 0, 0, static_cast<int>(255 * 0.05));
     else
         borderColor = QColor::fromRgb(255, 255, 255, static_cast<int>(255 * 0.2));
@@ -101,7 +102,7 @@ void ColorPushButton::paintEvent(QPaintEvent *event)
 
         //绘画边框
         QPen framePen;
-        DPalette pax = DApplicationHelper::instance()->palette(this);
+        DPalette pax = DPaletteHelper::instance()->palette(this);
         //获取活动色
         framePen = QPen(pax.color(DPalette::Highlight), 2);
         painter.setPen(framePen);
@@ -159,7 +160,23 @@ CustomThemeSettingDialog::CustomThemeSettingDialog(QWidget *parent) : DAbstractD
     initUITitle();
     initUI();
     initTitleConnections();
+
+#ifdef DTKWIDGET_CLASS_DSizeMode
+    setFixedWidth(SETTING_DIALOG_WIDTH);
+
+    updateSizeMode();
+    connect(DGuiApplicationHelper::instance(), &DGuiApplicationHelper::sizeModeChanged, this, &CustomThemeSettingDialog::updateSizeMode);
+    connect(DGuiApplicationHelper::instance(), &DGuiApplicationHelper::fontChanged, this, [this](){
+        if (isVisible() && layout()) {
+            layout()->invalidate();
+            updateGeometry();
+            // 根据新界面布局，刷新界面大小
+            QTimer::singleShot(0, this, [=](){ resize(SETTING_DIALOG_WIDTH, minimumSizeHint().height()); });
+        }
+    });
+#else
     setFixedSize(459, 378);
+#endif
 }
 
 void CustomThemeSettingDialog::initUITitle()
@@ -193,7 +210,7 @@ void CustomThemeSettingDialog::initUITitle()
     // 字色
     DPalette palette = m_titleText->palette();
     QColor color;
-    if (DApplicationHelper::DarkType == DApplicationHelper::instance()->themeType())
+    if (DGuiApplicationHelper::DarkType == DGuiApplicationHelper::instance()->themeType())
         color = QColor::fromRgb(192, 198, 212, 255);
     else
         color = QColor::fromRgb(0, 26, 46, 255);
@@ -380,10 +397,10 @@ void CustomThemeSettingDialog::initTitleConnections()
         reject();
     });
     // 字体颜色随主题变化变化
-    connect(DApplicationHelper::instance(), &DGuiApplicationHelper::themeTypeChanged, m_titleText, [ = ](DGuiApplicationHelper::ColorType themeType) {
+    connect(DGuiApplicationHelper::instance(), &DGuiApplicationHelper::themeTypeChanged, m_titleText, [ = ](DGuiApplicationHelper::ColorType themeType) {
         DPalette palette = m_titleText->palette();
         QColor color;
-        if (DApplicationHelper::DarkType == themeType)
+        if (DGuiApplicationHelper::DarkType == themeType)
             color = QColor::fromRgb(192, 198, 212, 255);
         else
             color = QColor::fromRgb(0, 26, 46, 255);
@@ -402,7 +419,6 @@ void CustomThemeSettingDialog::addCancelConfirmButtons()
     QFont btnFont;
     m_cancelBtn = new DPushButton(this);
     m_cancelBtn->setFixedWidth(209);
-    m_cancelBtn->setFixedHeight(36);
     m_cancelBtn->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Fixed);
     m_cancelBtn->setFont(btnFont);
     m_cancelBtn->setText(tr("Cancel", "button"));
@@ -410,7 +426,6 @@ void CustomThemeSettingDialog::addCancelConfirmButtons()
 
     m_confirmBtn = new DSuggestButton(this);
     m_confirmBtn->setFixedWidth(209);
-    m_confirmBtn->setFixedHeight(36);
     m_confirmBtn->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Fixed);
     m_confirmBtn->setFont(btnFont);
     m_confirmBtn->setText(tr("Confirm", "button"));
@@ -424,17 +439,17 @@ void CustomThemeSettingDialog::addCancelConfirmButtons()
 
     setTabOrder(m_confirmBtn, m_closeButton);//设置右上角关闭按钮的tab键控制顺序
 
-    DVerticalLine *verticalLine = new DVerticalLine(this);
-    DPalette pa = DApplicationHelper::instance()->palette(verticalLine);
+    m_verticalLine = new DVerticalLine(this);
+    DPalette pa = DApplicationHelper::instance()->palette(m_verticalLine);
     QColor splitColor = pa.color(DPalette::ItemBackground);
     pa.setBrush(DPalette::Background, splitColor);
-    verticalLine->setPalette(pa);
-    verticalLine->setBackgroundRole(QPalette::Background);
-    verticalLine->setAutoFillBackground(true);
-    verticalLine->setFixedSize(3, 28);
+    m_verticalLine->setPalette(pa);
+    m_verticalLine->setBackgroundRole(QPalette::Background);
+    m_verticalLine->setAutoFillBackground(true);
+    m_verticalLine->setFixedSize(3, 28);
 
     buttonsLayout->addWidget(m_cancelBtn);
-    buttonsLayout->addWidget(verticalLine);
+    buttonsLayout->addWidget(m_verticalLine);
     buttonsLayout->addWidget(m_confirmBtn);
     m_confirmBtn->setDefault(true);
 
@@ -511,6 +526,35 @@ void CustomThemeSettingDialog::clearFocussSlot()
     m_ps2Button->m_isFocus = false;
 
     m_logoIcon->setFocus();
+}
+
+/**
+ * @brief 接收 DGuiApplicationHelper::sizeModeChanged() 信号, 根据不同的布局模式调整
+ *      当前界面的布局. 只能在界面创建完成后调用.
+ */
+void CustomThemeSettingDialog::updateSizeMode()
+{
+#ifdef DTKWIDGET_CLASS_DSizeMode
+    if (DGuiApplicationHelper::isCompactMode()) {
+        m_titleBar->setFixedHeight(WIN_TITLE_BAR_HEIGHT_COMPACT);
+        m_logoIcon->setFixedSize(QSize(ICONSIZE_40_COMPACT, ICONSIZE_40_COMPACT));
+        m_closeButton->setIconSize(QSize(ICONSIZE_40_COMPACT, ICONSIZE_40_COMPACT));
+        m_verticalLine->setFixedSize(VERTICAL_WIDTH_COMPACT, VERTICAL_HEIGHT_COMPACT);
+
+    } else {
+        m_titleBar->setFixedHeight(WIN_TITLE_BAR_HEIGHT);
+        m_logoIcon->setFixedSize(QSize(ICONSIZE_50, ICONSIZE_50));
+        m_closeButton->setIconSize(QSize(ICONSIZE_50, ICONSIZE_50));
+        m_verticalLine->setFixedSize(VERTICAL_WIDTH, VERTICAL_HEIGHT);
+    }
+
+    if (layout()) {
+        layout()->invalidate();
+    }
+    updateGeometry();
+    // 根据新界面布局，刷新界面大小
+    QTimer::singleShot(0, this, [=](){ resize(SETTING_DIALOG_WIDTH, minimumSizeHint().height()); });
+#endif
 }
 
 void CustomThemeSettingDialog::loadConfiguration()

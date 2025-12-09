@@ -16,9 +16,6 @@
   - dtkwidget-dev
   - dtkgui-dev
 * lxqt-build-tools(>= 0.6.0)
-* libdframeworkdbus-dev
-* libutf8proc-dev
-* libatspi2.0-dev
 * libglib2.0-dev
 * libsecret-1-dev
 

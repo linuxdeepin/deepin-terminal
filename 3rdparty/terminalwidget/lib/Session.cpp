@@ -209,6 +209,8 @@ void Session::addView(TerminalDisplay * widget)
                  SLOT(sendKeyEvent(QKeyEvent *)) );
         connect( widget , SIGNAL(mouseSignal(int,int,int,int)) , _emulation ,
                  SLOT(sendMouseEvent(int,int,int,int)) );
+        connect(widget, SIGNAL(changedCursonPosition(int)), _emulation,
+                SLOT(sendCursor(int)));
         // 先判断是否有远程连接,若有,则连接远程
         // connect(widget, SIGNAL(sendStringToEmu(const char *)), _emulation, SLOT(sendString(const char *)));
 
@@ -737,15 +739,6 @@ void Session::done(int exitStatus)
         emit finished();
         return;
     }
-
-    /************************ Add by sunchengxi 2020-09-15:Bug#42864 无法同时打开多个终端 Begin************************/
-    if (false == _autoClose && false == _wantedClose && _shellProcess->exitStatus() == QProcess::NormalExit) {
-        qDebug() << "autoClose is false.";
-        emit titleChanged();
-        emit finished();
-        return;
-    }
-    /************************ Add by sunchengxi 2020-09-15:Bug#42864 无法同时打开多个终端 End ************************/
     if(exitStatus != 0)
     {
         QString message;
@@ -764,6 +757,12 @@ void Session::done(int exitStatus)
         //sendText(infoText);
         emit titleChanged();
     }
+    else
+    {
+        sendText("\n");
+        sendText(tr("Press any keys to exit"));
+    }
+    emit almostFinished();
 }
 
 Emulation * Session::emulation() const
@@ -954,7 +953,7 @@ void Session::setFlowControlEnabled(bool enabled)
 }
 bool Session::flowControlEnabled() const
 {
-    return _flowControl;
+    return _shellProcess->flowControlEnabled();
 }
 //void Session::fireZModemDetected()
 //{

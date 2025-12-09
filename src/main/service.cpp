@@ -29,7 +29,7 @@ Service *Service::g_pService = nullptr;
 
 Service *Service::instance()
 {
-    if(nullptr == g_pService) {
+    if (nullptr == g_pService) {
         g_pService = new Service();
     }
     return g_pService;
@@ -63,6 +63,7 @@ void Service::init()
     ServerConfigManager::instance()->initServerConfig();
     // 主进程：首次赋值m_pShareMemoryInfo
     listenWindowEffectSwitcher();
+    listenDebuginfodOption();
 }
 
 void Service::releaseInstance()
@@ -79,8 +80,8 @@ void Service::initSetting()
         //1050e版本：二次打开设置窗口，焦点在【关闭按钮】上（bug#104810）
         DTitlebar *titleBar = Utils::findWidgetByAccessibleName<DTitlebar *>(m_settingDialog, "DSettingTitleBar");
         QScrollArea *scrollArea = Utils::findWidgetByAccessibleName<QScrollArea *>(m_settingDialog, "ContentScrollArea");
-        if(titleBar && scrollArea) {
-            QTimer::singleShot(0, this, [titleBar, scrollArea](){
+        if (titleBar && scrollArea) {
+            QTimer::singleShot(0, this, [titleBar, scrollArea]() {
                 titleBar->setFocus();
                 scrollArea->verticalScrollBar()->setValue(0);
             });
@@ -110,12 +111,9 @@ void Service::initSetting()
     QDateTime endTime = QDateTime::currentDateTime();
 
     //判断未开启窗口特效时，隐藏透明度/背景模糊选项
-    if (!DWindowManagerHelper::instance()->hasComposite()) {
-        showHideOpacityAndBlurOptions(false);
-        return;
-    }
-
-    showHideOpacityAndBlurOptions(isWindowEffectEnabled());
+    showHideOpacityAndBlurOptions(DWindowManagerHelper::instance()->hasComposite());
+    // 根据是否开启debuginfod选项初始化debuginfod urls选项的显示与否
+    showHideDebuginfodUrlsOptions(Settings::instance()->enableDebuginfod());
 }
 
 void Service::slotSettingsDialogFinished(int result)
@@ -147,6 +145,10 @@ void Service::showHideOpacityAndBlurOptions(bool isShow)
             if (QObject::tr("Blur background") == checkText) {
                 QWidget *optionWidget = widget;
                 QWidget *parentWidget = widget->parentWidget();
+                QWidget *wrapWidget = parentWidget ? parentWidget->parentWidget() : nullptr;
+                if (wrapWidget && strcmp(wrapWidget->metaObject()->className(), "QWidget") == 0) {
+                    wrapWidget->setVisible(isShow);
+                }
                 if (parentWidget && strcmp(parentWidget->metaObject()->className(), "Dtk::Widget::DFrame") == 0)
                     optionWidget = parentWidget;
 
@@ -158,6 +160,10 @@ void Service::showHideOpacityAndBlurOptions(bool isShow)
         } else if (strcmp(widget->metaObject()->className(), "Dtk::Widget::DSlider") == 0) {
             QWidget *optionWidget = widget;
             QWidget *parentWidget = widget->parentWidget();
+            QWidget *wrapWidget = parentWidget ? parentWidget->parentWidget() : nullptr;
+            if (wrapWidget && strcmp(wrapWidget->metaObject()->className(), "QWidget") == 0) {
+                wrapWidget->setVisible(isShow);
+            }
             if (parentWidget && strcmp(parentWidget->metaObject()->className(), "Dtk::Widget::DFrame") == 0)
                 optionWidget = parentWidget;
 
@@ -170,6 +176,11 @@ void Service::showHideOpacityAndBlurOptions(bool isShow)
             if (lblText == QObject::tr("Opacity")) {
                 QWidget *optionWidget = widget;
                 QWidget *parentWidget = widget->parentWidget();
+                QWidget *wrapWidget = parentWidget ? parentWidget->parentWidget() : nullptr;
+                if (wrapWidget && strcmp(wrapWidget->metaObject()->className(), "QWidget") == 0) {
+                    wrapWidget->setVisible(isShow);
+                }
+
                 if (parentWidget && strcmp(parentWidget->metaObject()->className(), "Dtk::Widget::DFrame") == 0)
                     optionWidget = parentWidget;
 
@@ -184,49 +195,58 @@ void Service::showHideOpacityAndBlurOptions(bool isShow)
     }
 }
 
-void Service::listenWindowEffectSwitcher()
+void Service::showHideDebuginfodUrlsOptions(bool isShow)
 {
-//    if (nullptr == m_wmSwitcher) {
-//        m_wmSwitcher = new WMSwitcher(WMSwitcherService, WMSwitcherPath, QDBusConnection::sessionBus(), this);
-//        m_wmSwitcher->setObjectName("WMSwitcher");//Add by ut001000 renfeixiang 2020-08-13
-//        connect(m_wmSwitcher, &WMSwitcher::WMChanged, this, &Service::slotWMChanged, Qt::QueuedConnection);
-//    }
-    QDBusConnection session = QDBusConnection::sessionBus();
-    if (!session.interface()->isServiceRegistered(WMSwitcherService)) {
-        qInfo() << WMSwitcherService << "Not Registered!!!!!!!";
+    QWidget *rightFrame = m_settingDialog->findChild<QWidget *>("RightFrame");
+    if (nullptr == rightFrame) {
+        qInfo() << "can not found RightFrame in QWidget";
         return;
     }
-    session.connect(WMSwitcherService, WMSwitcherPath, WMSwitcherService, "WMChanged", this, SLOT(slotWMChanged(QString)));
-}
 
-void Service::slotWMChanged(const QString &wmName)
-{
-    bool isWinEffectEnabled = false;
-    if (wmName == "deepin wm")
-        isWinEffectEnabled = true;
+    QList<QWidget *> rightWidgetList = rightFrame->findChildren<QWidget *>();
+    for (int i = 0; i < rightWidgetList.size(); i++) {
+        QWidget *widget = rightWidgetList.at(i);
+        if (nullptr == widget)
+            continue;
 
-    showHideOpacityAndBlurOptions(isWinEffectEnabled);
-    emit onWindowEffectEnabled(isWinEffectEnabled);
-}
+        if (strcmp(widget->metaObject()->className(), "QLabel") == 0) {
+            QString text = (qobject_cast<QLabel *>(widget))->text();
+            if (QObject::tr("debuginfod URLs") == text) {
+                QWidget *optionWidget = widget;
+                QWidget *parentWidget = widget->parentWidget();
+                QWidget *wrapWidget = parentWidget ? parentWidget->parentWidget() : nullptr;
+                if (wrapWidget && strcmp(wrapWidget->metaObject()->className(), "QWidget") == 0) {
+                    wrapWidget->setVisible(isShow);
+                }
 
-bool Service::isWindowEffectEnabled()
-{
-    QDBusMessage msg = QDBusMessage::createMethodCall(WMSwitcherService, WMSwitcherPath, WMSwitcherService, "CurrentWM");
+                if (parentWidget && strcmp(parentWidget->metaObject()->className(), "Dtk::Widget::DFrame") == 0)
+                    optionWidget = parentWidget;
 
-    QDBusMessage response = QDBusConnection::sessionBus().call(msg);
-    if (response.type() == QDBusMessage::ReplyMessage) {
-        QList<QVariant> list = response.arguments();
-        QString wmName = list.first().toString();
-        if (wmName == "deepin wm") {
-            qInfo() << "The window effects is on";
-            return true;
+                if (isShow)
+                    optionWidget->show();
+                else
+                    optionWidget->hide();
+            }
         }
-    } else {
-        qInfo() << "call CurrentWM Fail!" << response.errorMessage();
     }
+}
 
-    qInfo() << "The window effects is off";
-    return false;
+void Service::listenWindowEffectSwitcher()
+{
+    connect(DWindowManagerHelper::instance(), &DWindowManagerHelper::hasCompositeChanged, this, [this]() {
+        bool isWinEffectEnabled = DWindowManagerHelper::instance()->hasComposite();
+        showHideOpacityAndBlurOptions(isWinEffectEnabled);
+        emit onWindowEffectEnabled(isWinEffectEnabled);
+    });
+}
+
+void Service::listenDebuginfodOption()
+{
+    connect(Settings::instance(), &Settings::terminalSettingChanged, this, [this] (const QString &keyName) {
+        if ("advanced.debuginfod.enable_debuginfod" == keyName) {
+            showHideDebuginfodUrlsOptions(Settings::instance()->enableDebuginfod());
+        }
+    });
 }
 
 qint64 Service::getEntryTime()
@@ -367,7 +387,7 @@ void Service::showCustomThemeSettingDialog(MainWindow *pOwner)
 void Service::slotCustomThemeSettingDialogFinished(int result)
 {
     if (CustomThemeSettingDialog::Accepted == result) {
-        m_settingOwner->switchThemeAction(m_settingOwner->themeCustomAction, Settings::instance()->m_configCustomThemePath);
+        m_settingOwner->customTheme(Settings::instance()->m_configCustomThemePath);
         return;
     }
 }
@@ -435,14 +455,14 @@ void Service::EntryTerminal(QStringList arguments, bool isMain)
     }
 
     //首次启动的终端未启动
-    if(!isMain && !mainTerminalIsStarted())
+    if (!isMain && !mainTerminalIsStarted())
         return;
     // 超出最大窗口数量
-    if(WindowsManager::instance()->widgetCount() >= MAXWIDGETCOUNT) {
+    if (WindowsManager::instance()->widgetCount() >= MAXWIDGETCOUNT) {
         qInfo() << QString("terminal cannot be created: %1/%2 ")
-                   .arg(WindowsManager::instance()->widgetCount())
-                   .arg(MAXWIDGETCOUNT)
-                   ;
+                .arg(WindowsManager::instance()->widgetCount())
+                .arg(MAXWIDGETCOUNT)
+                ;
         return;
     }
     WindowsManager::instance()->createNormalWindow(properties);
@@ -499,7 +519,7 @@ bool Service::getIsDialogShow() const
 void Service::setIsDialogShow(QWidget *parent, bool isDialogShow)
 {
     MainWindow *window = qobject_cast<MainWindow *>(parent);
-    if(nullptr == window)
+    if (nullptr == window)
         return;
     if (window == WindowsManager::instance()->getQuakeWindow()) {
         qInfo() << "QuakeWindow show or hide dialog " << isDialogShow;

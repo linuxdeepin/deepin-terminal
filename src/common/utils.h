@@ -48,10 +48,21 @@ extern __attribute__((visibility("default"))) int __maxFontSize;
 #define SPACEWIDTH 10
 // 控件通用高度
 #define COMMONHEIGHT 36
+#define COMMONHEIGHT_COMPACT 24
 // 图标大小
 #define ICONSIZE_50 50
 #define ICONSIZE_36 36
 #define ICONSIZE_20 20
+#define ICONSIZE_40_COMPACT 40
+#define ICON_CTX_SIZE_32 32
+#define ICON_CTX_SIZE_24 24
+// 竖向分割线高度
+#define VERTICAL_HEIGHT 28
+#define VERTICAL_WIDTH 3
+#define VERTICAL_HEIGHT_COMPACT 17
+#define VERTICAL_WIDTH_COMPACT 1
+// 设置框统一宽度
+#define SETTING_DIALOG_WIDTH 459
 
 // limit font size
 #define DEFAULT_MIN_FONT_SZIE 5
@@ -71,6 +82,7 @@ extern __attribute__((visibility("default"))) int __maxFontSize;
 #define WINDOW_DEFAULT_SIZE QSize(WINDOW_DEFAULT_WIDTH, WINDOW_DEFAULT_HEIGHT)      //终端窗口默认尺寸
 #define ICON_EXIT_FULL_SIZE QSize(ICONSIZE_36, ICONSIZE_36)                         //退出全屏按钮尺寸
 #define WIN_TITLE_BAR_HEIGHT 50 //标题栏高度
+#define WIN_TITLE_BAR_HEIGHT_COMPACT 40 //标题栏高度(紧凑模式)
 
 
 #define WINDOW_MIN_WIDTH 610   //终端窗口最小宽度
@@ -79,6 +91,7 @@ extern __attribute__((visibility("default"))) int __maxFontSize;
 //Encode Plugin
 #define ENCODE_ITEM_WIDTH 220
 #define ENCODE_ITEM_HEIGHT 60
+#define ENCODE_ITEM_HEIGHT_COMPACT 50
 
 //字体信息
 struct FontData{

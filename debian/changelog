@@ -1,3 +1,120 @@
+deepin-terminal (6.0.17) unstable; urgency=medium
+
+  * fix: crash on treeland (#378)
+
+ -- Yutao Meng <mengyutao@deepin.org>  Sat, 07 Dec 2024 13:48:11 +0800
+
+deepin-terminal (6.0.16) unstable; urgency=medium
+
+  * feat: Add debuginfod settings (#366)
+
+ -- Yutao Meng <mengyutao@deepin.org>  Tue, 19 Nov 2024 10:05:41 +0800
+
+deepin-terminal (6.0.15) unstable; urgency=medium
+
+  * Release 6.0.15
+  * feat: [UI] Adapt compact mode.(https://pms.uniontech.com/bug-view-279709.html)
+
+ -- Zhang Kun <zhangkun2@uniontech.com>  Fri, 25 Oct 2024 18:09:30 +0800
+
+deepin-terminal (6.0.14) unstable; urgency=medium
+
+  * chore: Update translation (#346)
+
+ -- Zhang Kun <zhangkun2@uniontech.com>  Thu, 01 Aug 2024 09:31:00 +0800
+
+deepin-terminal (6.0.13) unstable; urgency=medium
+
+  * fix: Remote server item text overlaps with buttons
+    新增Ctrl + 鼠标点击移动光标功能
+    为Ctrl+鼠标左键点击移动光标功能新增配置
+    fix: item is hidden partially in settingsdialog
+    fix: Bug# 点击自定义主题后未确认，菜单勾选状态错误
+    更新退出终端的警告弹窗提示语
+
+ -- Yutao Meng <mengyutao@deepin.org>  Fri, 21 Jun 2024 13:41:33 +0800
+
+deepin-terminal (6.0.12) unstable; urgency=medium
+
+  * fix: the quake window overlaps with the dock (Issue: #6557)
+  * feat: load keyboard layouts from runtime dir first
+  * fix: cursor position error when display completion (Issue: #5208)
+  * fix: local keytab logic error
+  * feat: Supports dsg-terminal-exec scheme (Issue: #7439)
+
+ -- Wang Yixue <wangyixue@deepin.org>  Tue, 12 Mar 2024 10:06:23 +0800
+
+deepin-terminal (6.0.11) unstable; urgency=medium
+
+  * 改用DTK方式启动文管，避免AM给文管套终端的appid,影响主题。
+
+ -- Yutao Meng <mengyutao@deepin.org>  Thu, 01 Feb 2024 10:28:53 +0800
+
+deepin-terminal (6.0.10) unstable; urgency=medium
+
+  * 调换切换前后标签页快捷键为正确顺序
+    修复雷神窗口无法设置模糊的问题
+    Dirty Fix改为部分刷新光标后的显示问题
+    无法打开未以'/'结尾的带端口号的链接
+    Fix debug logs spaming problem while resizing
+
+ -- Yutao Meng <mengyutao@deepin.org>  Thu, 25 Jan 2024 11:35:43 +0800
+
+deepin-terminal (6.0.9) unstable; urgency=medium
+
+  * Fix abnormal animations of quake window under multi-monitor scenario.
+    Fix wrong title bar previews of dark/light themes in system themes.
+
+ -- Yutao Meng <mengyutao@deepin.org>  Fri, 03 Nov 2023 10:38:56 +0800
+
+deepin-terminal (6.0.8) unstable; urgency=medium
+
+  * Allow extending terminal themes
+    Fix wrong width of Quake window if opened in a secondary screen with
+    different resolution with main screen
+
+ -- Yutao Meng <mengyutao@deepin.org>  Tue, 17 Oct 2023 10:39:37 +0800
+
+deepin-terminal (6.0.7) unstable; urgency=medium
+
+  * Fix compilation errors on deepin V23.
+    Add tips for empty group section in add server dialog.
+
+ -- Yutao Meng <mengyutao@deepin.org>  Mon, 28 Aug 2023 15:03:01 +0800
+
+deepin-terminal (6.0.6) unstable; urgency=medium
+
+  * Feature:
+      Optimized remote server functions
+      Update window title according to current tab name
+      New cursor type of bold underline
+      New option to choose which special characters to be included in double
+click selections
+      Change opacity with "Shift+Ctrl+Mouse Wheel"
+    Fix Bugs:
+      Better implementation of enable/disable flow control feature
+      Fix "Desktop Action" sections of desktop entry file to freedesktop standards
+      Blacklist Noto Sans SignWriting fonts
+      Fix compilation error
+      Fix Shift+Tab shortcut is unusable in terminal shells
+      Remove dependencies on dde-daemon WMSwitcher
+      Remove useless desktop environment variable
+
+
+ -- Yutao Meng <mengyutao@deepin.org>  Tue, 01 Aug 2023 16:37:36 +0800
+
+deepin-terminal (6.0.5) unstable; urgency=medium
+
+  * Feature:
+	New setting for customizing history line size
+
+    Fix Bugs:
+	Quake window animation is extremely slow by default.
+	The translations of "Ctrl+Mouse Scroll" setting entry is missing.
+	Font list in settings is empty on other distributions.
+
+ -- mengyutao <mengyutao@uniontech.com>  Thu, 16 Mar 2023 09:32:20 +0800
+
 deepin-terminal (6.0.4) unstable; urgency=medium
 
   * Add option to control the length of Quake window animation (#252)

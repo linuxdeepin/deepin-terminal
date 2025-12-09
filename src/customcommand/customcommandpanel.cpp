@@ -193,7 +193,6 @@ void CustomCommandPanel::initUI()
 
     m_pushButton = new DPushButton(this);
     m_pushButton->setObjectName("CustomAddCommandButton");//Add by ut001000 renfeixiang 2020-08-13
-    m_pushButton->setFixedHeight(36);
     m_pushButton->setText(tr("Add Command"));
 
     m_textLabel = new DLabel(this);

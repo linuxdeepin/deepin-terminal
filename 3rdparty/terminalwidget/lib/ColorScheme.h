@@ -36,8 +36,7 @@
 class QIODevice;
 //class KConfig;
 
-namespace Konsole
-{
+namespace Konsole {
 
 /**
  * Represents a color scheme for a terminal display.
@@ -53,30 +52,30 @@ public:
      * for Konsole.
      */
     ColorScheme();
-    ColorScheme(const ColorScheme& other);
+    ColorScheme(const ColorScheme &other);
     ~ColorScheme();
 
     /** Sets the descriptive name of the color scheme. */
-    void setDescription(const QString& description);
+    void setDescription(const QString &description);
     /** Returns the descriptive name of the color scheme. */
     QString description() const;
 
     /** Sets the name of the color scheme */
-    void setName(const QString& name);
+    void setName(const QString &name);
     /** Returns the name of the color scheme */
     QString name() const;
 
 #if 0
 // Implemented upstream - in user apps
     /** Reads the color scheme from the specified configuration source */
-    void read(KConfig& config);
+    void read(KConfig &config);
     /** Writes the color scheme to the specified configuration source */
-    void write(KConfig& config) const;
+    void write(KConfig &config) const;
 #endif
-    void read(const QString & filename);
+    void read(const QString &filename);
 
     /** Sets a single entry within the color palette. */
-    void setColorTableEntry(int index , const ColorEntry& entry);
+    void setColorTableEntry(int index, const ColorEntry &entry);
 
     /**
      * Copies the color entries which form the palette for this color scheme
@@ -87,14 +86,14 @@ public:
      * @param randomSeed Color schemes may allow certain colors in their
      * palette to be randomized.  The seed is used to pick the random color.
      */
-    void getColorTable(ColorEntry* table, uint randomSeed = 0) const;
+    void getColorTable(ColorEntry *table, uint randomSeed = 0) const;
 
     /**
      * Retrieves a single color entry from the table.
      *
      * See getColorTable()
      */
-    ColorEntry colorEntry(int index , uint randomSeed = 0) const;
+    ColorEntry colorEntry(int index, uint randomSeed = 0) const;
 
     /**
      * Convenience method.  Returns the
@@ -152,11 +151,11 @@ private:
     class RandomizationRange
     {
     public:
-        RandomizationRange() : hue(0) , saturation(0) , value(0) {}
+        RandomizationRange() : hue(0), saturation(0), value(0) {}
 
         bool isNull() const
         {
-            return ( hue == 0 && saturation == 0 && value == 0 );
+            return (hue == 0 && saturation == 0 && value == 0);
         }
 
         quint16 hue;
@@ -166,38 +165,38 @@ private:
 
     // returns the active color table.  if none has been set specifically,
     // this is the default color table.
-    const ColorEntry* colorTable() const;
+    const ColorEntry *colorTable() const;
 
 #if 0
 // implemented upstream - user apps
     // reads a single colour entry from a KConfig source
     // and sets the palette entry at 'index' to the entry read.
-    void readColorEntry(KConfig& config , int index);
+    void readColorEntry(KConfig &config, int index);
     // writes a single colour entry to a KConfig source
-    void writeColorEntry(KConfig& config , const QString& colorName, const ColorEntry& entry,const RandomizationRange& range) const;
+    void writeColorEntry(KConfig &config, const QString &colorName, const ColorEntry &entry, const RandomizationRange &range) const;
 #endif
     void readColorEntry(QSettings *s, int index);
 
     // sets the amount of randomization allowed for a particular color
     // in the palette.  creates the randomization table if
     // it does not already exist
-    void setRandomizationRange( int index , quint16 hue , quint8 saturation , quint8 value );
+    void setRandomizationRange(int index, quint16 hue, quint8 saturation, quint8 value);
 
     QString _description;
     QString _name;
     qreal _opacity;
-    ColorEntry* _table; // pointer to custom color table or 0 if the default
-                        // color scheme is being used
+    ColorEntry *_table; // pointer to custom color table or 0 if the default
+    // color scheme is being used
 
 
     static const quint16 MAX_HUE = 340;
 
-    RandomizationRange* _randomTable;   // pointer to randomization table or 0
-                                        // if no colors in the color scheme support
-                                        // randomization
+    RandomizationRange *_randomTable;   // pointer to randomization table or 0
+    // if no colors in the color scheme support
+    // randomization
 
-    static const char* const colorNames[TABLE_COLORS];
-    static const char* const translatedColorNames[TABLE_COLORS];
+    static const char *const colorNames[TABLE_COLORS];
+    static const char *const translatedColorNames[TABLE_COLORS];
 
     static const ColorEntry defaultTable[]; // table of default color entries
 };
@@ -232,7 +231,7 @@ public:
      * Constructs a new reader which reads from the specified device.
      * The device should be open in read-only mode.
      */
-    explicit KDE3ColorSchemeReader( QIODevice* device );
+    explicit KDE3ColorSchemeReader(QIODevice *device);
 
     /**
      * Reads and parses the contents of the .schema file from the input
@@ -241,15 +240,15 @@ public:
      * Returns a null pointer if an error occurs whilst parsing
      * the contents of the file.
      */
-    ColorScheme* read();
+    ColorScheme *read();
 
 private:
     // reads a line from the file specifying a colour palette entry
     // format is: color [index] [red] [green] [blue] [transparent] [bold]
-    bool readColorLine(const QString& line , ColorScheme* scheme);
-    bool readTitleLine(const QString& line , ColorScheme* scheme);
+    bool readColorLine(const QString &line, ColorScheme *scheme);
+    bool readTitleLine(const QString &line, ColorScheme *scheme);
 
-    QIODevice* _device;
+    QIODevice *_device;
 };
 
 /**
@@ -276,7 +275,7 @@ public:
     /**
      * Returns the default color scheme for Konsole
      */
-    const ColorScheme* defaultColorScheme() const;
+    const ColorScheme *defaultColorScheme() const;
 
     /**
      * Returns the color scheme with the given name or 0 if no
@@ -286,7 +285,7 @@ public:
      * The first time that a color scheme with a particular name is
      * requested, the configuration information is loaded from disk.
      */
-    const ColorScheme* findColorScheme(const QString& name);
+    const ColorScheme *findColorScheme(const QString &name);
 
 #if 0
     /**
@@ -295,15 +294,15 @@ public:
      *
      * TODO - Ensure the old color scheme gets deleted
      */
-    void addColorScheme(ColorScheme* scheme);
+    void addColorScheme(ColorScheme *scheme);
 #endif
     /**
      * Deletes a color scheme.  Returns true on successful deletion or false otherwise.
      */
-    bool deleteColorScheme(const QString& name);
+    bool deleteColorScheme(const QString &name);
 
     //重新加载主题
-    void realodColorScheme(const QString &origName);
+    void reloadColorScheme(const QString &origName);
 
     /**
      * Returns a list of the all the available color schemes.
@@ -312,10 +311,10 @@ public:
      *
      * Subsequent calls will be inexpensive.
      */
-    QList<const ColorScheme*> allColorSchemes();
+    QList<const ColorScheme *> allColorSchemes();
 
     /** Returns the global color scheme manager instance. */
-    static ColorSchemeManager* instance();
+    static ColorSchemeManager *instance();
 
     /** @brief Loads a custom color scheme under given \em path.
      *
@@ -329,20 +328,20 @@ public:
      * @param[in] path The path to KDE 4 .colorscheme or KDE 3 .schema.
      * @return Whether the color scheme is loaded successfully.
      */
-    bool loadCustomColorScheme(const QString& path);
+    bool loadCustomColorScheme(const QString &path);
 
     /**
      * @brief Allows to add a custom location of color schemes.
      *
      * @param[in] custom_dir Custom location of color schemes (must end with /).
      */
-    void addCustomColorSchemeDir(const QString& custom_dir);
+    void addCustomColorSchemeDir(const QString &custom_dir);
 
 private:
     // loads a color scheme from a KDE 4+ .colorscheme file
-    bool loadColorScheme(const QString& path);
+    bool loadColorScheme(const QString &path);
     // loads a color scheme from a KDE 3 .schema file
-    bool loadKDE3ColorScheme(const QString& path);
+    bool loadKDE3ColorScheme(const QString &path);
     // returns a list of paths of color schemes in the KDE 4+ .colorscheme file format
     QList<QString> listColorSchemes();
     // returns a list of paths of color schemes in the .schema file format
@@ -351,10 +350,10 @@ private:
     // loads all of the color schemes
     void loadAllColorSchemes();
     // finds the path of a color scheme
-    QString findColorSchemePath(const QString& name) const;
+    QString findColorSchemePath(const QString &name) const;
 
-    QHash<QString,const ColorScheme*> _colorSchemes;
-    QSet<ColorScheme*> _modifiedSchemes;
+    QHash<QString, const ColorScheme *> _colorSchemes;
+    QSet<ColorScheme *> _modifiedSchemes;
 
     bool _haveLoadedAll;
 
@@ -363,6 +362,6 @@ private:
 
 }
 
-Q_DECLARE_METATYPE(const Konsole::ColorScheme*)
+Q_DECLARE_METATYPE(const Konsole::ColorScheme *)
 
 #endif //COLORSCHEME_H

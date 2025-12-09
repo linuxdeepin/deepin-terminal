@@ -138,7 +138,12 @@ public:
          * An cursor shaped like the capital letter 'I', similar to the IBeam
          * cursor used in Qt/KDE text editors.
          */
-        IBeamCursor = 2
+        IBeamCursor = 2,
+        /**
+         * A rectangular block which covers the bottom area of the cursor character. 
+         * Easier to discover under underlined strings.
+         */
+        BoldUnderlineCursor = 3
     };
 
 
@@ -289,6 +294,16 @@ public slots:
      * be treated as a null-terminated string and its length will be determined automatically.
      */
     virtual void sendString(const char *string, int length = -1) = 0;
+
+    /**
+     * Send Cursor Change
+     *
+     * @param count count < 0
+     *                 cursor left count times
+     *              count > 0
+     *                 cursor right count times
+     */
+    virtual void sendCursor(int count) = 0;
 
     /**
      * Processes an incoming stream of characters.  receiveData() decodes the incoming

@@ -95,6 +95,7 @@ public slots:
   void sendText(const QString& text) override;
   void sendKeyEvent(QKeyEvent*) override;
   void sendMouseEvent(int buttons, int column, int line, int eventType) override;
+  void sendCursor(int count) override;
   virtual void focusLost();
   virtual void focusGained();
 

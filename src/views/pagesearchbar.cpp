@@ -8,6 +8,10 @@
 #include "mainwindow.h"
 
 #include <DLog>
+#include <DAnchors>
+#ifdef DTKWIDGET_CLASS_DSizeMode
+#include <DSizeMode>
+#endif
 
 #include <QToolButton>
 #include <QGraphicsOpacityEffect>
@@ -21,7 +25,7 @@ PageSearchBar::PageSearchBar(QWidget *parent) : DFloatingWidget(parent)
     Utils::set_Object_Name(this);
     // Init
     hide();
-    setFixedSize(barWidth, barHight + 12);
+    setFixedSize(barWidth, barHight);
     // 设置窗体透明度的，需求为100%
     QGraphicsOpacityEffect *opacityEffect = new QGraphicsOpacityEffect;
     setGraphicsEffect(opacityEffect);
@@ -35,10 +39,16 @@ PageSearchBar::PageSearchBar(QWidget *parent) : DFloatingWidget(parent)
     QHBoxLayout *m_layout = new QHBoxLayout();
     m_layout->setSpacing(widgetSpace);
     m_layout->setContentsMargins(layoutMargins, layoutMargins, layoutMargins, layoutMargins);
+    m_layout->setAlignment(Qt::AlignVCenter);
     m_layout->addWidget(m_searchEdit);
     m_layout->addWidget(m_findPrevButton);
     m_layout->addWidget(m_findNextButton);
     setLayout(m_layout);
+
+#ifdef DTKWIDGET_CLASS_DSizeMode
+    updateSizeMode();
+    QObject::connect(DGuiApplicationHelper::instance(), &DGuiApplicationHelper::sizeModeChanged, this, &PageSearchBar::updateSizeMode);
+#endif
 }
 
 bool PageSearchBar::isFocus()
@@ -156,7 +166,6 @@ void PageSearchBar::initSearchEdit()
     m_searchEdit->setFocusPolicy(Qt::StrongFocus);
     m_searchEdit->setFocusProxy(m_searchEdit->lineEdit());
     m_searchEdit->setObjectName("PageSearchBarSearchEdit");//Add by ut001000 renfeixiang 2020-08-13
-    m_searchEdit->lineEdit()->setMinimumHeight(widgetHight);
 
     //　保留原文字，图标
     saveOldHoldContent();
@@ -186,6 +195,46 @@ void PageSearchBar::initSearchEdit()
     connect(m_searchEdit, &DSearchEdit::textChanged, this, [this]() {
         emit keywordChanged(m_searchEdit->lineEdit()->text());
     });
+}
+
+/**
+ * @brief 接收 DGuiApplicationHelper::sizeModeChanged() 信号, 根据不同的布局模式调整
+ *      当前界面的布局. 只能在界面创建完成后调用.
+ */
+void PageSearchBar::updateSizeMode()
+{
+#ifdef DTKWIDGET_CLASS_DSizeMode
+    DIconButton *searchIconBtn = m_searchEdit->findChild<DIconButton *>();
+
+    if (DGuiApplicationHelper::isCompactMode()) {
+        setFixedSize(barWidthCompact, barHeightCompact);
+        setContentsMargins(compactMarigin, compactMarigin, compactMarigin, compactMarigin);
+        m_findPrevButton->setFixedSize(btnWidthCompact, btnHeightCompact);
+        m_findNextButton->setFixedSize(btnWidthCompact, btnHeightCompact);
+        m_searchEdit->setFixedHeight(COMMONHEIGHT_COMPACT);
+
+        if (searchIconBtn) {
+            searchIconBtn->setIconSize(QSize(ICON_CTX_SIZE_24, ICON_CTX_SIZE_24));
+        }
+    } else {
+        setFixedSize(barWidth, barHight);
+        setContentsMargins(defaultMarigin, defaultMarigin, defaultMarigin, defaultMarigin);
+        m_findPrevButton->setFixedSize(widgetHight, widgetHight);
+        m_findNextButton->setFixedSize(widgetHight, widgetHight);
+        m_searchEdit->setFixedHeight(COMMONHEIGHT);
+
+        if (searchIconBtn) {
+            searchIconBtn->setIconSize(QSize(ICON_CTX_SIZE_32, ICON_CTX_SIZE_32));
+        }
+    }
+
+    if (layout()) {
+        layout()->setContentsMargins(DSizeModeHelper::element(compactLayoutMarigins, defaultLayoutMarigins));
+        layout()->setSpacing(DSizeModeHelper::element(9, widgetSpace));
+        layout()->invalidate();
+        update();
+    }
+#endif
 }
 
 void PageSearchBar::setNoMatchAlert(bool isAlert)

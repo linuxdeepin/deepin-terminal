@@ -119,12 +119,6 @@ public:
     const QString identifier(int index) const;
 
     /**
-     * @brief 设置标签高度
-     * @author ut000610 daizhengwen
-     * @param tabHeight 标签高度
-     */
-    void setTabHeight(int tabHeight);
-    /**
      * @brief 设置标签项最小宽度
      * @author ut000610 daizhengwen
      * @param tabItemMinWidth 标签项最小宽度
@@ -454,7 +448,6 @@ private:
 
     DMenu *m_rightMenu = nullptr;
     int m_rightClickTab;
-    int m_tabHeight;
     int m_tabItemMinWidth;
     int m_tabItemMaxWidth;
 

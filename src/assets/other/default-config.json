@@ -17,6 +17,12 @@
                             "default": 100
                         },
                         {
+                            "key": "blurred_background",
+                            "text": "Blur background",
+                            "type": "checkbox",
+                            "default": "false"
+                        },
+                        {
                             "key": "font",
                             "name": "Font",
                             "type": "fontcombobox",
@@ -28,20 +34,21 @@
                             "type": "spinbutton",
                             "default": 11,
                             "max": 50,
-                            "min": 5
+                            "min": 5,
+                            "step": 1
                         },
                         {
                             "key": "theme",
                             "hide": true,
                             "reset": false,
-                            "default": "Linux"
+                            "default": ""
                         },
                         {
                             "key": "expand_theme",
                             "hide": true,
                             "reset": false,
                             "default": ""
-                        }  
+                        }
                     ]
                 },
                 {
@@ -144,13 +151,13 @@
                             "key": "previous_tab",
                             "name": "Previous tab",
                             "type": "shortcut",
-                            "default":  "Ctrl+Tab"
+                            "default":  "Ctrl+Shift+Tab"
                         },
                         {
                             "key": "next_tab",
                             "name": "Next tab",
                             "type": "shortcut",
-                            "default":  "Ctrl+Shift+Tab"
+                            "default":  "Ctrl+Tab"
                         },
                         {
                             "key": "vertical_split",
@@ -307,9 +314,15 @@
                             "key": "cursor_shape",
                             "name": "Cursor style",
                             "type": "buttongroup",
-                            "items": ["▐","_","|"],
+                            "items": ["▐","_","|","▂"],
                             "default": 0,
                             "i18n_skip_keys": ["items"]
+                        },
+                        {
+                            "key": "include_special_characters_in_double_click_selections",
+                            "name": "Include special character(s) in double click selections",
+                            "type": "lineedit",
+                            "default": ":@-./_~"
                         },
                         {
                             "key": "cursor_blink",
@@ -317,12 +330,17 @@
                             "text": "Cursor blink",
                             "default": true
                         },
-                          
                         {
                             "key": "auto_copy_selection",
                             "type": "checkbox",
                             "text": "Copy on select",
                             "default": true
+                        },
+			    {
+                            "key": "set_cursor_position",
+                            "type": "checkbox",
+                            "text": "Allow Ctrl + left mouse click to set cursor position",
+                            "default": false
                         }
                     ]
                 },
@@ -330,6 +348,15 @@
                     "key": "scroll",
                     "name": "Scroll",
                     "options": [
+                        {
+                            "key": "history_size",
+                            "name": "History size",
+                            "type": "spinbutton",
+                            "default": 5000,
+                            "max": 10000,
+                            "min": 1000,
+                            "step": 100
+                        },
                         {
                             "key": "scroll_on_key",
                             "type": "checkbox",
@@ -361,12 +388,6 @@
                             "default": "window_normal"
                         },
                         {
-                            "key": "blurred_background",
-                            "text": "Blur background",
-                            "type": "checkbox",
-                            "default": "false"
-                        },
-                        {
                             "key": "auto_hide_raytheon_window",
                             "text": "Hide Quake window after losing focus",
                             "type": "checkbox",
@@ -394,10 +415,28 @@
                             "default": "$SHELL"
                         },
                         {
-                            "key": "enable_ctrl_flow",
+                            "key": "disable_ctrl_flow",
                             "text": "Disable flow control using Ctrl+S, Ctrl+Q",
                             "type": "checkbox",
                             "default": "false"
+                        }
+                    ]
+                },
+                {
+                    "key": "debuginfod",
+                    "name": "Debuginfod",
+                    "options": [
+                        {
+                            "key": "enable_debuginfod",
+                            "text": "The HTTP file server used for transmitting debugging information resources",
+                            "type": "checkbox",
+                            "default": "true"
+                        },
+                        {
+                            "key": "debuginfod_urls",
+                            "name": "debuginfod URLs",
+                            "type": "lineedit",
+                            "default": "https://debuginfod.deepin.com"
                         }
                     ]
                 }
