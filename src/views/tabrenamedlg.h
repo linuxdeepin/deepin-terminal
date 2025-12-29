@@ -128,6 +128,7 @@ private:
      * @brief 根据布局模式(紧凑)切换更新界面布局
      */
     Q_SLOT void updateSizeMode();
+    void updateRowLabelWidth();
 
 private:
     QWidget *m_titleBar = nullptr;

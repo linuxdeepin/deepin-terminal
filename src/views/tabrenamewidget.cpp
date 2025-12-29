@@ -40,8 +40,10 @@ void TabRenameWidget::initUi()
     // 内容输入框
     m_inputedit = new DLineEdit(this);
     m_inputedit->setText("%n:%d");
-    m_inputedit->setMaximumWidth(172);
-    m_inputedit->setMinimumWidth(135);
+    // Keep the edit width stable; otherwise the widget shrinks when the text becomes empty,
+    // which makes the two rows in "Rename title" dialog look inconsistent.
+    // Slightly smaller to avoid layout overflow in some locales (e.g. English/lo) when label text is long.
+    m_inputedit->setFixedWidth(172);
     DFontSizeManager::instance()->bind(m_inputedit, DFontSizeManager::T6);
 
     // 插入按钮
@@ -151,8 +153,11 @@ void TabRenameWidget::initLabel()
     qCDebug(views) << "Branch: Setting label properties";
     DFontSizeManager::instance()->bind(m_Label, DFontSizeManager::T6);
 
-    // label要跟随字体扩展 => 所有控件都扩展效果不好
-    m_Label->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+    // Label width is unified by TabRenameDlg to keep the two rows aligned across locales.
+    // Keep it non-expanding by default to avoid pushing the input edit when the text is long.
+    m_Label->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Preferred);
+    // User expectation: left-aligned label text.
+    m_Label->setAlignment(Qt::AlignLeft | Qt::AlignVCenter);
     qCDebug(views) << "Branch: Adding label to layout";
     m_layout->addWidget(m_Label);
     qCDebug(views) << "TabRenameWidget::initLabel finished";

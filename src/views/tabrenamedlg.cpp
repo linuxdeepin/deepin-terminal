@@ -172,6 +172,7 @@ void TabRenameDlg::initContentWidget()
     initTitleLabel();
     initRenameWidget(false);
     initRenameWidget(true);
+    updateRowLabelWidth();
     initButtonWidget();
 
     qCDebug(views) << "Branch: Adding widgets to layout";
@@ -194,6 +195,59 @@ void TabRenameDlg::initContentWidget()
     // 设置确认按钮为enter后响应的默认按钮
     // 放在布局后生效，放在布局完成前不生效
     m_confirmButton->setDefault(true);
+}
+
+void TabRenameDlg::updateRowLabelWidth()
+{
+    if (!m_tabTitleEdit || !m_remoteTabTitleEdit) {
+        return;
+    }
+
+    // Keep changes minimal: don't extend TabRenameWidget API; fetch children directly.
+    auto *normalLabel = m_tabTitleEdit->findChild<QLabel *>();
+    auto *remoteLabel = m_remoteTabTitleEdit->findChild<QLabel *>();
+    if (!normalLabel || !remoteLabel) {
+        return;
+    }
+
+    // Find the "Insert" button inside the widget (there is only one DPushButton here).
+    auto *normalBtn = m_tabTitleEdit->findChild<DPushButton *>();
+    auto *remoteBtn = m_remoteTabTitleEdit->findChild<DPushButton *>();
+
+    const int normalW = normalLabel->sizeHint().width();
+    const int remoteW = remoteLabel->sizeHint().width();
+    int labelW = qMax(normalW, remoteW);
+
+    // Prevent layout overflow (and visual overlap) when translated label text is long.
+    // Row available width is dialog width minus known margins:
+    // - m_mainLayout left/right margins (10 + 10)
+    // - inner content layout left/right margins (20 + 20)
+    const int dialogW = width() > 0 ? width() : SETTING_DIALOG_WIDTH;
+    const QMargins mainMargins = m_mainLayout ? m_mainLayout->contentsMargins() : QMargins(10, 0, 10, 0);
+    const int innerMarginsLR = 20 + 20;
+    const int rowAvailW = dialogW - mainMargins.left() - mainMargins.right() - innerMarginsLR;
+
+    // Reserve widths for: input edit + insert button + spacing.
+    // Input edit is fixed width, so minimumWidth() is reliable.
+    const int spacing = 10; // TabRenameWidget layout spacing
+    const int inputW = m_tabTitleEdit->getInputedit() ? m_tabTitleEdit->getInputedit()->minimumWidth() : 0;
+    const int btnW = qMax(normalBtn ? normalBtn->sizeHint().width() : 0,
+                          remoteBtn ? remoteBtn->sizeHint().width() : 0);
+    const int reservedW = inputW + btnW + 2 * spacing;
+    const int maxLabelW = rowAvailW - reservedW;
+    if (maxLabelW > 0) {
+        // Give label a tiny extra padding so the following input edit starts a bit more to the right
+        // (helps avoid slight clipping in some locales), but never exceed the available width.
+        const int kLabelExtraPadding = 6;
+        labelW = qMin(labelW + kLabelExtraPadding, maxLabelW);
+    }
+
+    if (labelW <= 0) {
+        return;
+    }
+
+    normalLabel->setFixedWidth(labelW);
+    remoteLabel->setFixedWidth(labelW);
 }
 
 void TabRenameDlg::initConnections()
@@ -230,6 +284,7 @@ void TabRenameDlg::initConnections()
         if (isVisible() && layout()) {
             qCDebug(views) << "Branch: Dialog is visible and has layout, updating";
             layout()->invalidate();
+            updateRowLabelWidth();
             // 根据新界面布局，刷新界面大小
             updateGeometry();
             QTimer::singleShot(0, this, [=](){ resize(SETTING_DIALOG_WIDTH, minimumSizeHint().height()); });
@@ -334,6 +389,8 @@ void TabRenameDlg::updateSizeMode()
         qCDebug(views) << "Branch: Layout exists, invalidating and updating";
         layout()->invalidate();
     }
+
+    updateRowLabelWidth();
 
     qCDebug(views) << "Branch: Updating geometry";
     // 根据新界面布局，刷新界面大小
