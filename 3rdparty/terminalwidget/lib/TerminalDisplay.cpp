@@ -2903,10 +2903,9 @@ void TerminalDisplay::mouseTripleClickEvent(QMouseEvent* ev)
 
 bool TerminalDisplay::focusNextPrevChild( bool next )
 {
-  if (next)
-    return false; // This disables changing the active part in konqueror
-                  // when pressing Tab
-  return QWidget::focusNextPrevChild( next );
+  // Disable focus switching for both Tab and Shift+Tab
+  // to allow terminal applications (like vim) to handle these keys
+  return false;
 }
 
 
@@ -3393,6 +3392,8 @@ bool TerminalDisplay::handleShortcutOverrideEvent(QKeyEvent* keyEvent)
     {
       // list is taken from the QLineEdit::event() code
       case Qt::Key_Tab:
+      case Qt::Key_Backtab:  // Shift+Tab, needed for terminal applications like vim completion
+      case Qt::Key_Tab | Qt::ShiftModifier:  // Shift+Tab alternative key code
       case Qt::Key_Delete:
       case Qt::Key_Home:
       case Qt::Key_End:
