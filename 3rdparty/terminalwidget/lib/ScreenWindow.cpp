@@ -61,7 +61,18 @@ Character* ScreenWindow::getImage()
     {
         delete[] _windowBuffer;
         _windowBufferSize = size;
-        _windowBuffer = new Character[size];
+        _windowBuffer = new (std::nothrow) Character[size];
+        if (!_windowBuffer) {
+          qCritical() << "ScreenWindow: Failed to allocate window buffer (size:"
+                      << size << "characters," << size * sizeof(Character)
+                      << "bytes)";
+          // Fallback to minimal size
+          _windowBufferSize = 1;
+          _windowBuffer = new Character[1];
+          if (!_windowBuffer) {
+            qFatal("ScreenWindow: Cannot allocate even minimal window buffer");
+          }
+        }
         _bufferNeedsUpdate = true;
     }
 

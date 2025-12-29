@@ -169,7 +169,13 @@ void ColorScheme::setColorTableEntry(int index , const ColorEntry& entry)
 
     if ( !_table )
     {
-        _table = new ColorEntry[TABLE_COLORS];
+      _table = new (std::nothrow) ColorEntry[TABLE_COLORS];
+      if (!_table) {
+        qCritical() << "ColorScheme: Failed to allocate color table (size:"
+                    << TABLE_COLORS << "entries,"
+                    << TABLE_COLORS * sizeof(ColorEntry) << "bytes)";
+        return;
+      }
 
         for (int i=0;i<TABLE_COLORS;i++)
             _table[i] = defaultTable[i];
@@ -240,8 +246,16 @@ void ColorScheme::setRandomizationRange( int index , quint16 hue , quint8 satura
     Q_ASSERT( hue <= MAX_HUE );
     Q_ASSERT( index >= 0 && index < TABLE_COLORS );
 
-    if ( _randomTable == nullptr )
-        _randomTable = new RandomizationRange[TABLE_COLORS];
+    if (_randomTable == nullptr) {
+      _randomTable = new (std::nothrow) RandomizationRange[TABLE_COLORS];
+      if (!_randomTable) {
+        qCritical()
+            << "ColorScheme: Failed to allocate randomization table (size:"
+            << TABLE_COLORS << "entries,"
+            << TABLE_COLORS * sizeof(RandomizationRange) << "bytes)";
+        return;
+      }
+    }
 
     _randomTable[index].hue = hue;
     _randomTable[index].value = value;

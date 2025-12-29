@@ -14,6 +14,7 @@
 #include <QJsonDocument>
 #include <QJsonArray>
 #include <QLoggingCategory>
+#include <QDBusConnectionInterface>
 
 Q_DECLARE_LOGGING_CATEGORY(mainprocess)
 
@@ -40,17 +41,34 @@ bool DBusManager::initDBus()
     //用于雷神窗口通信的DBus
     QDBusConnection conn = QDBusConnection::sessionBus();
 
+    // 检查 DBus 连接是否有效
+    if (!conn.isConnected()) {
+      qCWarning(mainprocess) << "DBus session bus is not connected!";
+      return false;
+    }
+
+    // 检查服务是否已经被注册
+    if (conn.interface()->isServiceRegistered(TERMINALSERVER)) {
+      qCWarning(mainprocess) << "Terminal DBus service name is already "
+                                "registered by another process!";
+      return false;
+    }
+
     if (!conn.registerService(TERMINALSERVER)) {
-        qCWarning(mainprocess) << "The dbus service of the terminal has been registered or failed to be registered!";
-        return false;
+      qCWarning(mainprocess) << "Failed to register terminal DBus service!";
+      qCWarning(mainprocess) << "DBus error: " << conn.lastError().message();
+      return false;
     }
 
     if (!conn.registerObject(TERMINALINTERFACE, this, QDBusConnection::ExportAllSlots)) {
-        qCWarning(mainprocess) << "The dbus service on the terminal fails to create an object!";
-        return false;
+      qCWarning(mainprocess) << "Failed to register terminal DBus object!";
+      qCWarning(mainprocess) << "DBus error: " << conn.lastError().message();
+      // 取消注册服务
+      conn.unregisterService(TERMINALSERVER);
+      return false;
     }
 
-    qCDebug(mainprocess) << "initDBus completed successfully";
+    qCInfo(mainprocess) << "Terminal DBus service registered successfully!";
     return true;
 }
 
@@ -60,7 +78,8 @@ int DBusManager::callKDECurrentDesktop()
     QDBusMessage msg =
         QDBusMessage::createMethodCall(KWINDBUSSERVICE, KWINDBUSPATH, KWINDBUSSERVICE, "currentDesktop");
 
-    QDBusMessage response = QDBusConnection::sessionBus().call(msg);
+    QDBusMessage response =
+        QDBusConnection::sessionBus().call(msg, QDBus::Block, 5000);
     if (response.type() == QDBusMessage::ReplyMessage) {
         qCInfo(mainprocess)  << "Calling the 'currentDesktop' interface successded!";
         QList<QVariant> list = response.arguments();
@@ -79,7 +98,8 @@ void DBusManager::callKDESetCurrentDesktop(int index)
 
     msg << index;
 
-    QDBusMessage response = QDBusConnection::sessionBus().call(msg);
+    QDBusMessage response =
+        QDBusConnection::sessionBus().call(msg, QDBus::Block, 5000);
     if (response.type() == QDBusMessage::ReplyMessage)
         qCInfo(mainprocess)  << "Calling the 'setCurrentDesktop' interface successded!";
     else
@@ -95,7 +115,8 @@ FontDataList DBusManager::callAppearanceFont(QString fontType)
 
     msg << fontType;
 
-    QDBusMessage response = QDBusConnection::sessionBus().call(msg);
+    QDBusMessage response =
+        QDBusConnection::sessionBus().call(msg, QDBus::Block, 5000);
     if (QDBusMessage::ReplyMessage == response.type()) {
         qCInfo(mainprocess)  << "Calling the 'List' interface successded!";
         QList<QVariant> list = response.arguments();
@@ -123,7 +144,8 @@ FontDataList DBusManager::callAppearanceFont(QStringList fontList, QString fontT
         QDBusMessage::createMethodCall(APPEARANCESERVICE, APPEARANCEPATH, APPEARANCESERVICE, "Show");
 
     msg << fontType << fontList;
-    QDBusMessage response = QDBusConnection::sessionBus().call(msg);
+    QDBusMessage response =
+        QDBusConnection::sessionBus().call(msg, QDBus::Block, 5000);
     if (response.type() == QDBusMessage::ReplyMessage) {
         qCInfo(mainprocess)  << "Calling the 'Show' interface successded!";
         QByteArray fonts = response.arguments().value(0).toByteArray();
@@ -139,19 +161,34 @@ FontDataList DBusManager::callAppearanceFont(QStringList fontList, QString fontT
     return retList;
 }
 /******** Add by ut001000 renfeixiang 2020-06-16:增加 调用DBUS的show获取的等宽字体，并转换成QStringList End***************/
-void DBusManager::callTerminalEntry(QStringList args)
-{
-    qCDebug(mainprocess) << "callTerminalEntry called with args:" << args;
-    QDBusMessage msg =
-        QDBusMessage::createMethodCall(TERMINALSERVER, TERMINALINTERFACE, TERMINALSERVER, "entry");
+bool DBusManager::callTerminalEntry(QStringList args) {
+  // 首先检查 DBus 服务是否已注册
+  QDBusConnection conn = QDBusConnection::sessionBus();
+  if (!conn.interface()->isServiceRegistered(TERMINALSERVER)) {
+    qCWarning(mainprocess) << "Terminal DBus service is not registered!";
+    return false;
+  }
 
-    msg << args;
+  QDBusMessage msg = QDBusMessage::createMethodCall(
+      TERMINALSERVER, TERMINALINTERFACE, TERMINALSERVER, "entry");
 
-    QDBusMessage response = QDBusConnection::sessionBus().call(msg, QDBus::NoBlock);
-    if (response.type() == QDBusMessage::ReplyMessage)
-        qCInfo(mainprocess)  << "Calling the 'callTerminalEntry' interface successded!";
-    else
-        qCWarning(mainprocess) << "Failed to call the 'callTerminalEntry' interface'. msg: " << response.errorMessage();
+  msg << args;
+
+  // 使用同步调用而不是异步调用，以便检查结果
+  QDBusMessage response =
+      QDBusConnection::sessionBus().call(msg, QDBus::Block, 5000); // 5秒超时
+
+  if (response.type() == QDBusMessage::ReplyMessage) {
+    qCInfo(mainprocess)
+        << "Calling the 'callTerminalEntry' interface succeeded!";
+    return true;
+  } else {
+    qCWarning(mainprocess)
+        << "Failed to call the 'callTerminalEntry' interface'. msg: "
+        << response.errorMessage();
+    qCWarning(mainprocess) << "DBus error type: " << response.type();
+    return false;
+  }
 }
 
 void DBusManager::entry(QStringList args)

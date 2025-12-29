@@ -62,7 +62,7 @@ include(translation-generate)
 
 find_package(PkgConfig REQUIRED)
 
-set(qt_required_components Core DBus Gui Network Widgets)
+set(qt_required_components Core DBus Gui Network Widgets LinguistTools)
 
 # Find Qt version
 find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Core)

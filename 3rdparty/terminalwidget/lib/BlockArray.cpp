@@ -31,6 +31,8 @@
 #include <unistd.h>
 #include <cstdio>
 
+// Qt
+#include <QDebug>
 
 using namespace Konsole;
 
@@ -101,7 +103,13 @@ size_t BlockArray::newBlock()
     }
     append(lastblock);
 
-    lastblock = new Block();
+    lastblock = new (std::nothrow) Block();
+    if (!lastblock) {
+      qCritical() << "BlockArray: Failed to allocate memory for new history "
+                     "block (size:"
+                  << sizeof(Block) << "bytes)";
+      return size_t(-1);
+    }
     return index + 1;
 }
 
@@ -204,20 +212,32 @@ bool BlockArray::setHistorySize(size_t newsize)
         FILE * tmp = tmpfile();
         if (!tmp) {
             perror("konsole: cannot open temp file.\n");
+            qCritical() << "BlockArray: Failed to create temporary file for "
+                           "history storage";
         } else {
             ion = dup(fileno(tmp));
             if (ion<0) {
                 perror("konsole: cannot dup temp file.\n");
+                qCritical() << "BlockArray: Failed to duplicate file "
+                               "descriptor for history storage";
                 fclose(tmp);
             }
         }
         if (ion < 0) {
-            return false;
+          qCritical() << "BlockArray: Failed to initialize history storage, "
+                         "falling back to no history";
+          return false;
         }
 
         Q_ASSERT(!lastblock);
 
-        lastblock = new Block();
+        lastblock = new (std::nothrow) Block();
+        if (!lastblock) {
+          qCritical() << "BlockArray: Failed to allocate memory for history "
+                         "block (size:"
+                      << sizeof(Block) << "bytes)";
+          return false;
+        }
         size = newsize;
         return false;
     }
@@ -231,6 +251,7 @@ bool BlockArray::setHistorySize(size_t newsize)
         int status = ftruncate(ion, length*blocksize);
         if (status < 0) {
             perror("ftruncate");
+            qWarning() << "BlockArray: Failed to truncate history file";
         }
 
         size = newsize;
@@ -274,12 +295,20 @@ void BlockArray::decreaseBuffer(size_t newsize)
     }
 
     // The Block constructor could do somthing in future...
-    char * buffer1 = new char[blocksize];
+    char *buffer1 = new (std::nothrow) char[blocksize];
+    if (!buffer1) {
+      qCritical() << "BlockArray: Failed to allocate temporary buffer for "
+                     "history reorganization (size:"
+                  << blocksize << "bytes)";
+      return;
+    }
 
     FILE * fion = fdopen(dup(ion), "w+b");
     if (!fion) {
         delete [] buffer1;
         perror("fdopen/dup");
+        qCritical() << "BlockArray: Failed to open file descriptor for history "
+                       "reorganization";
         return;
     }
 
@@ -322,8 +351,17 @@ void BlockArray::increaseBuffer()
     }
 
     // The Block constructor could do somthing in future...
-    char * buffer1 = new char[blocksize];
-    char * buffer2 = new char[blocksize];
+    char *buffer1 = new (std::nothrow) char[blocksize];
+    char *buffer2 = new (std::nothrow) char[blocksize];
+
+    if (!buffer1 || !buffer2) {
+      qCritical() << "BlockArray: Failed to allocate temporary buffers for "
+                     "history expansion (size:"
+                  << blocksize << "bytes each)";
+      delete[] buffer1;
+      delete[] buffer2;
+      return;
+    }
 
     int runs = 1;
     int bpr = size; // blocks per run
@@ -336,6 +374,8 @@ void BlockArray::increaseBuffer()
     FILE * fion = fdopen(dup(ion), "w+b");
     if (!fion) {
         perror("fdopen/dup");
+        qCritical() << "BlockArray: Failed to open file descriptor for history "
+                       "expansion";
         delete [] buffer1;
         delete [] buffer2;
         return;

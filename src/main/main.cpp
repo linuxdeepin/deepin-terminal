@@ -136,10 +136,25 @@ int main(int argc, char *argv[])
     qCDebug(mainprocess) << "Initializing DBus manager";
     DBusManager manager;
     if (!manager.initDBus()) {
-        // 非第一次启动
-        qCInfo(mainprocess) << "Terminal already running, sending args via DBus";
-        DBusManager::callTerminalEntry(args);
+      // 非第一次启动，尝试通过 DBus 调用已存在的终端实例
+      qCInfo(mainprocess) << "DBus service registration failed, trying to call "
+                             "existing terminal instance...";
+
+      if (DBusManager::callTerminalEntry(args)) {
+        qCInfo(mainprocess)
+            << "Successfully called existing terminal instance via DBus.";
         return 0;
+      } else {
+        // DBus 调用失败，可能是服务不可用，提供备用方案
+        qCWarning(mainprocess)
+            << "Failed to call existing terminal instance via DBus!";
+        qCWarning(mainprocess)
+            << "Starting new terminal instance as fallback...";
+
+        // 继续执行正常的终端启动流程，作为备用方案
+        // 注意：这里不能再次尝试初始化 DBus 服务，因为服务名可能仍被占用
+        // 但我们可以启动一个独立的终端实例
+      }
     }
     // 第一次启动
     qCInfo(mainprocess) << "First terminal instance starting";
