@@ -230,7 +230,28 @@ inline void MainWindow::slotTabBarClicked(int index, QString tabIdentifier)
 inline void MainWindow::slotTabCurrentChanged(int index)
 {
     // qCDebug(mainprocess) << "Enter MainWindow::slotTabCurrentChanged with index:" << index;
-    focusPage(m_tabbar->identifier(index));
+
+    // 记录切换前页面：如果用户在“有程序运行中”切走，该标签页需要在程序结束(idle)后高亮提醒。
+    // 否则：如果程序是在该页前台启动的，onTermIsIdle(bIdle=false) 会因为 activeTab 而不标记 needChange，
+    // 导致切走后程序结束无法触发变色（即用户反馈的问题场景）。
+    TermWidgetPage *oldPage = currentPage();
+    const QString newTabIdentifier = m_tabbar->identifier(index);
+    const QString oldTabIdentifier = oldPage ? oldPage->identifier() : QString();
+    if (!oldTabIdentifier.isEmpty() && oldTabIdentifier != newTabIdentifier) {
+        TermWidget *oldTerm = oldPage->currentTerminal();
+        const bool oldIdle = (oldTerm == nullptr) ? true : !(oldTerm->hasRunningProcess());
+
+        // 只有在“切走时仍有运行进程”的情况下，才标记 needChange，等待 idle 后变色。
+        // 如果该标签已处于“变色提醒”状态，则不覆盖。
+        if (!oldIdle && !isTabChangeColor(oldTabIdentifier)) {
+            m_tabChangeColorMap.insert(oldTabIdentifier, false);
+            DGuiApplicationHelper *appHelper = DGuiApplicationHelper::instance();
+            DPalette pa = appHelper->standardPalette(appHelper->themeType());
+            m_tabbar->setNeedChangeTextColor(oldTabIdentifier, pa.color(DPalette::Highlight));
+        }
+    }
+
+    focusPage(newTabIdentifier);
 }
 
 inline void MainWindow::slotTabAddRequested()

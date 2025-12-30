@@ -91,11 +91,10 @@ void TermTabStyle::drawControl(ControlElement element, const QStyleOption *optio
             QString content = tab->text;
             QRect tabRect = tab->rect;
 
-            // qCDebug(views) << "Branch: Getting tab identifier";
+            // 取出对应index的tab唯一标识identifier（Qt5下由 QTabBar::initStyleOption 写入）
             QString strTabIndex = QString::number(tab->row);
             QObject *styleObject = option->styleObject;
-            // 取出对应index的tab唯一标识identifier
-            QString strTabIdentifier = styleObject->property(strTabIndex.toLatin1()).toString();
+            QString strTabIdentifier = styleObject ? styleObject->property(strTabIndex.toLatin1()).toString() : QString();
 
             // qCDebug(views) << "Branch: Checking tab status";
             // 由于标签现在可以左右移动切换，index会变化，改成使用唯一标识identifier进行判断
@@ -256,6 +255,52 @@ TabBar::~TabBar()
         delete m_termTabStyle;
     }
 }
+
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+void TabBar::paintTab(QPainter *painter, int index, const QStyleOptionTab &option) const
+{
+    // 在DTabBar的单tab绘制链路里调整文本色，避免paintEvent里“叠字”问题
+    QStyleOptionTab opt(option);
+
+    const QString id = identifier(index);
+    const bool isChanged = (m_tabStatusMap.value(id) == TabTextColorStatus_Changed);
+    const bool isCurrent = (index == currentIndex());
+
+    // Qt6 + DTabBar 下，内部绘制文字不一定使用 QPalette 的这些角色，导致“状态正确但不变色”。
+    // 这里采用更稳的方式：对需要变色的后台tab，先禁止底层绘制文字（避免叠字），
+    // 让底层仍绘制背景/图标/按钮，然后我们自己绘制一次文字并上色。
+    const QString rawText = opt.text;
+    const bool needForcePaintText = (isChanged && !isCurrent && m_tabChangedTextColor.isValid());
+    if (needForcePaintText) {
+        opt.text.clear();
+    }
+
+    DTabBar::paintTab(painter, index, opt);
+
+    if (needForcePaintText && painter) {
+        painter->save();
+        painter->setRenderHint(QPainter::TextAntialiasing, true);
+
+        QFont textFont = QApplication::font();
+        int fontSize = DFontSizeManager::instance()->fontPixelSize(DFontSizeManager::T6);
+        textFont.setPixelSize(fontSize);
+        textFont.setWeight(QFont::Medium);
+        painter->setFont(textFont);
+        painter->setPen(m_tabChangedTextColor);
+
+        QFontMetrics fm(textFont);
+        const int TAB_LEFTRIGHT_SPACE = 30;
+        const QRect tabRect = opt.rect;
+        const QString elided = fm.elidedText(rawText, Qt::ElideRight, tabRect.width() - TAB_LEFTRIGHT_SPACE, Qt::TextShowMnemonic);
+
+        QTextOption textOption;
+        textOption.setAlignment(Qt::AlignCenter);
+        painter->drawText(tabRect, elided, textOption);
+
+        painter->restore();
+    }
+}
+#endif
 
 void TabBar::setTabHeight(int tabHeight)
 {
