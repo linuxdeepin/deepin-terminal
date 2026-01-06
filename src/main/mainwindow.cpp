@@ -47,6 +47,7 @@
 #include <QVBoxLayout>
 #include <QMap>
 #include <QScreen>
+#include <QGuiApplication>
 #include <QLoggingCategory>
 
 #include <fstream>
@@ -2796,64 +2797,191 @@ void QuakeWindow::initTitleBar()
 
 void QuakeWindow::slotWorkAreaResized()
 {
-    qCInfo(mainprocess)  << "Workspace size change!";
-    /******** Modify by nt001000 renfeixiang 2020-05-20:修改成只需要设置雷神窗口宽度,根据字体高度设置雷神最小高度 Begin***************/
-    setMinimumWidth(QApplication::desktop()->availableGeometry().width());
+    qCInfo(mainprocess) << "Workspace size change!";
+    updateQuakeWindowGeometry();
+}
+
+void QuakeWindow::slotPrimaryScreenChanged(QScreen *screen)
+{
+    qCInfo(mainprocess) << "Primary screen changed signal received!";
+    qCInfo(mainprocess) << "  New screen:" << (screen ? screen->name() : "null");
+    qCInfo(mainprocess) << "  Old cached screen:"
+                        << (m_primaryScreen ? m_primaryScreen->name() : "null");
+    qCInfo(mainprocess) << "  Current qApp->primaryScreen():"
+                        << (qApp->primaryScreen() ? qApp->primaryScreen()->name()
+                                                    : "null");
+
+    if (!screen) {
+        qCWarning(mainprocess) << "New primary screen is null!";
+        return;
+    }
+
+    // 断开旧主屏幕的信号连接
+    if (m_primaryScreen) {
+        disconnect(m_primaryScreen, &QScreen::geometryChanged,
+                   this, &QuakeWindow::slotPrimaryScreenGeometryChanged);
+        disconnect(m_primaryScreen, &QScreen::availableGeometryChanged,
+                   this, &QuakeWindow::slotPrimaryScreenGeometryChanged);
+    }
+
+    // 更新主屏幕指针
+    m_primaryScreen = screen;
+
+    // 连接新主屏幕的信号
+    connect(m_primaryScreen, &QScreen::geometryChanged,
+            this, &QuakeWindow::slotPrimaryScreenGeometryChanged);
+    connect(m_primaryScreen, &QScreen::availableGeometryChanged,
+            this, &QuakeWindow::slotPrimaryScreenGeometryChanged);
+
+    // 更新雷神窗口几何属性
+    updateQuakeWindowGeometry();
+}
+
+void QuakeWindow::slotPrimaryScreenGeometryChanged()
+{
+    qCInfo(mainprocess) << "Primary screen geometry changed!";
+    updateQuakeWindowGeometry();
+}
+
+void QuakeWindow::bindPrimaryScreenSignals()
+{
+    // 监听主屏幕切换
+    connect(qApp, &QGuiApplication::primaryScreenChanged,
+            this, &QuakeWindow::slotPrimaryScreenChanged);
+
+    // 监听屏幕添加/移除（主屏幕变化时这些信号更可靠）
+    connect(qApp, &QGuiApplication::screenAdded, this, [this](QScreen *screen) {
+        Q_UNUSED(screen)
+        qCInfo(mainprocess) << "Screen added, checking primary screen...";
+        QScreen *primary = qApp->primaryScreen();
+        if (primary && primary != m_primaryScreen) {
+            slotPrimaryScreenChanged(primary);
+        }
+    });
+
+    connect(qApp, &QGuiApplication::screenRemoved, this, [this](QScreen *screen) {
+        Q_UNUSED(screen)
+        qCInfo(mainprocess) << "Screen removed, checking primary screen...";
+        QScreen *primary = qApp->primaryScreen();
+        if (primary && primary != m_primaryScreen) {
+            slotPrimaryScreenChanged(primary);
+        } else if (primary) {
+            // 即使主屏幕没变，也需要更新几何信息
+            updateQuakeWindowGeometry();
+        }
+    });
+
+    // 监听当前主屏幕的几何变化
+    if (m_primaryScreen) {
+        connect(m_primaryScreen, &QScreen::geometryChanged,
+                this, &QuakeWindow::slotPrimaryScreenGeometryChanged);
+        connect(m_primaryScreen, &QScreen::availableGeometryChanged,
+                this, &QuakeWindow::slotPrimaryScreenGeometryChanged);
+    }
+}
+
+void QuakeWindow::updateQuakeWindowGeometry()
+{
+    QScreen *primaryScreen = qApp->primaryScreen();
+    if (!primaryScreen) {
+        qCWarning(mainprocess) << "No primary screen available!";
+        return;
+    }
+
+    QRect screenRect = primaryScreen->geometry();
+    QRect availableRect = primaryScreen->availableGeometry();
+
+    qCInfo(mainprocess) << "Updating Quake window geometry:";
+    qCInfo(mainprocess) << "  Primary screen name:" << primaryScreen->name();
+    qCInfo(mainprocess) << "  Screen geometry:" << screenRect;
+    qCInfo(mainprocess) << "  Available geometry:" << availableRect;
+    qCInfo(mainprocess) << "  Current window pos:" << pos();
+    qCInfo(mainprocess) << "  Target pos:"
+                        << QPoint(availableRect.x(), availableRect.y());
+
+    // 检查是否需要移动到新屏幕
+    bool needMove = (pos().x() != availableRect.x() || pos().y() != availableRect.y());
+
+    // 更新窗口尺寸限制
+    setMinimumSize(screenRect.width(), 60);
+    setMaximumHeight(screenRect.height() * 2 / 3);
+
+    // 更新窗口宽度
+    setFixedWidth(availableRect.width());
+
+    if (needMove) {
+        // DDE 窗管对置顶窗口的 move() 可能不生效，需要先隐藏再显示
+        bool wasVisible = isVisible();
+        if (wasVisible) {
+            hide();
+        }
+
+        // 更新窗口位置到主屏幕左上角
+        move(availableRect.x(), availableRect.y());
+
+        if (wasVisible) {
+            show();
+            activateWindow();
+        }
+    }
+
+    qCInfo(mainprocess) << "  After move, window pos:" << pos();
+
+    // 更新最小高度
     setWindowMinHeightForFont();
-    /******** Add by ut001000 renfeixiang 2020-08-07:workAreaResized时改变大小，bug#41436***************/
     updateMinHeight();
-    /******** Modify by nt001000 renfeixiang 2020-05-20:修改成只需要设置雷神窗口宽度,根据字体高度设置雷神最小高度 End***************/
-    move(QApplication::desktop()->availableGeometry().x(), QApplication::desktop()->availableGeometry().y());
-    setFixedWidth(QApplication::desktop()->availableGeometry().width());
-    return ;
 }
 
 void QuakeWindow::initWindowAttribute()
 {
-    /************************ Add by m000743 sunchengxi 2020-04-27:雷神窗口任务栏移动后位置异常问题 Begin************************/
     setWindowRadius(0);
-    //QRect deskRect = QApplication::desktop()->availableGeometry();//获取可用桌面大小
-    QDesktopWidget *desktopWidget = QApplication::desktop();
-    QRect screenRect = desktopWidget->screenGeometry(); //获取设备屏幕大小
+
+    // 使用新的 API 获取主屏幕
+    QScreen *primaryScreen = qApp->primaryScreen();
+    if (!primaryScreen) {
+        qCWarning(mainprocess) << "No primary screen found!";
+        return;
+    }
+
+    // 缓存主屏幕指针
+    m_primaryScreen = primaryScreen;
+
+    QRect screenRect = primaryScreen->geometry();
+    QRect availableRect = primaryScreen->availableGeometry();
+
     Qt::WindowFlags windowFlags = this->windowFlags();
-    setWindowFlags(windowFlags | Qt::WindowStaysOnTopHint/* | Qt::FramelessWindowHint | Qt::BypassWindowManagerHint*/ /*| Qt::Dialog*/);
-    //wayland时需要隐藏WindowTitle
-    if(Utils::isWayLand()) {
+    setWindowFlags(windowFlags | Qt::WindowStaysOnTopHint);
+
+    // wayland 时需要隐藏 WindowTitle
+    if (Utils::isWayLand()) {
         setWindowFlag(Qt::FramelessWindowHint);
         m_titleBar->setVerResized(true);
     }
-    //add a line by ut001121 zhangmeng 2020-04-27雷神窗口禁用移动(修复bug#22975)
-    setEnableSystemMove(false);//    setAttribute(Qt::WA_Disabled, true);
 
-    /******** Modify by m000714 daizhengwen 2020-03-26: 窗口高度超过２／３****************/
-    setMinimumSize(screenRect.size().width(), 60);
-    setMaximumHeight(screenRect.size().height() * 2 / 3);
-    /********************* Modify by m000714 daizhengwen End ************************/
+    // 禁用系统移动
+    setEnableSystemMove(false);
+
+    // 设置窗口尺寸限制
+    setMinimumSize(screenRect.width(), 60);
+    setMaximumHeight(screenRect.height() * 2 / 3);
     setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-    // 计算屏幕宽度，设置雷神终端宽度
-    QList<QScreen *> screenList = qApp->screens();
-    int w = screenList[0]->geometry().width();
-    for (auto it = screenList.constBegin(); it != screenList.constEnd(); ++it) {
-        QRect rect = (*it)->geometry();
-        if (rect.x() == 0 && rect.y() == 0) {
-            w = rect.width();
-            break;
-        }
-    }
-    setFixedWidth(w);
-    connect(desktopWidget, &QDesktopWidget::workAreaResized, this, &QuakeWindow::slotWorkAreaResized);
+
+    // 使用主屏幕宽度设置雷神终端宽度
+    setFixedWidth(availableRect.width());
+
+    // 绑定主屏幕相关信号
+    bindPrimaryScreenSignals();
 
     int saveHeight = getQuakeHeight();
-    int saveWidth = screenRect.size().width();
-    resize(QSize(saveWidth, saveHeight));
+    resize(QSize(availableRect.width(), saveHeight));
+
     // 记录雷神高度
     m_quakeWindowHeight = saveHeight;
-    move(0, 0);
-    /************************ Add by m000743 sunchengxi 2020-04-27:雷神窗口任务栏移动后位置异常问题 End  ************************/
 
-    /******** Add by nt001000 renfeixiang 2020-05-20:增加setQuakeWindowMinHeight函数，设置雷神最小高度 Begin***************/
+    // 使用主屏幕的可用区域位置
+    move(availableRect.x(), availableRect.y());
+
     setWindowMinHeightForFont();
-    /******** Add by nt001000 renfeixiang 2020-05-20:增加setQuakeWindowMinHeight函数，设置雷神最小高度 End***************/
 }
 
 void QuakeWindow::saveWindowSize()
@@ -2876,9 +3004,11 @@ void QuakeWindow::switchFullscreen(bool forceFullscreen)
 
 QPoint QuakeWindow::calculateShortcutsPreviewPoint()
 {
-    //--added by qinyaning(nyq) to solve the problem of can't show center--//
-    QRect rect = QApplication::desktop()->availableGeometry();
-    //---------------------------------------------------------------------//
+    QScreen *primaryScreen = qApp->primaryScreen();
+    if (!primaryScreen) {
+        return QPoint(0, 0);
+    }
+    QRect rect = primaryScreen->availableGeometry();
     return QPoint(rect.x() + rect.width() / 2, rect.y() + rect.height() / 2);
 }
 
@@ -3027,10 +3157,13 @@ void QuakeWindow::setHeight(int h)
 
 int QuakeWindow::getQuakeAnimationTime()
 {
-    QDesktopWidget *desktopWidget = QApplication::desktop();
-    QRect screenRect = desktopWidget->screenGeometry(); //获取设备屏幕大小
-    //quakeAnimationBaseTime+quakeAnimationHighDistributionTotalTime的时间是雷神窗口最大高度时动画效果时间
-    //动画时间计算方法：3quakeAnimationBaseTime加上(quakeAnimationHighDistributionTotalTime乘以当前雷神高度除以雷神最大高度)所得时间，为各个高度时动画时间
+    QScreen *primaryScreen = qApp->primaryScreen();
+    if (!primaryScreen) {
+        return quakeAnimationBaseTime;
+    }
+    QRect screenRect = primaryScreen->geometry();
+    // quakeAnimationBaseTime+quakeAnimationHighDistributionTotalTime的时间是雷神窗口最大高度时动画效果时间
+    // 动画时间计算方法：quakeAnimationBaseTime加上(quakeAnimationHighDistributionTotalTime乘以当前雷神高度除以雷神最大高度)所得时间
     int durationTime = quakeAnimationBaseTime + quakeAnimationHighDistributionTotalTime * this->getQuakeHeight() / (screenRect.height() * 2 / 3);
     return durationTime;
 }
@@ -3195,7 +3328,8 @@ if(qVersion() >= QString("5.15.0")) {
 
 int QuakeWindow::getQuakeHeight()
 {
-    int screenHeight = qApp->desktop()->screenGeometry().height();
+    QScreen *primaryScreen = qApp->primaryScreen();
+    int screenHeight = primaryScreen ? primaryScreen->geometry().height() : 600;
     int minHeight = screenHeight * 1 / 3;
     return m_winInfoConfig->value(CONFIG_QUAKE_WINDOW_HEIGHT, minHeight).toInt();
 }
@@ -3211,9 +3345,11 @@ void QuakeWindow::switchEnableResize(bool isEnable)
 {
     if (isEnable) {
         // 设置最小高度和最大高度，解放fixSize设置的不允许拉伸
-        QDesktopWidget *desktopWidget = QApplication::desktop();
-        QRect screenRect = desktopWidget->screenGeometry(); //获取设备屏幕大小
-        //Add by ut001000 renfeixiang 2020-11-16 修改成使用写好的设置最小值的函数
+        QScreen *primaryScreen = qApp->primaryScreen();
+        if (!primaryScreen) {
+            return;
+        }
+        QRect screenRect = primaryScreen->geometry();
         updateMinHeight();
         setMaximumHeight(screenRect.height() * 2 / 3);
     } else {

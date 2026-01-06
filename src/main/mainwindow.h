@@ -43,6 +43,7 @@ class TermProperties;
 class ShortcutManager;
 class MainWindowPluginInterface;
 class CustomCommandPlugin;
+class QScreen;
 
 
 /*******************************************************************************
@@ -1059,6 +1060,17 @@ public slots:
     void slotWorkAreaResized();
 
     /**
+     * @brief 处理主屏幕切换事件
+     * @param screen 新的主屏幕
+     */
+    void slotPrimaryScreenChanged(QScreen *screen);
+
+    /**
+     * @brief 处理主屏幕几何/可用区域变化事件
+     */
+    void slotPrimaryScreenGeometryChanged();
+
+    /**
      * @brief 雷神窗口从上而下的动画结束的处理
      * @author ut000438 王亮
      */
@@ -1148,6 +1160,8 @@ private:
     QTimer *m_resizeTimer = nullptr;
     // 记录雷神是否当前桌面显示
     QMap<int, bool> m_desktopMap;
+    // 缓存当前主屏幕指针
+    QScreen *m_primaryScreen = nullptr;
 
     //Add by ut001000 renfeixiang 2020-11-16
     //获取配置文件中保存的雷神窗口高度
@@ -1164,6 +1178,16 @@ private:
      * @return
      */
     int getQuakeAnimationTime();
+
+    /**
+     * @brief 绑定主屏幕相关信号
+     */
+    void bindPrimaryScreenSignals();
+
+    /**
+     * @brief 更新雷神窗口几何属性（位置和大小）
+     */
+    void updateQuakeWindowGeometry();
 
     //函数的名称和实现都是按照dtk中复制，dtk项目生成的窗口可直接调用此函数
     /**
