@@ -1168,8 +1168,14 @@ void TerminalDisplay::updateImage()
 
   setScroll( _screenWindow->currentLine() , _screenWindow->lineCount() );
   //--added by qinyaning(nyq) to slove the problem of scroll init show--/
-  setScrollBarPosition(_lines > 1 && _screenWindow->lineCount() > _lines?
-                           QTermWidget::ScrollBarRight : QTermWidget::NoScrollBar);
+  // Avoid frequent scrollbar show/hide toggling during fast output:
+  // show it once when output exceeds one page, but do not auto-hide it again.
+  // Repeated toggling changes content width, triggers reflow, and may cause "content swallowed".
+  if (_scrollbarLocation == QTermWidget::NoScrollBar &&
+      _lines > 1 && _screenWindow->lineCount() > _lines)
+  {
+      setScrollBarPosition(QTermWidget::ScrollBarRight);
+  }
   //--------------------------------------------------------------------/
 
   Q_ASSERT( this->_usedLines <= this->_lines );
