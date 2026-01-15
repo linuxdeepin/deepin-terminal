@@ -296,13 +296,13 @@ void MainWindow::initTabBar()
     connect(m_tabbar, &TabBar::tabBarClicked, this, &MainWindow::slotTabBarClicked);
 
     // 点击TAB上页触发
-    connect(m_tabbar, &DTabBar::currentChanged, this, &MainWindow::slotTabCurrentChanged, Qt::QueuedConnection);
+    connect(m_tabbar, &DTabBar::currentChanged, this, &MainWindow::slotTabCurrentChanged);
 
     // 点击TAB上的＂＋＂触发
-    connect(m_tabbar, &DTabBar::tabAddRequested, this, &MainWindow::slotTabAddRequested, Qt::QueuedConnection);
+    connect(m_tabbar, &DTabBar::tabAddRequested, this, &MainWindow::slotTabAddRequested);
 
     // 点击TAB上的＂X＂触发
-    connect(m_tabbar, &DTabBar::tabCloseRequested, this, &MainWindow::slotTabCloseRequested, Qt::QueuedConnection);
+    connect(m_tabbar, &DTabBar::tabCloseRequested, this, &MainWindow::slotTabCloseRequested);
 
     // TAB菜单发来的关闭请求
     connect(m_tabbar, &TabBar::menuCloseTab, this, &MainWindow::slotMenuCloseTab);
