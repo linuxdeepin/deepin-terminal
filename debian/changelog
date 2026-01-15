@@ -1,3 +1,11 @@
+deepin-terminal (6.5.25) unstable; urgency=medium
+
+  * chore: Update version to 6.5.25
+  * fix(ui): remove Qt::QueuedConnection from tab event handlers
+  * fix: Addressed terminal lag issues
+
+ -- zhanghongyuan <zhanghongyuan@uniontech.com>  Thu, 15 Jan 2026 17:29:56 +0800
+
 deepin-terminal (6.5.24) unstable; urgency=medium
 
   * New version 6.5.24.
