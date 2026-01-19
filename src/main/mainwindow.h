@@ -48,6 +48,7 @@ class TermProperties;
 class ShortcutManager;
 class MainWindowPluginInterface;
 class CustomCommandPlugin;
+class QShowEvent;
 
 
 /*******************************************************************************
@@ -942,6 +943,10 @@ public:
     virtual void updateMinHeight() override {return;}
 
 protected:
+    /**
+     * @brief 普通窗口显示事件：窗口首次显示时将焦点设置回终端输入区
+     */
+    void showEvent(QShowEvent *event) override;
     /**
      * @brief 普通终端窗口初始化标题栏
      * @author ut001121 zhangmeng

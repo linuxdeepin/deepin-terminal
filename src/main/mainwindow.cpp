@@ -3119,6 +3119,17 @@ void NormalWindow::changeEvent(QEvent *event)
     QMainWindow::changeEvent(event);
 }
 
+void NormalWindow::showEvent(QShowEvent *event)
+{
+    // Let Qt finish its internal focus assignment first, then force focus back to terminal.
+    // This avoids the initial focus landing on TabBar/titlebar controls (TabFocus) which
+    // prevents typing immediately after opening a window.
+    DMainWindow::showEvent(event);
+    QTimer::singleShot(0, this, [this]() {
+        focusCurrentPage();
+    });
+}
+
 /////////////////////////////////////////////////////////////////////////////////////////////////////
 /**
  雷神终端窗口
@@ -3567,6 +3578,10 @@ void QuakeWindow::showEvent(QShowEvent *event)
     m_desktopMap[m_desktopIndex] = true;
 
     DMainWindow::showEvent(event);
+    // Ensure quake window is ready for typing immediately after it is shown.
+    QTimer::singleShot(0, this, [this]() {
+        focusCurrentPage();
+    });
 }
 
 bool QuakeWindow::event(QEvent *event)

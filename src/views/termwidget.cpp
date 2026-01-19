@@ -197,7 +197,10 @@ TermWidget::TermWidget(const TermProperties &properties, QWidget *parent) : QTer
         sendText(args);
     }
 
-    setFocusPolicy(Qt::NoFocus);
+    // Ensure terminal can receive keyboard focus immediately after a window/tab is shown.
+    // Otherwise MainWindow/TermWidgetPage setFocus() calls won't work and the initial focus
+    // may land on TabBar/titlebar controls, forcing users to click before typing.
+    setFocusPolicy(Qt::StrongFocus);
 
     TermWidgetPage *parentPage = qobject_cast<TermWidgetPage *>(parent);
     connect(this, &QTermWidget::uninstallTerminal, parentPage, &TermWidgetPage::uninstallTerminal);
