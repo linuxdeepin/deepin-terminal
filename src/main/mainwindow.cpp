@@ -2148,12 +2148,21 @@ void MainWindow::addThemeMenuItems()
 
         //初始化时读取配置改变主题颜色
         QString  expandThemeStr = Settings::instance()->extendColorScheme();
+        qCInfo(mainprocess) << "expandThemeStr:" << expandThemeStr;
         if (!expandThemeStr.isEmpty()) {
-            if (THEME_NINE == expandThemeStr  || THEME_TEN == expandThemeStr) {
+            if (expandThemeStr.contains("customTheme.colorscheme")) { // 自定义主题
+                if (THEME_LIGHT == Settings::instance()->themeSetting->value("CustomTheme/TitleStyle").toString()) {
+                    DGuiApplicationHelper::instance()->setPaletteType(DGuiApplicationHelper::LightType);
+                    emit DApplicationHelper::instance()->themeTypeChanged(DGuiApplicationHelper::LightType);
+                } else {
+                    DGuiApplicationHelper::instance()->setPaletteType(DGuiApplicationHelper::DarkType);
+                    emit DApplicationHelper::instance()->themeTypeChanged(DGuiApplicationHelper::DarkType);
+                }
+            } else if (THEME_NINE == expandThemeStr || THEME_TEN == expandThemeStr) {
                 //选中了内置主题在9-10项之间 // 浅色方案系列
                 DGuiApplicationHelper::instance()->setPaletteType(DGuiApplicationHelper::LightType);
                 emit DApplicationHelper::instance()->themeTypeChanged(DGuiApplicationHelper::LightType);
-            }else{
+            } else {
                 DGuiApplicationHelper::instance()->setPaletteType(DGuiApplicationHelper::DarkType);
                 emit DApplicationHelper::instance()->themeTypeChanged(DGuiApplicationHelper::DarkType);
             }
