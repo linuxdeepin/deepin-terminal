@@ -101,7 +101,8 @@ KPtyProcess::~KPtyProcess()
                     this, SLOT(_k_onStateChanged(QProcess::ProcessState)));
         }
     }
-    // delete d->pty;
+    // 先关闭 pty，让 shell 收到终端断开信号 (SIGHUP)
+    d->pty->close();
     d->pty.release();
     waitForFinished(300); // give it some time to finish
     if (state() != QProcess::NotRunning)
