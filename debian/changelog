@@ -1,3 +1,11 @@
+deepin-terminal (6.5.27) unstable; urgency=medium
+
+  * fix: update URL regular expression for improved accuracy
+  * fix: remove device pixel ratio scaling in drag pixmap
+  * build(debian): separate Qt5/Qt6 build configurations for V25/V20 support
+
+ -- dengzhongyuan <dengzhongyuan@uniontech.com>  Thu, 05 Feb 2026 13:06:29 +0800
+
 deepin-terminal (6.5.26) unstable; urgency=medium
 
   * update version to 6.5.26.
