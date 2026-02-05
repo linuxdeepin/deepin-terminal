@@ -1,3 +1,9 @@
+deepin-terminal (6.5.28) unstable; urgency=medium
+
+  * fix: Comment out warning for still-running terminal process
+
+ -- dengzhongyuan <dengzhongyuan@uniontech.com>  Thu, 05 Feb 2026 15:13:16 +0800
+
 deepin-terminal (6.5.27) unstable; urgency=medium
 
   * fix: update URL regular expression for improved accuracy
