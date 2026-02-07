@@ -1,11 +1,10 @@
 function(TRANSLATION_GENERATE QMS)
-  find_package(Qt${QT_VERSION_MAJOR}LinguistTools QUIET)
+  find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS LinguistTools)
 
-  if (NOT Qt${QT_VERSION_MAJOR}_LRELEASE_EXECUTABLE)
-    set(QT_LRELEASE "/lib/qt${QT_VERSION_MAJOR}/bin/lrelease")
-    message(STATUS "NOT found lrelease, set QT_LRELEASE = ${QT_LRELEASE}")
+  if (QT_VERSION_MAJOR MATCHES 6)
+    get_target_property(QT_LRELEASE Qt6::lrelease IMPORTED_LOCATION)
   else()
-    set(QT_LRELEASE "${Qt${QT_VERSION_MAJOR}_LRELEASE_EXECUTABLE}")
+    set(QT_LRELEASE "lrelease")
   endif()
 
   if(NOT ARGN)
