@@ -3513,7 +3513,7 @@ void QuakeWindow::resizeByCurrentScreen(bool force)
     QPoint cursorPoint = QCursor::pos();
     const QScreen *quakeScreen = QGuiApplication::screenAt(pos());
     const QScreen *cursorScreen = QGuiApplication::screenAt(cursorPoint);
-    if (force || (!isVisible() && quakeScreen->serialNumber() != cursorScreen->serialNumber())) {
+    if (cursorScreen && (force || (!isVisible() && quakeScreen && quakeScreen->serialNumber() != cursorScreen->serialNumber()))) {
         int windowWidth = cursorScreen->geometry().width();
         move(cursorScreen->geometry().topLeft());
         setFixedWidth(windowWidth);
