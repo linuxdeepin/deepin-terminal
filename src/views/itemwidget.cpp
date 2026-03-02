@@ -9,6 +9,7 @@
 #include "iconbutton.h"
 
 // dtk
+#include <DPaletteHelper>
 
 // qt
 #include <QDebug>
@@ -97,6 +98,9 @@ void ItemWidget::setFuncIcon(ItemFuncType iconType)
     case ItemFuncType_UngroupedItem:
         m_funcButton->hide();
         m_deleteButton->hide();
+        break;
+    default:
+        break;
     }
 
 }
@@ -122,7 +126,7 @@ void ItemWidget::setText(const QString &firstline, const QString &secondline)
         // 输入的第二行信息
         m_secondText = secondline;
         break;
-    case ItemFuncType_Group:
+    case ItemFuncType_Group: {
         qCDebug(views) << "Branch: ItemFuncType_Group";
         // 第二行 组内服务器个数
         int serverCount = ServerConfigManager::instance()->getServerCount(firstline);
@@ -131,6 +135,9 @@ void ItemWidget::setText(const QString &firstline, const QString &secondline)
             serverCount = 0;
         }
         m_secondText = QString("%1 server").arg(serverCount);
+        break;
+    }
+    default:
         break;
     }
     // 设置第二行信息

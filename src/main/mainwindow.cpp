@@ -1187,13 +1187,14 @@ QString MainWindow::getConfigWindowState()
 QSize MainWindow::halfScreenSize()
 {
     qCDebug(mainprocess) << "Enter MainWindow::halfScreenSize";
-#if (QT_VERSION < QT_VERSION_CHECK(6, 0, 0))
-    auto desk = qApp->desktop()->availableGeometry();
-#else
-    auto desk = qApp->primaryScreen()->availableGeometry();
-#endif
-    int w = desk.width();
-    int h = desk.height();
+    QScreen *screen = QGuiApplication::screenAt(QCursor::pos());
+    if (!screen) {
+        qCritical() << "Can't get the screen where the cursor is located!";
+        return QSize(0 ,0);
+    }
+
+    int w = screen->availableGeometry().width();
+    int h = screen->availableGeometry().height();
 
     QSize size;
     //开启窗管特效时会有1px的border
@@ -3230,20 +3231,10 @@ void QuakeWindow::initTitleBar()
 void QuakeWindow::slotWorkAreaResized()
 {
     qCInfo(mainprocess)  << "Workspace size change!";
-#if (QT_VERSION < QT_VERSION_CHECK(6, 0, 0))
-    auto desk = QApplication::desktop()->availableGeometry();
-#else
-    auto desk = QGuiApplication::primaryScreen()->availableGeometry();
-#endif
-
-    /******** Modify by nt001000 renfeixiang 2020-05-20:修改成只需要设置雷神窗口宽度,根据字体高度设置雷神最小高度 Begin***************/
-    setMinimumWidth(desk.width());
+    resizeByCurrentScreen(true);
     setWindowMinHeightForFont();
     /******** Add by ut001000 renfeixiang 2020-08-07:workAreaResized时改变大小，bug#41436***************/
     updateMinHeight();
-    /******** Modify by nt001000 renfeixiang 2020-05-20:修改成只需要设置雷神窗口宽度,根据字体高度设置雷神最小高度 End***************/
-    move(desk.x(), desk.y());
-    setFixedWidth(desk.width());
     return ;
 }
 
@@ -3252,13 +3243,6 @@ void QuakeWindow::initWindowAttribute()
     qCDebug(mainprocess) << "Enter QuakeWindow::initWindowAttribute";
     /************************ Add by m000743 sunchengxi 2020-04-27:雷神窗口任务栏移动后位置异常问题 Begin************************/
     setWindowRadius(0);
-    //QRect deskRect = QApplication::desktop()->availableGeometry();//获取可用桌面大小
-#if (QT_VERSION < QT_VERSION_CHECK(6, 0, 0))
-    QDesktopWidget *desktopWidget = QApplication::desktop();
-    QRect screenRect = desktopWidget->screenGeometry(); //获取设备屏幕大小
-#else
-    QRect screenRect = QGuiApplication::primaryScreen()->geometry();
-#endif
     Qt::WindowFlags windowFlags = this->windowFlags();
     setWindowFlags(windowFlags | Qt::WindowStaysOnTopHint/* | Qt::FramelessWindowHint | Qt::BypassWindowManagerHint*/ /*| Qt::Dialog*/);
     //wayland时需要隐藏WindowTitle
@@ -3269,35 +3253,9 @@ void QuakeWindow::initWindowAttribute()
     //add a line by ut001121 zhangmeng 2020-04-27雷神窗口禁用移动(修复bug#22975)
     setEnableSystemMove(false);//    setAttribute(Qt::WA_Disabled, true);
 
-    /******** Modify by m000714 daizhengwen 2020-03-26: 窗口高度超过２／３****************/
-    setMinimumSize(screenRect.size().width(), 60);
-    setMaximumHeight(screenRect.size().height() * 2 / 3);
-    /********************* Modify by m000714 daizhengwen End ************************/
-    setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-    // 计算屏幕宽度，设置雷神终端宽度
-    QList<QScreen *> screenList = qApp->screens();
-    int w = screenList[0]->geometry().width();
-    for (auto it = screenList.constBegin(); it != screenList.constEnd(); ++it) {
-        QRect rect = (*it)->geometry();
-        if (rect.x() == 0 && rect.y() == 0) {
-            w = rect.width();
-            break;
-        }
-    }
-    setFixedWidth(w);
-#if (QT_VERSION < QT_VERSION_CHECK(6, 0, 0))
-    connect(desktopWidget, &QDesktopWidget::workAreaResized, this, &QuakeWindow::slotWorkAreaResized);
-#else
-    connect(QGuiApplication::primaryScreen(), &QScreen::availableGeometryChanged, this, &QuakeWindow::slotWorkAreaResized);
-#endif
-
-    int saveHeight = getQuakeHeight();
-    int saveWidth = screenRect.size().width();
-    resize(QSize(saveWidth, saveHeight));
-    // 记录雷神高度
-    m_quakeWindowHeight = saveHeight;
-    move(0, 0);
-    /************************ Add by m000743 sunchengxi 2020-04-27:雷神窗口任务栏移动后位置异常问题 End  ************************/
+    resizeByCurrentScreen(true);
+    // FIXME(hualet): don't know why, just keep it for now.
+    getQuakeHeight();
 
     /******** Add by nt001000 renfeixiang 2020-05-20:增加setQuakeWindowMinHeight函数，设置雷神最小高度 Begin***************/
     setWindowMinHeightForFont();
@@ -3548,6 +3506,21 @@ void QuakeWindow::sendWindowForhibitMove(bool forhibit)
     int32_t ldata = forhibit;
     xcb_change_property(QX11Info::connection(), XCB_PROP_MODE_REPLACE, this->winId(),
                         reply, reply, 32, 1, &ldata);
+}
+
+void QuakeWindow::resizeByCurrentScreen(bool force)
+{
+    QPoint cursorPoint = QCursor::pos();
+    const QScreen *quakeScreen = QGuiApplication::screenAt(pos());
+    const QScreen *cursorScreen = QGuiApplication::screenAt(cursorPoint);
+    if (force || (!isVisible() && quakeScreen->serialNumber() != cursorScreen->serialNumber())) {
+        int windowWidth = cursorScreen->geometry().width();
+        move(cursorScreen->geometry().topLeft());
+        setFixedWidth(windowWidth);
+        setMinimumHeight(60);
+        setMaximumHeight(cursorScreen->geometry().height() * 2 / 3);
+        connect(cursorScreen, &QScreen::availableGeometryChanged, this, &QuakeWindow::slotWorkAreaResized);
+    }
 }
 
 void QuakeWindow::changeEvent(QEvent *event)

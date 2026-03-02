@@ -12,6 +12,7 @@
 
 //dtk
 #include <DLog>
+#include <DPaletteHelper>
 
 //qt
 #include <QScrollBar>
