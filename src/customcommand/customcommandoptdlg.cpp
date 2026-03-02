@@ -15,7 +15,7 @@
 #include <DKeySequenceEdit>
 #include <DCommandLinkButton>
 #include <DDialogCloseButton>
-#include <DGuiApplicationHelper>
+#include <DPaletteHelper>
 #include <DGuiApplicationHelper>
 #include <DWidgetUtil>
 #include <DLog>

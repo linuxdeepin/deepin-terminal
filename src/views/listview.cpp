@@ -776,6 +776,8 @@ void ListView::setItemIcon(ItemFuncType type, ItemWidget *item)
     case ItemFuncType_UngroupedItem:
         item->setIcon("dt_server");
         break;
+    default:
+        break;
     }
     qCDebug(views) << "ListView::setItemIcon finished";
 }
@@ -1023,6 +1025,8 @@ void ListView::deleteItem(const QString &key, ItemFuncType type)
         break;
     case ItemFuncType_Group:
         title = tr("Cancel Server Group");
+        break;
+    default:
         break;
     }
     QString alertText;

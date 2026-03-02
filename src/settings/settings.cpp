@@ -285,7 +285,7 @@ void Settings::addShellOption()
     // 初始值
     keysList << DEFAULT_SHELL;
     // 数据转换
-    for (const QString key : shellsMap.keys()) {
+    for (const QString &key : shellsMap.keys()) {
         keysList << key;
     }
     g_shellConfigCombox->addItems(keysList);
@@ -432,7 +432,6 @@ int Settings::QuakeDuration() const
     const int step = settings->option("advanced.window.quake_window_animation_duration")->data("step").toInt();
     return settings->option("advanced.window.quake_window_animation_duration")->value().toInt() * step;
 }
-
 QString Settings::encoding() const
 {
     qCDebug(tsettings) << "Getting encoding:" << m_EncodeName;
