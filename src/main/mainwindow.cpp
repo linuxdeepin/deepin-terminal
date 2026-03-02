@@ -3519,7 +3519,7 @@ void QuakeWindow::resizeByCurrentScreen(bool force)
         setFixedWidth(windowWidth);
         setMinimumHeight(60);
         setMaximumHeight(cursorScreen->geometry().height() * 2 / 3);
-        connect(cursorScreen, &QScreen::availableGeometryChanged, this, &QuakeWindow::slotWorkAreaResized);
+        connect(cursorScreen, &QScreen::availableGeometryChanged, this, &QuakeWindow::slotWorkAreaResized, Qt::UniqueConnection);
     }
 }
 
