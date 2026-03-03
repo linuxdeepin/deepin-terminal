@@ -252,6 +252,7 @@ inline void MainWindow::slotTabCurrentChanged(int index)
     }
 
     focusPage(newTabIdentifier);
+    updateWindowTitle();
 }
 
 inline void MainWindow::slotTabAddRequested()
@@ -1149,6 +1150,7 @@ void MainWindow::onTermTitleChanged(QString title)
         qCInfo(mainprocess) << "customName is false, setTabText";
         m_tabbar->setTabText(tabPage->identifier(), title);
     }
+    updateWindowTitle();
 
     // 判定第一次修改标题的时候，认为终端已经创建成功
     // 以此认为第一次打开终端窗口结束，记录时间
@@ -2902,6 +2904,11 @@ void MainWindow::themeActionHoveredSlot(QAction *action)
         Settings::instance()->bSwitchTheme = false;
         switchThemeAction(action);
     }
+}
+
+inline void MainWindow::updateWindowTitle()
+{
+    setWindowTitle(QString("%1 - %2").arg(m_tabbar->tabText(m_tabbar->currentIndex())).arg(QObject::tr("Terminal")));
 }
 
 void MainWindow::onCommandActionTriggered()
