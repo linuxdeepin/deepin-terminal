@@ -518,29 +518,30 @@ inline void TermWidget::onPaste()
 inline void TermWidget::onOpenFileInFileManager()
 {
     qCDebug(views) << "Enter TermWidget::onOpenFileInFileManager";
-    //DDesktopServices::showFolder(QUrl::fromLocalFile(workingDirectory()));
 
-    //打开文件夹的方式 和  打开文件夹 并勾选文件的方式 如下
-    //dde-file-manager -n /data/home/lx777/my-wjj/git/2020-08/18-zoudu/build-deepin-terminal-unknown-Debug
-    //dde-file-manager --show-item a.pdf
-
-    QProcess process;
     //未选择内容
     if (selectedText().isEmpty()) {
-        qCDebug(views) << "Branch: selectedText is empty, starting dde-file-manager with workingDirectory";
-        process.startDetached("dde-file-manager", {"-n", workingDirectory()});
+        qCDebug(views) << "Branch: selectedText is empty, using DDesktopServices::showFolder";
+        DDesktopServices::showFolder(QUrl::fromLocalFile(workingDirectory()));
         return;
     }
 
     QFileInfo fi(workingDirectory() + "/" + selectedText());
-    //选择的内容是文件或者文件夹
-    if (fi.isFile() || fi.isDir()) {
-        qCDebug(views) << "Branch: selectedText is a file or directory, starting dde-file-manager with --show-item";
-        process.startDetached("dde-file-manager", {"--show-item", workingDirectory() + "/" + selectedText()});
+    //选择的内容是文件夹
+    if (fi.isDir()) {
+        qCDebug(views) << "Branch: selectedText is a directory, using DDesktopServices::showFolder";
+        DDesktopServices::showFolder(QUrl::fromLocalFile(fi.filePath()));
+        return;
+    } else if (fi.isFile()) {
+        //选择的内容是文件
+        qCDebug(views) << "Branch: selectedText is a file, using DDesktopServices::showFileItem";
+        DDesktopServices::showFileItem(QUrl::fromLocalFile(fi.filePath()));
         return;
     }
+
     //选择的文本不是文件也不是文件夹
-    process.startDetached("dde-file-manager", {"-n", workingDirectory()});
+    qCDebug(views) << "Branch: selectedText is not a file or directory, using DDesktopServices::showFolder";
+    DDesktopServices::showFolder(QUrl::fromLocalFile(workingDirectory()));
 }
 
 /*** 修复 bug 28162 鼠标左右键一起按终端会退出 ***/
