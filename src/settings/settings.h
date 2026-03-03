@@ -211,7 +211,6 @@ public:
      * @author 朱科伟
      * @return
      */
-    bool enableControlFlow(void);
     bool disableControlFlow(void);
     // 是否启用debuginfod：设置或取消DEBUGINFOD_URLS环境变量
     bool enableDebuginfod();
