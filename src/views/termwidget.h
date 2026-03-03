@@ -190,11 +190,11 @@ public:
     void setDeleteMode(const EraseMode &deleteMode);
 
     /**
-     * @brief 获取当前terminal距离page的层次．用于限定分屏
-     * @author ut000439 王培利
-     * @return
+     * @brief 判断当前是否可以分屏
+     * @param ori 分屏方向
+     * @return true 可以分屏 / false 不可以分屏
      */
-    int getTermLayer();
+    bool canSplit(Qt::Orientation ori);
 
     /**
      * @brief 设置标签标题格式（全局设置）
@@ -452,6 +452,10 @@ private:
     QString m_remotePassword;
     //是否准备远程
     bool m_remotePasswordIsReady = false;
+
+    // 9:6 ratio for minimum terminal size
+    static const int MIN_WIDTH = 180;
+    static const int MIN_HEIGHT = 120;
 };
 
 #endif  // TERMWIDGET_H

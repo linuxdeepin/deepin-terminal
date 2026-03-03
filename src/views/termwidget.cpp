@@ -167,11 +167,8 @@ TermWidget::TermWidget(const TermProperties &properties, QWidget *parent) : QTer
     // 按键滚动
     setPressingScroll(Settings::instance()->PressingScroll());
 
-    /******** Modify by ut000439 wangpeili 2020-07-27: fix bug 39371: 分屏线可以拉到边****/
-    // 以最小mainwindow分4屏为标准的最小大小
-    /******** Modify by ut001000 renfeixiang 2020-08-07:修改成根据全局变量m_MinWidth，m_MinHeight计算出term的最小高度和宽度***************/
-    setMinimumSize(MainWindow::m_MinWidth / 2, (MainWindow::m_MinHeight - WIN_TITLE_BAR_HEIGHT) / 2);
-    /********************* Modify by n014361 wangpeili End ************************/
+    // 使用固定的最小尺寸，支持无限分屏
+    setMinimumSize(MIN_WIDTH, MIN_HEIGHT);
 
     QString currentEnvLanguage = Utils::getCurrentEnvLanguage();
     // 判断是维吾尔语或者藏语时
@@ -579,15 +576,11 @@ void TermWidget::addMenuActions(const QPoint &pos)
 
     m_menu->addSeparator();
 
-
-    DSplitter *splitter = qobject_cast<DSplitter *>(parentWidget());
-    int layer = getTermLayer();
-
-    if (1 == layer || (2 == layer && splitter && Qt::Horizontal == splitter->orientation()))
-        m_menu->addAction(tr("Horizontal split"), this, &TermWidget::onHorizontalSplit);
-
-    if (1 == layer || (2 == layer && splitter && Qt::Vertical == splitter->orientation()))
-        m_menu->addAction(tr("Vertical split"), this, &TermWidget::onVerticalSplit);
+    QAction *action = nullptr;
+    action = m_menu->addAction(tr("Horizontal split"), this, &TermWidget::onHorizontalSplit);
+    action->setEnabled(canSplit(Qt::Vertical));
+    action = m_menu->addAction(tr("Vertical split"), this, &TermWidget::onVerticalSplit);
+    action->setEnabled(canSplit(Qt::Horizontal));
 
     /******** Modify by n014361 wangpeili 2020-02-21: 增加关闭窗口和关闭其它窗口菜单    ****************/
     m_menu->addAction(QObject::tr("Close workspace"), this, &TermWidget::onCloseCurrWorkSpace);
@@ -654,7 +647,6 @@ void TermWidget::addMenuActions(const QPoint &pos)
 inline void TermWidget::onHorizontalSplit()
 {
     qCDebug(views) << "Enter TermWidget::onHorizontalSplit";
-    getTermLayer();
     // menu关闭与分屏同时进行时，会导致QT计算光标位置异常。
     QTimer::singleShot(10, this, &TermWidget::splitHorizontal);
 }
@@ -662,7 +654,6 @@ inline void TermWidget::onHorizontalSplit()
 inline void TermWidget::onVerticalSplit()
 {
     qCDebug(views) << "Enter TermWidget::onVerticalSplit";
-    getTermLayer();
     // menu关闭与分屏同时进行时，会导致QT计算光标位置异常。
     QTimer::singleShot(10, this, &TermWidget::splitVertical);
 }
@@ -912,16 +903,36 @@ void TermWidget::setDeleteMode(const EraseMode &deleteMode)
     QTermWidget::setDeleteMode(&ch, length);
 }
 
-int TermWidget::getTermLayer()
+bool TermWidget::canSplit(Qt::Orientation ori)
 {
-    qCDebug(views) << "Enter TermWidget::getTermLayer";
-    int layer = 1;
-    QWidget *currentW = this;
-    while (currentW->parentWidget() != parentPage()) {
-        layer++;
-        currentW = currentW->parentWidget();
+    qCDebug(views) << "CanSplit:" << ori;
+    QSplitter *splitter = qobject_cast<QSplitter *>(this->parentWidget());
+    int minimumSize = ori == Qt::Horizontal ? TermWidget::MIN_WIDTH : TermWidget::MIN_HEIGHT;
+    if (splitter) {
+        if (splitter->orientation() == ori) {
+            QList<int> sizes = splitter->sizes();
+            // new term has same size portion as the current one.
+            sizes.append(sizes.at(splitter->indexOf(this)));
+
+            double sum = 0;
+            for (int i = 0; i < sizes.count(); i++) {
+                sum += sizes.at(i);
+            }
+
+            for (int i = 0; i < sizes.count(); i++) {
+                int totalSize = ori == Qt::Horizontal ? splitter->width() : splitter->height();
+                int actualSize = (totalSize) * (sizes.at(i) / sum);
+                if (actualSize < minimumSize)
+                    return false;
+            }
+        } else {
+            int splitterSize = ori == Qt::Horizontal ? splitter->width() : splitter->height();
+            if (splitterSize / 2.0 < minimumSize)
+                return false;
+        }
     }
-    return  layer;
+
+    return true;
 }
 
 void TermWidget::setTabFormat(const QString &tabFormat)
