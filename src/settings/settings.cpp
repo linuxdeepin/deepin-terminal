@@ -324,7 +324,7 @@ void Settings::initConnection()
     qCDebug(tsettings) << "Initializing connections";
     connect(settings, &Dtk::Core::DSettings::valueChanged, this, [ = ](const QString & key, const QVariant & value) {
         Q_UNUSED(value)
-        if (key.contains("basic.interface.") || key.contains("advanced.cursor.") || key.contains("advanced.scroll.")) {
+        if (key.contains("basic.interface.") || key.contains("advanced.cursor.") || key.contains("advanced.scroll.") || key.contains("advanced.shell.")) {
             qCDebug(tsettings) << "Terminal setting changed:" << key;
             emit terminalSettingChanged(key);
         } else if (key.contains("shortcuts.")) {
@@ -717,14 +717,6 @@ void Settings::handleWidthFont()
 bool Settings::disableControlFlow(void)
 {
     return settings->option("advanced.shell.disable_ctrl_flow")->value().toBool();
-}
-
-bool Settings::enableControlFlow(void)
-{
-    // qCDebug(tsettings) << "Getting control flow setting";
-    bool enable = !settings->option("advanced.shell.enable_ctrl_flow")->value().toBool();
-    // qCDebug(tsettings) << "Control flow enabled:" << enable;
-    return enable;
 }
 
 bool Settings::enableDebuginfod()
