@@ -164,6 +164,9 @@ TermWidget::TermWidget(const TermProperties &properties, QWidget *parent) : QTer
     // 设置是否启用Ctrl+鼠标点击设置光标位置
     enableSetCursorPosition(Settings::instance()->enableSetCursorPosition());
 
+    // 流控制
+    setFlowControlEnabled(!Settings::instance()->disableControlFlow());
+
     // 按键滚动
     setPressingScroll(Settings::instance()->PressingScroll());
 
