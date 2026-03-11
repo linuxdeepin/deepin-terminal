@@ -375,30 +375,21 @@ inline void TermWidget::onUrlActivated(const QUrl &url, bool fromContextMenu)
 
 inline void TermWidget::onThemeTypeChanged(DGuiApplicationHelper::ColorType builtInTheme)
 {
-    qCInfo(views) << "Theme Type Changed! Current Theme Type: " << builtInTheme;
-    qCDebug(views) << "TermWidget::onThemeTypeChanged - Start theme update";
-    // ThemePanelPlugin *plugin = qobject_cast<ThemePanelPlugin *>(getPluginByName("Theme"));
-    QString theme = "Dark";
-    /************************ Mod by sunchengxi 2020-09-16:Bug#48226#48230#48236#48241 终端默认主题色应改为深色修改引起的系列问题修复 Begin************************/
-    //Mod by sunchengxi 2020-09-17:Bug#48349 主题色选择跟随系统异常
-    if (builtInTheme == DGuiApplicationHelper::LightType)
-        theme = "Light";
+    // 跟随系统主题时，仅信任 themeTypeChanged 的参数，不再依赖 paletteType 的即时值，
+    // 避免两者不同步时内容区与标题栏浅/深不一致。
+    const QString expandThemeStr = Settings::instance()->extendColorScheme();
 
-    /************************ Mod by sunchengxi 2020-09-16:Bug#48226#48230#48236#48241 终端默认主题色应改为深色修改引起的系列问题修复 End ************************/
-    //setColorScheme(theme);
-    //Settings::instance()->setColorScheme(theme);
-    QString  expandThemeStr = "";
-    expandThemeStr = Settings::instance()->extendColorScheme();
+    // 没有扩展主题：根据当前内建主题 Light/Dark 切换终端配色，并同步保存到设置
     if (expandThemeStr.isEmpty()) {
-        if (DGuiApplicationHelper::instance()->paletteType() == DGuiApplicationHelper::LightType)
-            theme = "Light";
-
+        QString theme = (builtInTheme == DGuiApplicationHelper::LightType) ? "Light" : "Dark";
         setColorScheme(theme);
         Settings::instance()->setColorScheme(theme);
-    } else {
-        setColorScheme(expandThemeStr, Settings::instance()->m_customThemeModify);
-        Settings::instance()->m_customThemeModify = false;
+        return;
     }
+
+    // 选择了内置/自定义主题：始终使用扩展主题，不跟随系统浅/深切换
+    setColorScheme(expandThemeStr, Settings::instance()->m_customThemeModify);
+    Settings::instance()->m_customThemeModify = false;
 }
 
 inline void TermWidget::onTermIsIdle(bool bIdle)
