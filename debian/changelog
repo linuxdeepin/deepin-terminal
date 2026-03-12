@@ -1,3 +1,20 @@
+deepin-terminal (6.5.29) unstable; urgency=medium
+
+  * fix: improve theme handling in TermWidget
+  * feat: update window title based on current tab
+  * fix: flow control configuration inconsistency
+  * feat: load keyboard layouts from runtime dir first
+  * feat: remove the limit of term splitting (#353)
+  * feat: use DDesktopServices to open files and folders
+  * fix: prevent window manager from disabling blur on Quake window
+  * fix: use Qt::UniqueConnection to avoid duplicate signal connections
+  * fix: add null check for QScreen in resizeByCurrentScreen
+  * fix: sync build warning fixes and treeland crash fix from master
+  * fix: swap previous/next tab shortcuts to correct order
+  * fix: fix translation generation for Qt6
+
+ -- Wang Yu <wangyu@uniontech.com>  Thu, 12 Mar 2026 20:09:44 +0800
+
 deepin-terminal (6.5.28) unstable; urgency=medium
 
   * fix: Comment out warning for still-running terminal process
