@@ -414,6 +414,41 @@ void Vt102Emulation::processWindowAttributeChange()
     return;
   }
 
+  // ========== OSC52 Special Handling ==========
+  if (attributeToChange == 52) {
+      // Extract Pt parameter (everything after semicolon)
+      // Format: "target;base64-data"
+      QString pt = QString::fromWCharArray(
+          tokenBuffer + i + 1,      // Skip semicolon
+          tokenBufferPos - i - 2    // Subtract BEL
+      );
+
+      // Split target and base64 data
+      int semiPos = pt.indexOf(';');
+      if (semiPos > 0) {
+          char target = pt[0].toLatin1();  // 'c', 'p', 's', or '0'
+          QString base64Data = pt.mid(semiPos + 1);
+
+          // Store to buffer
+          _pendingOSC52Data = base64Data;
+
+          // Emit signal directly - will be handled by TermWidget
+          emit osc52ClipboardRequest(target, base64Data);
+
+          // Clear buffer after consumption
+          _pendingOSC52Data.clear();
+
+          // OSC52 handling complete
+          return;
+      } else {
+          // Malformed: only target, no data (clear clipboard)
+          char target = pt[0].toLatin1();
+          emit osc52ClipboardRequest(target, QString());
+          return;
+      }
+  }
+  // ========== End OSC52 Handling ==========
+
   // copy from the first char after ';', and skipping the ending delimiter
   // 0x07 or 0x92. Note that as control characters in OSC text parts are
   // ignored, only the second char in ST ("\e\\") is appended to tokenBuffer.

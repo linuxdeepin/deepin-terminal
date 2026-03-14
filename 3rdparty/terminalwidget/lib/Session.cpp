@@ -118,6 +118,9 @@ Session::Session(QObject* parent) :
              SLOT(sendData(const char *,int,const QTextCodec *)) );
     connect( _emulation,SIGNAL(lockPtyRequest(bool)),_shellProcess,SLOT(lockPty(bool)) );
     connect( _emulation,SIGNAL(useUtf8Request(bool)),_shellProcess,SLOT(setUtf8Mode(bool)) );
+    // OSC52
+    connect(_emulation, SIGNAL(osc52ClipboardRequest(char,QString)),
+            this, SIGNAL(osc52ClipboardRequest(char,QString)));
 
     connect( _shellProcess,SIGNAL(finished(int,QProcess::ExitStatus)), this, SLOT(done(int)) );
     // not in kprocess anymore connect( _shellProcess,SIGNAL(done(int)), this, SLOT(done(int)) );
