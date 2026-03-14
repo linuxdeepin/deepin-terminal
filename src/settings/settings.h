@@ -195,6 +195,13 @@ public:
     bool IsPasteSelection();
 
     /**
+     * @brief 获取当前配置粘贴是否为选择内容
+     * @author dzw1995
+     * @return
+     */
+    bool allowOSC52() const;
+
+    /**
      * @brief 与设置里的快捷键冲突检测
      * @author n014361 王培利
      * @param Name 快捷键名称

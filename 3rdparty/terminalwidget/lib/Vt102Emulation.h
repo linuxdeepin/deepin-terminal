@@ -195,6 +195,11 @@ private:
   QTimer* _titleUpdateTimer;
 
     bool _reportFocusEvents;
+
+    /**
+     * @brief Temporary buffer for OSC52 base64 data
+     */
+    QString _pendingOSC52Data;
 };
 
 }

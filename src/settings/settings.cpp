@@ -549,6 +549,11 @@ bool Settings::IsPasteSelection()
     return settings->option("advanced.cursor.auto_copy_selection")->value().toBool();
 }
 
+bool Settings::allowOSC52() const
+{
+    return settings->option("advanced.cursor.allow_osc52")->value().toBool();
+}
+
 bool Settings::isShortcutConflict(const QString &Name, const QString &Key)
 {
     for (QString &tmpKey : settings->keys()) {

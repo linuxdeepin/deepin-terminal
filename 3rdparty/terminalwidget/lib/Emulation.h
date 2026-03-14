@@ -320,6 +320,23 @@ public slots:
     void receiveData(const char *buffer, int len, bool isCommandExec);
 
 signals:
+    /**
+     * @brief OSC52 clipboard operation request
+     *
+     * Emitted when a terminal program sends OSC52 escape sequence.
+     * Format: ESC ] 52 ; target ; base64-data BEL
+     *
+     * @param target Clipboard target:
+     *        - 'c' = CLIPBOARD (system clipboard, Ctrl+C/V)
+     *        - 'p' = PRIMARY (X11 primary selection, middle-click paste)
+     *        - 's' = SECONDARY (X11 secondary selection)
+     *        - '0' = All clipboards
+     * @param base64Data Base64-encoded clipboard data
+     *
+     * @author dzw1995
+     * @date 2026-03-14
+     */
+    void osc52ClipboardRequest(char target, const QString &base64Data);
 
     /**
      * Emitted when a buffer of data is ready to send to the

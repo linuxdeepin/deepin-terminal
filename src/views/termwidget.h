@@ -306,7 +306,15 @@ public slots:
      * @param isSuccess 启用shell是否成功 true 替换了shell false 替换shell但启动失败
      */
     void onShellMessage(QString currentShell, bool isSuccess);
-
+    /**
+     * @brief Handle OSC52 clipboard request
+     * @param target Clipboard target ('c', 'p', 's', '0')
+     * @param base64Data Base64-encoded data
+     *
+     * @author dzw1995
+     * @date 2026-03-14
+     */
+    void handleOSC52Clipboard(char target, const QString &base64Data);
 signals:
     void termRequestRenameTab(QString newTabName);
     void termIsIdle(QString tabIdentifier, bool bIdle);
