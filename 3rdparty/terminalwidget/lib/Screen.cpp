@@ -829,7 +829,21 @@ void Screen::displayCharacter(uint c)
         w--;
     }
     _cuX = newCursorX;
-    _escapeSequenceUrlExtractor->appendUrlText(QChar(c));
+
+    if (c <= 0xFFFF) {
+        _escapeSequenceUrlExtractor->appendUrlText(QChar(static_cast<ushort>(c)));
+    } else {
+        // 对于超过 0xFFFF 的字符，需要拆分为高代理和低代理
+        // 注意：如果 appendUrlText 逻辑依赖于“一个调用代表一个完整字符”，
+        // 这里分两次调用可能会破坏其内部逻辑（如 URL 提取）。
+        // 最好的办法依然是修改 appendUrlText 接受 QString。
+        QChar high = QChar::highSurrogate(c);
+        QChar low = QChar::lowSurrogate(c);
+
+        // 尝试连续调用，但这取决于 appendUrlText 的具体实现
+        _escapeSequenceUrlExtractor->appendUrlText(high);
+        _escapeSequenceUrlExtractor->appendUrlText(low);
+    }
 }
 
 void Screen::compose(const QString& /*compose*/)
