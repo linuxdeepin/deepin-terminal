@@ -254,6 +254,10 @@ void TermWidget::initConnections()
     connect(Service::instance(), &Service::touchPadEventSignal, this, &TermWidget::onTouchPadSignal);
 
     connect(Service::instance(), &Service::hostnameChanged, this, &TermWidget::onHostnameChanged);
+
+    // Connect OSC52 signal
+    connect(this, &QTermWidget::osc52ClipboardRequest,
+            this, &TermWidget::handleOSC52Clipboard);
 }
 
 inline void TermWidget::onSetTerminalFont()
@@ -1385,6 +1389,90 @@ void TermWidget::onShellMessage(QString currentShell, bool isSuccess)
 
         showShellMessage(strShellNoFound);
     }
+}
+
+void TermWidget::handleOSC52Clipboard(char target, const QString &base64Data)
+{
+    // ========== Security Check 1: User Settings ==========
+    if (!Settings::instance()->allowOSC52()) {
+        qWarning() << "OSC52: Blocked by user settings (allowOSC52=false)";
+        return;
+    }
+
+    // ========== Security Check 2: Data Size Limit ==========
+    const int MAX_CLIPBOARD_SIZE = 64 * 1024 * 1024;  // 64MB Base64编码后的内容
+
+    if (base64Data.size() > MAX_CLIPBOARD_SIZE) {
+        qWarning().nospace() << "OSC52: Rejected - data too large ("
+                             << base64Data.size()
+                             << " bytes, max=" << MAX_CLIPBOARD_SIZE << ")";
+        return;
+    }
+
+    // ========== Base64 Decode ==========
+    QByteArray decoded;
+
+    if (base64Data.isEmpty()) {
+        // Empty data: clear clipboard
+        decoded = QByteArray();
+    } else {
+        // Normal Base64 decode
+        decoded = QByteArray::fromBase64(base64Data.toLatin1());
+
+        // Check decode failure
+        if (decoded.isEmpty() && !base64Data.isEmpty()) {
+            qWarning() << "OSC52: Base64 decoding failed for data:"
+                       << base64Data.left(50) << "...";
+            return;
+        }
+    }
+
+    // ========== UTF-8 Decode ==========
+    QString text = QString::fromUtf8(decoded);
+
+    if (text.isEmpty() && !decoded.isEmpty()) {
+        qWarning() << "OSC52: Invalid UTF-8 encoding in clipboard data";
+        return;
+    }
+
+    // ========== Write to System Clipboard ==========
+    QClipboard *clipboard = QApplication::clipboard();
+
+    qInfo().nospace() << "OSC52: Writing " << text.size()
+                      << " bytes to clipboard (target: " << target << ")";
+
+    switch (target) {
+        case 'p':
+            // PRIMARY selection (X11 middle-click paste)
+            clipboard->setText(text, QClipboard::Selection);
+            break;
+
+        case 's':
+            // SECONDARY selection (X11, rarely used)
+            // Qt doesn't directly support SECONDARY, use Selection
+            clipboard->setText(text, QClipboard::Selection);
+            break;
+
+        case '0':
+            // All clipboards
+            clipboard->setText(text, QClipboard::Clipboard);
+            clipboard->setText(text, QClipboard::Selection);
+            break;
+
+        case 'c':
+        default:
+            // CLIPBOARD (system clipboard, Ctrl+C/V)
+            clipboard->setText(text, QClipboard::Clipboard);
+
+            // If "Copy on select" is enabled, also write to PRIMARY
+            // This allows middle-click paste for OSC52 content
+            if (Settings::instance()->IsPasteSelection()) {
+                clipboard->setText(text, QClipboard::Selection);
+            }
+            break;
+    }
+
+    qInfo() << "OSC52: Successfully copied to clipboard";
 }
 
 void TermWidget::wheelEvent(QWheelEvent *event)

@@ -475,6 +475,21 @@ signals:
      */
     void cursorChanged(KeyboardCursorShape cursorShape, bool blinkingCursorEnabled);
 
+    /**
+     * @brief OSC52 clipboard operation request
+     *
+     * Emitted when a terminal program sends OSC52 escape sequence.
+     * Format: ESC ] 52 ; target ; base64-data BEL
+     *
+     * @param target Clipboard target:
+     *        - 'c' = CLIPBOARD (system clipboard, Ctrl+C/V)
+     *        - 'p' = PRIMARY (X11 primary selection, middle-click paste)
+     *        - 's' = SECONDARY (X11 secondary selection)
+     *        - '0' = All clipboards
+     * @param base64Data Base64-encoded clipboard data
+     */
+    void osc52ClipboardRequest(char target, const QString &base64Data);
+
 protected:
     virtual void setMode(int mode) = 0;
     virtual void resetMode(int mode) = 0;

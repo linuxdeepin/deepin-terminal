@@ -514,6 +514,10 @@ void QTermWidget::init(int startnow)
 
     //将终端活动状态传给SessionManager单例
     connect(this, SIGNAL(isTermIdle(bool)), SessionManager::instance(), SIGNAL(sessionIdle(bool)));
+
+    // Connect OSC52 signal from emulation
+    connect(m_impl->m_session, SIGNAL(osc52ClipboardRequest(char,QString)),
+            this, SIGNAL(osc52ClipboardRequest(char,QString)));
 }
 
 QTermWidget::~QTermWidget()

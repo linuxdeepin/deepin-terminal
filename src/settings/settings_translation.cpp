@@ -159,4 +159,8 @@ void GenerateSettingTranslate()
     Q_UNUSED(set_cursor_position);
     auto enable_debuginfod = QObject::tr("The HTTP file server used for transmitting debugging information resources");
     Q_UNUSED(enable_debuginfod);
+
+    // OSC52 clipboard
+    auto advanced_cursor_allow_osc52Text = QObject::tr("Allow OSC52 clipboard access");
+    Q_UNUSED(advanced_cursor_allow_osc52Text);
 }
