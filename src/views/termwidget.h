@@ -297,6 +297,16 @@ public slots:
      */
     void onShellMessage(QString currentShell, bool isSuccess);
 
+    /**
+     * @brief Handle OSC52 clipboard request
+     * @param target Clipboard target ('c', 'p', 's', '0')
+     * @param base64Data Base64-encoded data
+     *
+     * @author dzw1995
+     * @date 2026-03-14
+     */
+    void handleOSC52Clipboard(char target, const QString &base64Data);
+
 signals:
     void termRequestRenameTab(QString newTabName);
     void termIsIdle(QString tabIdentifier, bool bIdle);

@@ -337,6 +337,12 @@
                             "default": true
                         },
                         {
+                            "key": "allow_osc52",
+                            "type": "checkbox",
+                            "text": "Allow OSC52 clipboard access",
+                            "default": true
+                        },
+                        {
                             "key": "set_cursor_position",
                             "type": "checkbox",
                             "text": "Allow Ctrl + left mouse click to set cursor position",

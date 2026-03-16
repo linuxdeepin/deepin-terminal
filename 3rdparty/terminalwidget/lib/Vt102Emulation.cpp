@@ -205,6 +205,12 @@ void Vt102Emulation::addToCurrentToken(wchar_t cc)
 {
   tokenBuffer[tokenBufferPos] = cc;
   tokenBufferPos = qMin(tokenBufferPos+1,MAX_TOKEN_LENGTH-1);
+
+  // ========== OSC52: Check accumulated buffer size ==========
+  if (_osc52InProgress && tokenBufferPos >= MAX_TOKEN_LENGTH - 100) {
+      handleOSC52Chunk();
+  }
+  // ==========================================================
 }
 
 // Character Class flags used while decoding
@@ -278,12 +284,29 @@ void Vt102Emulation::initTokenizer()
 #define CNTL(c) ((c)-'@')
 #define ESC 27
 #define DEL 127
+#define BEL 7
 
 // process an incoming unicode character
 void Vt102Emulation::receiveChar(wchar_t cc)
 {
   if (cc == DEL)
     return; //VT100: ignore.
+
+  // ==========  OSC52: Direct path for subsequent chunks ==========
+  // If OSC52 is in progress and past first chunk, directly accumulate
+  if (_osc52InProgress && cc != BEL) {
+      addToCurrentToken(cc);
+      // Chunk boundary check is handled inside addToCurrentToken()
+      return;
+  }
+  // ========== OSC52: Check for BEL end ==========
+  // CRITICAL: Remove Xpe check - BEL alone should end OSC52 sequence
+  if (cc == BEL && _osc52InProgress) {
+      handleOSC52End(cc);
+      resetTokenizer();
+      return;
+  }
+  // =======================================================
 
   if (ces(CTL))
   {
@@ -317,8 +340,26 @@ void Vt102Emulation::receiveChar(wchar_t cc)
     if (lec(1,0,ESC)) { return; }
     if (lec(1,0,ESC+128)) { s[0] = ESC; receiveChar('['); return; }
     if (les(2,1,GRP)) { return; }
-    if (Xte         ) { processWindowAttributeChange(); resetTokenizer(); return; }
-    if (Xpe         ) { prevCC = cc; return; }
+    // ========== OSC: Unified handling ==========
+    if (Xpe && !_osc52InProgress) {
+        // Check 1: OSC52 start detection
+        if (isOSC52Start()) {
+            startOSC52();
+            // Don't return - continue to accumulate
+        }
+        // Check 2: OSC end (BEL or ST)
+        else if (cc == BEL || (prevCC == ESC && cc == 0x5C)) {
+            processWindowAttributeChange();
+            resetTokenizer();
+            return;
+        }
+        // Check 3: Normal OSC - accumulate
+        else {
+            prevCC = cc;
+            return;
+        }
+    }
+    // ============================================
     if (lec(3,2,'?')) { return; }
     if (lec(3,2,'>')) { return; }
     if (lec(3,2,'!')) { return; }
@@ -916,6 +957,127 @@ void Vt102Emulation::reportTerminalParms(int p)
   }
   sendString(tmp);
 }
+
+// ========== OSC52 Clipboard Implementation ==========
+
+bool Vt102Emulation::isOSC52Start() const
+{
+    // Check if tokenBuffer starts with "ESC ] 5 2 ;"
+    // tokenBuffer layout: [0]=ESC, [1]=']', [2]='5', [3]='2', [4]=';'
+    return (tokenBufferPos >= 5 &&
+            tokenBuffer[2] == L'5' &&
+            tokenBuffer[3] == L'2' &&
+            tokenBuffer[4] == L';');
+}
+
+char Vt102Emulation::extractOSC52Target() const
+{
+    // tokenBuffer layout: ESC ] 5 2 ; target ; base64...
+    //                                     ↑
+    //                                  position 5
+    if (tokenBufferPos > 5) {
+        return static_cast<char>(tokenBuffer[5]);
+    }
+    return 'c'; // Default to CLIPBOARD
+}
+
+QString Vt102Emulation::extractOSC52Data() const
+{
+    // tokenBuffer layout: ESC ] 5 2 ; target ; base64...
+    //                                       ↑
+    //                                    position 7 (data start for first chunk)
+    // For subsequent chunks, data starts at position 0
+    int dataStart = _osc52IsFirstChunk ? 7 : 0;
+    if (tokenBufferPos > dataStart) {
+        return QString::fromWCharArray(tokenBuffer + dataStart, tokenBufferPos - dataStart);
+    }
+    return QString();
+}
+
+void Vt102Emulation::startOSC52()
+{
+    _osc52InProgress = true;
+    _osc52Target = extractOSC52Target();
+    _osc52DataBuffer.clear();
+    _osc52IsFirstChunk = true;  // Mark as first chunk
+
+    qInfo() << "OSC52: Start, target=" << _osc52Target;
+}
+
+void Vt102Emulation::handleOSC52End(wchar_t cc)
+{
+    // cc should be BEL (7)
+    Q_ASSERT(cc == BEL);
+    Q_UNUSED(cc);
+
+    // Extract base64 data from current tokenBuffer
+    // For the final chunk, skip BEL character at the end
+    QString base64Data;
+    if (_osc52IsFirstChunk) {
+        // Single chunk OSC52: skip header (7 chars) and BEL (1 char)
+        if (tokenBufferPos > 8) {
+            base64Data = QString::fromWCharArray(tokenBuffer + 7, tokenBufferPos - 8);
+        }
+    } else {
+        // Multi-chunk OSC52 final chunk: tokenBuffer contains ONLY base64 data
+        // tokenBufferPos includes the BEL character, so subtract 1
+        if (tokenBufferPos > 1) {
+            base64Data = QString::fromWCharArray(tokenBuffer, tokenBufferPos - 1);
+        }
+    }
+
+    // Accumulate to buffer
+    _osc52DataBuffer += base64Data;
+
+    // ========== OSC52: Check final buffer size ==========
+    if (_osc52DataBuffer.size() >= MAX_OSC52_BUFFER) {
+        qWarning() << "OSC52: Buffer overflow (>=" << MAX_OSC52_BUFFER
+                   << "bytes), rejecting";
+        _osc52DataBuffer.clear();
+        _osc52InProgress = false;
+        _osc52IsFirstChunk = false;
+        return;
+    }
+    // ====================================================
+
+    // Emit signal with complete data
+    emit osc52ClipboardRequest(_osc52Target, _osc52DataBuffer);
+
+    qInfo() << "OSC52: Complete, sent" << _osc52DataBuffer.size() << "bytes";
+
+    // Clear state
+    _osc52DataBuffer.clear();
+    _osc52InProgress = false;
+    _osc52IsFirstChunk = false;
+}
+
+void Vt102Emulation::handleOSC52Chunk()
+{
+    // ========== OSC52: Check buffer size limit ==========
+    if (_osc52DataBuffer.size() >= MAX_OSC52_BUFFER) {
+        qWarning() << "OSC52: Buffer overflow (>=" << MAX_OSC52_BUFFER
+                   << "bytes), rejecting";
+        _osc52DataBuffer.clear();
+        _osc52InProgress = false;
+        _osc52IsFirstChunk = false;
+        return;
+    }
+    // ====================================================
+
+    // Extract current chunk from tokenBuffer
+    QString base64Data = extractOSC52Data();
+    _osc52DataBuffer += base64Data;
+
+    // Mark as not first chunk for subsequent chunks
+    _osc52IsFirstChunk = false;
+
+    // ========== Add resetTokenizer ==========
+    resetTokenizer();  // 清空 tokenBuffer，准备接收新数据
+    // ========================================
+    // Don't clear state, continue receiving
+}
+
+// ====================================================
 
 void Vt102Emulation::reportStatus()
 {

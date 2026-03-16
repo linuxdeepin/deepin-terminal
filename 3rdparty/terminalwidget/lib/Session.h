@@ -557,6 +557,9 @@ signals:
     // warning提示信息 currentShell当前使用的shell, 启用shell是否成功 true 替换了shell false 替换shell但启动失败
     void shellWarningMessage(QString currentShell, bool isSuccess);
 
+    // OSC52 clipboard operation request
+    void osc52ClipboardRequest(char target, const QString &base64Data);
+
 private slots:
     void done(int);
 

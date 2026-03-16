@@ -216,6 +216,12 @@ public:
     bool enableDebuginfod();
     // deepin-terminal设置的DEBUGINFOD_URLS环境变量值
     QString debuginfodUrls();
+    /**
+     * @brief 获取当前配置粘贴是否为选择内容
+     * @author dzw1995
+     * @return
+     */
+    bool allowOSC52() const;
 
     /**
      * @brief 历史记录行数

@@ -113,6 +113,10 @@ Session::Session(QObject* parent) :
     //connect teletype to emulation backend
     _shellProcess->setUtf8Mode(_emulation->utf8());
 
+    // OSC52
+    connect(_emulation, SIGNAL(osc52ClipboardRequest(char,QString)),
+            this, SIGNAL(osc52ClipboardRequest(char,QString)));
+
     connect( _shellProcess,SIGNAL(receivedData(const char *,int,bool)),this,
              SLOT(onReceiveBlock(const char *,int,bool)) );
     connect( _emulation,SIGNAL(sendData(const char *,int,const QTextCodec *)),_shellProcess,

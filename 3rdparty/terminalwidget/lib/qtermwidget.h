@@ -346,6 +346,11 @@ signals:
     // 标签标题参数改变 dzw 2020-12-2
     void titleArgsChange(QString key, QString value);
 
+    /**
+     * @brief Forward OSC52 clipboard request from Emulation
+     */
+    void osc52ClipboardRequest(char target, const QString &base64Data);
+
 public slots:
     // Copy selection to clipboard
     void copyClipboard();

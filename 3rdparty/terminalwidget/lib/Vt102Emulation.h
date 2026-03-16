@@ -51,6 +51,8 @@
 #define MODE_BracketedPaste  (MODES_SCREEN+13)  // Xterm-style bracketed paste mode
 #define MODE_total           (MODES_SCREEN+14)
 
+static const size_t MAX_OSC52_BUFFER = 64 * 1024 * 1024;  // 64MB
+
 namespace Konsole
 {
 
@@ -166,6 +168,42 @@ private:
   void onScrollLock();
   void scrollLock(const bool lock);
 
+  // ========== OSC52 Clipboard Methods ==========
+  /**
+   * @brief Check if current OSC sequence is OSC52 clipboard
+   * @return true if OSC52 start detected
+   */
+  bool isOSC52Start() const;
+
+  /**
+   * @brief Extract target clipboard character from tokenBuffer
+   * @return target character (c/p/s/0)
+   */
+  char extractOSC52Target() const;
+
+  /**
+   * @brief Extract base64 data from tokenBuffer
+   * @return base64 encoded data
+   */
+  QString extractOSC52Data() const;
+
+  /**
+   * @brief Start OSC52 clipboard sequence processing
+   */
+  void startOSC52();
+
+  /**
+   * @brief Handle OSC52 end (BEL character received)
+   * @param cc The BEL character (should be 7)
+   */
+  void handleOSC52End(wchar_t cc);
+
+  /**
+   * @brief Handle OSC52 chunk when tokenBuffer is full
+   */
+  void handleOSC52Chunk();
+  // ===============================================
+
   // clears the screen and resizes it to the specified
   // number of columns
   void clearScreenAndSetColumns(int columnCount);
@@ -194,6 +232,28 @@ private:
   QTimer* _titleUpdateTimer;
 
     bool _reportFocusEvents;
+
+    // ========== OSC52 Clipboard Support ==========
+    /**
+    * @brief Flag indicating if OSC52 clipboard sequence is in progress
+    */
+    bool _osc52InProgress = false;
+
+    /**
+      * @brief Buffer for accumulating OSC52 base64 data
+      */
+    QString _osc52DataBuffer;
+
+    /**
+      * @brief Target clipboard for OSC52 (c=CLIPBOARD, p=PRIMARY, s=SECONDARY, 0=ALL)
+      */
+    char _osc52Target = 'c';
+
+    /**
+      * @brief Flag indicating if current OSC52 chunk is the first chunk
+      */
+    bool _osc52IsFirstChunk = false;
+    // ==============================================
 };
 
 }

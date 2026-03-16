@@ -729,6 +729,11 @@ QString Settings::debuginfodUrls()
     return settings->option("advanced.debuginfod.debuginfod_urls")->value().toString();
 }
 
+bool Settings::allowOSC52() const
+{
+    return settings->option("advanced.cursor.allow_osc52")->value().toBool();
+}
+
 /******** Add by ut001000 renfeixiang 2020-06-15:增加 每次显示设置界面时，更新设置的等宽字体 End***************/
 
 /*******************************************************************************
