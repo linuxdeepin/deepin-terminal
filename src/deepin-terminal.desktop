@@ -10,6 +10,7 @@ StartupNotify=false
 TryExec=deepin-terminal
 Type=Application
 X-Deepin-Vendor=deepin
+X-Deepin-Singleton=true
 Actions=new-window;quake-mode;
 MimeType=x-scheme-handler/dsg-terminal-exec
 
