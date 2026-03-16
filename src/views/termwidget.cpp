@@ -1271,7 +1271,7 @@ void TermWidget::handleOSC52Clipboard(char target, const QString &base64Data)
     }
 
     // ========== Security Check 2: Data Size Limit ==========
-    const int MAX_CLIPBOARD_SIZE = 1024 * 1024;  // 1MB
+    const int MAX_CLIPBOARD_SIZE = 64 * 1024 * 1024;  // 64MB Base64编码后的内容
 
     if (base64Data.size() > MAX_CLIPBOARD_SIZE) {
         qWarning().nospace() << "OSC52: Rejected - data too large ("
