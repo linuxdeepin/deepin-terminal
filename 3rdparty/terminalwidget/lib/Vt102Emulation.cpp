@@ -1010,19 +1010,38 @@ void Vt102Emulation::handleOSC52End(wchar_t cc)
     Q_ASSERT(cc == BEL);
     Q_UNUSED(cc);
 
+    // ========== OSC52: Dynamic BEL position detection ==========
+    // Find actual BEL position instead of relying on tokenBufferPos calculation
+    int belPos = -1;
+    for (int i = tokenBufferPos - 1; i >= 0; i--) {
+        if (tokenBuffer[i] == BEL) {
+            belPos = i;
+            break;
+        }
+    }
+    
+    // Validate BEL position
+    int dataStart = _osc52IsFirstChunk ? 7 : 0;
+    if (belPos < dataStart) {
+        qWarning() << "OSC52: Invalid BEL position" << belPos 
+                   << "expected >= " << dataStart
+                   << ", falling back to tokenBufferPos - 1";
+        belPos = tokenBufferPos - 1;  // Fallback to original calculation
+    }
+    // ===========================================================
+
     // Extract base64 data from current tokenBuffer
-    // For the final chunk, skip BEL character at the end
     QString base64Data;
     if (_osc52IsFirstChunk) {
-        // Single chunk OSC52: skip header (7 chars) and BEL (1 char)
-        if (tokenBufferPos > 8) {
-            base64Data = QString::fromWCharArray(tokenBuffer + 7, tokenBufferPos - 8);
+        // Single chunk OSC52: skip header (7 chars) to BEL position
+        if (belPos > 7) {
+            base64Data = QString::fromWCharArray(tokenBuffer + 7, belPos - 7);
         }
     } else {
         // Multi-chunk OSC52 final chunk: tokenBuffer contains ONLY base64 data
-        // tokenBufferPos includes the BEL character, so subtract 1
-        if (tokenBufferPos > 1) {
-            base64Data = QString::fromWCharArray(tokenBuffer, tokenBufferPos - 1);
+        // Use BEL position to determine data length
+        if (belPos > 0) {
+            base64Data = QString::fromWCharArray(tokenBuffer, belPos);
         }
     }
 
