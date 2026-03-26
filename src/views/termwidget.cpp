@@ -279,24 +279,27 @@ inline void TermWidget::onQTermWidgetReceivedData(QString value)
 {
     qCDebug(views) << "Enter TermWidget::onQTermWidgetReceivedData";
     Q_UNUSED(value)
-    // 完善终端输出滚动相关功能，默认设置为"智能滚动"(即滚动条滑到最底下时自动滚动)
+    
+    // 如果用户禁用了输出时滚动，重置标志后直接返回
     if (!Settings::instance()->OutputtingScroll()) {
         qCDebug(views) << "Branch: OutputtingScroll is false, setting isAllowScroll to true";
         setIsAllowScroll(true);
         return;
     }
 
-    // 获取是否允许输出时滚动
-    if (getIsAllowScroll()) {
-        qCDebug(views) << "Branch: getIsAllowScroll is true, setting trackOutput to OutputtingScroll";
-        // 允许,则滚动到最新位置
-        setTrackOutput(Settings::instance()->OutputtingScroll());
+    // 智能滚动：只在用户在底部时才自动滚动
+    // 这样用户向上滚动查看历史时不会被强制拉回
+    qCDebug(views) << "Branch: Smart scroll - checking isAtEndOfOutput";
+    if (isAtEndOfOutput()) {
+        qCDebug(views) << "Branch: At end of output, setting trackOutput to true";
+        setTrackOutput(true);
     } else {
-        qCDebug(views) << "Branch: getIsAllowScroll is false, setting isAllowScroll to true";
-        // 不允许,则不滚动
-        // 将标志位置位
-        setIsAllowScroll(true);
+        qCDebug(views) << "Branch: Not at end of output, keeping current position";
     }
+    // 如果用户不在底部（正在查看历史），不强制滚动，保持当前位置
+    
+    // 重置 m_isAllowScroll 标志，确保下次能正常处理
+    setIsAllowScroll(true);
 }
 
 inline void TermWidget::onTermWidgetReceivedData(QString value)
