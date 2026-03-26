@@ -144,6 +144,10 @@ public:
     void setTrackOutput(bool enable);
     /********************* Modify by n014361 wangpeili End ************************/
 
+    /******** Modify for smart scroll: 检查是否在输出末尾 ****************/
+    bool isAtEndOfOutput() const;
+    /********************* Modify for smart scroll End ************************/
+
     // Send some text to terminal
     void sendText(const QString &text);
 

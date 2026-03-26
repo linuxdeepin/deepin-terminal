@@ -730,6 +730,17 @@ void QTermWidget::setTrackOutput(bool enable)
     m_impl->m_terminalDisplay->screenWindow()->setTrackOutput(enable);
 }
 
+/*******************************************************************************
+ 1. @函数:    isAtEndOfOutput
+ 2. @作者:    Deepin Terminal Fix
+ 3. @日期:    2025-03-26
+ 4. @说明:    检查当前是否在输出末尾，用于智能滚动
+*******************************************************************************/
+bool QTermWidget::isAtEndOfOutput() const
+{
+    return m_impl->m_terminalDisplay->screenWindow()->atEndOfOutput();
+}
+
 void QTermWidget::sendText(const QString &text)
 {
     //标记当前命令是代码中通过sendText发给终端的(而不是用户手动输入的命令)
