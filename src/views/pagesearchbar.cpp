@@ -1,4 +1,4 @@
-// Copyright (C) 2019 ~ 2020 Uniontech Software Technology Co.,Ltd.
+// Copyright (C) 2019 ~ 2026 Uniontech Software Technology Co.,Ltd.
 // SPDX-FileCopyrightText: 2022 UnionTech Software Technology Co., Ltd.
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
@@ -283,7 +283,7 @@ void PageSearchBar::updateSizeMode()
 
         if (searchIconBtn) {
             qCDebug(views) << "Branch: searchIconBtn exists, setting normal icon size";
-            searchIconBtn->setIconSize(QSize(ICON_CTX_SIZE_32, ICON_CTX_SIZE_32));
+            searchIconBtn->setIconSize(QSize(ICON_CTX_SIZE_24, ICON_CTX_SIZE_24));
         }
     }
 
