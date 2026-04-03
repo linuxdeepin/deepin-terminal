@@ -1010,8 +1010,7 @@ void Vt102Emulation::handleOSC52End(wchar_t cc)
     Q_ASSERT(cc == BEL);
     Q_UNUSED(cc);
 
-    // ========== OSC52: Dynamic BEL position detection ==========
-    // Find actual BEL position instead of relying on tokenBufferPos calculation
+    // OSC52: Scan backwards for BEL to determine data boundary
     int belPos = -1;
     for (int i = tokenBufferPos - 1; i >= 0; i--) {
         if (tokenBuffer[i] == BEL) {
@@ -1020,15 +1019,15 @@ void Vt102Emulation::handleOSC52End(wchar_t cc)
         }
     }
     
-    // Validate BEL position
+    // Validate BEL position - fail cleanly if not found or invalid
     int dataStart = _osc52IsFirstChunk ? 7 : 0;
     if (belPos < dataStart) {
-        qWarning() << "OSC52: Invalid BEL position" << belPos 
-                   << "expected >= " << dataStart
-                   << ", falling back to tokenBufferPos - 1";
-        belPos = tokenBufferPos - 1;  // Fallback to original calculation
+        qDebug() << "OSC52: BEL not found or position invalid, discarding";
+        _osc52DataBuffer.clear();
+        _osc52InProgress = false;
+        _osc52IsFirstChunk = false;
+        return;
     }
-    // ===========================================================
 
     // Extract base64 data from current tokenBuffer
     QString base64Data;
