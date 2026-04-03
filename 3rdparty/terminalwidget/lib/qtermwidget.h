@@ -280,10 +280,10 @@ public:
     
     void enableSetCursorPosition(bool enable);
 
-    // 获取是否允许输出时滚动
+    //Add by dzw1995 2026-04-03 获取是否允许输出时滚动
     bool getIsAllowScroll() const;
 
-    // 设置是否允许输出时滚动
+    //Add by dzw1995 2026-04-03 设置是否允许输出时滚动
     void setIsAllowScroll(bool isAllowScroll);
 
     //Add by ut001000 renfeixiang 2020-12-02 当搜索框出现时，设置m_bHasSelect为false,

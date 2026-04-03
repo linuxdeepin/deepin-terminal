@@ -280,26 +280,12 @@ inline void TermWidget::onQTermWidgetReceivedData(QString value)
     qCDebug(views) << "Enter TermWidget::onQTermWidgetReceivedData";
     Q_UNUSED(value)
     
-    // 如果用户禁用了输出时滚动，重置标志后直接返回
-    if (!Settings::instance()->OutputtingScroll()) {
-        qCDebug(views) << "Branch: OutputtingScroll is false, setting isAllowScroll to true";
-        setIsAllowScroll(true);
-        return;
-    }
-
     // 智能滚动：只在用户在底部时才自动滚动
     // 这样用户向上滚动查看历史时不会被强制拉回
-    qCDebug(views) << "Branch: Smart scroll - checking isAtEndOfOutput";
-    if (isAtEndOfOutput()) {
-        qCDebug(views) << "Branch: At end of output, setting trackOutput to true";
-        setTrackOutput(true);
-    } else {
-        qCDebug(views) << "Branch: Not at end of output, keeping current position";
+    if (getIsAllowScroll()) {
+        setTrackOutput(isAtEndOfOutput());
+        setIsAllowScroll(true);
     }
-    // 如果用户不在底部（正在查看历史），不强制滚动，保持当前位置
-    
-    // 重置 m_isAllowScroll 标志，确保下次能正常处理
-    setIsAllowScroll(true);
 }
 
 inline void TermWidget::onTermWidgetReceivedData(QString value)
