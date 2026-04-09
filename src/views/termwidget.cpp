@@ -279,6 +279,12 @@ inline void TermWidget::onQTermWidgetReceivedData(QString value)
 {
     qCDebug(views) << "Enter TermWidget::onQTermWidgetReceivedData";
     Q_UNUSED(value)
+
+    // 完善终端输出滚动相关功能，默认设置为"智能滚动"(即滚动条滑到最底下时自动滚动)
+    if (!Settings::instance()->OutputtingScroll()) {
+        setIsAllowScroll(true);
+        return;
+    }
     
     // 智能滚动：只在用户在底部时才自动滚动
     // 这样用户向上滚动查看历史时不会被强制拉回
