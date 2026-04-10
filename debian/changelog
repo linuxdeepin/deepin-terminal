@@ -1,3 +1,23 @@
+deepin-terminal (6.5.30) unstable; urgency=medium
+
+  * fix: correct base64 data extraction in OSC52 by removing BEL from buffer calc
+  * fix: remove fallback logic in BEL position detection
+  * fix: OSC52 clipboard last character corruption
+  * fix: improve smart scroll logic for terminal output
+  * fix: smart scroll logic - use one-liner setTrackOutput(isAtEndOfOutput())
+  * feat: implement smart scroll for terminal output
+  * chore(i18n): migrate Transifex config to yaml format
+  * fix: fix crash on Arch when creating new tab & fix cmake compile error
+  * fix(search-bar): adjust search icon size to fix oversized display
+  * i18n: update zh_HK and zh_TW translations
+  * security: disable OSC52 by default
+  * i18n: update translations
+  * feat: implement OSC52 remote clipboard functionality
+  * fix(screen): correctly handle UTF-16 surrogate pairs in URL extraction
+  * feat: enable treeland singleton flag for deepin-terminal
+
+ -- Wang Yu <wangyu@uniontech.com>  Fri, 10 Apr 2026 15:59:14 +0800
+
 deepin-terminal (6.5.29) unstable; urgency=medium
 
   * fix: improve theme handling in TermWidget
