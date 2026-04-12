@@ -2633,6 +2633,12 @@ void MainWindow::setThemeCheckItemSlot()
 void MainWindow::menuHideSetThemeSlot()
 {
     qCDebug(mainprocess) << "Enter MainWindow::menuHideSetThemeSlot";
+    // 如果用户已点击新主题，旧 action 不再被选中，跳过恢复逻辑
+    // 主题已在 switchThemeAction 中正确设置，无需再次设置
+    if (!currCheckThemeAction || !currCheckThemeAction->isChecked()) {
+        return;
+    }
+
     if (currCheckThemeAction == lightThemeAction) {
         Settings::instance()->setColorScheme(THEME_LIGHT);
         Settings::instance()->setExtendColorScheme(THEME_NO);
@@ -2899,6 +2905,10 @@ void MainWindow::themeActionTriggeredSlot(QAction *action)
 void MainWindow::themeActionHoveredSlot(QAction *action)
 {
     qCDebug(mainprocess) << "Enter MainWindow::themeActionHoveredSlot";
+    // 用户已点击确认主题，忽略菜单关闭过程中的 hover 信号，避免闪烁
+    if (Settings::instance()->bSwitchTheme) {
+        return;
+    }
     if (switchThemeMenu->hoveredThemeStr != action->text()) {
         switchThemeMenu->hoveredThemeStr = action->text();
         Settings::instance()->bSwitchTheme = false;
