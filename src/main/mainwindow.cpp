@@ -2899,6 +2899,10 @@ void MainWindow::themeActionTriggeredSlot(QAction *action)
 void MainWindow::themeActionHoveredSlot(QAction *action)
 {
     qCDebug(mainprocess) << "Enter MainWindow::themeActionHoveredSlot";
+
+    if (Settings::instance()->bSwitchTheme) {
+        return;
+    }
     if (switchThemeMenu->hoveredThemeStr != action->text()) {
         switchThemeMenu->hoveredThemeStr = action->text();
         Settings::instance()->bSwitchTheme = false;
