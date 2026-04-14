@@ -420,7 +420,7 @@
         <location filename="../src/main/mainwindow.cpp" line="1658"/>
         <location filename="../src/settings/settings_translation.cpp" line="67"/>
         <source>Remote management</source>
-        <translation>Удаленное управление</translation>
+        <translation>Удалённое управление</translation>
     </message>
     <message>
         <location filename="../src/main/mainwindow.cpp" line="1638"/>
@@ -902,7 +902,7 @@
     <message>
         <location filename="../src/remotemanage/remotemanagementplugn.cpp" line="75"/>
         <source>Remote management</source>
-        <translation>Удаленное управление</translation>
+        <translation>Удалённое управление</translation>
     </message>
     <message>
         <location filename="../src/remotemanage/remotemanagementplugn.cpp" line="201"/>
