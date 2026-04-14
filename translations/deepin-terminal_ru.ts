@@ -876,7 +876,7 @@
         <location filename="../src/views/tabrenamedlg.cpp" line="245"/>
         <source>Confirm</source>
         <comment>button</comment>
-        <translation>Применить</translation>
+        <translation>Подтвердить</translation>
     </message>
 </context>
 <context>
