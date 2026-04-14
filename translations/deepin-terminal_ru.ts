@@ -889,7 +889,7 @@
     <message>
         <location filename="../src/remotemanage/remotemanagementpanel.cpp" line="211"/>
         <source>Add Server</source>
-        <translation>Добавить Сервер</translation>
+        <translation>Добавить сервер</translation>
     </message>
     <message>
         <location filename="../src/remotemanage/remotemanagementpanel.cpp" line="215"/>
@@ -936,7 +936,7 @@
     <message>
         <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="91"/>
         <source>Add Server</source>
-        <translation>Добавить Сервер</translation>
+        <translation>Добавить сервер</translation>
     </message>
     <message>
         <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="127"/>
