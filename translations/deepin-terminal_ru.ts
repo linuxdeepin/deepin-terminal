@@ -711,7 +711,7 @@
     <message>
         <location filename="../src/main/mainwindow.cpp" line="1610"/>
         <source>Switch focus to &quot;+&quot; icon</source>
-        <translation>Переключить фокус на значок &quot;+&quot;</translation>
+        <translation>Переключить фокус на значок «+»</translation>
     </message>
     <message>
         <location filename="../src/common/utils.cpp" line="157"/>
