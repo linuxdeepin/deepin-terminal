@@ -1025,7 +1025,7 @@
     <message>
         <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="228"/>
         <source>Edit Server</source>
-        <translation>Редактировать Сервер</translation>
+        <translation>Изменить сервер</translation>
     </message>
     <message>
         <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="229"/>
