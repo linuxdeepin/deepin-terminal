@@ -1251,7 +1251,7 @@
     <message>
         <location filename="../src/views/termwidget.cpp" line="533"/>
         <source>Remote management</source>
-        <translation>Удаленное управление</translation>
+        <translation>Удалённое управление</translation>
     </message>
     <message>
         <location filename="../src/views/termwidget.cpp" line="537"/>
