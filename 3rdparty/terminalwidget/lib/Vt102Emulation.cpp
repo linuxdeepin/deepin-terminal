@@ -371,6 +371,11 @@ void Vt102Emulation::receiveChar(wchar_t cc)
     if (lec(3,1,'#')) { processToken( TY_ESC_DE(s[2]), 0, 0);           resetTokenizer(); return; }
     if (eps(    CPN)) { processToken( TY_CSI_PN(cc), argv[0],argv[1]);  resetTokenizer(); return; }
     if (esp(       )) { return; }
+    // DECRQM: CSI Pd $ p — absorb '$' intermediate byte and dispatch on 'p'
+    // WARNING: This absorbs '$' for all CSI sequences, not just DECRQM.
+    // Other CSI sequences using '$' as final byte (e.g., DECCRA, DECSERA)
+    // would be affected if sent, though applications rarely send them.
+    if (eec('$')) { return; } // absorb '$' and wait for final byte
     if (lec(5, 4, 'q') && s[3] == ' ') {
       processToken( TY_CSI_PS_SP(cc, argv[0]), argv[0], 0);
       resetTokenizer();
@@ -873,6 +878,43 @@ void Vt102Emulation::processToken(int token, wchar_t p, int q)
     //FIXME: weird DEC reset sequence
     case TY_CSI_PE('p'      ) : /* IGNORED: reset         (        ) */ break;
 
+    // DECRQM — Request Mode (Host To Terminal)
+    // When the '$' intermediate byte is absorbed by the tokenizer, the natural
+    // for-loop dispatch produces TY_CSI_PR('p',N) for DEC private modes and
+    // TY_CSI_PS('p',N) for ANSI modes.
+    //
+    // ANSI mode queries: CSI Pd $ p  →  TY_CSI_PS('p', Pd)
+    case TY_CSI_PS('p',   2) : reportAnsiMode( 2, 2); break; // KAM (Keyboard Action) - Not supported
+    case TY_CSI_PS('p',   4) : reportAnsiMode( 4, _currentScreen->getMode(MODE_Insert) ? 1 : 2); break; // IRM
+    case TY_CSI_PS('p',  10) : reportAnsiMode(10, 4); break; // HEM (Horizontal Editing) - Permanently reset
+    case TY_CSI_PS('p',  20) : reportAnsiMode(20, getMode(MODE_NewLine) ? 1 : 2); break; // LNM
+
+    // DEC private mode queries: CSI ? Pd $ p  →  TY_CSI_PR('p', Pd)
+    case TY_CSI_PR('p',   1) : reportDecMode(  1, getMode(MODE_AppCuKeys) ? 1 : 2); break; // DECCKM
+    case TY_CSI_PR('p',   2) : reportDecMode(  2, getMode(MODE_Ansi) ? 1 : 2); break; // DECANM
+    case TY_CSI_PR('p',   3) : reportDecMode(  3, getMode(MODE_132Columns) ? 1 : 2); break; // DECCOLM
+    case TY_CSI_PR('p',   4) : reportDecMode(  4, 4); break; // DECSCLM (Scrolling) - Permanently reset
+    case TY_CSI_PR('p',   5) : reportDecMode(  5, _currentScreen->getMode(MODE_Screen) ? 1 : 2); break; // DECSCNM
+    case TY_CSI_PR('p',   6) : reportDecMode(  6, _currentScreen->getMode(MODE_Origin) ? 1 : 2); break; // DECOM
+    case TY_CSI_PR('p',   7) : reportDecMode(  7, _currentScreen->getMode(MODE_Wrap) ? 1 : 2); break; // DECAWM
+    case TY_CSI_PR('p',   8) : reportDecMode(  8, 4); break; // DECARM (Autorepeat) - Permanently reset
+    case TY_CSI_PR('p',   9) : reportDecMode(  9, 4); break; // DECINLM (Interlace) - Permanently reset
+    case TY_CSI_PR('p',  10) : reportDecMode( 10, 4); break; // DECEDM (Edit Mode) - Permanently reset
+    case TY_CSI_PR('p',  25) : reportDecMode( 25, _currentScreen->getMode(MODE_Cursor) ? 1 : 2); break; // DECTCEM
+    case TY_CSI_PR('p',  12) : reportDecMode( 12, 4); break; // att610 (Cursor blink) - Permanently reset
+    case TY_CSI_PR('p',  47) : reportDecMode( 47, getMode(MODE_AppScreen) ? 1 : 2); break; // Alt screen
+    case TY_CSI_PR('p', 1000) : reportDecMode(1000, getMode(MODE_Mouse1000) ? 1 : 2); break; // VT200 mouse
+    case TY_CSI_PR('p', 1034) : reportDecMode(1034, 4); break; // interpret Meta - Permanently reset
+    case TY_CSI_PR('p', 1002) : reportDecMode(1002, getMode(MODE_Mouse1002) ? 1 : 2); break; // Cell motion mouse
+    case TY_CSI_PR('p', 1003) : reportDecMode(1003, getMode(MODE_Mouse1003) ? 1 : 2); break; // All motion mouse
+    case TY_CSI_PR('p', 1004) : reportDecMode(1004, _reportFocusEvents ? 1 : 2); break; // Focus events
+    case TY_CSI_PR('p', 1005) : reportDecMode(1005, getMode(MODE_Mouse1005) ? 1 : 2); break; // UTF-8 mouse
+    case TY_CSI_PR('p', 1006) : reportDecMode(1006, getMode(MODE_Mouse1006) ? 1 : 2); break; // SGR mouse
+    case TY_CSI_PR('p', 1015) : reportDecMode(1015, getMode(MODE_Mouse1015) ? 1 : 2); break; // URXVT mouse
+    case TY_CSI_PR('p', 1047) : reportDecMode(1047, getMode(MODE_AppScreen) ? 1 : 2); break; // Alt screen (xterm)
+    case TY_CSI_PR('p', 1049) : reportDecMode(1049, getMode(MODE_AppScreen) ? 1 : 2); break; // Alt screen + cursor
+    case TY_CSI_PR('p', 2004) : reportDecMode(2004, getMode(MODE_BracketedPaste) ? 1 : 2); break; // Bracketed paste
+
     //FIXME: when changing between vt52 and ansi mode evtl do some resetting.
     case TY_VT52('A'      ) : _currentScreen->cursorUp             (         1); break; //VT52
     case TY_VT52('B'      ) : _currentScreen->cursorDown           (         1); break; //VT52
@@ -1085,6 +1127,34 @@ void Vt102Emulation::handleOSC52Chunk()
 void Vt102Emulation::reportStatus()
 {
   sendString("\033[0n"); //VT100. Device status report. 0 = Ready.
+}
+
+// DECRPM — Report Mode (Terminal To Host), response to DECRQM
+// Responds to an ANSI mode query (CSI Pd $ p) with: CSI Pd ; Pm $ y
+void Vt102Emulation::reportAnsiMode(int mode, int status)
+{
+    const size_t sz = 32;
+    char tmp[sz];
+    const size_t r = snprintf(tmp, sz, "\033[%d;%d$y", mode, status);
+    if (r >= sz) {
+        qWarning("Vt102Emulation::reportAnsiMode: Buffer too small\n");
+        return;
+    }
+    sendString(tmp);
+}
+
+// DECRPM — Report Mode (Terminal To Host), response to DECRQM
+// Responds to a DEC private mode query (CSI ? Pd $ p) with: CSI ? Pd ; Pm $ y
+void Vt102Emulation::reportDecMode(int mode, int status)
+{
+    const size_t sz = 32;
+    char tmp[sz];
+    const size_t r = snprintf(tmp, sz, "\033[?%d;%d$y", mode, status);
+    if (r >= sz) {
+        qWarning("Vt102Emulation::reportDecMode: Buffer too small\n");
+        return;
+    }
+    sendString(tmp);
 }
 
 void Vt102Emulation::reportAnswerBack()
