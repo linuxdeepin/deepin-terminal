@@ -1,3 +1,9 @@
+deepin-terminal (6.5.31) unstable; urgency=medium
+
+  * update version to 6.5.31.
+
+ -- Tian ShiLin <tianshilin@uniontech.com>  Thu, 16 Apr 2026 11:28:49 +0800
+
 deepin-terminal (6.5.30) unstable; urgency=medium
 
   * fix: correct base64 data extraction in OSC52 by removing BEL from buffer calc
