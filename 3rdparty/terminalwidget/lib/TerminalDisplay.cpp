@@ -750,16 +750,10 @@ void TerminalDisplay::drawCursor(QPainter& painter,
                                  bool& invertCharacterColor)
 {
     QRectF cursorRect = rect;
-    // 覆盖整行高度，避免底部/顶部 1px 漏刷
     cursorRect.setHeight(_fontHeight);
 
     if (_cursorBlinking)
     {
-       // 隐藏帧：用传入的背景色清除光标所在单元格（水平扩 1px 覆盖描边）
-       painter.save();
-       painter.setPen(Qt::NoPen);
-       painter.fillRect(cursorRect.adjusted(-1, 0, 1, 0), backgroundColor);
-       painter.restore();
        return;
     }
     else
@@ -925,19 +919,7 @@ void TerminalDisplay::drawTextFragment(QPainter& painter ,
         drawBackground(painter,rect,backgroundColor,
                        false /* do not use transparency */);
 
-    // 光标隐藏帧：在绘制光标前先清除当前单元格，避免上一帧轮廓残留
-    if (!_hideCursor && (style->rendition & RE_CURSOR) && _cursorBlinking)
-    {
-        drawBackground(painter, rect, backgroundColor, false /* do not use transparency */);
-    }
-
-    if (!_hideCursor && (style->rendition & RE_CURSOR) && _cursorBlinking)
-    {
-        drawBackground(painter, rect, backgroundColor, false /* do not use transparency */);
-    }
-
     // draw cursor shape if the current character is the cursor
-    // 处于隐藏帧时，先用 cell 背景清除，避免上一帧轮廓残留
     bool invertCharacterColor = false;
 
     if (!_hideCursor)
