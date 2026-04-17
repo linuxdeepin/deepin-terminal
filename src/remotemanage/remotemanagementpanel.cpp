@@ -242,8 +242,10 @@ void RemoteManagementPanel::initUI()
     m_listWidget->setObjectName("RemoteManageListWidget");
     m_addGroupButton = new DPushButton(this);
     m_addGroupButton->setObjectName("AddServerGroupButton");
+    m_addGroupButton->setFocusPolicy(Qt::TabFocus);
     m_pushButton = new DPushButton(this);
     m_pushButton->setObjectName("RemoteAddPushButton");
+    m_pushButton->setFocusPolicy(Qt::TabFocus);
 
     m_searchEdit->setClearButtonEnabled(true);
 
@@ -345,4 +347,9 @@ void RemoteManagementPanel::initUI()
             }
         }
     });
+
+    // 显式设置 Tab 焦点顺序，匹配视觉布局
+    setTabOrder(m_searchEdit->lineEdit(), m_listWidget);
+    setTabOrder(m_listWidget, m_pushButton);
+    setTabOrder(m_pushButton, m_addGroupButton);
 }
