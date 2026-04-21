@@ -48,6 +48,7 @@ public:
     GroupConfigOptDlg(const QString &groupName = QString(), QWidget *parent = nullptr);
 
 private:
+    QString      m_originalGroupName;
     DLabel      *m_iconLabel;
     DLabel      *m_titleLabel;
     DLineEdit   *m_groupNameEdit;

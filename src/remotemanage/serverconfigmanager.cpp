@@ -363,13 +363,17 @@ void ServerConfigManager::saveServerConfig(ServerConfig *config)
 void ServerConfigManager::delServerGroupConfig(const QString &key)
 {
     if (m_serverConfigs.contains(key)) {
-        for (ServerConfig *config : m_serverConfigs[key]) {
+        // 复制列表以避免在 delServerConfig 内部修改原列表时迭代器失效
+        const QList<ServerConfig *> configsCopy = m_serverConfigs[key];
+        for (ServerConfig *config : configsCopy) {
             ServerConfig *newConfig = new ServerConfig;
             *newConfig = *config;
             newConfig->m_group = QStringLiteral("");
             delServerConfig(config);
             saveServerConfig(newConfig);
         }
+        // 确保分组条目被删除（处理空分组及非空分组删除后残留的情况）
+        m_serverConfigs.remove(key);
     }
     else {
         qInfo() << Q_FUNC_INFO << "Cannot find group " << key;
