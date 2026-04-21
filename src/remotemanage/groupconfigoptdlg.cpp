@@ -28,6 +28,7 @@
 
 GroupConfigOptDlg::GroupConfigOptDlg(const QString &groupName, QWidget *parent)
     : DAbstractDialog(false, parent),
+      m_originalGroupName(groupName),
       m_mainLayout(new QVBoxLayout),
       m_headLayout(new QHBoxLayout),
       m_iconLabel(new DLabel(this)),
@@ -91,6 +92,13 @@ GroupConfigOptDlg::GroupConfigOptDlg(const QString &groupName, QWidget *parent)
         QMap<QString, QList<ServerConfig *>> &serverConfigs = ServerConfigManager::instance()->getServerConfigs();
         if (!serverConfigs.contains(groupName)) {
             serverConfigs[groupName] = QList<ServerConfig *>();
+        }
+
+        // 编辑分组时，若分组名已改变，需清除旧的空分组条目
+        if (!m_originalGroupName.isEmpty() && m_originalGroupName != groupName) {
+            if (serverConfigs.contains(m_originalGroupName) && serverConfigs[m_originalGroupName].isEmpty()) {
+                serverConfigs.remove(m_originalGroupName);
+            }
         }
 
         accept();
