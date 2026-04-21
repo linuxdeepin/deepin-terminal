@@ -85,6 +85,14 @@ GroupConfigOptDlg::GroupConfigOptDlg(const QString &groupName, QWidget *parent)
             ServerConfigManager::instance()->delServerConfig(config);
             ServerConfigManager::instance()->saveServerConfig(newConfig);
         }
+
+        // 修复BUG 355415: 确保即使没有选中任何服务器，分组也会被添加到配置中
+        QString groupName = m_groupNameEdit->text().trimmed();
+        QMap<QString, QList<ServerConfig *>> &serverConfigs = ServerConfigManager::instance()->getServerConfigs();
+        if (!serverConfigs.contains(groupName)) {
+            serverConfigs[groupName] = QList<ServerConfig *>();
+        }
+
         accept();
     });
     connect(pCancelButton, &DPushButton::clicked, this, [this] {
