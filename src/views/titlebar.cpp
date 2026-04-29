@@ -7,9 +7,12 @@
 #include "utils.h"
 
 #include <DApplication>
+#include <DGuiApplicationHelper>
 #include <DIconButton>
 
+#include <QGuiApplication>
 #include <QIcon>
+#include <QPainter>
 #include <QLabel>
 #include <QDebug>
 #include <QMouseEvent>
@@ -37,6 +40,17 @@ TitleBar::TitleBar(QWidget *parent) : QWidget(parent), m_layout(new QHBoxLayout(
 //    this->setPalette(palette);
     this->setBackgroundRole(DPalette::Base);
     this->setAutoFillBackground(true);
+
+    // 监听 DTK 主题类型变化，触发重绘（切换深/浅色时）
+    QObject::connect(DGuiApplicationHelper::instance(), &DGuiApplicationHelper::themeTypeChanged, this, [this](){
+        update();
+    });
+
+    // 监听 QApplication 全局调色板变化：DTK 通过 D-Bus 异步完成 palette 初始化时
+    QObject::connect(static_cast<QGuiApplication *>(qApp), &QGuiApplication::paletteChanged,
+                     this, [this](const QPalette &) {
+        update();
+    });
     /********************* Modify by m000714 daizhengwen End ************************/
     m_layout->setContentsMargins(0, 0, 0, 0);
 
@@ -77,6 +91,25 @@ void TitleBar::setVerResized(bool resized)
     m_verResizedEnabled = resized;
 }
 
+
+void TitleBar::paintEvent(QPaintEvent *event)
+{
+    Q_UNUSED(event)
+
+    QPainter p(this);
+    const QColor bgColor = DGuiApplicationHelper::instance()->applicationPalette().color(QPalette::Base);
+    p.fillRect(rect(), bgColor);
+}
+
+void TitleBar::changeEvent(QEvent *event)
+{
+    // 捕获系统/应用 palette 变化事件，触发重绘以保持颜色正确
+    if (event->type() == QEvent::ApplicationPaletteChange
+            || event->type() == QEvent::PaletteChange) {
+        update();
+    }
+    QWidget::changeEvent(event);
+}
 
 void TitleBar::mousePressEvent(QMouseEvent *event)
 {

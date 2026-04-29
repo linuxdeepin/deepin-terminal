@@ -50,8 +50,10 @@ private:
     int m_verResizedCurOff = 0;//当前垂直偏移量
     bool m_verResizedEnabled = false;//是否手动resize当前界面
 protected:
-    void mousePressEvent(QMouseEvent *event);
-    void mouseMoveEvent(QMouseEvent *event);
+    void paintEvent(QPaintEvent *event) override;
+    void changeEvent(QEvent *event) override;
+    void mousePressEvent(QMouseEvent *event) override;
+    void mouseMoveEvent(QMouseEvent *event) override;
 };
 
 #endif  // TITLEBAR_H
