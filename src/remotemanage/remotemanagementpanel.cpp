@@ -209,7 +209,7 @@ void RemoteManagementPanel::showAddGroupConfigDlg(const QString &groupName)
     // 弹窗显示
     Service::instance()->setIsDialogShow(window(), true);
 
-    GroupConfigOptDlg *dlg = new GroupConfigOptDlg(groupName);
+    GroupConfigOptDlg *dlg = new GroupConfigOptDlg(groupName, this);
     connect(dlg, &ServerConfigOptDlg::finished, this, [ = ](int result) {
         // 弹窗隐藏或消失
         Service::instance()->setIsDialogShow(window(), false);
