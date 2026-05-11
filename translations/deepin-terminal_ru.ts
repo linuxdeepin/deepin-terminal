@@ -1294,7 +1294,7 @@
         <location filename="../src/common/utils.cpp" line="265"/>
         <source>OK</source>
         <comment>button</comment>
-        <translation>OK</translation>
+        <translation>ОК</translation>
     </message>
 </context>
 </TS>
