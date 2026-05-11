@@ -61,7 +61,7 @@
         <location filename="../src/customcommand/customcommandoptdlg.cpp" line="624"/>
         <source>OK</source>
         <comment>button</comment>
-        <translation>OK</translation>
+        <translation>ОК</translation>
     </message>
     <message>
         <location filename="../src/customcommand/customcommandoptdlg.cpp" line="380"/>
