@@ -797,7 +797,7 @@
         <location filename="../src/common/utils.cpp" line="298"/>
         <source>OK</source>
         <comment>button</comment>
-        <translation>OK</translation>
+        <translation>ОК</translation>
     </message>
     <message>
         <location filename="../src/common/utils.cpp" line="338"/>
@@ -1070,7 +1070,7 @@
         <location filename="../src/main/service.cpp" line="412"/>
         <source>OK</source>
         <comment>button</comment>
-        <translation>OK</translation>
+        <translation>ОК</translation>
     </message>
 </context>
 <context>
