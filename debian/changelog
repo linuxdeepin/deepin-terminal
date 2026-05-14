@@ -1,3 +1,14 @@
+deepin-terminal (6.5.35) unstable; urgency=medium
+
+  * chore: Update version to 6.5.35
+  * fix(views): adaptive width layout for remote management
+  * [skip CI] Translate deepin-terminal.ts in ru
+  * [skip CI] Translate deepin-terminal.ts in ru
+  * [skip CI] Translate deepin-terminal.ts in ru
+  * [skip CI] Translate deepin-terminal.ts in ru
+
+ -- zhanghongyuan <zhanghongyuan@uniontech.com>  Thu, 14 May 2026 16:29:10 +0800
+
 deepin-terminal (6.5.34) unstable; urgency=medium
 
   * Update version to 6.5.34.
