@@ -1,5 +1,5 @@
 // Copyright (C) 2019 ~ 2020 Uniontech Software Technology Co.,Ltd
-// SPDX-FileCopyrightText: 2022 UnionTech Software Technology Co., Ltd.
+// SPDX-FileCopyrightText: 2022 - 2026 UnionTech Software Technology Co., Ltd.
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
@@ -86,7 +86,7 @@ void ItemWidget::setFuncIcon(ItemFuncType iconType)
 {
     qCDebug(views) << "Enter ItemWidget::setFuncIcon";
     // 统一设置大小
-    m_funcButton->setIconSize(QSize(20, 20));
+    m_funcButton->setIconSize(QSize(16, 16));
     m_deleteButton->setIconSize(QSize(20, 20));
     m_deleteButton->hide();
     switch (iconType) {
@@ -341,16 +341,18 @@ void ItemWidget::updateSizeMode()
 {
     qCDebug(views) << "Enter ItemWidget::updateSizeMode";
 #ifdef DTKWIDGET_CLASS_DSizeMode
+    // 设置最小宽度，防止挤压，允许宽度自适应
+    setMinimumWidth(220);
     if (DGuiApplicationHelper::isCompactMode()) {
         qCDebug(views) << "Branch: compact mode";
         m_iconLayout->setContentsMargins(s_ItemIconContentMarginsCompact);
-        setFixedSize(220, s_ItemHeightCompact);
+        setFixedHeight(s_ItemHeightCompact);
         setFont(m_firstline, DFontSizeManager::T6, ItemTextColor_Text);
         setFont(m_secondline, DFontSizeManager::T7, ItemTextColor_TextTips);
     } else {
         qCDebug(views) << "Branch: normal mode";
         m_iconLayout->setContentsMargins(s_ItemIconContentMargins);
-        setFixedSize(220, s_ItemHeight);
+        setFixedHeight(s_ItemHeight);
         setFont(m_firstline, DFontSizeManager::T7, ItemTextColor_Text);
         setFont(m_secondline, DFontSizeManager::T8, ItemTextColor_TextTips);
     }
@@ -362,14 +364,9 @@ void ItemWidget::initUI()
 {
     if (m_functType != ItemFuncType_GroupLabel && m_functType != ItemFuncType_ItemLabel)
     {
-        // 初始化控件大小
-        if (m_functType == ItemFuncType_UngroupedItem) {
-            setGeometry(0, 0, 360, 60);
-            setFixedSize(360, 60);
-        } else {
-            setGeometry(0, 0, 220, 60);
-            setFixedSize(220, 60);
-        }
+        // 设置最小宽度，防止挤压，允许宽度自适应
+        setMinimumWidth(220);
+        setFixedHeight(60);
     }
     else
     {
@@ -396,12 +393,13 @@ void ItemWidget::initUI()
     setFont(m_secondline, DFontSizeManager::T8, ItemTextColor_TextTips);
     m_firstline->setContentsMargins(0, 0, 0, 0);
     m_secondline->setContentsMargins(0, 0, 0, 0);
-    m_firstline->setFixedWidth(138);
-    m_secondline->setFixedWidth(138);
+    m_firstline->setMaximumWidth(138);
+    m_secondline->setMaximumWidth(138);
     m_textLayout->setContentsMargins(0, 0, 0, 0);
     m_textLayout->setSpacing(0);
     m_textLayout->addStretch(13);
     m_textLayout->addWidget(m_firstline, 13);
+    m_textLayout->setAlignment(m_firstline, Qt::AlignLeft);
     m_textLayout->addStretch(9);
     if (m_functType != ItemFuncType_GroupLabel && m_functType != ItemFuncType_ItemLabel)
     {
@@ -418,10 +416,10 @@ void ItemWidget::initUI()
     m_funcButton->setFlat(true);
     m_funcButton->setFocusPolicy(Qt::NoFocus);
     m_funcLayout->addStretch();
-    m_funcLayout->setContentsMargins(5, 0, 5, 0);
+    m_funcLayout->setContentsMargins(5, 0, 10, 0);
     m_funcLayout->addWidget(m_deleteButton);
     m_funcLayout->addWidget(m_funcButton);
-    m_funcLayout->addStretch();
+    m_funcLayout->setSpacing(5);
 
     // 整体布局
     m_mainLayout->setContentsMargins(0, 0, 0, 0);
@@ -433,16 +431,15 @@ void ItemWidget::initUI()
             m_checkBox->hide();
         }
         m_mainLayout->addLayout(m_iconLayout);
-        m_mainLayout->addLayout(m_textLayout);
+        m_mainLayout->addLayout(m_textLayout, 1);
         m_mainLayout->addLayout(m_funcLayout);
     } else {
         m_checkBox->hide();
         m_iconButton->hide();
-        m_mainLayout->addLayout(m_textLayout);
+        m_mainLayout->addLayout(m_textLayout, 1);
         m_deleteButton->hide();
         m_funcButton->hide();
     }
-    m_mainLayout->addStretch();
     setLayout(m_mainLayout);
 
     // 根据不同布局初始化界面

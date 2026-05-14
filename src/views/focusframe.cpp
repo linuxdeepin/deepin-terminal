@@ -1,5 +1,5 @@
 // Copyright (C) 2019 ~ 2020 Uniontech Software Technology Co.,Ltd
-// SPDX-FileCopyrightText: 2022 UnionTech Software Technology Co., Ltd.
+// SPDX-FileCopyrightText: 2022 - 2026 UnionTech Software Technology Co., Ltd.
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
@@ -49,11 +49,8 @@ void FocusFrame::paintEvent(QPaintEvent *event)
         // qCDebug(views) << "Branch: Focus is active";
         // 边框
         QPainterPath FramePath;
-        // 效果和以下代码类似，兼容紧凑模式
-        // 类似: paintRoundedRect(FramePath, QRect(2, 2, 218, 58));
-        // TODO  master 
-        // paintRoundedRect(FramePath, rect().adjusted(2, 2, 0, 0));
-        paintRoundedRect(FramePath, QRect(2, 2, m_isWideFrame ? 358 : 218, 58));
+        // 使用动态宽度绘制边框
+        paintRoundedRect(FramePath, QRect(2, 2, qMax(0, rect().width() - 4), qMax(0, rect().height() - 4)));
         // 获取活动色
         QPen pen(pa.color(DPalette::Highlight), 2);
         painter.setPen(pen);
@@ -62,10 +59,8 @@ void FocusFrame::paintEvent(QPaintEvent *event)
 
         // 绘制背景
         QPainterPath itemBackgroudPath;
-        // 类似: paintRoundedRect(itemBackgroudPath, QRect(4, 4, 214, 54));
-        // TODO  master 
-        // paintRoundedRect(FramePath, rect().adjusted(4, 4, -2, -2));
-        paintRoundedRect(itemBackgroudPath, QRect(4, 4, m_isWideFrame ? 354 : 214, 54));
+        // 使用动态宽度绘制背景
+        paintRoundedRect(itemBackgroudPath, QRect(4, 4, qMax(0, rect().width() - 8), qMax(0, rect().height() - 8)));
         // 产品要有悬浮效果的
         // painter.fillPath(itemBackgroudPath, QBrush(pa.color(DPalette::ObviousBackground)));
         // ui要有框，背景不变
@@ -75,10 +70,8 @@ void FocusFrame::paintEvent(QPaintEvent *event)
         // 焦点不在，不绘制
         // 绘制背景
         QPainterPath itemBackgroudPath;
-        // 类似: paintRoundedRect(itemBackgroudPath, QRect(0, 0, 220, 60));
-        // TODO  master 
-        // paintRoundedRect(itemBackgroudPath, rect().adjusted(0, 0, 1, 1));
-        paintRoundedRect(itemBackgroudPath, QRect(0, 0, m_isWideFrame ? 360 : 220, 60));
+        // 使用动态宽度绘制背景
+        paintRoundedRect(itemBackgroudPath, QRect(0, 0, rect().width(), rect().height()));
         // 产品要有悬浮效果的
         // painter.fillPath(itemBackgroudPath, QBrush(pa.color(DPalette::ObviousBackground)));
         // ui要有框，背景不变
