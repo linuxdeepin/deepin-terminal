@@ -141,6 +141,14 @@ void Settings::init()
         setColorScheme("Dark");
         setExtendColorScheme("");
         qCDebug(tsettings) << "Color scheme initialized";
+    } else if (DGuiApplicationHelper::instance()->paletteType() == DGuiApplicationHelper::UnknownType
+               && extendColorScheme().isEmpty()) {
+        // 跟随系统模式：colorScheme 可能因上次关闭后系统主题变化而过期，需同步为当前系统主题
+        QString sysTheme = (DGuiApplicationHelper::instance()->themeType() == DGuiApplicationHelper::LightType) ? "Light" : "Dark";
+        if (colorScheme() != sysTheme) {
+            qCDebug(tsettings) << "Syncing colorScheme to system theme:" << colorScheme() << "->" << sysTheme;
+            setColorScheme(sysTheme);
+        }
     }
     /******** Modify by n014361 wangpeili 2020-01-10:   增加窗口状态选项  ************/
     auto windowState = settings->option("advanced.window.use_on_starting");

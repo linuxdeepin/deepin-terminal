@@ -11,3 +11,8 @@ CMakeLists.txt.user
 deepin-terminal.pro.user
 .cache/*
 .cursor/*
+.claude/
+.codegraph/
+.npm-cache/
+.trellis/
+obj-*-linux-gnu/

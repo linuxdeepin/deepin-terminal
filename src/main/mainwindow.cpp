@@ -2752,6 +2752,9 @@ void MainWindow::switchThemeAction(QAction *action)
     if (action == autoThemeAction) {
         Settings::instance()->setExtendColorScheme(THEME_NO);
         DGuiApplicationHelper::instance()->setPaletteType(DGuiApplicationHelper::UnknownType);
+        // Sync colorScheme to actual system theme so new TermWidgets get correct colors
+        QString sysTheme = (DGuiApplicationHelper::instance()->themeType() == DGuiApplicationHelper::LightType) ? THEME_LIGHT : THEME_DARK;
+        Settings::instance()->setColorScheme(sysTheme);
         emit DGuiApplicationHelper::instance()->themeTypeChanged(DGuiApplicationHelper::instance()->themeType());
         return;
     }

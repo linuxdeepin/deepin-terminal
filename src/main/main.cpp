@@ -91,6 +91,7 @@ int main(int argc, char *argv[])
 #if (DTK_VERSION >= DTK_VERSION_CHECK(5,6,8,0))
     //qCDebug(mainprocess) << "current libdtkcore5 > 5.6.8.0";
     DLogManager::registerJournalAppender();
+    DLogManager::registerFileAppender();
     //qCInfo(mainprocess) << "Current log register journal!";
 #ifdef QT_DEBUG
     DLogManager::registerConsoleAppender();
