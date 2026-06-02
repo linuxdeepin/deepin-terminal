@@ -57,14 +57,13 @@ void UT_RemoteManagementPanel_Test::prepareData()
     serverConfigManager->initServerConfig();
 
     int serverConfigCount = getServerConfigCount();
-    qDebug() << serverConfigCount << endl;
+    qDebug() << serverConfigCount << Qt::endl;
 
     QString groupName = QString("group_01");
 
-    qsrand(static_cast<uint>(time(nullptr)));
     ServerConfig *config = new ServerConfig();
     config->m_serverName = QString("new_server_%1").arg(Utils::getRandString());
-    config->m_address = QString("192.168.10.%1").arg(qrand() % 255);
+    config->m_address = QString("192.168.10.%1").arg(QRandomGenerator::global()->bounded(255));
     config->m_userName = QString("zhangsan");
     config->m_password = QString("123");
     config->m_privateKey = QString("");
@@ -84,10 +83,9 @@ void UT_RemoteManagementPanel_Test::prepareData()
     ServerConfig *currConfig = serverConfigManager->getServerConfig(config->m_serverName);
     EXPECT_NE(currConfig, nullptr);
 
-    qsrand(static_cast<uint>(time(nullptr)));
     ServerConfig *newConfig = new ServerConfig();
     newConfig->m_serverName = QString("new_server_%1").arg(Utils::getRandString());
-    newConfig->m_address = QString("192.168.10.%1").arg(qrand() % 255);
+    newConfig->m_address = QString("192.168.10.%1").arg(QRandomGenerator::global()->bounded(255));
     newConfig->m_userName = QString("uos");
     newConfig->m_password = QString("123456");
     newConfig->m_privateKey = QString("");
@@ -141,7 +139,7 @@ TEST_F(UT_RemoteManagementPanel_Test, setFocusInPanel)
 
     panel.setFocusInPanel();
     int listIndex = panel.getListIndex();
-    qDebug() << "listIndex:" << listIndex << endl;
+    qDebug() << "listIndex:" << listIndex << Qt::endl;
     EXPECT_EQ(listIndex, -1);
 
     // 最后一种情况
@@ -202,10 +200,10 @@ TEST_F(UT_RemoteManagementPanel_Test, clearListFocus)
     EXPECT_EQ(panel.size().height(), PANEL_HEIGHT);
 
     panel.clearListFocus();
-    EXPECT_EQ(panel.m_backButton->hasFocus(), false);
-    EXPECT_EQ(panel.m_listWidget->hasFocus(), false);
-    EXPECT_EQ(panel.m_searchEdit->hasFocus(), false);
-    EXPECT_EQ(panel.m_listWidget->currentIndex(), -1);
+    EXPECT_EQ(panel.m_backButton ? panel.m_backButton->hasFocus() : false, false);
+    EXPECT_EQ(panel.m_listWidget ? panel.m_listWidget->hasFocus() : false, false);
+    EXPECT_EQ(panel.m_searchEdit ? panel.m_searchEdit->hasFocus() : false, false);
+    EXPECT_EQ(panel.m_listWidget ? panel.m_listWidget->currentIndex() : -1, -1);
 }
 
 TEST_F(UT_RemoteManagementPanel_Test, refreshSearchState)

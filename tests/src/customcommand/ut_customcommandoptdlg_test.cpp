@@ -144,7 +144,7 @@ TEST_F(UT_CustomCommandOptDlg_Test, slotAddSaveButtonClicked)
     EXPECT_TRUE(cmdDlg->m_nameLineEdit->text().isEmpty());
 
     //add-条件：name.length>MAX_NAME_LEN,cammand=""
-    cmdDlg->m_nameLineEdit->setText(QString('A', MAX_NAME_LEN + 1));
+    cmdDlg->m_nameLineEdit->setText(QString(MAX_NAME_LEN + 1, QChar('A')));
     cmdDlg->slotAddSaveButtonClicked();
     EXPECT_TRUE(cmdDlg->m_nameLineEdit->text().count() > 0);
 

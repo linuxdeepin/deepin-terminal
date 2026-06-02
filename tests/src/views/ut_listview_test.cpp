@@ -106,7 +106,7 @@ TEST_F(UT_ListView_Test, onRemoteItemModify)
 
         ServerConfig *config = new ServerConfig();
         config->m_serverName = QString("server_%1").arg(i);
-        config->m_address = QString("192.168.10.%1").arg(qrand() % 255);
+        config->m_address = QString("192.168.10.%1").arg(QRandomGenerator::global()->bounded(255));
         config->m_userName = QString("%1").arg(Utils::getRandString());
         config->m_password = QString("123");
         config->m_privateKey = QString("");
@@ -245,7 +245,7 @@ ServerConfig* generateNewServerConfig()
 {
     ServerConfig *config = new ServerConfig();
     config->m_serverName = QStringLiteral("new_server_listview_test");
-    config->m_address = QStringLiteral("192.168.10.%1").arg(qrand() % 255);
+    config->m_address = QStringLiteral("192.168.10.%1").arg(QRandomGenerator::global()->bounded(255));
     config->m_userName = QStringLiteral("server_user");
     config->m_password = QStringLiteral("123456");
     config->m_privateKey = QStringLiteral("");

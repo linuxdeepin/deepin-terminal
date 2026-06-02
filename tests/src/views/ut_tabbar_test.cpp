@@ -433,7 +433,7 @@ TEST_F(UT_Tabbar_Test, handleDragActionChanged)
 
     Stub stub;
     stub.set(ADDR(DTabBar, dragIconWindow), ut_tablbar_dragIconWindow);
-    stub.set(ADDR(QWindow, setProperty), ut_window_setProperty);
+    stub.set((bool (QWindow::*)(const char *, const QVariant &))ADDR(QWindow, setProperty), ut_window_setProperty);
 
     qApp->setOverrideCursor(Qt::CrossCursor);
     tabbar.handleDragActionChanged(Qt::IgnoreAction);
@@ -450,7 +450,7 @@ TEST_F(UT_Tabbar_Test, handleMiddleButtonClick)
     TabBar *tabbar = new TabBar(w);
     tabbar->addTab(generateUniqueId(), "tab01");
     QSignalSpy spy(tabbar, &DTabBar::tabCloseRequested);
-    QMouseEvent mouseEvent(QEvent::MouseButtonRelease, tabbar->tabRect(0).center(), Qt::MidButton, Qt::NoButton, Qt::NoModifier);
+    QMouseEvent mouseEvent(QEvent::MouseButtonRelease, tabbar->tabRect(0).center(), Qt::MiddleButton, Qt::NoButton, Qt::NoModifier);
     tabbar->handleMiddleButtonClick(&mouseEvent);
     qDebug() << spy.count();
     EXPECT_TRUE(1 == spy.count());

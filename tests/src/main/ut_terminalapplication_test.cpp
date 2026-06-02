@@ -12,9 +12,10 @@
 #include <QObject>
 #include <QTest>
 #include <QApplication>
-#include <QDesktopWidget>
+#include <QScreen>
 #include <QtConcurrent/QtConcurrent>
 #include <QMainWindow>
+#include <QElapsedTimer>
 
 UT_TerminalApplication_Test::UT_TerminalApplication_Test()
 {
@@ -58,7 +59,7 @@ TEST_F(UT_TerminalApplication_Test, getsetStartTime)
         delete loop;
     });
 
-    QTime useTime;
+    QElapsedTimer useTime;
     useTime.start();
     qint64 startTime = QDateTime::currentDateTime().toMSecsSinceEpoch();
 
@@ -99,7 +100,7 @@ TEST_F(UT_TerminalApplication_Test, notify)
         loop->exec();
     });
 
-    QTime useTime;
+    QElapsedTimer useTime;
     useTime.start();
     qint64 startTime = QDateTime::currentDateTime().toMSecsSinceEpoch();
 

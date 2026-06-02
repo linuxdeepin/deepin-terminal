@@ -324,6 +324,6 @@ install(FILES src/assets/config/logconfig/org.deepin.terminal.json
         DESTINATION ${CMAKE_INSTALL_PREFIX}/share/deepin-log-viewer/deepin-log.conf.d/)
 
 # Unit Test
-# if (CMAKE_BUILD_TYPE MATCHES Debug)
-# add_subdirectory(tests)
-# endif()
+if (CMAKE_BUILD_TYPE MATCHES Debug)
+add_subdirectory(tests)
+endif()

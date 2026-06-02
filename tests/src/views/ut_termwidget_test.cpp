@@ -303,7 +303,7 @@ TEST_F(UT_TermWidget_Test, wheelEvent)
 
     TermWidget *termWidget = currTermPage->m_currentTerm;
 
-    QWheelEvent event(QPointF(QPoint(0,0)),QPointF(QPoint(0,0)),0,0,0,Qt::Horizontal);
+    QWheelEvent event(QPointF(0, 0), QPointF(0, 0), QPoint(0, 0), QPoint(0, 0), Qt::NoButton, Qt::NoModifier, Qt::ScrollUpdate, false);
     QCoreApplication::sendEvent(termWidget,&event);
 }
 

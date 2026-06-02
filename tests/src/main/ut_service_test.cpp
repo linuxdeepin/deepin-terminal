@@ -190,20 +190,20 @@ TEST_F(UT_Service_Test, initSetting)
 {
     DELETE_PTR(m_service->m_settingDialog);
     // 初始化设置框
-    m_service->initSetting();
+    m_service->initSetting(nullptr);
 
     DELETE_PTR(m_service->m_settingDialog);
     // 初始化设置框
     Stub stub;
     stub.set(ADDR(DWindowManagerHelper,hasComposite),ut_dtk_managerhelper_hasComposite);
-    m_service->initSetting();
+    m_service->initSetting(nullptr);
 
     // 判断设置框是否被初始化
     EXPECT_NE(m_service->m_settingDialog, nullptr);
     // 获取刚刚生成的dialog
     DSettingsDialog *settingDialog = m_service->m_settingDialog;
     // 再次初始化
-    m_service->initSetting();
+    m_service->initSetting(nullptr);
     // 若已经初始化过，此时指针不变
     EXPECT_NE(m_service->m_settingDialog, nullptr);
     EXPECT_EQ(m_service->m_settingDialog, settingDialog);
@@ -274,7 +274,7 @@ TEST_F(UT_Service_Test, isSettingDialogVisible2)
     EXPECT_EQ(m_service->isSettingDialogVisible(), false);
 
     // 初始化设置窗口，但是没有show此时应该得到false
-    m_service->initSetting();
+    m_service->initSetting(nullptr);
     EXPECT_EQ(m_service->isSettingDialogVisible(), false);
 
     // 此时显示设置框，应该得到true
@@ -365,7 +365,7 @@ TEST_F(UT_Service_Test, onDesktopWorkspaceSwitched)
 TEST_F(UT_Service_Test, slotWMChanged)
 {
     UT_STUB_QWIDGET_SETVISIBLE_CREATE;
-    m_service->slotWMChanged("deepin wm");
+    m_service->slotWMChanged();
     //会调用setvisible函数
     EXPECT_TRUE(UT_STUB_QWIDGET_SETVISIBLE_RESULT);
 }

@@ -45,7 +45,7 @@ TEST_F(UT_FocusFrame_Test, enterEvent)
 {
     FocusFrame frame;
     frame.resize(50, 50);
-    QEvent *event = new QEvent(QEvent::Enter);
+    QEnterEvent *event = new QEnterEvent(QPointF(), QPointF(), QPointF());
     frame.enterEvent(event);
     delete event;
 

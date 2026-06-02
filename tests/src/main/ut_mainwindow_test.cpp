@@ -22,7 +22,8 @@
 //Qt单元测试相关头文件
 #include <QTest>
 #include <QApplication>
-#include <QDesktopWidget>
+#include <QScreen>
+#include <QEnterEvent>
 #include <QtConcurrent/QtConcurrent>
 #include <QKeyEvent>
 #include <QShortcut>
@@ -66,7 +67,8 @@ TEST_F(UT_SwitchThemeMenu_Test, SwitchThemeMenuTest)
     QKeyEvent keyPress(QEvent::KeyPress, Qt::Key_Up, Qt::NoModifier);
     m_themeMenu->keyPressEvent(&keyPress);
 
-    m_themeMenu->enterEvent(&e);
+    QEnterEvent enterEvent{QPointF(), QPointF(), QPointF()};
+    m_themeMenu->enterEvent(&enterEvent);
     EXPECT_EQ(m_themeMenu->hoveredThemeStr, "");
 
     QHideEvent he;
@@ -325,7 +327,7 @@ TEST_F(UT_MainWindow_Test, QuakeWindowTest)
 
     m_quakeWindow->show();
 
-    int desktopWidth = QApplication::desktop()->availableGeometry().width();
+    int desktopWidth = QGuiApplication::primaryScreen()->availableGeometry().width();
     EXPECT_EQ(m_quakeWindow->width(), desktopWidth);
     EXPECT_GE(m_quakeWindow->height(), 0);
 
@@ -1676,7 +1678,7 @@ TEST_F(UT_MainWindow_Test, slotWorkAreaResized)
 
     mainWindow->slotWorkAreaResized();
     //雷神窗口的宽度为桌面宽度
-    EXPECT_TRUE(QApplication::desktop()->availableGeometry().width() == mainWindow->width());
+    EXPECT_TRUE(QGuiApplication::primaryScreen()->availableGeometry().width() == mainWindow->width());
     mainWindow->deleteLater();
 }
 

@@ -16,11 +16,11 @@ set(PROJECT_NAME_TEST ${PROJECT_NAME})
 
 add_compile_options(-fno-access-control)
 
-find_package(Qt5Test REQUIRED)
+find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Test)
 find_package(GTest REQUIRED)
 
-add_definitions(${Qt5Test_DEFINITIONS})
-add_definitions(-D UNIT_TEST)
+# Qt6::Test 通过 target_link_libraries 自动传播定义，无需手动 add_definitions
+add_definitions(-DUNIT_TEST)
 
 include_directories(${GTEST_INCLUDE_DIRS})
 include_directories("src/common")
@@ -63,6 +63,7 @@ FILE(GLOB allThirdPartySource
     ../3rdparty/terminalwidget/lib/*.cpp
     ../3rdparty/terminalwidget/lib/history/*.cpp
     ../3rdparty/terminalwidget/lib/history/compact/*.cpp
+    ../3rdparty/terminalwidget/lib/encodes/*.cpp
 )
 
 FILE(GLOB qrcFiles
@@ -91,7 +92,11 @@ FILE(GLOB allTestSource
 )
 
 set(UI ../3rdparty/terminalwidget/lib/SearchBar.ui)
-qt5_wrap_ui(UI_SRCS ${UI})
+if(QT_VERSION_MAJOR EQUAL 6)
+    qt6_wrap_ui(UI_SRCS ${UI})
+else()
+    qt5_wrap_ui(UI_SRCS ${UI})
+endif()
 
 set(KB_LAYOUT_DIR "${CMAKE_INSTALL_FULL_DATADIR}/${TERMINALWIDGET_LIBRARY_NAME}/kb-layouts")
 set(COLORSCHEMES_DIR "${CMAKE_INSTALL_FULL_DATADIR}/${TERMINALWIDGET_LIBRARY_NAME}/color-schemes")
@@ -113,20 +118,21 @@ add_executable(${PROJECT_NAME_TEST}
     ${uiFiles}
 )
 
-target_include_directories(${PROJECT_NAME_TEST} PUBLIC ${Qt5Widgets_LIBRARIES}
-                                                        ${Qt5DBus_LIBRARIES}
-                                                        ${Qt5TestLib_LIBRARIES}
-                                                        ${Qt5Widgets_PRIVATE_INCLUDE_DIRS}
-                                                        ${Qt5Core_PRIVATE_INCLUDE_DIRS}
-                                                        ${Qt5Gui_PRIVATE_INCLUDE_DIRS}
+target_include_directories(${PROJECT_NAME_TEST} PUBLIC
+                                                        ${Qt${QT_VERSION_MAJOR}Widgets_PRIVATE_INCLUDE_DIRS}
+                                                        ${Qt${QT_VERSION_MAJOR}Core_PRIVATE_INCLUDE_DIRS}
+                                                        ${Qt${QT_VERSION_MAJOR}Gui_PRIVATE_INCLUDE_DIRS}
                                                         ${PROJECT_BINARY_DIR}
                                                         ${DtkWidget_INCLUDE_DIRS}
-                                                        ${DtkCore_LIBRARIES}
-                                                        ${DtkGUI_INCLUDE_DIRS}
+                                                        ${DtkGui_INCLUDE_DIRS}
+                                                        ${DtkCore_INCLUDE_DIRS}
                                                         ${GOBJECT_INCLUDE_DIRS}
-                                                        ${LIBSECRET_INCLUDE_DIRS})
+                                                        ${LIBSECRET_INCLUDE_DIRS}
+                                                        ${chardet_INCLUDE_DIRS})
 
-target_link_libraries(${PROJECT_NAME_TEST} PUBLIC ${LINK_LIBS} Qt5::Test ${GTEST_LIBRARIES} ${GTEST_MAIN_LIBRARIES} -lpthread -lm)
+find_package(ICU COMPONENTS i18n uc REQUIRED)
+
+target_link_libraries(${PROJECT_NAME_TEST} PUBLIC ${LINK_LIBS} Qt${QT_VERSION_MAJOR}::Test ${GTEST_LIBRARIES} ${GTEST_MAIN_LIBRARIES} -lpthread -lm ICU::i18n ICU::uc chardet uchardet)
 
 #------------------------------ 创建'make test'指令---------------------------------------
 add_custom_target(test
@@ -155,4 +161,3 @@ if(CMAKE_SAFETYTEST STREQUAL "CMAKE_SAFETYTEST_ARG_ON")
   set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -g -fsanitize=undefined,address -O2")
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -fsanitize=undefined,address -O2")
 endif()
-
