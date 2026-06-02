@@ -14,7 +14,7 @@
 //Qt单元测试相关头文件
 #include <QTest>
 #include <QApplication>
-#include <QDesktopWidget>
+#include <QScreen>
 #include <QtConcurrent/QtConcurrent>
 #include <QDebug>
 

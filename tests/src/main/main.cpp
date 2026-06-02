@@ -16,9 +16,11 @@
 #include <sanitizer/asan_interface.h>
 #endif
 
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
 QT_BEGIN_NAMESPACE
 QTEST_ADD_GPU_BLACKLIST_SUPPORT_DEFS
 QT_END_NAMESPACE
+#endif
 
 int main(int argc, char *argv[])
 {
@@ -26,7 +28,9 @@ int main(int argc, char *argv[])
     TerminalApplication app(argc, argv);
 
     QTEST_DISABLE_KEYPAD_NAVIGATION
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
     QTEST_ADD_GPU_BLACKLIST_SUPPORT
+#endif
 
     testing::InitGoogleTest(&argc, argv);
     int ret = RUN_ALL_TESTS();

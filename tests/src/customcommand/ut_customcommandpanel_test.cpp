@@ -36,9 +36,11 @@ private:
     ShortcutManager *m_scManager;
 };
 
-static QAction m_action;
+static QAction *m_action = nullptr;
 static QAction *ut_m_pdlg_getCurCustomCmd() {
-    return &m_action;
+    if (!m_action)
+        m_action = new QAction();
+    return m_action;
 }
 
 UT_CustomCommandPanel_Test::UT_CustomCommandPanel_Test():m_scManager(nullptr)

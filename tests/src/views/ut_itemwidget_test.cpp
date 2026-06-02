@@ -344,14 +344,15 @@ TEST_F(UT_ItemWidget_Test, onFocusOut)
 
 TEST_F(UT_ItemWidget_Test, enterEvent)
 {
-    QEvent e(QEvent::None);
     ItemWidget w(ItemFuncType::ItemFuncType_Item, nullptr);
 
     UT_STUB_QWIDGET_SHOW_CREATE;
-    w.enterEvent(&e);
+    QEnterEvent enterEvent{QPointF(), QPointF(), QPointF()};
+    w.enterEvent(&enterEvent);
     EXPECT_TRUE(UT_STUB_QWIDGET_SHOW_RESULT);
 
-    w.leaveEvent(&e);
+    QEvent leaveEv(QEvent::None);
+    w.leaveEvent(&leaveEv);
     EXPECT_TRUE(ItemFuncType::ItemFuncType_Item == w.m_functType);
 
     QSignalSpy signalpy(&w, &ItemWidget::focusOut);
