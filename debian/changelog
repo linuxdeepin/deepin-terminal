@@ -1,3 +1,10 @@
+deepin-terminal (6.5.36) unstable; urgency=medium
+
+  * test: migrate unit tests from Qt5 to Qt5/Qt6 compatible
+  * fix(settings): sync colorScheme to system theme on startup and follow-system switch
+
+ -- dengzhongyuan <dengzhongyuan@uniontech.com>  Thu, 04 Jun 2026 20:56:16 +0800
+
 deepin-terminal (6.5.35) unstable; urgency=medium
 
   * chore: Update version to 6.5.35
