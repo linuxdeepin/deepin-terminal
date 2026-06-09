@@ -1,4 +1,4 @@
-// Copyright (C) 2019 ~ 2020 Uniontech Software Technology Co.,Ltd
+// Copyright (C) 2019 ~ 2026 Uniontech Software Technology Co.,Ltd
 // SPDX-FileCopyrightText: 2022 UnionTech Software Technology Co., Ltd.
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
@@ -119,6 +119,14 @@ void SwitchThemeMenu::enterEvent(EnterEvent *event)
     // qCDebug(mainprocess) << "Enter SwitchThemeMenu::enterEvent";
     hoveredThemeStr = "";
     return QMenu::enterEvent(event);
+}
+
+void SwitchThemeMenu::showEvent(QShowEvent *event)
+{
+    // 子菜单显示 = 进入 hover 预览周期：复位闸门，使 themeActionHoveredSlot 能放行后续 hover。
+    // 点击主题项时 themeActionTriggeredSlot 会重置为 true，避免菜单关闭尾随 hover 覆盖真实选择。
+    Settings::instance()->bSwitchTheme = false;
+    QMenu::showEvent(event);
 }
 
 void SwitchThemeMenu::keyPressEvent(QKeyEvent *event)

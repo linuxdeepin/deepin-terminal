@@ -1,4 +1,4 @@
-// Copyright (C) 2019 ~ 2020 Uniontech Software Technology Co.,Ltd
+// Copyright (C) 2019 ~ 2026 Uniontech Software Technology Co.,Ltd
 // SPDX-FileCopyrightText: 2022 UnionTech Software Technology Co., Ltd.
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
@@ -84,6 +84,11 @@ public:
      * @param event 键盘主题项左键按下离开事件
      */
     void keyPressEvent(QKeyEvent *event) override;
+    /**
+     * @brief 主题菜单显示时触发，复位 hover 预览闸门
+     * @param event 显示事件
+     */
+    void showEvent(QShowEvent *event) override;
 
 signals:
     //主题项在鼠标停靠离开时触发的信号
