@@ -1,4 +1,4 @@
-// Copyright (C) 2019 ~ 2020 Uniontech Software Technology Co.,Ltd
+// Copyright (C) 2019 ~ 2026 Uniontech Software Technology Co.,Ltd
 // SPDX-FileCopyrightText: 2022 UnionTech Software Technology Co., Ltd.
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
@@ -520,6 +520,20 @@ QStringList Utils::parseExecutePara(QStringList &arguments)
             qCDebug(common) << "Processing first parameter with nested parsing";
             // 第一个参数，支持嵌入二次解析，其它的参数不支持
             paraList += parseNestedQString(str);
+            // 兜底：`-e "cmd args"` 这种 shell 剥引号后只剩一个含空白 argv 元素的写法，
+            // 需要再按空白拆分；真实存在的含空格文件路径不拆。
+            if (paraList.size() == 1) {
+                const QString only = paraList.first();
+                if ((only.contains(QLatin1Char(' ')) || only.contains(QLatin1Char('\t')))
+                    && !QFileInfo(only).isFile()) {
+#if (QT_VERSION < QT_VERSION_CHECK(6, 0, 0))
+                    paraList = only.split(QRegExp(QStringLiteral("\\s+")), QString::SkipEmptyParts);
+#else
+                    paraList = only.split(QRegularExpression(QStringLiteral("\\s+")), Qt::SkipEmptyParts);
+#endif
+                    qCInfo(common) << "execute first arg re-split by whitespace ->" << paraList;
+                }
+            }
         } else {
             qCDebug(common) << "Appending parameter:" << str;
             paraList.append(str);
@@ -527,6 +541,32 @@ QStringList Utils::parseExecutePara(QStringList &arguments)
 
         index++;
     }
+
+    // Fallback: 如果 -e 后只跟一个参数，并且这个参数经过 parseNestedQString
+    // 之后仍然是单个含空白的字符串（既不是带引号的命令，也不是真实存在的文件路径），
+    // 则按空白拆分，避免把整个 "top -1" 当作单一可执行文件名送进 execve。
+    // 真实带空格的文件路径已经被 parseNestedQString 中的 QFileInfo::isFile() 保护，
+    // 这里再用 isFile() 二次确认，保证幂等：
+    //   - 历史已经被正确拆分的输入：paraList.size() >= 2，不触发；
+    //   - 历史被错误整串透传的输入：触发，恢复成多元素 argv；
+    //   - 真实带空格的文件路径：isFile() 拦截，不触发。
+    if (paraList.size() == 1) {
+        const QString firstArg = paraList.first();
+#if (QT_VERSION < QT_VERSION_CHECK(6, 0, 0))
+        QRegExp wsRegex(QStringLiteral("\\s"));
+        const bool hasWhitespace = firstArg.contains(wsRegex);
+        QRegExp wsSplit(QStringLiteral("\\s+"));
+#else
+        QRegularExpression wsRegex(QStringLiteral("\\s"));
+        const bool hasWhitespace = firstArg.contains(wsRegex);
+        QRegularExpression wsSplit(QStringLiteral("\\s+"));
+#endif
+        if (hasWhitespace && !QFileInfo(firstArg).isFile()) {
+            qCInfo(common) << "Fallback: splitting single whitespace-containing arg:" << firstArg;
+            paraList = firstArg.split(wsSplit, SKIP_EMPTY_PARTS);
+        }
+    }
+
     // 将-e 以及后面参数全部删除，防止出现参数被终端捕捉异常情况
     if (paraList.size() != 0) {
         qCDebug(common) << "Removing execute parameters from arguments";
