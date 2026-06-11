@@ -1,3 +1,10 @@
+deepin-terminal (6.5.37) unstable; urgency=medium
+
+  * fix: Command execution exception
+  * fix: Built-in themes do not take effect immediately
+
+ -- Wang Yu <wangyu@uniontech.com>  Thu, 11 Jun 2026 20:16:33 +0800
+
 deepin-terminal (6.5.36) unstable; urgency=medium
 
   * test: migrate unit tests from Qt5 to Qt5/Qt6 compatible
