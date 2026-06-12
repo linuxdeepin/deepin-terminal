@@ -1,4 +1,4 @@
-// Copyright (C) 2019 ~ 2020 Uniontech Software Technology Co.,Ltd
+// Copyright (C) 2019 ~ 2026 Uniontech Software Technology Co.,Ltd
 // SPDX-FileCopyrightText: 2022 UnionTech Software Technology Co., Ltd.
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
@@ -374,12 +374,17 @@ inline void TermWidget::onUrlActivated(const QUrl &url, bool fromContextMenu)
 
 inline void TermWidget::onThemeTypeChanged(DGuiApplicationHelper::ColorType builtInTheme)
 {
-    // 跟随系统主题时，仅信任 themeTypeChanged 的参数，不再依赖 paletteType 的即时值，
-    // 避免两者不同步时内容区与标题栏浅/深不一致。
     const QString expandThemeStr = Settings::instance()->extendColorScheme();
 
-    // 没有扩展主题：根据当前内建主题 Light/Dark 切换终端配色，并同步保存到设置
+    // 没有扩展主题：仅在"跟随系统"模式下才跟随系统浅/深切换。
+    // 终端主题有三种状态，其中"固定浅/深主题"与"跟随系统"的 extendColorScheme 都为空，
+    // 二者只能通过 paletteType 区分（跟随系统时为 UnknownType，与 settings.cpp 启动逻辑一致）。
+    // 用户固定选了浅色/深色主题时，不应随其他应用或全局主题变化而改变，否则会出现主题异常。
     if (expandThemeStr.isEmpty()) {
+        if (DGuiApplicationHelper::instance()->paletteType() != DGuiApplicationHelper::UnknownType) {
+            // 固定 浅色/深色 主题：忽略主题变化信号，不跟随
+            return;
+        }
         QString theme = (builtInTheme == DGuiApplicationHelper::LightType) ? "Light" : "Dark";
         setColorScheme(theme);
         Settings::instance()->setColorScheme(theme);
