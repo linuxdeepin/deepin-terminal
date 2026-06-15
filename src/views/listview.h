@@ -117,6 +117,14 @@ public:
      * @return
      */
     int getNextIndex(int index);
+    /** @brief 第一个可聚焦项（跳过 GroupLabel/ItemLabel）的 index，无则 -1 */
+    int firstFocusableIndex();
+    /** @brief 最后一个可聚焦项的 index，无则 -1 */
+    int lastFocusableIndex();
+    /** @brief from 之后下一个可聚焦项 index，无则 -1 */
+    int nextFocusableIndex(int from);
+    /** @brief from 之前上一个可聚焦项 index，无则 -1 */
+    int prevFocusableIndex(int from);
     /**
      * @brief 设置当前焦点
      * @author ut000610 戴正文

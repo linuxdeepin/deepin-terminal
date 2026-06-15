@@ -225,6 +225,39 @@ int ListView::getNextIndex(int index)
     }
 }
 
+static bool isFocusableItemType(ItemFuncType t)
+{
+    return t != ItemFuncType_GroupLabel && t != ItemFuncType_ItemLabel;
+}
+
+int ListView::firstFocusableIndex()
+{
+    for (int i = 0; i < m_itemList.count(); ++i)
+        if (isFocusableItemType(m_itemList.at(i)->getFuncType())) return i;
+    return -1;
+}
+
+int ListView::lastFocusableIndex()
+{
+    for (int i = m_itemList.count() - 1; i >= 0; --i)
+        if (isFocusableItemType(m_itemList.at(i)->getFuncType())) return i;
+    return -1;
+}
+
+int ListView::nextFocusableIndex(int from)
+{
+    for (int i = from + 1; i < m_itemList.count(); ++i)
+        if (isFocusableItemType(m_itemList.at(i)->getFuncType())) return i;
+    return -1;
+}
+
+int ListView::prevFocusableIndex(int from)
+{
+    for (int i = from - 1; i >= 0; --i)
+        if (isFocusableItemType(m_itemList.at(i)->getFuncType())) return i;
+    return -1;
+}
+
 void ListView::setCurrentIndex(int currentIndex)
 {
     qCDebug(views) << "ListView::setCurrentIndex() entered, index:" << currentIndex;
@@ -698,7 +731,8 @@ void ListView::focusInEvent(QFocusEvent *event)
 
     if (event->reason() == Qt::TabFocusReason) {
         qCDebug(views) << "Branch: TabFocusReason";
-        setCurrentIndex(0);
+        int idx = firstFocusableIndex();
+        setCurrentIndex(idx >= 0 ? idx : 0);
     } else {
         qCDebug(views) << "Branch: not TabFocusReason";
         setCurrentIndex(m_currentIndex);
