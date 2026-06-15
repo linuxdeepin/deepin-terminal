@@ -47,8 +47,9 @@ void RemoteManagementPanel::setFocusInPanel()
         qCDebug(remotemanage) << "list widget is visible, setting focus";
         // 列表显示
         /******** Modify by ut000610 daizhengwen 2020-07-27:bug#39775 Begin***************/
-        // 将焦点设置在列表里的第一项
-        m_listWidget->setCurrentIndex(0);
+        // 将焦点设置在列表里的第一个可聚焦项
+        int idx = m_listWidget->firstFocusableIndex();
+        m_listWidget->setCurrentIndex(idx >= 0 ? idx : 0);
         /********************* Modify by ut000610 daizhengwen End ************************/
     } else {
         qCDebug(remotemanage) << "setting focus on add button";
@@ -330,21 +331,36 @@ void RemoteManagementPanel::initUI()
     });
     connect(m_listWidget, &ListView::focusOut, this, [ = ](Qt::FocusReason type) {
         qCDebug(remotemanage) << "Lambda: list widget focus out signal received";
-        if (Qt::TabFocusReason == type || Qt::NoFocusReason == type) {
-            qCDebug(remotemanage) << "tab or no focus reason, setting focus to add button";
-            // 下一个 或 列表为空， 焦点定位到添加按钮上
+        if (Qt::TabFocusReason == type) {
+            int next = m_listWidget->nextFocusableIndex(m_listWidget->currentIndex());
+            if (next >= 0) {
+                m_listWidget->setCurrentIndex(next);
+                return;
+            }
+            // 已到末项或列表空 → 跳到 Add Server
             m_pushButton->setFocus();
             m_listWidget->clearIndex();
             qCInfo(remotemanage) << "set focus on add pushButton";
         } else if (Qt::BacktabFocusReason == type) {
             qCDebug(remotemanage) << "back tab focus reason";
-            // 判断是否可见，可见设置焦点
+            int prev = m_listWidget->prevFocusableIndex(m_listWidget->currentIndex());
+            if (prev >= 0) {
+                m_listWidget->setCurrentIndex(prev);
+                return;
+            }
+            // 已到首项 → 回搜索框（如可见）
             if (m_searchEdit->isVisible()) {
                 qCDebug(remotemanage) << "search edit is visible, setting focus";
                 m_searchEdit->lineEdit()->setFocus();
                 m_listWidget->clearIndex();
-                qCInfo(remotemanage) << "set focus on add search edit";
+                qCInfo(remotemanage) << "set focus on search edit";
             }
+        } else if (Qt::NoFocusReason == type) {
+            qCDebug(remotemanage) << "no focus reason, setting focus to add button";
+            // 列表为空或索引无效 → 跳到 Add Server
+            m_pushButton->setFocus();
+            m_listWidget->clearIndex();
+            qCInfo(remotemanage) << "set focus on add pushButton";
         }
     });
 
