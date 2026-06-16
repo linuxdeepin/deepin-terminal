@@ -49,6 +49,7 @@
 #include <QScreen>
 #include <QLoggingCategory>
 #include <QActionGroup>
+#include <QTabBar>
 
 #if (QT_VERSION < QT_VERSION_CHECK(6, 0, 0))
 #include <QDesktopWidget>
@@ -1694,6 +1695,12 @@ void MainWindow::onCreateNewWindow(QString workingDir)
     process.startDetached(QCoreApplication::applicationFilePath());
 }
 
+QList<QWidget *> MainWindow::titlebarFocusRing()
+{
+    // 基类默认不建立标题栏焦点环（雷神窗口不重写 → 返回空 → Tab 处理对其 no-op）
+    return QList<QWidget *>();
+}
+
 bool MainWindow::eventFilter(QObject *watched, QEvent *event)
 {
     // qCDebug(mainprocess) << "Enter MainWindow::eventFilter";
@@ -1790,6 +1797,41 @@ bool MainWindow::eventFilter(QObject *watched, QEvent *event)
             return true;
         }
 #endif
+        // 标题栏按钮 Tab/Shift+Tab 焦点循环（修复 bug-283709：普通窗口标题栏焦点无法循环）
+        // 仅在窗口激活且可用时处理；排除 Ctrl/Alt/Meta 组合（Meta+Tab 为 QShortcut 单独处理的 focusout）
+        if (this->isActiveWindow() && this->isEnabled()) {
+            const int tabKey = key_event->key();
+            const Qt::KeyboardModifiers mods = key_event->modifiers();
+            const bool forward = (tabKey == Qt::Key_Tab && mods == Qt::NoModifier);
+            const bool backward = (tabKey == Qt::Key_Backtab && (mods & Qt::ShiftModifier)
+                                   && !(mods & (Qt::ControlModifier | Qt::AltModifier | Qt::MetaModifier)));
+            if (forward || backward) {
+                QList<QWidget *> ring = titlebarFocusRing();
+                if (ring.size() >= 1) {
+                    QWidget *fw = qApp->focusWidget();
+                    // 按「精确相等或祖先关系」查找当前站索引，以兼容 DTabBar 内部子控件持有焦点的情况。
+                    // first-match-wins：AddButton 排在 m_tabbar 之前，靠 == 先命中，
+                    // 不会与「标签栏这一站(m_tabbar->isAncestorOf 子控件)」冲突。
+                    int idx = -1;
+                    for (int i = 0; i < ring.size(); ++i) {
+                        QWidget *w = ring.at(i);
+                        if (w == fw || (fw != nullptr && w->isAncestorOf(fw))) {
+                            idx = i;
+                            break;
+                        }
+                    }
+                    // 焦点不在标题栏按钮环内则不处理，避免影响设置/远程管理等其它面板的 Tab
+                    if (idx >= 0) {
+                        if (forward)
+                            idx = (idx + 1) % ring.size();
+                        else
+                            idx = (idx - 1 + ring.size()) % ring.size();
+                        ring.at(idx)->setFocus(Qt::TabFocusReason);
+                        return true;
+                    }
+                }
+            }
+        }
         // 全局按下ESC键返回终端，过滤掉个别情况
         if (Qt::Key_Escape == key_event->key()) {
             QString filterReason; // 过滤原因
@@ -3022,15 +3064,43 @@ void NormalWindow::initTitleBar()
     else
         qCWarning(mainprocess) << "can not found DTitlebarDWindowCloseButton in DTitlebar";
 
-    if (addButton != nullptr && optionBtn != nullptr && quitFullscreenBtn != nullptr && minBtn != nullptr && maxBtn != nullptr && closeBtn != nullptr) {
-        QWidget::setTabOrder(addButton, optionBtn);
-        QWidget::setTabOrder(optionBtn, quitFullscreenBtn);
-        QWidget::setTabOrder(quitFullscreenBtn, minBtn);
-        QWidget::setTabOrder(minBtn, maxBtn);
-        QWidget::setTabOrder(maxBtn, closeBtn);
-    }
+    // 注：不再使用 setTabOrder 建立焦点链。跨子树（AddButton 在 m_tabbar 自定义控件，
+    // option/min/max/close 在 titlebar() 下）+ DTK focusProxy 下其不可靠，
+    // 改为在 MainWindow::eventFilter 中通过 titlebarFocusRing() 显式接管 Tab 焦点循环。
 
     /********************* Modify by n014361 wangpeili End ************************/
+}
+
+QList<QWidget *> NormalWindow::titlebarFocusRing()
+{
+    // 按 Tab 顺序实时查找标题栏按钮（不缓存，避免 DTK 重建按钮导致悬空指针），
+    // 过滤掉 nullptr 以及不可见/不可用的按钮（如非全屏下不可见的退出全屏按钮）。
+    QList<QWidget *> ring;
+    // 标签栏这一站用 DTabBar 内部真正绘制 tab 的 QTabBar，
+    // 这样 setFocus 后内部控件 hasFocus()==true，当前 tab 才会画出焦点框（修复空白停留）。
+    QWidget *tabStation = nullptr;
+    if (m_tabbar != nullptr) {
+        tabStation = m_tabbar->findChild<QTabBar *>();   // 内部 DTabBarPrivate(QTabBar 子类)
+        if (tabStation == nullptr)
+            tabStation = m_tabbar;                        // 兜底：找不到内部则退回外层
+        // 内部 QTabBar 之前被 Utils::clearChildrenFocus 刷成 NoFocus，
+        // 这里恢复 TabFocus，保证显式 setFocus 后能正常持有并绘制焦点框
+        tabStation->setFocusPolicy(Qt::TabFocus);
+    }
+    const QList<QWidget *> candidates = {
+        m_tabbar ? m_tabbar->findChild<DIconButton *>("AddButton") : nullptr,
+        titlebar()->findChild<DIconButton *>("DTitlebarDWindowOptionButton"),
+        titlebar()->findChild<QWidget *>("DTitlebarDWindowQuitFullscreenButton"),
+        titlebar()->findChild<DIconButton *>("DTitlebarDWindowMinButton"),
+        titlebar()->findChild<DIconButton *>("DTitlebarDWindowMaxButton"),
+        titlebar()->findChild<DIconButton *>("DTitlebarDWindowCloseButton"),
+        tabStation,
+    };
+    for (QWidget *w : candidates) {
+        if (w != nullptr && w->isVisible() && w->isEnabled())
+            ring.append(w);
+    }
+    return ring;
 }
 
 void NormalWindow::initWindowAttribute()
