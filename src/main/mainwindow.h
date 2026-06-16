@@ -819,6 +819,13 @@ protected:
     virtual void initTitleBar() = 0;
     // 初始化窗口属性
     virtual void initWindowAttribute() = 0;
+    /**
+     * @brief 构建标题栏有序焦点环，供 eventFilter 中 Tab/Shift+Tab 循环切换焦点使用。
+     *        基类默认返回空列表（如雷神窗口不建立标题栏焦点环，返回空即对 Tab 处理 no-op）。
+     * @author Tian Shilin
+     * @return 按 Tab 顺序排列、且可见可用的标题栏按钮列表
+     */
+    virtual QList<QWidget *> titlebarFocusRing();
 
 public:
     // 保存窗口尺寸
@@ -991,6 +998,13 @@ protected:
     virtual void onAppFocusChangeForQuake(bool checkIsActiveWindow = true) override;
     // 根据字体和字体大小设置最小高度
     virtual void setWindowMinHeightForFont() override {return;}
+    /**
+     * @brief 普通窗口重写标题栏焦点环，按 AddButton、主菜单、退出全屏、最小化、最大化、关闭
+     *        顺序实时查找按钮，过滤不可见/不可用项，返回有序列表用于 Tab 焦点循环。
+     * @author Tian Shilin
+     * @return 过滤后的有序标题栏按钮列表
+     */
+    virtual QList<QWidget *> titlebarFocusRing() override;
 
 protected:
     /**
