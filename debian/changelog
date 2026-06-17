@@ -1,3 +1,9 @@
+deepin-terminal (6.5.38) unstable; urgency=medium
+
+  * update version to 6.5.38.
+
+ -- Tian ShiLin <tianshilin@uniontech.com>  Wed, 17 Jun 2026 14:18:19 +0800
+
 deepin-terminal (6.5.37) unstable; urgency=medium
 
   * fix: Command execution exception
