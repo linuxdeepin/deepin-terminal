@@ -1,4 +1,4 @@
-﻿// Copyright (C) 2019 ~ 2020 Uniontech Software Technology Co.,Ltd
+﻿// Copyright (C) 2019 ~ 2026 Uniontech Software Technology Co.,Ltd
 // SPDX-FileCopyrightText: 2022 UnionTech Software Technology Co., Ltd.
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
@@ -148,6 +148,23 @@ void Settings::init()
         if (colorScheme() != sysTheme) {
             qCDebug(tsettings) << "Syncing colorScheme to system theme:" << colorScheme() << "->" << sysTheme;
             setColorScheme(sysTheme);
+        }
+    }
+
+    // 按 colorScheme 对齐 paletteType，激活 dtkgui 的 isCustomPalette() 过滤，
+    // 避免外部应用切主题时 dde-appearance 经 DPlatformTheme 把 palette 推送到本进程 qApp。
+    // 跟随系统模式（extendColorScheme 为空且 paletteType 为 UnknownType）保持原状。
+    {
+        auto helper = DGuiApplicationHelper::instance();
+        const bool isFollowSystem = extendColorScheme().isEmpty()
+                                    && helper->paletteType() == DGuiApplicationHelper::UnknownType;
+        if (!isFollowSystem) {
+            const auto desiredType = (colorScheme() == "Light")
+                                     ? DGuiApplicationHelper::LightType
+                                     : DGuiApplicationHelper::DarkType;
+            if (helper->paletteType() != desiredType) {
+                helper->setPaletteType(desiredType);
+            }
         }
     }
     /******** Modify by n014361 wangpeili 2020-01-10:   增加窗口状态选项  ************/
