@@ -65,7 +65,15 @@ find_package(PkgConfig REQUIRED)
 set(qt_required_components Core DBus Gui Network Widgets LinguistTools)
 
 # Find Qt version
-find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Core)
+# 优先 Qt6，未安装时回退 Qt5（避免 find_package(QT NAMES Qt6 Qt5) 在
+# Qt5/Qt6 共存环境下被错误解析为 Qt5 的问题）
+find_package(Qt6 QUIET COMPONENTS Core)
+if(Qt6_FOUND)
+    set(QT_VERSION_MAJOR 6)
+else()
+    find_package(Qt5 REQUIRED COMPONENTS Core)
+    set(QT_VERSION_MAJOR 5)
+endif()
 message("   >>> Found Qt version: ${QT_VERSION_MAJOR}")
 set(QT_DESIRED_VERSION ${QT_VERSION_MAJOR})
 
