@@ -86,4 +86,44 @@ TEST_F(UT_TitleBar_Test, TitleBarTest)
     int rightSpace = titleBar->rightSpace();
     EXPECT_EQ(rightSpace, titleBar->m_rightSpace);
 }
+
+/*******************************************************************************
+ 1. @函数:    mousePressEvent / mouseMoveEvent
+ 2. @说明:    覆盖 TitleBar 鼠标事件处理分支（垂直 resize 相关）
+*******************************************************************************/
+TEST_F(UT_TitleBar_Test, MouseEvents)
+{
+    TitleBar bar;
+    bar.resize(800, 36);
+    bar.setVerResized(true);
+    bar.show();
+    EXPECT_EQ(bar.isVisible(), true);
+
+    // 模拟鼠标按下：覆盖 mousePressEvent 中 window 分支
+    QMouseEvent mousePress(QEvent::MouseButtonPress, QPointF(100, 30),
+                           Qt::LeftButton, Qt::LeftButton, Qt::NoModifier);
+    QApplication::sendEvent(&bar, &mousePress);
+
+    // 鼠标移动且未按键，靠近底部 => 设置 SizeVerCursor
+    bar.setMouseTracking(true);
+    QMouseEvent mouseMoveNoBtn(QEvent::MouseMove, QPointF(100, bar.height() - 1),
+                               Qt::NoButton, Qt::NoButton, Qt::NoModifier);
+    QApplication::sendEvent(&bar, &mouseMoveNoBtn);
+
+    // 鼠标移动且左键按下，靠近底部 => 触发窗口 resize 分支
+    QMouseEvent mouseMoveLeft(QEvent::MouseMove, QPointF(100, bar.height() - 1),
+                              Qt::LeftButton, Qt::LeftButton, Qt::NoModifier);
+    QApplication::sendEvent(&bar, &mouseMoveLeft);
+
+    // 鼠标移动到中部 => 走 ArrowCursor 分支
+    QMouseEvent mouseMoveMid(QEvent::MouseMove, QPointF(100, 5),
+                             Qt::NoButton, Qt::NoButton, Qt::NoModifier);
+    QApplication::sendEvent(&bar, &mouseMoveMid);
+
+    // 关闭垂直 resize，再移动一次 => 走 disabled 分支
+    bar.setVerResized(false);
+    QApplication::sendEvent(&bar, &mouseMoveMid);
+
+    SUCCEED();
+}
 #endif
