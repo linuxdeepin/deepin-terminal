@@ -33,6 +33,7 @@
 #include <QTime>
 #include <QFile>
 #include <QGridLayout>
+#include <QInputMethod>
 #include <QLabel>
 #include <QLayout>
 #include <QPainter>
@@ -2593,6 +2594,9 @@ void TerminalDisplay::mouseReleaseEvent(QMouseEvent* ev)
                         charLine + 1 +_scrollBar->value() -_scrollBar->maximum() , 2);
     }
     dragInfo.state = diNone;
+    if (hasFocus()) {
+        qApp->inputMethod()->show();
+    }
   }
 
   bool midClick = (ev->button() == MID_BTN);
