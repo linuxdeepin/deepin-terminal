@@ -1,3 +1,13 @@
+deepin-terminal (6.5.39) unstable; urgency=medium
+
+  * chore: Update version to 6.5.39
+  * fix: show input method on mouse release when terminal has focus
+  * build: enable Qt6 build and raise unit test coverage above 80%
+  * fix: Prevent terminal theme from being changed by other applications
+  * Revert "fix: Terminal theme color not updating with application theme changes"
+
+ -- zhanghongyuan <zhanghongyuan@uniontech.com>  Thu, 09 Jul 2026 16:00:58 +0800
+
 deepin-terminal (6.5.38) unstable; urgency=medium
 
   * update version to 6.5.38.
