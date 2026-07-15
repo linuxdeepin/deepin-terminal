@@ -219,9 +219,9 @@ Name[ug]=Deepin تېرمىنالى
 Name[uk]=Термінал Deepin
 Name[vi]=Deepin Terminal
 Name[lo]=ເທີມິນັນ
-Name[zh_CN]=深度终端
-Name[zh_HK]=Deepin 終端
-Name[zh_TW]=Deepin 終端機
+Name[zh_CN]=终端
+Name[zh_HK]=終端
+Name[zh_TW]=終端機
 
 [NewWindow Shortcut Group]
 Exec=deepin-terminal
