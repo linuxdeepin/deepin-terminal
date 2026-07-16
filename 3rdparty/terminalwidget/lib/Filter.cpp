@@ -523,8 +523,11 @@ void UrlFilter::HotSpot::activate(const QString &actionName)
 /** modify begin by ut001121 zhangmeng 20201215 for 1040-4 Ctrl键+鼠标点击超链接打开网页 */
 /** del
 const QRegularExpression UrlFilter::FullUrlRegExp(QLatin1String("(www\\.(?!\\.)|[a-z][a-z0-9+.-]*://)[^\\s<>'\"]+[^!,\\.\\s<>'\"\\]]"));*/
+// port boundary: (?![0-9]) must stay a non-consuming lookahead. Replacing it
+// with [^0-9] swallows the boundary char (newline/space/'/') into the URL and
+// QUrl::StrictMode rejects it, so Ctrl+Click on "http://host:port" silently fails.
 const QRegularExpression UrlFilter::FullUrlRegExp(QLatin1String("(www\\.(?!\\.)|[a-z][a-z0-9+.-]*://)[\\w.@-]+"
-                                                     "([:]((6553[0-5])|(655[0-2][0-9])|(65[0-4][0-9]{2})|(6[0-4][0-9]{3})|([1-5][0-9]{4})|([1-9][0-9]{3})|([1-9][0-9]{2})|([1-9][0-9])|([0-9]))[^0-9])?"
+                                                     "([:]((6553[0-5])|(655[0-2][0-9])|(65[0-4][0-9]{2})|(6[0-4][0-9]{3})|([1-5][0-9]{4})|([1-9][0-9]{3})|([1-9][0-9]{2})|([1-9][0-9])|([0-9]))(?![0-9]))?"
                                                      "([/][\\w.@?^=%&/~+#-]+)?"));
 /** modify end by ut001121 */
 
