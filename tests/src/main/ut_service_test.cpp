@@ -394,10 +394,15 @@ TEST_F(UT_Service_Test, hideSettingDialog)
     if(nullptr == m_service->m_settingDialog)
         m_service->m_settingDialog = new DSettingsDialog();
 
-    UT_STUB_QWIDGET_SETVISIBLE_CREATE;
+    // Qt6 中 QWidget::hide() 通过虚表 jmp 到 setVisible(false)，
+    // stub-ext 改 setVisible 入口字节码对虚表跳转无效，因此直接 stub hide()
+    Stub stub;
+    stub.set((void (QWidget::*)())ADDR(QWidget, hide), ut_QWidget_update);
+    ut_QWidget_update_hasRuned = false;
+
     m_service->hideSettingDialog();
-    //会调用setvisible函数
-    EXPECT_TRUE(UT_STUB_QWIDGET_SETVISIBLE_RESULT);
+    // hideSettingDialog 内部会调用 hide()
+    EXPECT_TRUE(ut_QWidget_update_hasRuned);
 }
 
 #endif

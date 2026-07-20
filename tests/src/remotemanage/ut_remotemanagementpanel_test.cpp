@@ -239,9 +239,11 @@ TEST_F(UT_RemoteManagementPanel_Test, refreshSearchState)
     panel.refreshPanel();
     // 两个数据,搜索框显示
     panel.refreshSearchState();
-    // list中数据的数量
+    // list中数据的数量：
+    // fillManagePanel 末尾会追加 "Groups"(GroupLabel) 和 "Servers"(ItemLabel) 两个标题项，
+    // 它们也计入 m_listWidget->count()，所以总数 = 服务器配置数 + 标题数。
     int count = panel.m_listWidget->count();
-    EXPECT_EQ(count, 2);
+    EXPECT_EQ(count, 2 /* server items */ + 2 /* GroupLabel + ItemLabel */);
     ServerConfigManager::instance()->m_serverConfigs.clear();
 }
 
@@ -358,6 +360,10 @@ TEST_F(UT_RemoteManagementPanel_Test, lambda)
     RemoteManagementPanel remotePanel;
     remotePanel.show();
     remotePanel.m_isShow = true;
+    // 清理 ServerConfigManager 单例中 SetUp/preparedData 残留的配置，
+    // 避免下面 refreshList 信号触发 refreshPanel 后，
+    // 列表中存在可聚焦的服务器项导致 m_currentIndex 被设置。
+    ServerConfigManager::instance()->m_serverConfigs.clear();
     // 刷新界面
     emit ServerConfigManager::instance()->refreshList();
 

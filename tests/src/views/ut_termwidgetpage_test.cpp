@@ -312,13 +312,22 @@ TEST_F(UT_TermWidgetPage_Test, setBlinkingCursor)
     termWidgetPage.resize(800, 600);
     termWidgetPage.show();
 
-    UT_STUB_QWIDGET_UPDATES_CREATE;
+    // setBlinkingCursor 的调用链：
+    //   TermWidgetPage::setBlinkingCursor
+    //     -> QTermWidget::setBlinkingCursor
+    //       -> TerminalDisplay::setBlinkingCursor
+    //         -> focusInEvent/focusOutEvent
+    //           -> updateCursor() -> update(QRect)  ← 有参重载
+    // Qt6 中不再触发 QWidget::update() 无参版本，因此 stub 有参重载。
+    Stub stub;
+    stub.set((void (QWidget::*)(const QRect &))ADDR(QWidget, update), ut_terminalDisplay_update);
+    ut_terminalDisplay_update_hasRunned = false;
     termWidgetPage.setBlinkingCursor(false);
-    EXPECT_TRUE(UT_STUB_QWIDGET_UPDATES_RESULT);
+    EXPECT_TRUE(ut_terminalDisplay_update_hasRunned);
 
-    UT_STUB_QWIDGET_UPDATES_PREPARE;
+    ut_terminalDisplay_update_hasRunned = false;
     termWidgetPage.setBlinkingCursor(true);
-    EXPECT_TRUE(UT_STUB_QWIDGET_UPDATES_RESULT);
+    EXPECT_TRUE(ut_terminalDisplay_update_hasRunned);
 }
 
 TEST_F(UT_TermWidgetPage_Test, setPressingScroll)
