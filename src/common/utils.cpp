@@ -593,7 +593,9 @@ QStringList Utils::parseNestedQString(QString str)
 #if (QT_VERSION < QT_VERSION_CHECK(6, 0, 0))
     auto spStr = QRegExp(QStringLiteral("\\s+"));
 #else
-    auto spStr = QStringLiteral("\\s+");
+    // Qt6 下 split 需要传 QRegularExpression；同时显式 SkipEmptyParts，
+    // 以避免 "bash -c " 末尾空白产生空字符串元素，与 Qt5 行为保持一致。
+    auto spStr = QRegularExpression(QStringLiteral("\\s+"));
 #endif
 
     // 如果只有一个引号
@@ -617,16 +619,16 @@ QStringList Utils::parseNestedQString(QString str)
         }
 
         qCDebug(common) << "Splitting string by whitespace";
-        paraList.append(str.split(spStr));
+        paraList.append(str.split(spStr, SKIP_EMPTY_PARTS));
         return  paraList;
     }
 
     qCDebug(common) << "Processing quoted string with left index:" << iLeft << "right index:" << iRight;
-    paraList.append(str.left(iLeft).split(spStr));
+    paraList.append(str.left(iLeft).split(spStr, SKIP_EMPTY_PARTS));
     paraList.append(str.mid(iLeft + 1, iRight - iLeft - 1));
     if (str.size() != iRight + 1) {
         qCDebug(common) << "Adding remaining part after quote";
-        paraList.append(str.right(str.size() - iRight - 1).split(spStr));
+        paraList.append(str.right(str.size() - iRight - 1).split(spStr, SKIP_EMPTY_PARTS));
     }
 
     qCDebug(common) << "Nested string parsing result:" << paraList;

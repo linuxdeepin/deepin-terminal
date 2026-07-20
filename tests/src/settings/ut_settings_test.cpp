@@ -115,11 +115,24 @@ TEST_F(UT_Settings_Test, SettingsTest)
     EXPECT_TRUE(UT_STUB_DSETTINGSOPTION_VALUE_RESULT);
 }
 
+// Qt6 中 QObject::tr() 走 QCoreApplication::translate 静态函数，
+// 而非 QTranslator::translate 虚函数。直接 stub 静态符号才能拦截。
+static bool ut_QCoreApplication_translate_hasRuned = false;
+static QString ut_QCoreApplication_translate(const char *, const char *, const char *, int)
+{
+    ut_QCoreApplication_translate_hasRuned = true;
+    return QString();
+}
+
 TEST_F(UT_Settings_Test, GenerateSettingTranslate)
 {
-    UT_STUB_QTRANSLATE_TRANSLATE_CREATE;
+    using TranslateFunc = QString (*)(const char *, const char *, const char *, int);
+    Stub stub;
+    stub.set((TranslateFunc)ADDR(QCoreApplication, translate), ut_QCoreApplication_translate);
+    ut_QCoreApplication_translate_hasRuned = false;
+
     GenerateSettingTranslate();
-    EXPECT_TRUE(UT_STUB_QTRANSLATE_TRANSLATE_RESULT);
+    EXPECT_TRUE(ut_QCoreApplication_translate_hasRuned);
 }
 
 TEST_F(UT_Settings_Test, createSpinButtonHandle)
