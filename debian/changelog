@@ -1,3 +1,14 @@
+deepin-terminal (6.5.40) unstable; urgency=medium
+
+  * chore: Update version to 6.5.40
+  * fix(CI): broken cppcheck
+  * fix(common): fix Qt6 regex porting bug and improve UT coverage
+  * fix(terminal): make Ctrl+Click work for URLs ending with a port
+  * fix: remove deepin prefix from Chinese translations in desktop file
+  * fix(terminal): skip wide char placeholders when copying text
+
+ -- zhanghongyuan <zhanghongyuan@uniontech.com>  Thu, 30 Jul 2026 15:20:26 +0800
+
 deepin-terminal (6.5.39) unstable; urgency=medium
 
   * chore: Update version to 6.5.39
