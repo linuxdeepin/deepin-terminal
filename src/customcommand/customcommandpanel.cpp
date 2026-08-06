@@ -1,4 +1,4 @@
-// Copyright (C) 2019 ~ 2020 Uniontech Software Technology Co.,Ltd
+// Copyright (C) 2019 ~ 2026 Uniontech Software Technology Co.,Ltd
 // SPDX-FileCopyrightText: 2022 UnionTech Software Technology Co., Ltd.
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
@@ -25,6 +25,7 @@ CustomCommandPanel::CustomCommandPanel(QWidget *parent) : CommonPanel(parent)
 {
     qCDebug(customcommand) << "Creating CustomCommandPanel";
     Utils::set_Object_Name(this);
+    setAccessibleName("CustomCommandPanel");
     initUI();
 }
 CustomCommandPanel::~CustomCommandPanel()

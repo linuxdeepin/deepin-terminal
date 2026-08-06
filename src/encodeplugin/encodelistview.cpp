@@ -1,4 +1,4 @@
-// Copyright (C) 2019 ~ 2020 Uniontech Software Technology Co.,Ltd
+// Copyright (C) 2019 ~ 2026 Uniontech Software Technology Co.,Ltd
 // SPDX-FileCopyrightText: 2022 UnionTech Software Technology Co., Ltd.
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
@@ -28,6 +28,7 @@ EncodeListView::EncodeListView(QWidget *parent) : DListView(parent), m_encodeMod
     qCDebug(encodeplugin) << "EncodeListView constructor enter";
     /******** Add by ut001000 renfeixiang 2020-08-14:增加 Begin***************/
     Utils::set_Object_Name(this);
+    setAccessibleName("EncodeListView");
     m_encodeModel->setObjectName("EncodeListModel");
     m_standardModel = new QStandardItemModel(this);
     m_standardModel->setObjectName("EncodeStandardModel");

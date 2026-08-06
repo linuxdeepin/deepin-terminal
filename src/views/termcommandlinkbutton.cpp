@@ -1,4 +1,4 @@
-// Copyright (C) 2019 ~ 2020 Uniontech Software Technology Co.,Ltd
+// Copyright (C) 2019 ~ 2026 Uniontech Software Technology Co.,Ltd
 // SPDX-FileCopyrightText: 2022 UnionTech Software Technology Co., Ltd.
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
@@ -18,7 +18,8 @@ TermCommandLinkButton::TermCommandLinkButton(QWidget *parent)
 {
     qCDebug(views) << "TermCommandLinkButton constructor enter";
     Utils::set_Object_Name(this);
-    
+    setAccessibleName("TermCommandLinkButton");
+
     DPalette palette = DPaletteHelper::instance()->palette(this);
     qCDebug(views) << "Setting button text color to warning color";
     palette.setColor(DPalette::ButtonText, palette.color(DPalette::TextWarning));

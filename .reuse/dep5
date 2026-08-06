@@ -63,6 +63,11 @@ Files: tests/*
 Copyright: UnionTech Software Technology Co., Ltd.
 License: GPL-3.0-or-later
 
+# at test reports
+Files: tests/at/*
+Copyright: UnionTech Software Technology Co., Ltd.
+License: GPL-3.0-or-later
+
 # FuzzyTest/src
 Files: FuzzyTest/src/*
 Copyright: UnionTech Software Technology Co., Ltd.

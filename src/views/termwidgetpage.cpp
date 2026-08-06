@@ -1,4 +1,4 @@
-// Copyright (C) 2019 ~ 2020 Uniontech Software Technology Co.,Ltd
+// Copyright (C) 2019 ~ 2026 Uniontech Software Technology Co.,Ltd
 // SPDX-FileCopyrightText: 2022 UnionTech Software Technology Co., Ltd.
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
@@ -45,6 +45,7 @@ TermWidgetPage::TermWidgetPage(const TermProperties &properties, QWidget *parent
 {
     qCDebug(views) << "TermWidgetPage constructor enter";
     Utils::set_Object_Name(this);
+    setAccessibleName("TermWidgetPage");
     qCDebug(views) << "Setting up main window reference";
     m_MainWindow = qobject_cast<MainWindow *>(parentWidget());
     setFocusPolicy(Qt::NoFocus);

@@ -1,4 +1,4 @@
-// Copyright (C) 2019 ~ 2020 Uniontech Software Technology Co.,Ltd
+// Copyright (C) 2019 ~ 2026 Uniontech Software Technology Co.,Ltd
 // SPDX-FileCopyrightText: 2022 UnionTech Software Technology Co., Ltd.
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
@@ -18,6 +18,7 @@ RemoteManagementPlugin::RemoteManagementPlugin(QObject *parent) : MainWindowPlug
 {
     qCDebug(remotemanage) << "RemoteManagementPlugin constructor";
     Utils::set_Object_Name(this);
+    setAccessibleName("RemoteManagementPlugin");
     m_pluginName = "Remote Management";
 }
 
