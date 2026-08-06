@@ -1,4 +1,4 @@
-// Copyright (C) 2019 ~ 2020 Uniontech Software Technology Co.,Ltd
+// Copyright (C) 2019 ~ 2026 Uniontech Software Technology Co.,Ltd
 // SPDX-FileCopyrightText: 2022 - 2026 UnionTech Software Technology Co., Ltd.
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
@@ -43,6 +43,7 @@ ItemWidget::ItemWidget(ItemFuncType itemType, QWidget *parent)
 
     /******** Add by ut001000 renfeixiang 2020-08-13:增加 Begin***************/
     Utils::set_Object_Name(this);
+    setAccessibleName("ItemWidget");
     m_mainLayout->setObjectName("ItemWidgetMainLayout");
     m_iconLayout->setObjectName("ItemWidgetIconLayout");
     m_textLayout->setObjectName("ItemWidgetTextLayout");

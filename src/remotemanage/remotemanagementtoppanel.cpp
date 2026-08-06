@@ -1,4 +1,4 @@
-// Copyright (C) 2019 ~ 2020 Uniontech Software Technology Co.,Ltd
+// Copyright (C) 2019 ~ 2026 Uniontech Software Technology Co.,Ltd
 // SPDX-FileCopyrightText: 2022 UnionTech Software Technology Co., Ltd.
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
@@ -19,6 +19,7 @@ RemoteManagementTopPanel::RemoteManagementTopPanel(QWidget *parent) : RightPanel
     // qDebug() << "Enter RemoteManagementTopPanel::RemoteManagementTopPanel";
     qCDebug(remotemanage) << "RemoteManagementTopPanel constructor";
     Utils::set_Object_Name(this);
+    setAccessibleName("RemoteManagementTopPanel");
     // 远程主界面
     m_remoteManagementPanel = new RemoteManagementPanel(this);
     m_remoteManagementPanel->setObjectName("RemoteManagePanel");//Add by ut001000 renfeixiang 2020-08-14

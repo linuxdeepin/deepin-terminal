@@ -26,6 +26,7 @@ PageSearchBar::PageSearchBar(QWidget *parent) : DFloatingWidget(parent)
     qCDebug(views) << "PageSearchBar constructor entered";
 
     Utils::set_Object_Name(this);
+    setAccessibleName("PageSearchBar");
     // Init
     hide();
     setFixedSize(barWidth, barHight);
@@ -169,7 +170,8 @@ void PageSearchBar::initFindPrevButton()
     qCDebug(views) << "PageSearchBar::initFindPrevButton() entered";
 
     m_findPrevButton = new DIconButton(QStyle::SP_ArrowUp);
-    m_findNextButton->setObjectName("PageSearchBarFindNextDIconButton");//Add by ut001000 renfeixiang 2020-08-13
+    m_findPrevButton->setObjectName("PageSearchBarFindPrevDIconButton");
+    m_findPrevButton->setAccessibleName("FindPrevious");
     m_findPrevButton->setFixedSize(widgetHight, widgetHight);
     m_findPrevButton->setFocusPolicy(Qt::TabFocus);
 
@@ -190,6 +192,7 @@ void PageSearchBar::initFindNextButton()
 
     m_findNextButton = new DIconButton(QStyle::SP_ArrowDown);
     m_findNextButton->setObjectName("PageSearchBarFindNextDIconButton");//Add by ut001000 renfeixiang 2020-08-13
+    m_findNextButton->setAccessibleName("FindNext");
     m_findNextButton->setFixedSize(widgetHight, widgetHight);
     m_findNextButton->setFocusPolicy(Qt::TabFocus);
 
@@ -214,6 +217,7 @@ void PageSearchBar::initSearchEdit()
     m_searchEdit->setFocusPolicy(Qt::StrongFocus);
     m_searchEdit->setFocusProxy(m_searchEdit->lineEdit());
     m_searchEdit->setObjectName("PageSearchBarSearchEdit");//Add by ut001000 renfeixiang 2020-08-13
+    m_searchEdit->setAccessibleName("Search");
 
     //　保留原文字，图标
     saveOldHoldContent();

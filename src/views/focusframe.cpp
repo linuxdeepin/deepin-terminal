@@ -1,4 +1,4 @@
-// Copyright (C) 2019 ~ 2020 Uniontech Software Technology Co.,Ltd
+// Copyright (C) 2019 ~ 2026 Uniontech Software Technology Co.,Ltd
 // SPDX-FileCopyrightText: 2022 - 2026 UnionTech Software Technology Co., Ltd.
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
@@ -25,6 +25,7 @@ FocusFrame::FocusFrame(QWidget *parent, bool isWideFrame)
       m_isWideFrame(isWideFrame)
 {
     qCDebug(views) << "FocusFrame constructor entered";
+    setAccessibleName("FocusFrame");
 
     // 先用Tab做上下键的替代，走流程
     setFocusPolicy(Qt::TabFocus);

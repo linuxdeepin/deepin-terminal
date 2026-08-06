@@ -2993,6 +2993,7 @@ NormalWindow::NormalWindow(TermProperties properties, QWidget *parent): MainWind
     qCDebug(mainprocess) << "Enter NormalWindow::NormalWindow";
     Q_ASSERT(m_isQuakeWindow == false);
     setObjectName("NormalWindow");
+    setAccessibleName("NormalWindow");
     initUI();
     initConnections();
     initShortcuts();
@@ -3011,6 +3012,7 @@ void NormalWindow::initTitleBar()
     // titleba在普通模式和雷神模型不一样的功能
     m_titleBar = new TitleBar(this);
     m_titleBar->setObjectName("NormalWindowTitleBar");//Add by ut001000 renfeixiang 2020-08-14
+    m_titleBar->setAccessibleName("NormalWindowTitleBar");
     m_titleBar->setTabBar(m_tabbar);
 
     titlebar()->setCustomWidget(m_titleBar);
@@ -3220,6 +3222,7 @@ QuakeWindow::QuakeWindow(TermProperties properties, QWidget *parent): MainWindow
     qCDebug(mainprocess) << "Enter QuakeWindow::QuakeWindow";
     Q_ASSERT(m_isQuakeWindow == true);
     setObjectName("QuakeWindow");
+    setAccessibleName("QuakeWindow");
     initUI();
     initConnections();
     initShortcuts();
@@ -3249,6 +3252,7 @@ void QuakeWindow::initTitleBar()
     // titleba在普通模式和雷神模型不一样的功能
     m_titleBar = new TitleBar(this);
     m_titleBar->setObjectName("QuakeWindowTitleBar");//Add by ut001000 renfeixiang 2020-08-14
+    m_titleBar->setAccessibleName("QuakeWindowTitleBar");
     m_titleBar->setTabBar(m_tabbar);
 
     /** add by ut001121 zhangmeng 20200723 for sp3 keyboard interaction */

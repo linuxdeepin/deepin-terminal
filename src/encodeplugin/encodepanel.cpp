@@ -1,4 +1,4 @@
-// Copyright (C) 2019 ~ 2020 Uniontech Software Technology Co.,Ltd
+// Copyright (C) 2019 ~ 2026 Uniontech Software Technology Co.,Ltd
 // SPDX-FileCopyrightText: 2022 UnionTech Software Technology Co., Ltd.
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
@@ -21,6 +21,7 @@ EncodePanel::EncodePanel(QWidget *parent)
     qCDebug(encodeplugin) << "EncodePanel constructor enter";
     /******** Add by ut001000 renfeixiang 2020-08-14:增加 Begin***************/
     Utils::set_Object_Name(this);
+    setAccessibleName("EncodePanel");
     m_encodeView->setObjectName("EncodeListView");
     /******** Add by ut001000 renfeixiang 2020-08-14:增加 End***************/
     setBackgroundRole(QPalette::Base);

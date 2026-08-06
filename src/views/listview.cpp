@@ -27,6 +27,7 @@ ListView::ListView(ListType type, QWidget *parent)
     qCDebug(views) << "ListView constructor entered, type:" << type;
     /******** Add by ut001000 renfeixiang 2020-08-13:增加 Begin***************/
     Utils::set_Object_Name(this);
+    setAccessibleName("ListView");
     m_mainWidget->setObjectName("ListViewMainWidget");
     m_mainLayout->setObjectName("ListViewMainLayout");
     /******** Add by ut001000 renfeixiang 2020-08-13:增加 End***************/

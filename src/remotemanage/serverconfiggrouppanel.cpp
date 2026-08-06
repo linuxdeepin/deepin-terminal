@@ -1,4 +1,4 @@
-// Copyright (C) 2019 ~ 2020 Uniontech Software Technology Co.,Ltd
+// Copyright (C) 2019 ~ 2026 Uniontech Software Technology Co.,Ltd
 // SPDX-FileCopyrightText: 2022 UnionTech Software Technology Co., Ltd.
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
@@ -23,6 +23,7 @@ ServerConfigGroupPanel::ServerConfigGroupPanel(QWidget *parent) : CommonPanel(pa
 {
     qCDebug(remotemanage) << "ServerConfigGroupPanel constructor";
     Utils::set_Object_Name(this);
+    setAccessibleName("ServerConfigGroupPanel");
     initUI();
 }
 

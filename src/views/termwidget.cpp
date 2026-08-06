@@ -1,4 +1,4 @@
-// Copyright (C) 2019 ~ 2020 Uniontech Software Technology Co.,Ltd
+// Copyright (C) 2019 ~ 2026 Uniontech Software Technology Co.,Ltd
 // SPDX-FileCopyrightText: 2022 UnionTech Software Technology Co., Ltd.
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
@@ -49,6 +49,7 @@ TermWidget::TermWidget(const TermProperties &properties, QWidget *parent) : QTer
 {
     qCDebug(views) << "TermWidget constructor enter";
     Utils::set_Object_Name(this);
+    setAccessibleName("Terminal");
     // 窗口数量加1
     qCDebug(views) << "Increasing terminal count";
     WindowsManager::instance()->terminalCountIncrease();
