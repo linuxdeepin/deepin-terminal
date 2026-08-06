@@ -1,4 +1,4 @@
-// Copyright (C) 2019 ~ 2020 Uniontech Software Technology Co.,Ltd
+// Copyright (C) 2019 ~ 2026 Uniontech Software Technology Co.,Ltd
 // SPDX-FileCopyrightText: 2022 UnionTech Software Technology Co., Ltd.
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
@@ -21,6 +21,7 @@ Q_DECLARE_LOGGING_CATEGORY(views)
 CommonPanel::CommonPanel(QWidget *parent) : QFrame(parent)
 {
     qCDebug(views) << "CommonPanel constructor entered";
+    setAccessibleName("CommonPanel");
 #ifdef DTKWIDGET_CLASS_DSizeMode
     qCDebug(views) << "Branch: DTKWIDGET_CLASS_DSizeMode defined";
     // 布局模式变更时，刷新当前界面的布局，主要是按钮等高度调整等导致的效果不一致
