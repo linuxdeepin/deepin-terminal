@@ -306,7 +306,7 @@
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="27"/>
         <source>Allow Ctrl+scrollwheel to zoom text size</source>
-        <translation type="unfinished"/>
+        <translation>Permitir que Ctrl + Scroll amplie o tamanho do texto</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="29"/>
@@ -327,7 +327,7 @@
     <message>
         <location filename="../src/main/service.cpp" line="214"/>
         <source>debuginfod URLs</source>
-        <translation type="unfinished"/>
+        <translation>URLs do debuginfod</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="35"/>
