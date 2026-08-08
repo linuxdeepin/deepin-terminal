@@ -221,7 +221,7 @@
     <message>
         <location filename="../src/views/listview.cpp" line="870"/>
         <source>Delete Custom Command</source>
-        <translation type="unfinished"/>
+        <translation>Apagar Comando Personalizado</translation>
     </message>
     <message>
         <location filename="../src/views/listview.cpp" line="873"/>
