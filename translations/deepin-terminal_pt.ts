@@ -226,7 +226,7 @@
     <message>
         <location filename="../src/views/listview.cpp" line="873"/>
         <source>Cancel Server Group</source>
-        <translation type="unfinished"/>
+        <translation>Cancelar Grupo do Servidor</translation>
     </message>
     <message>
         <location filename="../src/views/listview.cpp" line="882"/>
