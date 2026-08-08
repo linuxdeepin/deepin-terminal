@@ -541,7 +541,7 @@
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="149"/>
         <source>Include special character(s) in double click selections</source>
-        <translation type="unfinished"/>
+        <translation>Incluir caracteres especiais nas seleções de duplo clique</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="151"/>
