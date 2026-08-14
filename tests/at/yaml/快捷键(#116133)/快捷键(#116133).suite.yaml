@@ -1,0 +1,27 @@
+name: 快捷键(#116133)_suite
+app: deepin-terminal
+description: ''
+module: 快捷键(#116133)
+tags: []
+fast_fail: false
+env_check: []
+setup:
+- action: session_start
+  command: deepin-terminal
+  wait: 3.0
+suites:
+- id: case_1653041_s1_s1
+  name: '[009]终端快捷键'
+  description: ''
+  tags: []
+  steps:
+  - action: keyboard_hot_key
+  - action: keyboard_hot_key
+  - action: keyboard_hot_key
+  assert_steps:
+  - action: assert_element
+    selector:
+      name: deepin-terminal
+      role: frame
+teardown:
+- action: session_stop

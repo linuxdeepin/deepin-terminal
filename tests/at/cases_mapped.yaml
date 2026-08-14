@@ -1,0 +1,4344 @@
+metadata:
+  generated_at: '2026-08-14T09:30:00'
+  source: testcases.xlsx
+  app: deepin-terminal
+  notes: MCP codebase 服务不可用，已跳过 UI 图谱推导。覆盖率报告仅基于运行时元素表（口径 A），无源码全集对照（口径 B）。
+cases:
+- id: case_1693083_s1
+  name: 背景模糊
+  module: 设置界面高级设置(#116119)
+  status: active
+  annotation:
+    测试界面: 终端-设置界面高级设置(#116119)
+    测试功能: 背景模糊
+    前置条件: deepin-terminal 已启动
+    AT元素引用:
+    - deepin-terminal
+  steps:
+  - step_type: assert
+    description: 检查 背景模糊
+    action: assert_element
+    selector: &id006
+      role: dialog
+- id: case_1653625_s1
+  name: 查找显示
+  module: 查找(#116101)
+  status: active
+  annotation:
+    测试界面: 终端-查找(#116101)
+    测试功能: 查找显示
+    前置条件: deepin-terminal 已启动
+    AT元素引用:
+    - Search
+  steps:
+  - step_type: action
+    description: 2. 使用快捷键ctrl+alt+f
+    action: keyboard_hot_key
+    key: ctrl+alt+f
+  - step_type: assert
+    description: 检查 查找显示
+    action: assert_element
+    selector: &id001
+      name: Search
+      role: text
+- id: case_1653623_s1
+  name: 查找输入框
+  module: 查找(#116101)
+  status: active
+  annotation:
+    测试界面: 终端-查找(#116101)
+    测试功能: 查找输入框
+    前置条件: deepin-terminal 已启动
+    AT元素引用:
+    - Search
+  steps:
+  - step_type: action
+    description: 2. 输入任意字符：123ASsdh周圣》?:%$%^&
+    action: keyboard_hot_key
+    key: ctrl+alt+f
+  - step_type: action
+    description: 3. 输入很长的字符
+    action: keyboard_hot_key
+    key: ctrl+alt+f
+  - step_type: action
+    description: 4. 输入内容后
+    action: keyboard_hot_key
+    key: ctrl+alt+f
+  - step_type: action
+    description: 5. 点击x
+    action: keyboard_hot_key
+    key: ctrl+alt+f
+  - step_type: assert
+    description: 检查 查找输入框
+    action: assert_element
+    selector: *id001
+- id: case_1653621_s1
+  name: 查找过程
+  module: 查找(#116101)
+  status: active
+  annotation:
+    测试界面: 终端-查找(#116101)
+    测试功能: 查找过程
+    前置条件: deepin-terminal 已启动
+    AT元素引用:
+    - Search
+  steps:
+  - step_type: action
+    description: 1. 输入搜索内容后，按下回车
+    action: keyboard_hot_key
+    key: ctrl+alt+f
+  - step_type: action
+    description: 5. 没有对应搜索内容时
+    action: keyboard_hot_key
+    key: ctrl+alt+f
+  - step_type: assert
+    description: 检查 查找过程
+    action: assert_element
+    selector: *id001
+- id: case_1653619_s1
+  name: 向上查找
+  module: 查找(#116101)
+  status: active
+  annotation:
+    测试界面: 终端-查找(#116101)
+    测试功能: 向上查找
+    前置条件: deepin-terminal 已启动
+    AT元素引用:
+    - Search
+  steps:
+  - step_type: action
+    description: 1. 点击向上搜索按钮
+    action: keyboard_hot_key
+    key: ctrl+alt+f
+  - step_type: action
+    description: 2. 使用快捷键shift+enter/shift+return
+    action: keyboard_hot_key
+    key: ctrl+alt+f
+  - step_type: assert
+    description: 检查 向上查找
+    action: assert_element
+    selector: *id001
+- id: case_1653617_s1
+  name: 向下查找
+  module: 查找(#116101)
+  status: active
+  annotation:
+    测试界面: 终端-查找(#116101)
+    测试功能: 向下查找
+    前置条件: deepin-terminal 已启动
+    AT元素引用:
+    - Search
+  steps:
+  - step_type: action
+    description: 1. 点击向下搜索，
+    action: keyboard_hot_key
+    key: ctrl+alt+f
+  - step_type: action
+    description: 2. 键盘enter回车搜索
+    action: keyboard_hot_key
+    key: ctrl+alt+f
+  - step_type: assert
+    description: 检查 向下查找
+    action: assert_element
+    selector: *id001
+- id: case_1653615_s1
+  name: 查找隐藏
+  module: 查找(#116101)
+  status: active
+  annotation:
+    测试界面: 终端-查找(#116101)
+    测试功能: 查找隐藏
+    前置条件: deepin-terminal 已启动
+    AT元素引用:
+    - Search
+  steps:
+  - step_type: action
+    description: 1. 打开查找框按ESC
+    action: keyboard_hot_key
+    key: ctrl+alt+f
+  - step_type: action
+    description: 2. 打开查找框鼠标点击终端其他地方
+    action: keyboard_hot_key
+    key: ctrl+alt+f
+  - step_type: assert
+    description: 检查 查找隐藏
+    action: assert_element
+    selector: *id001
+- id: case_1653613_s1
+  name: 设置标签标题编号后，对标签页进行分屏操作
+  module: 查找(#116101)
+  status: active
+  annotation:
+    测试界面: 终端-查找(#116101)
+    测试功能: 设置标签标题编号后，对标签页进行分屏操作
+    前置条件: deepin-terminal 已启动
+    AT元素引用:
+    - Search
+  steps:
+  - step_type: action
+    description: 1. 打开终端，进行横向分屏/纵向分屏操作
+    action: keyboard_hot_key
+    key: ctrl+alt+f
+  - step_type: assert
+    description: 检查 设置标签标题编号后，对标签页进行分屏操作
+    action: assert_element
+    selector: *id001
+- id: case_1653611_s1
+  name: 右键菜单
+  module: 右键菜单(#116103)
+  status: active
+  annotation:
+    测试界面: 终端-右键菜单(#116103)
+    测试功能: 右键菜单
+    前置条件: deepin-terminal 已启动
+    AT元素引用:
+    - deepin-terminal
+  steps:
+  - step_type: action
+    description: 1. 打开终端，系统有信息复制到粘贴板上时，且开启最少分屏，空白处右键菜单
+    action: dtk_context_menu
+  - step_type: action
+    description: 2. 注销系统或者重启后，不做其他任何操作，右键
+    action: dtk_context_menu
+  - step_type: action
+    description: 3. 登录远程服务器，右键菜单显示
+    action: dtk_context_menu
+  - step_type: action
+    description: 4. 打开雷神终端，空白处右键
+    action: dtk_context_menu
+  - step_type: assert
+    description: 检查 右键菜单
+    action: assert_element
+    selector: &id002
+      role: menu
+- id: case_1653609_s1
+  name: 链接
+  module: 右键菜单(#116103)
+  status: active
+  annotation:
+    测试界面: 终端-右键菜单(#116103)
+    测试功能: 链接
+    前置条件: deepin-terminal 已启动
+    AT元素引用:
+    - deepin-terminal
+  steps:
+  - step_type: action
+    description: 1. 打开终端，光标指在超链接处（不选中）
+    action: dtk_context_menu
+  - step_type: action
+    description: 2. 点击右键菜单
+    action: dtk_context_menu
+  - step_type: action
+    description: 3. 打开链接
+    action: dtk_context_menu
+  - step_type: action
+    description: 4. 复制链接
+    action: dtk_context_menu
+  - step_type: assert
+    description: 检查 链接
+    action: assert_element
+    selector: *id002
+- id: case_1653607_s1
+  name: 分割线
+  module: 右键菜单(#116103)
+  status: active
+  annotation:
+    测试界面: 终端-右键菜单(#116103)
+    测试功能: 分割线
+    前置条件: deepin-terminal 已启动
+    AT元素引用:
+    - deepin-terminal
+  steps:
+  - step_type: action
+    description: 1. 注销或重启后打开终端，右键菜单，不做其他任何操作
+    action: dtk_context_menu
+  - step_type: action
+    description: 2. 复制信息到剪切板，右键菜单，不做其他任何操作
+    action: dtk_context_menu
+  - step_type: action
+    description: 3. 终端添加一个分屏窗口，右键菜单
+    action: dtk_context_menu
+  - step_type: action
+    description: 4. 进行分屏、关闭分屏窗口、新建工作区等操作
+    action: dtk_context_menu
+  - step_type: assert
+    description: 检查 分割线
+    action: assert_element
+    selector: *id002
+- id: case_1653605_s1
+  name: 重命名标题
+  module: 右键菜单(#116103)
+  status: active
+  annotation:
+    测试界面: 终端-右键菜单(#116103)
+    测试功能: 重命名标题
+    前置条件: deepin-terminal 已启动
+    AT元素引用:
+    - deepin-terminal
+  steps:
+  - step_type: assert
+    description: 检查 重命名标题
+    action: assert_element
+    selector: *id002
+- id: case_1653603_s1
+  name: 切换工作区
+  module: 工作区(#116105)
+  status: active
+  annotation:
+    测试界面: 终端-工作区(#116105)
+    测试功能: 切换工作区
+    前置条件: deepin-terminal 已启动
+    AT元素引用:
+    - TabBar
+  steps:
+  - step_type: action
+    description: 1. 打开终端，新建多个工作区，鼠标点击各个工作区名称
+    action: session_start
+    command: deepin-terminal
+  - step_type: assert
+    description: 检查 切换工作区
+    action: assert_element
+    selector: &id003
+      name: TabBar
+      role: page tab list
+- id: case_1653601_s1
+  name: 删除工作区
+  module: 工作区(#116105)
+  status: active
+  annotation:
+    测试界面: 终端-工作区(#116105)
+    测试功能: 删除工作区
+    前置条件: deepin-terminal 已启动
+    AT元素引用:
+    - TabBar
+  steps:
+  - step_type: action
+    description: 1. 打开终端，新建多个工作区，鼠标点击工作区X图标
+    action: session_start
+    command: deepin-terminal
+  - step_type: assert
+    description: 检查 删除工作区
+    action: assert_element
+    selector: *id003
+- id: case_1653599_s1
+  name: 窗口删除
+  module: 工作区(#116105)
+  status: active
+  annotation:
+    测试界面: 终端-工作区(#116105)
+    测试功能: 窗口删除
+    前置条件: deepin-terminal 已启动
+    AT元素引用:
+    - TabBar
+  steps:
+  - step_type: action
+    description: 1. 打开终端，新建分屏窗口
+    action: session_start
+    command: deepin-terminal
+  - step_type: assert
+    description: 检查 窗口删除
+    action: assert_element
+    selector: *id003
+- id: case_1653597_s1
+  name: 列表
+  module: 自定义命令(#116107)
+  status: active
+  annotation:
+    测试界面: 终端-自定义命令(#116107)
+    测试功能: 列表
+    前置条件: deepin-terminal 已启动
+    AT元素引用:
+    - deepin-terminal
+  steps:
+  - step_type: action
+    description: 1. 每次成功添加命令后
+    action: dtk_context_menu
+    items: &id004
+    - 自定义命令
+  - step_type: action
+    description: 2. 对已有的自定义命令进行编辑
+    action: dtk_context_menu
+    items: *id004
+  - step_type: action
+    description: 3. 列表有较多自定义命令时，进行下拉/上拉
+    action: dtk_context_menu
+    items: *id004
+  - step_type: action
+    description: 4. 列表内自定义很多时时，新建自定义命令
+    action: dtk_context_menu
+    items: *id004
+  - step_type: assert
+    description: 检查 列表
+    action: assert_element
+    selector: &id016
+      role: dialog
+- id: case_1653595_s1
+  name: 键盘交互主界面只有一个工作区
+  module: 键盘交互(#116109)
+  status: active
+  annotation:
+    测试界面: 终端-键盘交互(#116109)
+    测试功能: 键盘交互主界面只有一个工作区
+    前置条件: deepin-terminal 已启动
+    AT元素引用:
+    - deepin-terminal
+  steps:
+  - step_type: action
+    description: 1. 键盘按Ctrl+Alt+T打开终端，再按Super+Tab
+    action: session_start
+    command: deepin-terminal
+  - step_type: assert
+    description: 检查 键盘交互主界面只有一个工作区
+    action: assert_window
+    assertion: window_exists
+- id: case_1653593_s1
+  name: 键盘交互主界面有多个工作区
+  module: 键盘交互(#116109)
+  status: active
+  annotation:
+    测试界面: 终端-键盘交互(#116109)
+    测试功能: 键盘交互主界面有多个工作区
+    前置条件: deepin-terminal 已启动
+    AT元素引用:
+    - deepin-terminal
+  steps:
+  - step_type: action
+    description: 1. 键盘按Ctrl+Alt+T打开终端，新建多个工作区
+    action: session_start
+    command: deepin-terminal
+  - step_type: assert
+    description: 检查 键盘交互主界面有多个工作区
+    action: assert_window
+    assertion: window_exists
+- id: case_1653591_s1
+  name: 键盘交互焦点在最小化，最大化，关闭按钮
+  module: 键盘交互(#116109)
+  status: active
+  annotation:
+    测试界面: 终端-键盘交互(#116109)
+    测试功能: 键盘交互焦点在最小化，最大化，关闭按钮
+    前置条件: deepin-terminal 已启动
+    AT元素引用:
+    - deepin-terminal
+  steps:
+  - step_type: action
+    description: 1. 按Tab键焦点在最小化、最大化，键盘按Enter键
+    action: session_start
+    command: deepin-terminal
+  - step_type: assert
+    description: 检查 键盘交互焦点在最小化，最大化，关闭按钮
+    action: assert_window
+    assertion: window_exists
+- id: case_1653589_s1
+  name: 键盘交互Tab键切换到主菜单按Enter键
+  module: 键盘交互(#116109)
+  status: active
+  annotation:
+    测试界面: 终端-键盘交互(#116109)
+    测试功能: 键盘交互Tab键切换到主菜单按Enter键
+    前置条件: deepin-terminal 已启动
+    AT元素引用:
+    - deepin-terminal
+  steps:
+  - step_type: action
+    description: 1. Tab键切换到主菜单按Enter键
+    action: session_start
+    command: deepin-terminal
+  - step_type: assert
+    description: 检查 键盘交互Tab键切换到主菜单按Enter键
+    action: assert_window
+    assertion: window_exists
+- id: case_1653587_s1
+  name: 键盘交互焦点在标签栏
+  module: 键盘交互(#116109)
+  status: active
+  annotation:
+    测试界面: 终端-键盘交互(#116109)
+    测试功能: 键盘交互焦点在标签栏
+    前置条件: deepin-terminal 已启动
+    AT元素引用:
+    - deepin-terminal
+  steps:
+  - step_type: action
+    description: 1. 按Super+Tab键焦点在标签栏+按钮，主菜单、最小化、最大化、关闭按钮
+    action: session_start
+    command: deepin-terminal
+  - step_type: assert
+    description: 检查 键盘交互焦点在标签栏
+    action: assert_window
+    assertion: window_exists
+- id: case_1653585_s1
+  name: 键盘交互焦点在插件
+  module: 键盘交互(#116109)
+  status: active
+  annotation:
+    测试界面: 终端-键盘交互(#116109)
+    测试功能: 键盘交互焦点在插件
+    前置条件: deepin-terminal 已启动
+    AT元素引用:
+    - deepin-terminal
+  steps:
+  - step_type: action
+    description: 1. 按Tab键焦点在查找、编码、远程管理、自定义命令插件
+    action: session_start
+    command: deepin-terminal
+  - step_type: assert
+    description: 检查 键盘交互焦点在插件
+    action: assert_window
+    assertion: window_exists
+- id: case_1653583_s1
+  name: 键盘交互焦点在终端，按“→”方向键或Alt+M快捷键
+  module: 键盘交互(#116109)
+  status: active
+  annotation:
+    测试界面: 终端-键盘交互(#116109)
+    测试功能: 键盘交互焦点在终端，按“→”方向键或Alt+M快捷键
+    前置条件: deepin-terminal 已启动
+    AT元素引用:
+    - deepin-terminal
+  steps:
+  - step_type: action
+    description: 1. 打开终端终端，按键盘菜单键
+    action: session_start
+    command: deepin-terminal
+  - step_type: assert
+    description: 检查 键盘交互焦点在终端，按“→”方向键或Alt+M快捷键
+    action: assert_window
+    assertion: window_exists
+- id: case_1653581_s1
+  name: 键盘交互选中文字功能
+  module: 键盘交互(#116109)
+  status: active
+  annotation:
+    测试界面: 终端-键盘交互(#116109)
+    测试功能: 键盘交互选中文字功能
+    前置条件: deepin-terminal 已启动
+    AT元素引用:
+    - deepin-terminal
+  steps:
+  - step_type: action
+    description: 1. 打开正常窗口，键盘按Shift+“←”
+    action: session_start
+    command: deepin-terminal
+  - step_type: assert
+    description: 检查 键盘交互选中文字功能
+    action: assert_window
+    assertion: window_exists
+- id: case_1653579_s1
+  name: 键盘交互设置界面Tab键切换顺序
+  module: 键盘交互(#116109)
+  status: active
+  annotation:
+    测试界面: 终端-键盘交互(#116109)
+    测试功能: 键盘交互设置界面Tab键切换顺序
+    前置条件: deepin-terminal 已启动
+    AT元素引用:
+    - deepin-terminal
+  steps:
+  - step_type: action
+    description: 1. 设置界面，第一次按Tab键
+    action: session_start
+    command: deepin-terminal
+  - step_type: assert
+    description: 检查 键盘交互设置界面Tab键切换顺序
+    action: assert_window
+    assertion: window_exists
+- id: case_1653577_s1
+  name: 键盘交互焦点在光标在透明度
+  module: 键盘交互(#116109)
+  status: active
+  annotation:
+    测试界面: 终端-键盘交互(#116109)
+    测试功能: 键盘交互焦点在光标在透明度
+    前置条件: deepin-terminal 已启动
+    AT元素引用:
+    - deepin-terminal
+  steps:
+  - step_type: action
+    description: 1. 进入设置，Tab键切换到透明度
+    action: session_start
+    command: deepin-terminal
+  - step_type: assert
+    description: 检查 键盘交互焦点在光标在透明度
+    action: assert_window
+    assertion: window_exists
+- id: case_1653575_s1
+  name: 键盘交互焦点在字体
+  module: 键盘交互(#116109)
+  status: active
+  annotation:
+    测试界面: 终端-键盘交互(#116109)
+    测试功能: 键盘交互焦点在字体
+    前置条件: deepin-terminal 已启动
+    AT元素引用:
+    - deepin-terminal
+  steps:
+  - step_type: action
+    description: 1. 进入设置，Tab键跳转到字体
+    action: session_start
+    command: deepin-terminal
+  - step_type: assert
+    description: 检查 键盘交互焦点在字体
+    action: assert_window
+    assertion: window_exists
+- id: case_1653573_s1
+  name: 键盘交互焦点在字体大小
+  module: 键盘交互(#116109)
+  status: active
+  annotation:
+    测试界面: 终端-键盘交互(#116109)
+    测试功能: 键盘交互焦点在字体大小
+    前置条件: deepin-terminal 已启动
+    AT元素引用:
+    - deepin-terminal
+  steps:
+  - step_type: action
+    description: 1. 进入设置Tab键切换到字体大小
+    action: session_start
+    command: deepin-terminal
+  - step_type: assert
+    description: 检查 键盘交互焦点在字体大小
+    action: assert_window
+    assertion: window_exists
+- id: case_1653571_s1
+  name: 键盘交互焦点在快捷键
+  module: 键盘交互(#116109)
+  status: active
+  annotation:
+    测试界面: 终端-键盘交互(#116109)
+    测试功能: 键盘交互焦点在快捷键
+    前置条件: deepin-terminal 已启动
+    AT元素引用:
+    - deepin-terminal
+  steps:
+  - step_type: action
+    description: 1. 键入设置，Tab键切换到快捷键
+    action: session_start
+    command: deepin-terminal
+  - step_type: assert
+    description: 检查 键盘交互焦点在快捷键
+    action: assert_window
+    assertion: window_exists
+- id: case_1653569_s1
+  name: 键盘交互焦点在光标
+  module: 键盘交互(#116109)
+  status: active
+  annotation:
+    测试界面: 终端-键盘交互(#116109)
+    测试功能: 键盘交互焦点在光标
+    前置条件: deepin-terminal 已启动
+    AT元素引用:
+    - deepin-terminal
+  steps:
+  - step_type: action
+    description: 1. 进入设置，焦点在光标
+    action: session_start
+    command: deepin-terminal
+  - step_type: assert
+    description: 检查 键盘交互焦点在光标
+    action: assert_window
+    assertion: window_exists
+- id: case_1653567_s1
+  name: 键盘交互焦点在光标闪烁复选框
+  module: 键盘交互(#116109)
+  status: active
+  annotation:
+    测试界面: 终端-键盘交互(#116109)
+    测试功能: 键盘交互焦点在光标闪烁复选框
+    前置条件: deepin-terminal 已启动
+    AT元素引用:
+    - deepin-terminal
+  steps:
+  - step_type: action
+    description: 1. 进入设置，焦点在光标闪烁复选框
+    action: session_start
+    command: deepin-terminal
+  - step_type: assert
+    description: 检查 键盘交互焦点在光标闪烁复选框
+    action: assert_window
+    assertion: window_exists
+- id: case_1653565_s1
+  name: 键盘交互焦点在选中文字时自动复制到剪贴板复选框
+  module: 键盘交互(#116109)
+  status: active
+  annotation:
+    测试界面: 终端-键盘交互(#116109)
+    测试功能: 键盘交互焦点在选中文字时自动复制到剪贴板复选框
+    前置条件: deepin-terminal 已启动
+    AT元素引用:
+    - deepin-terminal
+  steps:
+  - step_type: action
+    description: 1. 进入设置，焦点在选中文字时自动复制到剪贴板复选框
+    action: session_start
+    command: deepin-terminal
+  - step_type: assert
+    description: 检查 键盘交互焦点在选中文字时自动复制到剪贴板复选框
+    action: assert_window
+    assertion: window_exists
+- id: case_1653563_s1
+  name: 键盘交互焦点在按键时滚动复选框
+  module: 键盘交互(#116109)
+  status: active
+  annotation:
+    测试界面: 终端-键盘交互(#116109)
+    测试功能: 键盘交互焦点在按键时滚动复选框
+    前置条件: deepin-terminal 已启动
+    AT元素引用:
+    - deepin-terminal
+  steps:
+  - step_type: action
+    description: 1. 进入设置，焦点在按键时滚动复选框
+    action: session_start
+    command: deepin-terminal
+  - step_type: assert
+    description: 检查 键盘交互焦点在按键时滚动复选框
+    action: assert_window
+    assertion: window_exists
+- id: case_1653561_s1
+  name: 键盘交互焦点在输出时滚动复选框
+  module: 键盘交互(#116109)
+  status: active
+  annotation:
+    测试界面: 终端-键盘交互(#116109)
+    测试功能: 键盘交互焦点在输出时滚动复选框
+    前置条件: deepin-terminal 已启动
+    AT元素引用:
+    - deepin-terminal
+  steps:
+  - step_type: action
+    description: 1. 进入设置，焦点在输出时滚动复选框
+    action: session_start
+    command: deepin-terminal
+  - step_type: assert
+    description: 检查 键盘交互焦点在输出时滚动复选框
+    action: assert_window
+    assertion: window_exists
+- id: case_1653559_s1
+  name: 键盘交互焦点在启动时使用下拉框
+  module: 键盘交互(#116109)
+  status: active
+  annotation:
+    测试界面: 终端-键盘交互(#116109)
+    测试功能: 键盘交互焦点在启动时使用下拉框
+    前置条件: deepin-terminal 已启动
+    AT元素引用:
+    - deepin-terminal
+  steps:
+  - step_type: action
+    description: 1. 进入设置，焦点在启动时使用下拉框
+    action: session_start
+    command: deepin-terminal
+  - step_type: assert
+    description: 检查 键盘交互焦点在启动时使用下拉框
+    action: assert_window
+    assertion: window_exists
+- id: case_1653557_s1
+  name: 键盘交互焦点在背景模糊复选框
+  module: 键盘交互(#116109)
+  status: active
+  annotation:
+    测试界面: 终端-键盘交互(#116109)
+    测试功能: 键盘交互焦点在背景模糊复选框
+    前置条件: deepin-terminal 已启动
+    AT元素引用:
+    - deepin-terminal
+  steps:
+  - step_type: action
+    description: 1. 进入设置，焦点在背景模糊复选框
+    action: session_start
+    command: deepin-terminal
+  - step_type: assert
+    description: 检查 键盘交互焦点在背景模糊复选框
+    action: assert_window
+    assertion: window_exists
+- id: case_1653555_s1
+  name: 键盘交互焦点在丢失焦点隐藏雷神窗口复选框
+  module: 键盘交互(#116109)
+  status: active
+  annotation:
+    测试界面: 终端-键盘交互(#116109)
+    测试功能: 键盘交互焦点在丢失焦点隐藏雷神窗口复选框
+    前置条件: deepin-terminal 已启动
+    AT元素引用:
+    - deepin-terminal
+  steps:
+  - step_type: action
+    description: 1. 进入设置，焦点在丢失焦点隐藏雷神窗口复选框
+    action: session_start
+    command: deepin-terminal
+  - step_type: assert
+    description: 检查 键盘交互焦点在丢失焦点隐藏雷神窗口复选框
+    action: assert_window
+    assertion: window_exists
+- id: case_1653553_s1
+  name: 键盘交互焦点在设置全局事件
+  module: 键盘交互(#116109)
+  status: active
+  annotation:
+    测试界面: 终端-键盘交互(#116109)
+    测试功能: 键盘交互焦点在设置全局事件
+    前置条件: deepin-terminal 已启动
+    AT元素引用:
+    - deepin-terminal
+  steps:
+  - step_type: action
+    description: 1. Tab键进入设置，焦点在设置全局事件，键盘按ESC键
+    action: session_start
+    command: deepin-terminal
+  - step_type: assert
+    description: 检查 键盘交互焦点在设置全局事件
+    action: assert_window
+    assertion: window_exists
+- id: case_1653551_s1
+  name: 键盘交互编码插件打开状态
+  module: 键盘交互(#116109)
+  status: active
+  annotation:
+    测试界面: 终端-键盘交互(#116109)
+    测试功能: 键盘交互编码插件打开状态
+    前置条件: deepin-terminal 已启动
+    AT元素引用:
+    - deepin-terminal
+  steps:
+  - step_type: action
+    description: 1. 进入终端， Alt+M调出右键菜单，选择编码
+    action: session_start
+    command: deepin-terminal
+  - step_type: assert
+    description: 检查 键盘交互编码插件打开状态
+    action: assert_window
+    assertion: window_exists
+- id: case_1653549_s1
+  name: 键盘交互右键菜单调出编码
+  module: 键盘交互(#116109)
+  status: active
+  annotation:
+    测试界面: 终端-键盘交互(#116109)
+    测试功能: 键盘交互右键菜单调出编码
+    前置条件: deepin-terminal 已启动
+    AT元素引用:
+    - deepin-terminal
+  steps:
+  - step_type: action
+    description: 1. 打开终端， 快捷键Alt+M调出右键菜单中编码插件
+    action: session_start
+    command: deepin-terminal
+  - step_type: assert
+    description: 检查 键盘交互右键菜单调出编码
+    action: assert_window
+    assertion: window_exists
+- id: case_1653547_s1
+  name: 键盘交互自定义列表为空
+  module: 键盘交互(#116109)
+  status: active
+  annotation:
+    测试界面: 终端-键盘交互(#116109)
+    测试功能: 键盘交互自定义列表为空
+    前置条件: deepin-terminal 已启动
+    AT元素引用:
+    - deepin-terminal
+  steps:
+  - step_type: action
+    description: 1. 打开终端，Tab键切换到主菜单，按Space/Enter键
+    action: session_start
+    command: deepin-terminal
+  - step_type: assert
+    description: 检查 键盘交互自定义列表为空
+    action: assert_window
+    assertion: window_exists
+- id: case_1653545_s1
+  name: 键盘交互有一个自定义命令
+  module: 键盘交互(#116109)
+  status: active
+  annotation:
+    测试界面: 终端-键盘交互(#116109)
+    测试功能: 键盘交互有一个自定义命令
+    前置条件: deepin-terminal 已启动
+    AT元素引用:
+    - deepin-terminal
+  steps:
+  - step_type: action
+    description: 1. 打开终端，键盘按Tab键切换到自定义插件
+    action: session_start
+    command: deepin-terminal
+  - step_type: assert
+    description: 检查 键盘交互有一个自定义命令
+    action: assert_window
+    assertion: window_exists
+- id: case_1653543_s1
+  name: 键盘交互自定义功能
+  module: 键盘交互(#116109)
+  status: active
+  annotation:
+    测试界面: 终端-键盘交互(#116109)
+    测试功能: 键盘交互自定义功能
+    前置条件: deepin-terminal 已启动
+    AT元素引用:
+    - deepin-terminal
+  steps:
+  - step_type: action
+    description: 1. 打开终端，键盘按Tab切换到自定义命令插件
+    action: session_start
+    command: deepin-terminal
+  - step_type: assert
+    description: 检查 键盘交互自定义功能
+    action: assert_window
+    assertion: window_exists
+- id: case_1653541_s1
+  name: 键盘交互自定义命令全局功能按ESC键
+  module: 键盘交互(#116109)
+  status: active
+  annotation:
+    测试界面: 终端-键盘交互(#116109)
+    测试功能: 键盘交互自定义命令全局功能按ESC键
+    前置条件: deepin-terminal 已启动
+    AT元素引用:
+    - deepin-terminal
+  steps:
+  - step_type: action
+    description: 1. 当焦点在搜索框、自定义命令列表、编辑按钮、添加命令按钮上时
+    action: session_start
+    command: deepin-terminal
+  - step_type: assert
+    description: 检查 键盘交互自定义命令全局功能按ESC键
+    action: assert_window
+    assertion: window_exists
+- id: case_1653539_s1
+  name: 键盘交互自定义命令搜索结果为空
+  module: 键盘交互(#116109)
+  status: active
+  annotation:
+    测试界面: 终端-键盘交互(#116109)
+    测试功能: 键盘交互自定义命令搜索结果为空
+    前置条件: deepin-terminal 已启动
+    AT元素引用:
+    - deepin-terminal
+  steps:
+  - step_type: action
+    description: 1. 打开终端，Tab键切换到自定义命令插件
+    action: session_start
+    command: deepin-terminal
+  - step_type: assert
+    description: 检查 键盘交互自定义命令搜索结果为空
+    action: assert_window
+    assertion: window_exists
+- id: case_1653537_s1
+  name: 键盘交互自定义命令搜索有结果
+  module: 键盘交互(#116109)
+  status: active
+  annotation:
+    测试界面: 终端-键盘交互(#116109)
+    测试功能: 键盘交互自定义命令搜索有结果
+    前置条件: deepin-terminal 已启动
+    AT元素引用:
+    - deepin-terminal
+  steps:
+  - step_type: action
+    description: 1. 打开终端，Tab键切换到自定义命令插件
+    action: session_start
+    command: deepin-terminal
+  - step_type: assert
+    description: 检查 键盘交互自定义命令搜索有结果
+    action: assert_window
+    assertion: window_exists
+- id: case_1653535_s1
+  name: 键盘交互编辑自定义命令
+  module: 键盘交互(#116109)
+  status: active
+  annotation:
+    测试界面: 终端-键盘交互(#116109)
+    测试功能: 键盘交互编辑自定义命令
+    前置条件: deepin-terminal 已启动
+    AT元素引用:
+    - deepin-terminal
+  steps:
+  - step_type: action
+    description: 1. 进入编辑命令界面
+    action: session_start
+    command: deepin-terminal
+  - step_type: assert
+    description: 检查 键盘交互编辑自定义命令
+    action: assert_window
+    assertion: window_exists
+- id: case_1653533_s1
+  name: 键盘交互添加命令
+  module: 键盘交互(#116109)
+  status: active
+  annotation:
+    测试界面: 终端-键盘交互(#116109)
+    测试功能: 键盘交互添加命令
+    前置条件: deepin-terminal 已启动
+    AT元素引用:
+    - deepin-terminal
+  steps:
+  - step_type: action
+    description: 1. Tab键焦点在添加命令按钮，按Enter键
+    action: session_start
+    command: deepin-terminal
+  - step_type: assert
+    description: 检查 键盘交互添加命令
+    action: assert_window
+    assertion: window_exists
+- id: case_1653531_s1
+  name: 键盘交互删除命令
+  module: 键盘交互(#116109)
+  status: active
+  annotation:
+    测试界面: 终端-键盘交互(#116109)
+    测试功能: 键盘交互删除命令
+    前置条件: deepin-terminal 已启动
+    AT元素引用:
+    - deepin-terminal
+  steps:
+  - step_type: action
+    description: 1. 进入到删除命令界面，按Tab键
+    action: session_start
+    command: deepin-terminal
+  - step_type: assert
+    description: 检查 键盘交互删除命令
+    action: assert_window
+    assertion: window_exists
+- id: case_1653529_s1
+  name: 键盘交互右键菜单中调出自定义命令插件
+  module: 键盘交互(#116109)
+  status: active
+  annotation:
+    测试界面: 终端-键盘交互(#116109)
+    测试功能: 键盘交互右键菜单中调出自定义命令插件
+    前置条件: deepin-terminal 已启动
+    AT元素引用:
+    - deepin-terminal
+  steps:
+  - step_type: action
+    description: 1. 键盘按Alt+M调出右键菜
+    action: session_start
+    command: deepin-terminal
+  - step_type: assert
+    description: 检查 键盘交互右键菜单中调出自定义命令插件
+    action: assert_window
+    assertion: window_exists
+- id: case_1653527_s1
+  name: 键盘交互远程管理列表为空
+  module: 键盘交互(#116109)
+  status: active
+  annotation:
+    测试界面: 终端-键盘交互(#116109)
+    测试功能: 键盘交互远程管理列表为空
+    前置条件: deepin-terminal 已启动
+    AT元素引用:
+    - deepin-terminal
+  steps:
+  - step_type: action
+    description: 1. 打开终端，Tab键切换到主菜单，按Enter键
+    action: session_start
+    command: deepin-terminal
+  - step_type: assert
+    description: 检查 键盘交互远程管理列表为空
+    action: assert_window
+    assertion: window_exists
+- id: case_1653525_s1
+  name: 键盘交互远程管理列表有一个服务器（分组或未分组）
+  module: 键盘交互(#116109)
+  status: active
+  annotation:
+    测试界面: 终端-键盘交互(#116109)
+    测试功能: 键盘交互远程管理列表有一个服务器（分组或未分组）
+    前置条件: deepin-terminal 已启动
+    AT元素引用:
+    - deepin-terminal
+  steps:
+  - step_type: action
+    description: 1. 打开终端，Tab键切换到远程管理插件
+    action: session_start
+    command: deepin-terminal
+  - step_type: assert
+    description: 检查 键盘交互远程管理列表有一个服务器（分组或未分组）
+    action: assert_window
+    assertion: window_exists
+- id: case_1653523_s1
+  name: 键盘交互远程管理功能，焦点在服务器列表不是组上
+  module: 键盘交互(#116109)
+  status: active
+  annotation:
+    测试界面: 终端-键盘交互(#116109)
+    测试功能: 键盘交互远程管理功能，焦点在服务器列表不是组上
+    前置条件: deepin-terminal 已启动
+    AT元素引用:
+    - deepin-terminal
+  steps:
+  - step_type: action
+    description: 1. 打开终端，Tab键切换到远程管理插件
+    action: session_start
+    command: deepin-terminal
+  - step_type: assert
+    description: 检查 键盘交互远程管理功能，焦点在服务器列表不是组上
+    action: assert_window
+    assertion: window_exists
+- id: case_1653521_s1
+  name: 键盘交互远程管理功能，焦点在服务器列表组上
+  module: 键盘交互(#116109)
+  status: active
+  annotation:
+    测试界面: 终端-键盘交互(#116109)
+    测试功能: 键盘交互远程管理功能，焦点在服务器列表组上
+    前置条件: deepin-terminal 已启动
+    AT元素引用:
+    - deepin-terminal
+  steps:
+  - step_type: action
+    description: 1. 打开终端，Tab键切换到远程管理插件
+    action: session_start
+    command: deepin-terminal
+  - step_type: assert
+    description: 检查 键盘交互远程管理功能，焦点在服务器列表组上
+    action: assert_window
+    assertion: window_exists
+- id: case_1653519_s1
+  name: 键盘交互远程管理搜索结果为空
+  module: 键盘交互(#116109)
+  status: active
+  annotation:
+    测试界面: 终端-键盘交互(#116109)
+    测试功能: 键盘交互远程管理搜索结果为空
+    前置条件: deepin-terminal 已启动
+    AT元素引用:
+    - deepin-terminal
+  steps:
+  - step_type: action
+    description: 1. 打开终端，Tab键切换到远程管理插件
+    action: session_start
+    command: deepin-terminal
+  - step_type: assert
+    description: 检查 键盘交互远程管理搜索结果为空
+    action: assert_window
+    assertion: window_exists
+- id: case_1653517_s1
+  name: 键盘交互远程管理搜索有结果
+  module: 键盘交互(#116109)
+  status: active
+  annotation:
+    测试界面: 终端-键盘交互(#116109)
+    测试功能: 键盘交互远程管理搜索有结果
+    前置条件: deepin-terminal 已启动
+    AT元素引用:
+    - deepin-terminal
+  steps:
+  - step_type: action
+    description: 1. 打开终端，Tab键切换到远程管理插件
+    action: session_start
+    command: deepin-terminal
+  - step_type: assert
+    description: 检查 键盘交互远程管理搜索有结果
+    action: assert_window
+    assertion: window_exists
+- id: case_1653515_s1
+  name: 键盘交互远程管理全局功能按ESC键
+  module: 键盘交互(#116109)
+  status: active
+  annotation:
+    测试界面: 终端-键盘交互(#116109)
+    测试功能: 键盘交互远程管理全局功能按ESC键
+    前置条件: deepin-terminal 已启动
+    AT元素引用:
+    - deepin-terminal
+  steps:
+  - step_type: action
+    description: 1. 打开终端，当焦点在搜索框、服务器列表、编辑按钮、添加服务器按钮
+    action: session_start
+    command: deepin-terminal
+  - step_type: assert
+    description: 检查 键盘交互远程管理全局功能按ESC键
+    action: assert_window
+    assertion: window_exists
+- id: case_1653513_s1
+  name: 键盘交互添加服务器
+  module: 键盘交互(#116109)
+  status: active
+  annotation:
+    测试界面: 终端-键盘交互(#116109)
+    测试功能: 键盘交互添加服务器
+    前置条件: deepin-terminal 已启动
+    AT元素引用:
+    - deepin-terminal
+  steps:
+  - step_type: action
+    description: 1. 打开终端，Tab键焦点在添加服务器按钮，点击Enter键
+    action: session_start
+    command: deepin-terminal
+  - step_type: assert
+    description: 检查 键盘交互添加服务器
+    action: assert_window
+    assertion: window_exists
+- id: case_1653511_s1
+  name: 键盘交互编辑远程服务器
+  module: 键盘交互(#116109)
+  status: active
+  annotation:
+    测试界面: 终端-键盘交互(#116109)
+    测试功能: 键盘交互编辑远程服务器
+    前置条件: deepin-terminal 已启动
+    AT元素引用:
+    - deepin-terminal
+  steps:
+  - step_type: action
+    description: 1. 打开终端，Tab键进入编辑服务器界面
+    action: session_start
+    command: deepin-terminal
+  - step_type: assert
+    description: 检查 键盘交互编辑远程服务器
+    action: assert_window
+    assertion: window_exists
+- id: case_1653509_s1
+  name: 键盘交互删除服务器
+  module: 键盘交互(#116109)
+  status: active
+  annotation:
+    测试界面: 终端-键盘交互(#116109)
+    测试功能: 键盘交互删除服务器
+    前置条件: deepin-terminal 已启动
+    AT元素引用:
+    - deepin-terminal
+  steps:
+  - step_type: action
+    description: 1. 打开终端，按Tab键进入到删除服务器面
+    action: session_start
+    command: deepin-terminal
+  - step_type: assert
+    description: 检查 键盘交互删除服务器
+    action: assert_window
+    assertion: window_exists
+- id: case_1653507_s1
+  name: 键盘交互编码、退格键、删除键
+  module: 键盘交互(#116109)
+  status: active
+  annotation:
+    测试界面: 终端-键盘交互(#116109)
+    测试功能: 键盘交互编码、退格键、删除键
+    前置条件: deepin-terminal 已启动
+    AT元素引用:
+    - deepin-terminal
+  steps:
+  - step_type: action
+    description: 1. 打开终端，进入到远程管理编码、退格键、删除键
+    action: session_start
+    command: deepin-terminal
+  - step_type: assert
+    description: 检查 键盘交互编码、退格键、删除键
+    action: assert_window
+    assertion: window_exists
+- id: case_1653505_s1
+  name: 键盘交互右键菜单中调出远程管理插件
+  module: 键盘交互(#116109)
+  status: active
+  annotation:
+    测试界面: 终端-键盘交互(#116109)
+    测试功能: 键盘交互右键菜单中调出远程管理插件
+    前置条件: deepin-terminal 已启动
+    AT元素引用:
+    - deepin-terminal
+  steps:
+  - step_type: action
+    description: 1. 键盘按Alt+M调出右键菜单
+    action: session_start
+    command: deepin-terminal
+  - step_type: assert
+    description: 检查 键盘交互右键菜单中调出远程管理插件
+    action: assert_window
+    assertion: window_exists
+- id: case_1653503_s1
+  name: 键盘交互查找框
+  module: 键盘交互(#116109)
+  status: active
+  annotation:
+    测试界面: 终端-键盘交互(#116109)
+    测试功能: 键盘交互查找框
+    前置条件: deepin-terminal 已启动
+    AT元素引用:
+    - deepin-terminal
+  steps:
+  - step_type: action
+    description: 1. 打开终端，键盘按Ctrl+Alt+F
+    action: session_start
+    command: deepin-terminal
+  - step_type: assert
+    description: 检查 键盘交互查找框
+    action: assert_window
+    assertion: window_exists
+- id: case_1653501_s1
+  name: 键盘交互多窗口中操作
+  module: 键盘交互(#116109)
+  status: active
+  annotation:
+    测试界面: 终端-键盘交互(#116109)
+    测试功能: 键盘交互多窗口中操作
+    前置条件: deepin-terminal 已启动
+    AT元素引用:
+    - deepin-terminal
+  steps:
+  - step_type: action
+    description: 1. 使用快捷键Ctrl+Alt+T新建多个终端窗口
+    action: session_start
+    command: deepin-terminal
+  - step_type: assert
+    description: 检查 键盘交互多窗口中操作
+    action: assert_window
+    assertion: window_exists
+- id: case_1653491_s1
+  name: 触摸屏主界面点击功能
+  module: 触摸屏(#116111)
+  status: unsupported
+  reason: 需要触摸屏硬件输入，AT-SPI 无法模拟触控操作
+  annotation:
+    测试界面: 终端-触摸屏(#116111)（触摸屏）
+    测试功能: 触摸屏主界面点击功能
+    前置条件: 触摸屏硬件
+    AT元素引用: []
+  steps: []
+- id: case_1653489_s1
+  name: 触摸屏标签页右键菜单
+  module: 触摸屏(#116111)
+  status: unsupported
+  reason: 需要触摸屏硬件输入，AT-SPI 无法模拟触控操作
+  annotation:
+    测试界面: 终端-触摸屏(#116111)（触摸屏）
+    测试功能: 触摸屏标签页右键菜单
+    前置条件: 触摸屏硬件
+    AT元素引用: []
+  steps: []
+- id: case_1653485_s1
+  name: 触摸屏一指上下滑动功能
+  module: 触摸屏(#116111)
+  status: unsupported
+  reason: 需要触摸屏硬件输入，AT-SPI 无法模拟触控操作
+  annotation:
+    测试界面: 终端-触摸屏(#116111)（触摸屏）
+    测试功能: 触摸屏一指上下滑动功能
+    前置条件: 触摸屏硬件
+    AT元素引用: []
+  steps: []
+- id: case_1653483_s1
+  name: 触摸屏双指放大与缩小功能
+  module: 触摸屏(#116111)
+  status: unsupported
+  reason: 需要触摸屏硬件输入，AT-SPI 无法模拟触控操作
+  annotation:
+    测试界面: 终端-触摸屏(#116111)（触摸屏）
+    测试功能: 触摸屏双指放大与缩小功能
+    前置条件: 触摸屏硬件
+    AT元素引用: []
+  steps: []
+- id: case_1653479_s1
+  name: 触摸屏长按右键再抬起
+  module: 触摸屏(#116111)
+  status: unsupported
+  reason: 需要触摸屏硬件输入，AT-SPI 无法模拟触控操作
+  annotation:
+    测试界面: 终端-触摸屏(#116111)（触摸屏）
+    测试功能: 触摸屏长按右键再抬起
+    前置条件: 触摸屏硬件
+    AT元素引用: []
+  steps: []
+- id: case_1653477_s1
+  name: 触摸屏分屏功能
+  module: 触摸屏(#116111)
+  status: unsupported
+  reason: 需要触摸屏硬件输入，AT-SPI 无法模拟触控操作
+  annotation:
+    测试界面: 终端-触摸屏(#116111)（触摸屏）
+    测试功能: 触摸屏分屏功能
+    前置条件: 触摸屏硬件
+    AT元素引用: []
+  steps: []
+- id: case_1653475_s1
+  name: 触摸屏查找功能
+  module: 触摸屏(#116111)
+  status: unsupported
+  reason: 需要触摸屏硬件输入，AT-SPI 无法模拟触控操作
+  annotation:
+    测试界面: 终端-触摸屏(#116111)（触摸屏）
+    测试功能: 触摸屏查找功能
+    前置条件: 触摸屏硬件
+    AT元素引用: []
+  steps: []
+- id: case_1653471_s1
+  name: 触摸屏重命名功能
+  module: 触摸屏(#116111)
+  status: unsupported
+  reason: 需要触摸屏硬件输入，AT-SPI 无法模拟触控操作
+  annotation:
+    测试界面: 终端-触摸屏(#116111)（触摸屏）
+    测试功能: 触摸屏重命名功能
+    前置条件: 触摸屏硬件
+    AT元素引用: []
+  steps: []
+- id: case_1653469_s1
+  name: 触摸屏新建自定义命令功能
+  module: 触摸屏(#116111)
+  status: unsupported
+  reason: 需要触摸屏硬件输入，AT-SPI 无法模拟触控操作
+  annotation:
+    测试界面: 终端-触摸屏(#116111)（触摸屏）
+    测试功能: 触摸屏新建自定义命令功能
+    前置条件: 触摸屏硬件
+    AT元素引用: []
+  steps: []
+- id: case_1653467_s1
+  name: 触摸屏编辑自定义命令功能
+  module: 触摸屏(#116111)
+  status: unsupported
+  reason: 需要触摸屏硬件输入，AT-SPI 无法模拟触控操作
+  annotation:
+    测试界面: 终端-触摸屏(#116111)（触摸屏）
+    测试功能: 触摸屏编辑自定义命令功能
+    前置条件: 触摸屏硬件
+    AT元素引用: []
+  steps: []
+- id: case_1653465_s1
+  name: 触摸屏删除自定义命令功能
+  module: 触摸屏(#116111)
+  status: unsupported
+  reason: 需要触摸屏硬件输入，AT-SPI 无法模拟触控操作
+  annotation:
+    测试界面: 终端-触摸屏(#116111)（触摸屏）
+    测试功能: 触摸屏删除自定义命令功能
+    前置条件: 触摸屏硬件
+    AT元素引用: []
+  steps: []
+- id: case_1653457_s1
+  name: 触摸屏添加服务器功能
+  module: 触摸屏(#116111)
+  status: unsupported
+  reason: 需要触摸屏硬件输入，AT-SPI 无法模拟触控操作
+  annotation:
+    测试界面: 终端-触摸屏(#116111)（触摸屏）
+    测试功能: 触摸屏添加服务器功能
+    前置条件: 触摸屏硬件
+    AT元素引用: []
+  steps: []
+- id: case_1653455_s1
+  name: 触摸屏编辑服务器功能
+  module: 触摸屏(#116111)
+  status: unsupported
+  reason: 需要触摸屏硬件输入，AT-SPI 无法模拟触控操作
+  annotation:
+    测试界面: 终端-触摸屏(#116111)（触摸屏）
+    测试功能: 触摸屏编辑服务器功能
+    前置条件: 触摸屏硬件
+    AT元素引用: []
+  steps: []
+- id: case_1653453_s1
+  name: 触摸屏删除服务器功能
+  module: 触摸屏(#116111)
+  status: unsupported
+  reason: 需要触摸屏硬件输入，AT-SPI 无法模拟触控操作
+  annotation:
+    测试界面: 终端-触摸屏(#116111)（触摸屏）
+    测试功能: 触摸屏删除服务器功能
+    前置条件: 触摸屏硬件
+    AT元素引用: []
+  steps: []
+- id: case_1653447_s1
+  name: 触摸屏连接服务器上传文件
+  module: 触摸屏(#116111)
+  status: unsupported
+  reason: 需要触摸屏硬件输入，AT-SPI 无法模拟触控操作
+  annotation:
+    测试界面: 终端-触摸屏(#116111)（触摸屏）
+    测试功能: 触摸屏连接服务器上传文件
+    前置条件: 触摸屏硬件
+    AT元素引用: []
+  steps: []
+- id: case_1653445_s1
+  name: 触摸屏连接服务器下载文件
+  module: 触摸屏(#116111)
+  status: unsupported
+  reason: 需要触摸屏硬件输入，AT-SPI 无法模拟触控操作
+  annotation:
+    测试界面: 终端-触摸屏(#116111)（触摸屏）
+    测试功能: 触摸屏连接服务器下载文件
+    前置条件: 触摸屏硬件
+    AT元素引用: []
+  steps: []
+- id: case_1653321_s1
+  name: 光标风格
+  module: 设置界面高级设置(#116119)
+  status: active
+  annotation:
+    测试界面: 终端-设置界面高级设置(#116119)
+    测试功能: 光标风格
+    前置条件: deepin-terminal 已启动
+    AT元素引用:
+    - deepin-terminal
+  steps:
+  - step_type: action
+    description: 2. 修改为第二种，|
+    action: dtk_main_menu
+    items: &id005
+    - 设置
+  - step_type: action
+    description: 3. 修改为第三种_
+    action: dtk_main_menu
+    items: *id005
+  - step_type: assert
+    description: 检查 光标风格
+    action: assert_element
+    selector: *id006
+- id: case_1653319_s1
+  name: 光标闪烁
+  module: 设置界面高级设置(#116119)
+  status: active
+  annotation:
+    测试界面: 终端-设置界面高级设置(#116119)
+    测试功能: 光标闪烁
+    前置条件: deepin-terminal 已启动
+    AT元素引用:
+    - deepin-terminal
+  steps:
+  - step_type: assert
+    description: 检查 光标闪烁
+    action: assert_element
+    selector: *id006
+- id: case_1653313_s1
+  name: 按键时滚动
+  module: 设置界面高级设置(#116119)
+  status: active
+  annotation:
+    测试界面: 终端-设置界面高级设置(#116119)
+    测试功能: 按键时滚动
+    前置条件: deepin-terminal 已启动
+    AT元素引用:
+    - deepin-terminal
+  steps:
+  - step_type: action
+    description: 2. 终端内容超过一屏，输入ls -al按enter键执行命令，再次按enter键
+    action: dtk_main_menu
+    items: *id005
+  - step_type: action
+    description: 3. 取消勾选按键时滚动，ls -al按enter键执行命令，再次按enter键
+    action: dtk_main_menu
+    items: *id005
+  - step_type: assert
+    description: 检查 按键时滚动
+    action: assert_element
+    selector: *id006
+- id: case_1653311_s1
+  name: 启动时使用普通、分屏、最大化和全屏窗口
+  module: 设置界面高级设置(#116119)
+  status: active
+  annotation:
+    测试界面: 终端-设置界面高级设置(#116119)
+    测试功能: 启动时使用普通、分屏、最大化和全屏窗口
+    前置条件: deepin-terminal 已启动
+    AT元素引用:
+    - deepin-terminal
+  steps:
+  - step_type: action
+    description: 3. 设置为最大化，新建窗口
+    action: dtk_main_menu
+    items: *id005
+  - step_type: action
+    description: 5. 注意：窗口大小是保存最后关闭一个的窗口大小
+    action: dtk_main_menu
+    items: *id005
+  - step_type: assert
+    description: 检查 启动时使用普通、分屏、最大化和全屏窗口
+    action: assert_element
+    selector: *id006
+- id: case_1653309_s1
+  name: 丢失焦点隐藏雷神窗口
+  module: 设置界面高级设置(#116119)
+  status: active
+  annotation:
+    测试界面: 终端-设置界面高级设置(#116119)
+    测试功能: 丢失焦点隐藏雷神窗口
+    前置条件: deepin-terminal 已启动
+    AT元素引用:
+    - deepin-terminal
+  steps:
+  - step_type: assert
+    description: 检查 丢失焦点隐藏雷神窗口
+    action: assert_element
+    selector: *id006
+- id: case_1653307_s1
+  name: 背景模糊
+  module: 设置界面高级设置(#116119)
+  status: active
+  annotation:
+    测试界面: 终端-设置界面高级设置(#116119)
+    测试功能: 背景模糊
+    前置条件: deepin-terminal 已启动
+    AT元素引用:
+    - deepin-terminal
+  steps:
+  - step_type: assert
+    description: 检查 背景模糊
+    action: assert_element
+    selector: *id006
+- id: case_1653305_s1
+  name: 恢复默认
+  module: 设置界面高级设置(#116119)
+  status: active
+  annotation:
+    测试界面: 终端-设置界面高级设置(#116119)
+    测试功能: 恢复默认
+    前置条件: deepin-terminal 已启动
+    AT元素引用:
+    - deepin-terminal
+  steps:
+  - step_type: action
+    description: 2. 不做任何修改，点击恢复所有按钮
+    action: dtk_main_menu
+    items: *id005
+  - step_type: action
+    description: 3. 修改任意参数，点击恢复按钮
+    action: dtk_main_menu
+    items: *id005
+  - step_type: assert
+    description: 检查 恢复默认
+    action: assert_element
+    selector: *id006
+- id: case_1653303_s1
+  name: 输出时滚动
+  module: 设置界面高级设置(#116119)
+  status: active
+  annotation:
+    测试界面: 终端-设置界面高级设置(#116119)
+    测试功能: 输出时滚动
+    前置条件: deepin-terminal 已启动
+    AT元素引用:
+    - deepin-terminal
+  steps:
+  - step_type: assert
+    description: 检查 输出时滚动
+    action: assert_element
+    selector: *id006
+- id: case_1653301_s1
+  name: 普通窗口Ctrl+S和Ctrl+Q流控制
+  module: 设置界面高级设置(#116119)
+  status: active
+  annotation:
+    测试界面: 终端-设置界面高级设置(#116119)
+    测试功能: 普通窗口Ctrl+S和Ctrl+Q流控制
+    前置条件: deepin-terminal 已启动
+    AT元素引用:
+    - deepin-terminal
+  steps:
+  - step_type: action
+    description: 1. 打开终端，进入设置，高级设置
+    action: dtk_main_menu
+    items: *id005
+  - step_type: action
+    description: 2. 点击shell分类选项
+    action: dtk_main_menu
+    items: *id005
+  - step_type: action
+    description: 3. 勾选“禁用Ctrl+S和Ctrl+Q流控制”，在终端中使用快键“Ctrl+S”
+    action: dtk_main_menu
+    items: *id005
+  - step_type: action
+    description: 4. 不勾选“禁用Ctrl+S和Ctrl+Q流控制”，在终端中使用“Ctrl+S”
+    action: dtk_main_menu
+    items: *id005
+  - step_type: action
+    description: 5. 在终端中输入任意命令
+    action: dtk_main_menu
+    items: *id005
+  - step_type: action
+    description: 6. 点击文案提示框的“ｘ”按钮
+    action: dtk_main_menu
+    items: *id005
+  - step_type: action
+    description: 7. 键盘按下“Ctrl+Q”
+    action: dtk_main_menu
+    items: *id005
+  - step_type: action
+    description: Notes:测试时一并测试触摸屏、触控板、键盘交互
+    action: dtk_main_menu
+    items: *id005
+  - step_type: assert
+    description: 检查 普通窗口Ctrl+S和Ctrl+Q流控制
+    action: assert_element
+    selector: *id006
+- id: case_1653299_s1
+  name: 分屏窗口中Ctrl+S和Ctrl+Q流控制
+  module: 设置界面高级设置(#116119)
+  status: active
+  annotation:
+    测试界面: 终端-设置界面高级设置(#116119)
+    测试功能: 分屏窗口中Ctrl+S和Ctrl+Q流控制
+    前置条件: deepin-terminal 已启动
+    AT元素引用:
+    - deepin-terminal
+  steps:
+  - step_type: action
+    description: 1. 打开终端，做横向分屏、纵向分屏操作
+    action: dtk_main_menu
+    items: *id005
+  - step_type: action
+    description: 2. 进入设置shelll分类下，不勾选“禁用Ctrl+S和Ctrl+Q流控制”选项
+    action: dtk_main_menu
+    items: *id005
+  - step_type: action
+    description: 3. 在左边工作区中使用快键“Ctrl+S”
+    action: dtk_main_menu
+    items: *id005
+  - step_type: action
+    description: 4. 在右边工作区中使用快键“Ctrl+S”
+    action: dtk_main_menu
+    items: *id005
+  - step_type: action
+    description: 5. 点击文案提示框的“ｘ”按钮，键盘按下“Ctrl+Q”，输入命令
+    action: dtk_main_menu
+    items: *id005
+  - step_type: action
+    description: 6. 进入设置shelll分类下，勾选“禁用Ctrl+S和Ctrl+Q流控制”选项
+    action: dtk_main_menu
+    items: *id005
+  - step_type: action
+    description: 7. 在下方工作区种使用快键“Ctrl+S”
+    action: dtk_main_menu
+    items: *id005
+  - step_type: action
+    description: Notes:测试时一并测试触摸屏、触控板、键盘交互
+    action: dtk_main_menu
+    items: *id005
+  - step_type: assert
+    description: 检查 分屏窗口中Ctrl+S和Ctrl+Q流控制
+    action: assert_element
+    selector: *id006
+- id: case_1653297_s1
+  name: 多个窗口/多工作区中Ctrl+S和Ctrl+Q流控制
+  module: 设置界面高级设置(#116119)
+  status: active
+  annotation:
+    测试界面: 终端-设置界面高级设置(#116119)
+    测试功能: 多个窗口/多工作区中Ctrl+S和Ctrl+Q流控制
+    前置条件: deepin-terminal 已启动
+    AT元素引用:
+    - deepin-terminal
+  steps:
+  - step_type: action
+    description: 1. 打开终端，新建多个终端窗口，其中一个窗口键盘按Ctrl+S
+    action: dtk_main_menu
+    items: *id005
+  - step_type: action
+    description: 2. 其窗口新建多个工作区，其中一个工作区键盘按Ctrl+S
+    action: dtk_main_menu
+    items: *id005
+  - step_type: action
+    description: Notes:测试时一并测试触摸屏、触控板、键盘交互
+    action: dtk_main_menu
+    items: *id005
+  - step_type: assert
+    description: 检查 多个窗口/多工作区中Ctrl+S和Ctrl+Q流控制
+    action: assert_element
+    selector: *id006
+- id: case_1653295_s1
+  name: 选中文字时自动复制到剪贴板选项勾选与不勾选功能
+  module: 设置界面高级设置(#116119)
+  status: active
+  annotation:
+    测试界面: 终端-设置界面高级设置(#116119)
+    测试功能: 选中文字时自动复制到剪贴板选项勾选与不勾选功能
+    前置条件: deepin-terminal 已启动
+    AT元素引用:
+    - deepin-terminal
+  steps:
+  - step_type: action
+    description: 2. 在终端中选中需要复制的内容，到需要粘贴的地方做粘贴操作
+    action: dtk_main_menu
+    items: *id005
+  - step_type: action
+    description: 3. 再进入设置取消勾选选中文字时自动复制到剪贴板复选框按钮
+    action: dtk_main_menu
+    items: *id005
+  - step_type: action
+    description: 4. 在终端中选中需要复制的内容，到需要粘贴的地方做粘贴操作
+    action: dtk_main_menu
+    items: *id005
+  - step_type: assert
+    description: 检查 选中文字时自动复制到剪贴板选项勾选与不勾选功能
+    action: assert_element
+    selector: *id006
+- id: case_1653281_s1
+  name: 粘贴
+  module: 设置界面快捷键(#116121)
+  status: active
+  annotation:
+    测试界面: 终端-设置界面快捷键(#116121)
+    测试功能: 粘贴
+    前置条件: deepin-terminal 已启动
+    AT元素引用:
+    - deepin-terminal
+  steps:
+  - step_type: action
+    description: 2. 使用快捷键进行粘贴
+    action: dtk_main_menu
+    items: &id007
+    - 设置
+    - 快捷键
+  - step_type: action
+    description: 3. 修改快捷键为其他；如ctrl+e；使用修改后的快捷键
+    action: dtk_main_menu
+    items: *id007
+  - step_type: action
+    description: 4. 使用旧的快捷键
+    action: dtk_main_menu
+    items: *id007
+  - step_type: assert
+    description: 检查 粘贴
+    action: assert_element
+    selector: &id008
+      role: dialog
+- id: case_1653271_s1
+  name: 全选
+  module: 设置界面快捷键(#116121)
+  status: active
+  annotation:
+    测试界面: 终端-设置界面快捷键(#116121)
+    测试功能: 全选
+    前置条件: deepin-terminal 已启动
+    AT元素引用:
+    - deepin-terminal
+  steps:
+  - step_type: action
+    description: 2. 使用默认快捷键
+    action: dtk_main_menu
+    items: *id007
+  - step_type: action
+    description: 3. 修改快捷键为其他，如ctrl+A；使用修改后的快捷键
+    action: dtk_main_menu
+    items: *id007
+  - step_type: action
+    description: 4. 使用旧的快捷键
+    action: dtk_main_menu
+    items: *id007
+  - step_type: assert
+    description: 检查 全选
+    action: assert_element
+    selector: *id008
+- id: case_1653269_s1
+  name: 新建标签页
+  module: 设置界面快捷键(#116121)
+  status: active
+  annotation:
+    测试界面: 终端-设置界面快捷键(#116121)
+    测试功能: 新建标签页
+    前置条件: deepin-terminal 已启动
+    AT元素引用:
+    - deepin-terminal
+  steps:
+  - step_type: action
+    description: 2. 使用默认快捷键
+    action: dtk_main_menu
+    items: *id007
+  - step_type: action
+    description: 3. 修改快捷键为其他，例如ctrl+t；使用新的快捷键
+    action: dtk_main_menu
+    items: *id007
+  - step_type: action
+    description: 4. 使用旧的快捷键
+    action: dtk_main_menu
+    items: *id007
+  - step_type: assert
+    description: 检查 新建标签页
+    action: assert_element
+    selector: *id008
+- id: case_1653265_s1
+  name: 关闭标签页
+  module: 设置界面快捷键(#116121)
+  status: active
+  annotation:
+    测试界面: 终端-设置界面快捷键(#116121)
+    测试功能: 关闭标签页
+    前置条件: deepin-terminal 已启动
+    AT元素引用:
+    - deepin-terminal
+  steps:
+  - step_type: action
+    description: 2. 使用默认快捷键
+    action: dtk_main_menu
+    items: *id007
+  - step_type: action
+    description: 4. 使用旧的快捷键
+    action: dtk_main_menu
+    items: *id007
+  - step_type: assert
+    description: 检查 关闭标签页
+    action: assert_element
+    selector: *id008
+- id: case_1653259_s1
+  name: 纵向分屏
+  module: 设置界面快捷键(#116121)
+  status: active
+  annotation:
+    测试界面: 终端-设置界面快捷键(#116121)
+    测试功能: 纵向分屏
+    前置条件: deepin-terminal 已启动
+    AT元素引用:
+    - deepin-terminal
+  steps:
+  - step_type: action
+    description: 3. 修改快捷键为其他，如：ctrl+shift+m使用新的快捷键
+    action: dtk_main_menu
+    items: *id007
+  - step_type: action
+    description: 4. 使用旧的快捷键`
+    action: dtk_main_menu
+    items: *id007
+  - step_type: assert
+    description: 检查 纵向分屏
+    action: assert_element
+    selector: *id008
+- id: case_1653253_s1
+  name: 选择下面的工作区
+  module: 设置界面快捷键(#116121)
+  status: active
+  annotation:
+    测试界面: 终端-设置界面快捷键(#116121)
+    测试功能: 选择下面的工作区
+    前置条件: deepin-terminal 已启动
+    AT元素引用:
+    - deepin-terminal
+  steps:
+  - step_type: action
+    description: 2. 使用默认快捷键
+    action: dtk_main_menu
+    items: *id007
+  - step_type: action
+    description: 3. 修改快捷键为其他，如 ctrl+j使用新的快捷键
+    action: dtk_main_menu
+    items: *id007
+  - step_type: action
+    description: 4. 使用旧的快捷键
+    action: dtk_main_menu
+    items: *id007
+  - step_type: assert
+    description: 检查 选择下面的工作区
+    action: assert_element
+    selector: *id008
+- id: case_1653247_s1
+  name: 关闭工作区
+  module: 设置界面快捷键(#116121)
+  status: active
+  annotation:
+    测试界面: 终端-设置界面快捷键(#116121)
+    测试功能: 关闭工作区
+    前置条件: deepin-terminal 已启动
+    AT元素引用:
+    - deepin-terminal
+  steps:
+  - step_type: action
+    description: 2. 使用默认快捷键
+    action: dtk_main_menu
+    items: *id007
+  - step_type: action
+    description: 3. 修改快捷键为其他，如 ctrl+w使用新的快捷键
+    action: dtk_main_menu
+    items: *id007
+  - step_type: action
+    description: 4. 使用旧的快捷键
+    action: dtk_main_menu
+    items: *id007
+  - step_type: assert
+    description: 检查 关闭工作区
+    action: assert_element
+    selector: *id008
+- id: case_1653241_s1
+  name: 隐藏“显示快捷键”
+  module: 设置界面快捷键(#116121)
+  status: active
+  annotation:
+    测试界面: 终端-设置界面快捷键(#116121)
+    测试功能: 隐藏“显示快捷键”
+    前置条件: deepin-terminal 已启动
+    AT元素引用:
+    - deepin-terminal
+  steps:
+  - step_type: assert
+    description: 检查 隐藏“显示快捷键”
+    action: assert_element
+    selector: *id008
+- id: case_1653235_s1
+  name: 标签页1~9快捷键功能
+  module: 设置界面快捷键(#116121)
+  status: active
+  annotation:
+    测试界面: 终端-设置界面快捷键(#116121)
+    测试功能: 标签页1~9快捷键功能
+    前置条件: deepin-terminal 已启动
+    AT元素引用:
+    - deepin-terminal
+  steps:
+  - step_type: action
+    description: 1. 打开终端，进入设置，快捷键下
+    action: dtk_main_menu
+    items: *id007
+  - step_type: action
+    description: 2. 新建工作区不大于9个，键盘按Ctrl+ Shift + 1 ~ Ctrl+ Shift + 9
+    action: dtk_main_menu
+    items: *id007
+  - step_type: action
+    description: 3. 新建工作区大于9个，键盘按Ctrl+ Shift + 9
+    action: dtk_main_menu
+    items: *id007
+  - step_type: action
+    description: Notes:测试时一并测试触摸屏、触控板、键盘交互
+    action: dtk_main_menu
+    items: *id007
+  - step_type: assert
+    description: 检查 标签页1~9快捷键功能
+    action: assert_element
+    selector: *id008
+- id: case_1653231_s1
+  name: '[016]设置界面显示'
+  module: 设置界面基础设置(#116123)
+  status: active
+  annotation:
+    测试界面: 终端-设置界面基础设置(#116123)
+    测试功能: '[016]设置界面显示'
+    前置条件: deepin-terminal 已启动
+    AT元素引用:
+    - deepin-terminal
+  steps:
+  - step_type: action
+    description: 3. 鼠标移动到右边进行滚动
+    action: dtk_main_menu
+    items: &id010
+    - 设置
+  - step_type: assert
+    description: 检查 [016]设置界面显示
+    action: assert_element
+    selector: &id009
+      role: dialog
+- id: case_1653229_s1
+  name: 透明度
+  module: 设置界面基础设置(#116123)
+  status: active
+  annotation:
+    测试界面: 终端-设置界面基础设置(#116123)
+    测试功能: 透明度
+    前置条件: deepin-terminal 已启动
+    AT元素引用:
+    - deepin-terminal
+  steps:
+  - step_type: assert
+    description: 检查 透明度
+    action: assert_element
+    selector: *id009
+- id: case_1653223_s1
+  name: 设置界面功能项显示
+  module: 设置界面基础设置(#116123)
+  status: active
+  annotation:
+    测试界面: 终端-设置界面基础设置(#116123)
+    测试功能: 设置界面功能项显示
+    前置条件: deepin-terminal 已启动
+    AT元素引用:
+    - deepin-terminal
+  steps:
+  - step_type: action
+    description: 1. 打开终端，主菜单点击设置
+    action: dtk_main_menu
+    items: *id010
+  - step_type: action
+    description: 3. 点击基础设置
+    action: dtk_main_menu
+    items: *id010
+  - step_type: action
+    description: 4. 点击快捷键
+    action: dtk_main_menu
+    items: *id010
+  - step_type: action
+    description: 5. 点击高级设置
+    action: dtk_main_menu
+    items: *id010
+  - step_type: action
+    description: 6. 点击恢复默认
+    action: dtk_main_menu
+    items: *id010
+  - step_type: assert
+    description: 检查 设置界面功能项显示
+    action: assert_element
+    selector: *id009
+- id: case_1653213_s1
+  name: 右键菜单显示项
+  module: 右键菜单工作区(#116125)
+  status: active
+  annotation:
+    测试界面: 终端-右键菜单工作区(#116125)
+    测试功能: 右键菜单显示项
+    前置条件: deepin-terminal 已启动
+    AT元素引用:
+    - deepin-terminal
+  steps:
+  - step_type: action
+    description: 2. 打开终端，终端未选中内容，并且光标下不是超链接，点击右键菜单
+    action: dtk_context_menu
+  - step_type: action
+    description: 3. 终端内没有选中内容，并且光标下是超链接，点击右键菜单
+    action: dtk_context_menu
+  - step_type: action
+    description: 4. 终端中选中文本后，点击右键菜单
+    action: dtk_context_menu
+  - step_type: action
+    description: 5. 终端中选中当前目录下的文件，点击右键菜单，点击“打开”菜单
+    action: dtk_context_menu
+  - step_type: assert
+    description: 检查 右键菜单显示项
+    action: assert_element
+    selector: &id011
+      role: menu
+- id: case_1653211_s1
+  name: 粘贴
+  module: 右键菜单工作区(#116125)
+  status: active
+  annotation:
+    测试界面: 终端-右键菜单工作区(#116125)
+    测试功能: 粘贴
+    前置条件: deepin-terminal 已启动
+    AT元素引用:
+    - deepin-terminal
+  steps:
+  - step_type: action
+    description: 2. 点击粘贴
+    action: dtk_context_menu
+  - step_type: action
+    description: 3. 执行粘贴命令
+    action: dtk_context_menu
+  - step_type: assert
+    description: 检查 粘贴
+    action: assert_element
+    selector: *id011
+- id: case_1653207_s1
+  name: 自定义命令
+  module: 右键菜单工作区(#116125)
+  status: active
+  annotation:
+    测试界面: 终端-右键菜单工作区(#116125)
+    测试功能: 自定义命令
+    前置条件: deepin-terminal 已启动
+    AT元素引用:
+    - deepin-terminal
+  steps:
+  - step_type: action
+    description: 1. 终端右键选中自定义命令
+    action: dtk_context_menu
+  - step_type: action
+    description: 2. 点击下方的添加自定义命令按钮
+    action: dtk_context_menu
+  - step_type: action
+    description: 3. 鼠标点击终端
+    action: dtk_context_menu
+  - step_type: assert
+    description: 检查 自定义命令
+    action: assert_element
+    selector: *id011
+- id: case_1653205_s1
+  name: 编码方式
+  module: 右键菜单工作区(#116125)
+  status: active
+  annotation:
+    测试界面: 终端-右键菜单工作区(#116125)
+    测试功能: 编码方式
+    前置条件: deepin-terminal 已启动
+    AT元素引用:
+    - deepin-terminal
+  steps:
+  - step_type: action
+    description: 1. 右键菜单-编码
+    action: dtk_context_menu
+  - step_type: action
+    description: 2. 鼠标任选某编码
+    action: dtk_context_menu
+  - step_type: action
+    description: 3. 编码列表下拉
+    action: dtk_context_menu
+  - step_type: action
+    description: 4. 鼠标点击终端非编码列表
+    action: dtk_context_menu
+  - step_type: action
+    description: 5. 鼠标双击终端
+    action: dtk_context_menu
+  - step_type: assert
+    description: 检查 编码方式
+    action: assert_element
+    selector: *id011
+- id: case_1653199_s1
+  name: 远程管理
+  module: 右键菜单工作区(#116125)
+  status: active
+  annotation:
+    测试界面: 终端-右键菜单工作区(#116125)
+    测试功能: 远程管理
+    前置条件: deepin-terminal 已启动
+    AT元素引用:
+    - deepin-terminal
+  steps:
+  - step_type: action
+    description: 1. 打开终端，右键菜单选择远程管理
+    action: dtk_context_menu
+  - step_type: action
+    description: 2. 按空白处
+    action: dtk_context_menu
+  - step_type: assert
+    description: 检查 远程管理
+    action: assert_element
+    selector: *id011
+- id: case_1653197_s1
+  name: '[015]查找'
+  module: 右键菜单工作区(#116125)
+  status: active
+  annotation:
+    测试界面: 终端-右键菜单工作区(#116125)
+    测试功能: '[015]查找'
+    前置条件: deepin-terminal 已启动
+    AT元素引用:
+    - deepin-terminal
+  steps:
+  - step_type: action
+    description: 1. 打开终端，右键选择查找
+    action: dtk_context_menu
+  - step_type: action
+    description: 2. 输入内容，按enter键
+    action: dtk_context_menu
+  - step_type: assert
+    description: 检查 [015]查找
+    action: assert_element
+    selector: *id011
+- id: case_1653195_s1
+  name: 纵向分屏
+  module: 右键菜单工作区(#116125)
+  status: active
+  annotation:
+    测试界面: 终端-右键菜单工作区(#116125)
+    测试功能: 纵向分屏
+    前置条件: deepin-terminal 已启动
+    AT元素引用:
+    - deepin-terminal
+  steps:
+  - step_type: action
+    description: 1. 打开终端，右键选择纵向分屏
+    action: dtk_context_menu
+  - step_type: action
+    description: 2. 选择一个分屏窗口再次右键选择
+    action: dtk_context_menu
+  - step_type: action
+    description: 3. 在步骤1基础上使用快捷键ctrl+shift+j
+    action: dtk_context_menu
+  - step_type: assert
+    description: 检查 纵向分屏
+    action: assert_element
+    selector: *id011
+- id: case_1653193_s1
+  name: 横向分屏
+  module: 右键菜单工作区(#116125)
+  status: active
+  annotation:
+    测试界面: 终端-右键菜单工作区(#116125)
+    测试功能: 横向分屏
+    前置条件: deepin-terminal 已启动
+    AT元素引用:
+    - deepin-terminal
+  steps:
+  - step_type: action
+    description: 2. 再次右键选择
+    action: dtk_context_menu
+  - step_type: action
+    description: 3. 在步骤1基础上，按快捷键ctrl+shift+h
+    action: dtk_context_menu
+  - step_type: assert
+    description: 检查 横向分屏
+    action: assert_element
+    selector: *id011
+- id: case_1653189_s1
+  name: 本地编码
+  module: 右键菜单工作区(#116125)
+  status: active
+  annotation:
+    测试界面: 终端-右键菜单工作区(#116125)
+    测试功能: 本地编码
+    前置条件: deepin-terminal 已启动
+    AT元素引用:
+    - deepin-terminal
+  steps:
+  - step_type: action
+    description: 1. 打开终端，右键点击“编码”菜单
+    action: dtk_context_menu
+  - step_type: action
+    description: 2. 打开终端列表
+    action: dtk_context_menu
+  - step_type: action
+    description: 4. 右键菜单修改编码后，新建终端
+    action: dtk_context_menu
+  - step_type: action
+    description: 5. 弹出编码选择列表点击终端
+    action: dtk_context_menu
+  - step_type: assert
+    description: 检查 本地编码
+    action: assert_element
+    selector: *id011
+- id: case_1653185_s1
+  name: 插入不同类型标签标题格式
+  module: 右键菜单工作区(#116125)
+  status: active
+  annotation:
+    测试界面: 终端-右键菜单工作区(#116125)
+    测试功能: 插入不同类型标签标题格式
+    前置条件: deepin-terminal 已启动
+    AT元素引用:
+    - deepin-terminal
+  steps:
+  - step_type: action
+    description: 1. 打开终端，进入设置基础设置下标签标题格式
+    action: dtk_context_menu
+  - step_type: action
+    description: 2. 点击插入按钮，选择插入格式，程序名 %n
+    action: dtk_context_menu
+  - step_type: action
+    description: 、当前目录（短）%d、当前目录（长）%D、会话编号 %#、用户名 %u、本地主机 %h、shell设定的窗口标题 %w
+    action: dtk_context_menu
+  - step_type: action
+    description: Notes:测试时一并测试触摸屏、触控板、键盘交互
+    action: dtk_context_menu
+  - step_type: assert
+    description: 检查 插入不同类型标签标题格式
+    action: assert_element
+    selector: *id011
+- id: case_1653173_s1
+  name: 关闭其它标签页
+  module: 右键菜单标签页(#116127)
+  status: active
+  annotation:
+    测试界面: 终端-右键菜单标签页(#116127)
+    测试功能: 关闭其它标签页
+    前置条件: deepin-terminal 已启动
+    AT元素引用:
+    - TabBar
+  steps:
+  - step_type: action
+    description: 1. 打开终端，新建多个工作区
+    action: dtk_context_menu
+    selector: &id012
+      name: TabBar
+      role: page tab list
+  - step_type: action
+    description: 2. 鼠标焦点在标签上，点击右键菜单栏关闭其它标签页
+    action: dtk_context_menu
+    selector: *id012
+  - step_type: action
+    description: 3. 只有一个标签页，点击右键“关闭其它标签页”
+    action: dtk_context_menu
+    selector: *id012
+  - step_type: assert
+    description: 检查 关闭其它标签页
+    action: assert_element
+    selector: &id013
+      role: menu
+- id: case_1653171_s1
+  name: 关闭标签页
+  module: 右键菜单标签页(#116127)
+  status: active
+  annotation:
+    测试界面: 终端-右键菜单标签页(#116127)
+    测试功能: 关闭标签页
+    前置条件: deepin-terminal 已启动
+    AT元素引用:
+    - TabBar
+  steps:
+  - step_type: action
+    description: 1. 打开终端，新建多个工作区
+    action: dtk_context_menu
+    selector: *id012
+  - step_type: action
+    description: 2. 鼠标焦点在标签上，点击右键菜单栏关闭标签页
+    action: dtk_context_menu
+    selector: *id012
+  - step_type: assert
+    description: 检查 关闭标签页
+    action: assert_element
+    selector: *id013
+- id: case_1653169_s1
+  name: 标签页右键菜单
+  module: 右键菜单标签页(#116127)
+  status: active
+  annotation:
+    测试界面: 终端-右键菜单标签页(#116127)
+    测试功能: 标签页右键菜单
+    前置条件: deepin-terminal 已启动
+    AT元素引用:
+    - TabBar
+  steps:
+  - step_type: action
+    description: 1. 打开终端
+    action: dtk_context_menu
+    selector: *id012
+  - step_type: action
+    description: 2. 鼠标点击右键标签栏
+    action: dtk_context_menu
+    selector: *id012
+  - step_type: action
+    description: 3. 点击终端标签栏+，新建多个标签页
+    action: dtk_context_menu
+    selector: *id012
+  - step_type: action
+    description: 4. 鼠标点击右键标签栏
+    action: dtk_context_menu
+    selector: *id012
+  - step_type: action
+    description: 5. 鼠标放到标签栏，右键菜单点击关闭标签页
+    action: dtk_context_menu
+    selector: *id012
+  - step_type: action
+    description: 6. 鼠标放到标签栏，右键菜单点击关其它标签页
+    action: dtk_context_menu
+    selector: *id012
+  - step_type: action
+    description: 7. 终端有程序运行时，重复3～6步骤
+    action: dtk_context_menu
+    selector: *id012
+  - step_type: assert
+    description: 检查 标签页右键菜单
+    action: assert_element
+    selector: *id013
+- id: case_1653163_s1
+  name: 标签页右键菜单重命名标题
+  module: 右键菜单标签页(#116127)
+  status: active
+  annotation:
+    测试界面: 终端-右键菜单标签页(#116127)
+    测试功能: 标签页右键菜单重命名标题
+    前置条件: deepin-terminal 已启动
+    AT元素引用:
+    - TabBar
+  steps:
+  - step_type: action
+    description: 1. 打开终端，编辑器区右键菜单
+    action: dtk_context_menu
+    selector: *id012
+  - step_type: action
+    description: 2. 标签页点击鼠标右键
+    action: dtk_context_menu
+    selector: *id012
+  - step_type: action
+    description: 3. 点击重命名标签
+    action: dtk_context_menu
+    selector: *id012
+  - step_type: action
+    description: Notes:测试时一并测试触摸屏、触控板、键盘交互
+    action: dtk_context_menu
+    selector: *id012
+  - step_type: assert
+    description: 检查 标签页右键菜单重命名标题
+    action: assert_element
+    selector: *id013
+- id: case_1653161_s1
+  name: 插入标签标题格式功能
+  module: 右键菜单标签页(#116127)
+  status: active
+  annotation:
+    测试界面: 终端-右键菜单标签页(#116127)
+    测试功能: 插入标签标题格式功能
+    前置条件: deepin-terminal 已启动
+    AT元素引用:
+    - TabBar
+  steps:
+  - step_type: action
+    description: 1. 打开终端，标签页点击鼠标右键
+    action: dtk_context_menu
+    selector: *id012
+  - step_type: action
+    description: 2. 点击插入按钮，选择程序名 %n 、当前目录（短）%d、当前目录（长）%D、会话编号 %#、用户名 %u、本地主机 %h、shell设定的窗口标题
+      %w
+    action: dtk_context_menu
+    selector: *id012
+  - step_type: action
+    description: 3. 点击确定按钮
+    action: dtk_context_menu
+    selector: *id012
+  - step_type: action
+    description: 4. 点击取消按钮
+    action: dtk_context_menu
+    selector: *id012
+  - step_type: action
+    description: 5. 清空标签标题格式内容，点击确定
+    action: dtk_context_menu
+    selector: *id012
+  - step_type: action
+    description: Notes:测试时一并测试触摸屏、触控板、键盘交互
+    action: dtk_context_menu
+    selector: *id012
+  - step_type: assert
+    description: 检查 插入标签标题格式功能
+    action: assert_element
+    selector: *id013
+- id: case_1653159_s1
+  name: 插入远程标签标题格式功能
+  module: 右键菜单标签页(#116127)
+  status: active
+  annotation:
+    测试界面: 终端-右键菜单标签页(#116127)
+    测试功能: 插入远程标签标题格式功能
+    前置条件: deepin-terminal 已启动
+    AT元素引用:
+    - TabBar
+  steps:
+  - step_type: action
+    description: 1. 打开终端，标签页点击鼠标右键
+    action: dtk_context_menu
+    selector: *id012
+  - step_type: action
+    description: 2. 点击插入按钮，选择用户名%u 、用户名@  %U、远程主机（短）%h、会话编号 %#、shell设定的窗口标题 %w
+    action: dtk_context_menu
+    selector: *id012
+  - step_type: action
+    description: 3. 点击确定按钮
+    action: dtk_context_menu
+    selector: *id012
+  - step_type: action
+    description: 4. 点击取消按钮
+    action: dtk_context_menu
+    selector: *id012
+  - step_type: action
+    description: 5. 清空标签标题格式内容，点击确定
+    action: dtk_context_menu
+    selector: *id012
+  - step_type: action
+    description: Notes:测试时一并测试触摸屏、触控板、键盘交互
+    action: dtk_context_menu
+    selector: *id012
+  - step_type: assert
+    description: 检查 插入远程标签标题格式功能
+    action: assert_element
+    selector: *id013
+- id: case_1653153_s1
+  name: 鼠标指针在标签页上，点击鼠标中键
+  module: 右键菜单标签页(#116127)
+  status: active
+  annotation:
+    测试界面: 终端-右键菜单标签页(#116127)
+    测试功能: 鼠标指针在标签页上，点击鼠标中键
+    前置条件: deepin-terminal 已启动
+    AT元素引用:
+    - TabBar
+  steps:
+  - step_type: action
+    description: 1. 打开终端，鼠标指针指在标签页，点击鼠标中键
+    action: dtk_context_menu
+    selector: *id012
+  - step_type: action
+    description: 2. 再次打开终端，点击“+”按钮新建多个标签页，鼠标指针指在未获得焦点的标签页，点击鼠标中键
+    action: dtk_context_menu
+    selector: *id012
+  - step_type: action
+    description: 3. 终端窗口中做横向分屏纵向分屏操作，鼠标指针指在分屏窗口标签页处，点击鼠标中键
+    action: dtk_context_menu
+    selector: *id012
+  - step_type: assert
+    description: 检查 鼠标指针在标签页上，点击鼠标中键
+    action: assert_element
+    selector: *id013
+- id: case_1653149_s1
+  name: 服务器窗口
+  module: 远程管理器(#116129)
+  status: active
+  annotation:
+    测试界面: 终端-远程管理器(#116129)
+    测试功能: 服务器窗口
+    前置条件: deepin-terminal 已启动
+    AT元素引用:
+    - RightPanel
+  steps:
+  - step_type: action
+    description: 4. 软件弹出添加远程服务器窗口后，点击除添加窗口外软件其他的地方
+    action: dtk_context_menu
+    items: &id014
+    - 远程管理
+  - step_type: assert
+    description: 检查 服务器窗口
+    action: assert_element
+    selector: &id015
+      name: RightPanel
+      role: panel
+- id: case_1653147_s1
+  name: 搜索服务器
+  module: 远程管理器(#116129)
+  status: active
+  annotation:
+    测试界面: 终端-远程管理器(#116129)
+    测试功能: 搜索服务器
+    前置条件: deepin-terminal 已启动
+    AT元素引用:
+    - RightPanel
+  steps:
+  - step_type: action
+    description: 3. 在输入框中输入字符：特殊字符，然后点击回车
+    action: dtk_context_menu
+    items: *id014
+  - step_type: action
+    description: 4. 在搜索输入框中输入服务器的名称，点击回车
+    action: dtk_context_menu
+    items: *id014
+  - step_type: action
+    description: 5. 在搜索输入框中输入服务器的ip地址，点击回车
+    action: dtk_context_menu
+    items: *id014
+  - step_type: action
+    description: 6. 在搜索输入框中输入分组名称，点击回车
+    action: dtk_context_menu
+    items: *id014
+  - step_type: action
+    description: 7. 在搜索输入框中输入字符后，点击后面的删除按钮
+    action: dtk_context_menu
+    items: *id014
+  - step_type: action
+    description: 8. 搜索是模糊匹配的，只要服务器名称、ｉｐ地址、分组　任何一项匹配，都会显示出来
+    action: dtk_context_menu
+    items: *id014
+  - step_type: assert
+    description: 检查 搜索服务器
+    action: assert_element
+    selector: *id015
+- id: case_1653145_s1
+  name: 服务器分组
+  module: 远程管理器(#116129)
+  status: active
+  annotation:
+    测试界面: 终端-远程管理器(#116129)
+    测试功能: 服务器分组
+    前置条件: deepin-terminal 已启动
+    AT元素引用:
+    - RightPanel
+  steps:
+  - step_type: assert
+    description: 检查 服务器分组
+    action: assert_element
+    selector: *id015
+- id: case_1653143_s1
+  name: 删除服务器
+  module: 远程管理器(#116129)
+  status: active
+  annotation:
+    测试界面: 终端-远程管理器(#116129)
+    测试功能: 删除服务器
+    前置条件: deepin-terminal 已启动
+    AT元素引用:
+    - RightPanel
+  steps:
+  - step_type: assert
+    description: 检查 删除服务器
+    action: assert_element
+    selector: *id015
+- id: case_1653141_s1
+  name: 编辑服务器
+  module: 远程管理器(#116129)
+  status: active
+  annotation:
+    测试界面: 终端-远程管理器(#116129)
+    测试功能: 编辑服务器
+    前置条件: deepin-terminal 已启动
+    AT元素引用:
+    - RightPanel
+  steps:
+  - step_type: action
+    description: 2. 在编辑服务器窗口中，修改服务器名称，点击保存按钮
+    action: dtk_context_menu
+    items: *id014
+  - step_type: action
+    description: 3. 在编辑服务器窗口中，修改地址或端口，点击保存按钮
+    action: dtk_context_menu
+    items: *id014
+  - step_type: action
+    description: 4. 在编辑服务器窗口中，修改用户名和密码，点击保存按钮
+    action: dtk_context_menu
+    items: *id014
+  - step_type: action
+    description: 5. 在编辑服务器窗口中，修改分组，点击保存按钮
+    action: dtk_context_menu
+    items: *id014
+  - step_type: action
+    description: 6. 在编辑服务器窗口中，修改路径和命令，点击保存按钮
+    action: dtk_context_menu
+    items: *id014
+  - step_type: action
+    description: 7. 在编辑服务器窗口中，修改编码、退格键、删除键，点击保存按钮
+    action: dtk_context_menu
+    items: *id014
+  - step_type: assert
+    description: 检查 编辑服务器
+    action: assert_element
+    selector: *id015
+- id: case_1653139_s1
+  name: 错误密码
+  module: 远程管理器(#116129)
+  status: active
+  annotation:
+    测试界面: 终端-远程管理器(#116129)
+    测试功能: 错误密码
+    前置条件: deepin-terminal 已启动
+    AT元素引用:
+    - RightPanel
+  steps:
+  - step_type: action
+    description: 1. 在添加服务器的过程中填写错误的服务器密码，然后连接服务器
+    action: dtk_context_menu
+    items: *id014
+  - step_type: assert
+    description: 检查 错误密码
+    action: assert_element
+    selector: *id015
+- id: case_1653137_s1
+  name: 未填写密码
+  module: 远程管理器(#116129)
+  status: active
+  annotation:
+    测试界面: 终端-远程管理器(#116129)
+    测试功能: 未填写密码
+    前置条件: deepin-terminal 已启动
+    AT元素引用:
+    - RightPanel
+  steps:
+  - step_type: action
+    description: 1. 在添加服务器的过程中没有填写服务器密码，然后连接服务器
+    action: dtk_context_menu
+    items: *id014
+  - step_type: assert
+    description: 检查 未填写密码
+    action: assert_element
+    selector: *id015
+- id: case_1653135_s1
+  name: 正确连接
+  module: 远程管理器(#116129)
+  status: active
+  annotation:
+    测试界面: 终端-远程管理器(#116129)
+    测试功能: 正确连接
+    前置条件: deepin-terminal 已启动
+    AT元素引用:
+    - RightPanel
+  steps:
+  - step_type: assert
+    description: 检查 正确连接
+    action: assert_element
+    selector: *id015
+- id: case_1653133_s1
+  name: 连接服务器后操作
+  module: 远程管理器(#116129)
+  status: active
+  annotation:
+    测试界面: 终端-远程管理器(#116129)
+    测试功能: 连接服务器后操作
+    前置条件: deepin-terminal 已启动
+    AT元素引用:
+    - RightPanel
+  steps:
+  - step_type: action
+    description: 1. 打开终端进入远程管理服务器，选择一个远程服务器
+    action: dtk_context_menu
+    items: *id014
+  - step_type: action
+    description: 2. 当前窗口有程序运行，选择一个服务器连接
+    action: dtk_context_menu
+    items: *id014
+  - step_type: action
+    description: 3. 当前窗口没有有程序运行，选择一个服务器连接
+    action: dtk_context_menu
+    items: *id014
+  - step_type: action
+    description: 4. 在远程服务器中使用rz和sz命令做上传文件和下载文件操作
+    action: dtk_context_menu
+    items: *id014
+  - step_type: assert
+    description: 检查 连接服务器后操作
+    action: assert_element
+    selector: *id015
+- id: case_1653131_s1
+  name: 错误连接
+  module: 远程管理器(#116129)
+  status: active
+  annotation:
+    测试界面: 终端-远程管理器(#116129)
+    测试功能: 错误连接
+    前置条件: deepin-terminal 已启动
+    AT元素引用:
+    - RightPanel
+  steps:
+  - step_type: action
+    description: 1. 在添加服务器界面中填写错误的地址，然后连接服务器
+    action: dtk_context_menu
+    items: *id014
+  - step_type: action
+    description: 2. 在添加服务器界面中填写错误的用户名，然后连接服务器
+    action: dtk_context_menu
+    items: *id014
+  - step_type: action
+    description: 3. 在添加服务器界面中填写错误的端口，然后连接服务器
+    action: dtk_context_menu
+    items: *id014
+  - step_type: action
+    description: 4. 在添加服务器界面中填写错误的端口和地址，然后连接服务器
+    action: dtk_context_menu
+    items: *id014
+  - step_type: action
+    description: 5. 在添加服务器界面中填写错误的端口和用户名，然后连接服务器
+    action: dtk_context_menu
+    items: *id014
+  - step_type: action
+    description: 6. 在添加服务器界面中填写错误的端口、地址和用户名，然后连接服务器
+    action: dtk_context_menu
+    items: *id014
+  - step_type: action
+    description: 7. 在添加服务器界面中填写错误的路径，然后连接服务器
+    action: dtk_context_menu
+    items: *id014
+  - step_type: action
+    description: 8. 在添加服务器界面中填写错误的命令，然后连接服务器
+    action: dtk_context_menu
+    items: *id014
+  - step_type: assert
+    description: 检查 错误连接
+    action: assert_element
+    selector: *id015
+- id: case_1653129_s1
+  name: 远程管理面板自动隐藏
+  module: 远程管理器(#116129)
+  status: active
+  annotation:
+    测试界面: 终端-远程管理器(#116129)
+    测试功能: 远程管理面板自动隐藏
+    前置条件: deepin-terminal 已启动
+    AT元素引用:
+    - RightPanel
+  steps:
+  - step_type: action
+    description: 1. 打开终端，进入到远程管理面板
+    action: dtk_context_menu
+    items: *id014
+  - step_type: action
+    description: 2. 使用鼠标点击选中上面、下面、左面、右面拖动改变窗口大小
+    action: dtk_context_menu
+    items: *id014
+  - step_type: action
+    description: 3. 鼠标点击远程管理面板旁边的终端区域
+    action: dtk_context_menu
+    items: *id014
+  - step_type: assert
+    description: 检查 远程管理面板自动隐藏
+    action: assert_element
+    selector: *id015
+- id: case_1653127_s1
+  name: 上传文件
+  module: 远程管理器(#116129)
+  status: active
+  annotation:
+    测试界面: 终端-远程管理器(#116129)
+    测试功能: 上传文件
+    前置条件: deepin-terminal 已启动
+    AT元素引用:
+    - RightPanel
+  steps:
+  - step_type: action
+    description: 1. 在终端远程管理面板，选择一个服务器登录
+    action: dtk_context_menu
+    items: *id014
+  - step_type: action
+    description: 2. 在终端界面点击右键
+    action: dtk_context_menu
+    items: *id014
+  - step_type: action
+    description: 3. 选择上传文件选项
+    action: dtk_context_menu
+    items: *id014
+  - step_type: action
+    description: 4. 选择需要上传的文件
+    action: dtk_context_menu
+    items: *id014
+  - step_type: action
+    description: 5. 点击上传
+    action: dtk_context_menu
+    items: *id014
+  - step_type: assert
+    description: 检查 上传文件
+    action: assert_element
+    selector: *id015
+- id: case_1653123_s1
+  name: 必填项
+  module: 远程管理器(#116129)
+  status: active
+  annotation:
+    测试界面: 终端-远程管理器(#116129)
+    测试功能: 必填项
+    前置条件: deepin-terminal 已启动
+    AT元素引用:
+    - RightPanel
+  steps:
+  - step_type: assert
+    description: 检查 必填项
+    action: assert_element
+    selector: *id015
+- id: case_1653121_s1
+  name: '[014]添加按钮'
+  module: 远程管理器(#116129)
+  status: active
+  annotation:
+    测试界面: 终端-远程管理器(#116129)
+    测试功能: '[014]添加按钮'
+    前置条件: deepin-terminal 已启动
+    AT元素引用:
+    - RightPanel
+  steps:
+  - step_type: action
+    description: 1. 终端右键-远程服务器
+    action: dtk_context_menu
+    items: *id014
+  - step_type: assert
+    description: 检查 [014]添加按钮
+    action: assert_element
+    selector: *id015
+- id: case_1653111_s1
+  name: 删除键
+  module: 远程管理器(#116129)
+  status: active
+  annotation:
+    测试界面: 终端-远程管理器(#116129)
+    测试功能: 删除键
+    前置条件: deepin-terminal 已启动
+    AT元素引用:
+    - RightPanel
+  steps:
+  - step_type: assert
+    description: 检查 删除键
+    action: assert_element
+    selector: *id015
+- id: case_1653109_s1
+  name: 退格键
+  module: 远程管理器(#116129)
+  status: active
+  annotation:
+    测试界面: 终端-远程管理器(#116129)
+    测试功能: 退格键
+    前置条件: deepin-terminal 已启动
+    AT元素引用:
+    - RightPanel
+  steps:
+  - step_type: assert
+    description: 检查 退格键
+    action: assert_element
+    selector: *id015
+- id: case_1653107_s1
+  name: 编码
+  module: 远程管理器(#116129)
+  status: active
+  annotation:
+    测试界面: 终端-远程管理器(#116129)
+    测试功能: 编码
+    前置条件: deepin-terminal 已启动
+    AT元素引用:
+    - RightPanel
+  steps:
+  - step_type: assert
+    description: 检查 编码
+    action: assert_element
+    selector: *id015
+- id: case_1653105_s1
+  name: 命令
+  module: 远程管理器(#116129)
+  status: active
+  annotation:
+    测试界面: 终端-远程管理器(#116129)
+    测试功能: 命令
+    前置条件: deepin-terminal 已启动
+    AT元素引用:
+    - RightPanel
+  steps:
+  - step_type: assert
+    description: 检查 命令
+    action: assert_element
+    selector: *id015
+- id: case_1653103_s1
+  name: 路径
+  module: 远程管理器(#116129)
+  status: active
+  annotation:
+    测试界面: 终端-远程管理器(#116129)
+    测试功能: 路径
+    前置条件: deepin-terminal 已启动
+    AT元素引用:
+    - RightPanel
+  steps:
+  - step_type: assert
+    description: 检查 路径
+    action: assert_element
+    selector: *id015
+- id: case_1653101_s1
+  name: 分组
+  module: 远程管理器(#116129)
+  status: active
+  annotation:
+    测试界面: 终端-远程管理器(#116129)
+    测试功能: 分组
+    前置条件: deepin-terminal 已启动
+    AT元素引用:
+    - RightPanel
+  steps:
+  - step_type: assert
+    description: 检查 分组
+    action: assert_element
+    selector: *id015
+- id: case_1653099_s1
+  name: 用户名密码
+  module: 远程管理器(#116129)
+  status: active
+  annotation:
+    测试界面: 终端-远程管理器(#116129)
+    测试功能: 用户名密码
+    前置条件: deepin-terminal 已启动
+    AT元素引用:
+    - RightPanel
+  steps:
+  - step_type: assert
+    description: 检查 用户名密码
+    action: assert_element
+    selector: *id015
+- id: case_1653097_s1
+  name: 地址和端口
+  module: 远程管理器(#116129)
+  status: active
+  annotation:
+    测试界面: 终端-远程管理器(#116129)
+    测试功能: 地址和端口
+    前置条件: deepin-terminal 已启动
+    AT元素引用:
+    - RightPanel
+  steps:
+  - step_type: assert
+    description: 检查 地址和端口
+    action: assert_element
+    selector: *id015
+- id: case_1653095_s1
+  name: 服务器名称
+  module: 远程管理器(#116129)
+  status: active
+  annotation:
+    测试界面: 终端-远程管理器(#116129)
+    测试功能: 服务器名称
+    前置条件: deepin-terminal 已启动
+    AT元素引用:
+    - RightPanel
+  steps:
+  - step_type: assert
+    description: 检查 服务器名称
+    action: assert_element
+    selector: *id015
+- id: case_1653087_s1
+  name: 终端标签名称
+  module: 远程管理器(#116129)
+  status: active
+  annotation:
+    测试界面: 终端-远程管理器(#116129)
+    测试功能: 终端标签名称
+    前置条件: deepin-terminal 已启动
+    AT元素引用:
+    - RightPanel
+  steps:
+  - step_type: assert
+    description: 检查 终端标签名称
+    action: assert_element
+    selector: *id015
+- id: case_1653075_s1
+  name: 插入不同类型远程标签标题功能
+  module: 远程管理器(#116129)
+  status: active
+  annotation:
+    测试界面: 终端-远程管理器(#116129)
+    测试功能: 插入不同类型远程标签标题功能
+    前置条件: deepin-terminal 已启动
+    AT元素引用:
+    - RightPanel
+  steps:
+  - step_type: action
+    description: 1. 打开终端，进入设置基础设置下远程标签标题格式
+    action: dtk_context_menu
+    items: *id014
+  - step_type: action
+    description: 2. 点击插入按钮，选择插入格式，用户名%u 、用户名@  %U、远程主机（短）%h、会话编号 %#、shell设定的窗口标题 %w
+    action: dtk_context_menu
+    items: *id014
+  - step_type: action
+    description: Notes:测试时一并测试触摸屏、触控板、键盘交互
+    action: dtk_context_menu
+    items: *id014
+  - step_type: assert
+    description: 检查 插入不同类型远程标签标题功能
+    action: assert_element
+    selector: *id015
+- id: case_1653073_s1
+  name: 连接服务器后拖拽文件上传
+  module: 远程管理器(#116129)
+  status: active
+  annotation:
+    测试界面: 终端-远程管理器(#116129)
+    测试功能: 连接服务器后拖拽文件上传
+    前置条件: deepin-terminal 已启动
+    AT元素引用:
+    - RightPanel
+  steps:
+  - step_type: action
+    description: 1. 打开终端，进入远程管理，连接远程服务器
+    action: dtk_context_menu
+    items: *id014
+  - step_type: action
+    description: 2. 选择一个文件拖拽到远程当前路径所在位置
+    action: dtk_context_menu
+    items: *id014
+  - step_type: action
+    description: 3. 上传文件过程中网络中断或手动断开服务器
+    action: dtk_context_menu
+    items: *id014
+  - step_type: action
+    description: Notes:测试时一并测试触摸屏、触控板、键盘交互
+    action: dtk_context_menu
+    items: *id014
+  - step_type: assert
+    description: 检查 连接服务器后拖拽文件上传
+    action: assert_element
+    selector: *id015
+- id: case_1653069_s1
+  name: 连接远程管理，终端上不显示expect命令
+  module: 远程管理器(#116129)
+  status: active
+  annotation:
+    测试界面: 终端-远程管理器(#116129)
+    测试功能: 连接远程管理，终端上不显示expect命令
+    前置条件: deepin-terminal 已启动
+    AT元素引用:
+    - RightPanel
+  steps:
+  - step_type: assert
+    description: 检查 连接远程管理，终端上不显示expect命令
+    action: assert_element
+    selector: *id015
+- id: case_1653065_s1
+  name: '[011]新建工作区'
+  module: 工作区(#116131)
+  status: active
+  annotation:
+    测试界面: 终端-工作区(#116131)
+    测试功能: '[011]新建工作区'
+    前置条件: deepin-terminal 已启动
+    AT元素引用:
+    - TabBar
+  steps:
+  - step_type: action
+    description: 1. 打开终端，点击工作区标签旁+按钮
+    action: session_start
+    command: deepin-terminal
+  - step_type: assert
+    description: 检查 [011]新建工作区
+    action: assert_element
+    selector: *id003
+- id: case_1653063_s1
+  name: 标签页消息提醒
+  module: 工作区(#116131)
+  status: active
+  annotation:
+    测试界面: 终端-工作区(#116131)
+    测试功能: 标签页消息提醒
+    前置条件: deepin-terminal 已启动
+    AT元素引用:
+    - TabBar
+  steps:
+  - step_type: action
+    description: 2. 在其中一个标签页执行命令，然后切换到其他标签页，等到命令完成
+    action: session_start
+    command: deepin-terminal
+  - step_type: assert
+    description: 检查 标签页消息提醒
+    action: assert_element
+    selector: *id003
+- id: case_1653059_s1
+  name: '[012]窗口横向分屏'
+  module: 工作区(#116131)
+  status: active
+  annotation:
+    测试界面: 终端-工作区(#116131)
+    测试功能: '[012]窗口横向分屏'
+    前置条件: deepin-terminal 已启动
+    AT元素引用:
+    - TabBar
+  steps:
+  - step_type: action
+    description: 1. 打开终端，右键菜单选择横向分屏
+    action: session_start
+    command: deepin-terminal
+  - step_type: assert
+    description: 检查 [012]窗口横向分屏
+    action: assert_element
+    selector: *id003
+- id: case_1653057_s1
+  name: '[013]窗口纵向分屏'
+  module: 工作区(#116131)
+  status: active
+  annotation:
+    测试界面: 终端-工作区(#116131)
+    测试功能: '[013]窗口纵向分屏'
+    前置条件: deepin-terminal 已启动
+    AT元素引用:
+    - TabBar
+  steps:
+  - step_type: action
+    description: 1. 打开终端，右键菜单选择纵向分屏
+    action: session_start
+    command: deepin-terminal
+  - step_type: assert
+    description: 检查 [013]窗口纵向分屏
+    action: assert_element
+    selector: *id003
+- id: case_1653055_s1
+  name: 窗口选择
+  module: 工作区(#116131)
+  status: active
+  annotation:
+    测试界面: 终端-工作区(#116131)
+    测试功能: 窗口选择
+    前置条件: deepin-terminal 已启动
+    AT元素引用:
+    - TabBar
+  steps:
+  - step_type: action
+    description: 1. 打开终端，右键菜单做横向、纵向分屏操作
+    action: session_start
+    command: deepin-terminal
+  - step_type: assert
+    description: 检查 窗口选择
+    action: assert_element
+    selector: *id003
+- id: case_1653051_s1
+  name: 滚动条显示
+  module: 工作区(#116131)
+  status: active
+  annotation:
+    测试界面: 终端-工作区(#116131)
+    测试功能: 滚动条显示
+    前置条件: deepin-terminal 已启动
+    AT元素引用:
+    - TabBar
+  steps:
+  - step_type: action
+    description: 5. 再次缩小窗口高度
+    action: session_start
+    command: deepin-terminal
+  - step_type: assert
+    description: 检查 滚动条显示
+    action: assert_element
+    selector: *id003
+- id: case_1653049_s1
+  name: 窗口标题显示
+  module: 工作区(#116131)
+  status: active
+  annotation:
+    测试界面: 终端-工作区(#116131)
+    测试功能: 窗口标题显示
+    前置条件: deepin-terminal 已启动
+    AT元素引用:
+    - TabBar
+  steps:
+  - step_type: assert
+    description: 检查 窗口标题显示
+    action: assert_element
+    selector: *id003
+- id: case_1653041_s1
+  name: '[009]终端快捷键'
+  module: 快捷键(#116133)
+  status: active
+  annotation:
+    测试界面: 终端-快捷键(#116133)
+    测试功能: '[009]终端快捷键'
+    前置条件: deepin-terminal 已启动
+    AT元素引用:
+    - deepin-terminal
+  steps:
+  - step_type: action
+    description: 1. 打开终端，键盘按Ctrl+Shift+？
+    action: keyboard_hot_key
+  - step_type: action
+    description: 2. 正常窗口模式下，键盘按Ctrl+Shift+？
+    action: keyboard_hot_key
+  - step_type: action
+    description: 3. 雷神窗口模式下，键盘按Ctrl+Shift+？
+    action: keyboard_hot_key
+  - step_type: assert
+    description: 检查 [009]终端快捷键
+    action: assert_element
+    selector:
+      name: deepin-terminal
+      role: frame
+- id: case_1653025_s1
+  name: 输入名称
+  module: 自定义命令(#116137)
+  status: active
+  annotation:
+    测试界面: 终端-自定义命令(#116137)
+    测试功能: 输入名称
+    前置条件: deepin-terminal 已启动
+    AT元素引用:
+    - deepin-terminal
+  steps:
+  - step_type: action
+    description: 1. 点击添加自定义命令
+    action: dtk_context_menu
+    items: *id004
+  - step_type: action
+    description: 2. 进入窗口后，直接点击取消
+    action: dtk_context_menu
+    items: *id004
+  - step_type: action
+    description: 3. 自定义名称输入一般个数的汉字或者字母或数字
+    action: dtk_context_menu
+    items: *id004
+  - step_type: action
+    description: 4. 自定义名称输入过长的汉字或者字母或数字
+    action: dtk_context_menu
+    items: *id004
+  - step_type: action
+    description: 5. 输入特殊字符：*&！@#￥等
+    action: dtk_context_menu
+    items: *id004
+  - step_type: action
+    description: 6. 输入汉字、字母、数字、特殊字符混合体
+    action: dtk_context_menu
+    items: *id004
+  - step_type: assert
+    description: 检查 输入名称
+    action: assert_element
+    selector: *id016
+- id: case_1653023_s1
+  name: 输入命令
+  module: 自定义命令(#116137)
+  status: active
+  annotation:
+    测试界面: 终端-自定义命令(#116137)
+    测试功能: 输入命令
+    前置条件: deepin-terminal 已启动
+    AT元素引用:
+    - deepin-terminal
+  steps:
+  - step_type: action
+    description: 1. 点击添加自定义命令
+    action: dtk_context_menu
+    items: *id004
+  - step_type: action
+    description: 2. 分别点击取消/右上角x/按esc键
+    action: dtk_context_menu
+    items: *id004
+  - step_type: action
+    description: 3. 命令栏输入一般个数的汉字/字母/数字
+    action: dtk_context_menu
+    items: *id004
+  - step_type: action
+    description: 4. 命令栏输入过多个数的汉字/字母/数字
+    action: dtk_context_menu
+    items: *id004
+  - step_type: action
+    description: 5. 输入特殊字符：！！@#￥%&等
+    action: dtk_context_menu
+    items: *id004
+  - step_type: action
+    description: 6. 输入字母、数字、汉字、特殊字符混合命令
+    action: dtk_context_menu
+    items: *id004
+  - step_type: assert
+    description: 检查 输入命令
+    action: assert_element
+    selector: *id016
+- id: case_1653021_s1
+  name: 键入快捷键
+  module: 自定义命令(#116137)
+  status: active
+  annotation:
+    测试界面: 终端-自定义命令(#116137)
+    测试功能: 键入快捷键
+    前置条件: deepin-terminal 已启动
+    AT元素引用:
+    - deepin-terminal
+  steps:
+  - step_type: action
+    description: 1. 点击添加自定义命令
+    action: dtk_context_menu
+    items: *id004
+  - step_type: action
+    description: 2. 分别点击取消 、右上角x;
+    action: dtk_context_menu
+    items: *id004
+  - step_type: action
+    description: 3. 鼠标点击快捷键栏输入栏，键盘只敲字母或者数字符号
+    action: dtk_context_menu
+    items: *id004
+  - step_type: action
+    description: 4. 鼠标点击快捷键输入栏，键盘敲入ctrl/alt/shift+字母/符号
+    action: dtk_context_menu
+    items: *id004
+  - step_type: action
+    description: 5. 鼠标点击快捷键输入栏，键盘敲入ctrl+shift/alt+字母/符号
+    action: dtk_context_menu
+    items: *id004
+  - step_type: action
+    description: 6. 鼠标点击快捷键输入栏，键盘敲入ctrl+tab+字母/符号
+    action: dtk_context_menu
+    items: *id004
+  - step_type: action
+    description: 7. 鼠标点击快捷键输入栏，键盘敲入ctrl+shift/alt+双字符
+    action: dtk_context_menu
+    items: *id004
+  - step_type: action
+    description: 8. 鼠标点击快捷键输入栏，键盘敲入ctrl/shift/alt+字母/数字
+    action: dtk_context_menu
+    items: *id004
+  - step_type: assert
+    description: 检查 键入快捷键
+    action: assert_element
+    selector: *id016
+- id: case_1653019_s1
+  name: 添加约束
+  module: 自定义命令(#116137)
+  status: active
+  annotation:
+    测试界面: 终端-自定义命令(#116137)
+    测试功能: 添加约束
+    前置条件: deepin-terminal 已启动
+    AT元素引用:
+    - deepin-terminal
+  steps:
+  - step_type: action
+    description: 1. 点击添加自定义命令
+    action: dtk_context_menu
+    items: *id004
+  - step_type: action
+    description: 2. 不输入命令名称，其他正常输入，点击添加
+    action: dtk_context_menu
+    items: *id004
+  - step_type: action
+    description: 3. 不输入相应命令，其他正常输入，点击添加
+    action: dtk_context_menu
+    items: *id004
+  - step_type: action
+    description: 4. 不敲入快捷键，其他正常输入，点击添加
+    action: dtk_context_menu
+    items: *id004
+  - step_type: assert
+    description: 检查 添加约束
+    action: assert_element
+    selector: *id016
+- id: case_1653017_s1
+  name: 自动粘贴
+  module: 自定义命令(#116137)
+  status: active
+  annotation:
+    测试界面: 终端-自定义命令(#116137)
+    测试功能: 自动粘贴
+    前置条件: deepin-terminal 已启动
+    AT元素引用:
+    - deepin-terminal
+  steps:
+  - step_type: action
+    description: 1. 终端输入命令如deepin-music，选中不执行
+    action: dtk_context_menu
+    items: *id004
+  - step_type: action
+    description: 2. 右键选中自定义命令-添加自定义命令-弹出添加框
+    action: dtk_context_menu
+    items: *id004
+  - step_type: action
+    description: 3. 输入命令名称，点击保存
+    action: dtk_context_menu
+    items: *id004
+  - step_type: action
+    description: 4. 对上述新建的命令进行编辑
+    action: dtk_context_menu
+    items: *id004
+  - step_type: assert
+    description: 检查 自动粘贴
+    action: assert_element
+    selector: *id016
+- id: case_1653015_s1
+  name: 搜索
+  module: 自定义命令(#116137)
+  status: active
+  annotation:
+    测试界面: 终端-自定义命令(#116137)
+    测试功能: 搜索
+    前置条件: deepin-terminal 已启动
+    AT元素引用:
+    - deepin-terminal
+  steps:
+  - step_type: action
+    description: 1. 终端右键自定义命令
+    action: dtk_context_menu
+    items: *id004
+  - step_type: action
+    description: 2. 不输入任何字符直接enter搜索
+    action: dtk_context_menu
+    items: *id004
+  - step_type: action
+    description: 3. 输入只有命令名称字符的搜索字符
+    action: dtk_context_menu
+    items: *id004
+  - step_type: action
+    description: 4. 输入只含有命令内容字符的搜索字符
+    action: dtk_context_menu
+    items: *id004
+  - step_type: action
+    description: 5. 输入只含有命令快捷键的搜索字符
+    action: dtk_context_menu
+    items: *id004
+  - step_type: action
+    description: 6. 分别单独搜索同一字母的大写和小写
+    action: dtk_context_menu
+    items: *id004
+  - step_type: action
+    description: 7. 搜索后点击向前箭头
+    action: dtk_context_menu
+    items: *id004
+  - step_type: action
+    description: 8. 分别对自定义命令的命令名称和具体命令进行搜索
+    action: dtk_context_menu
+    items: *id004
+  - step_type: assert
+    description: 检查 搜索
+    action: assert_element
+    selector: *id016
+- id: case_1653013_s1
+  name: 编辑成功
+  module: 自定义命令(#116137)
+  status: active
+  annotation:
+    测试界面: 终端-自定义命令(#116137)
+    测试功能: 编辑成功
+    前置条件: deepin-terminal 已启动
+    AT元素引用:
+    - deepin-terminal
+  steps:
+  - step_type: action
+    description: 1. 进入自定义命令列表，任选一个自定义命令点击编辑
+    action: dtk_context_menu
+    items: *id004
+  - step_type: action
+    description: 2. 输入自定义名称，点击保存
+    action: dtk_context_menu
+    items: *id004
+  - step_type: action
+    description: 3. 粘贴输入字符，点击保存
+    action: dtk_context_menu
+    items: *id004
+  - step_type: action
+    description: 4. 输入命令，点击保存
+    action: dtk_context_menu
+    items: *id004
+  - step_type: action
+    description: 5. 粘贴输入命令，点击保存
+    action: dtk_context_menu
+    items: *id004
+  - step_type: action
+    description: 6. 修改快捷键，点击保存
+    action: dtk_context_menu
+    items: *id004
+  - step_type: assert
+    description: 检查 编辑成功
+    action: assert_element
+    selector: *id016
+- id: case_1653009_s1
+  name: 删除
+  module: 自定义命令(#116137)
+  status: active
+  annotation:
+    测试界面: 终端-自定义命令(#116137)
+    测试功能: 删除
+    前置条件: deepin-terminal 已启动
+    AT元素引用:
+    - deepin-terminal
+  steps:
+  - step_type: action
+    description: 1. 自定义列表任选某自定义命令，点击编辑
+    action: dtk_context_menu
+    items: *id004
+  - step_type: action
+    description: 2. 点击删除命令，在弹框界面点击确定
+    action: dtk_context_menu
+    items: *id004
+  - step_type: action
+    description: 3. 点击删除命令，在弹框界面取消
+    action: dtk_context_menu
+    items: *id004
+  - step_type: assert
+    description: 检查 删除
+    action: assert_element
+    selector: *id016
+- id: case_1653007_s1
+  name: 运行
+  module: 自定义命令(#116137)
+  status: active
+  annotation:
+    测试界面: 终端-自定义命令(#116137)
+    测试功能: 运行
+    前置条件: deepin-terminal 已启动
+    AT元素引用:
+    - deepin-terminal
+  steps:
+  - step_type: action
+    description: 1. 新建自定义命令:名称：深度音乐  命令：deepin-music    快捷键：crtl+p（或者无）点击添加
+    action: dtk_context_menu
+    items: *id004
+  - step_type: action
+    description: 2. 终端中键盘敲入ctrl+p（有快捷键的情况下）
+    action: dtk_context_menu
+    items: *id004
+  - step_type: action
+    description: 3. 进入终端自定义命令列表，点击名为深度音乐的命令
+    action: dtk_context_menu
+    items: *id004
+  - step_type: action
+    description: 4. 修改命令为sayonara（未安装的软件或者服务），修改名称为测试，保存
+    action: dtk_context_menu
+    items: *id004
+  - step_type: action
+    description: 5. 终端中键盘敲入ctrl+p（有快捷键的情况下）
+    action: dtk_context_menu
+    items: *id004
+  - step_type: action
+    description: 6. 进入终端自定义命令列表，点击名为测试的命令
+    action: dtk_context_menu
+    items: *id004
+  - step_type: assert
+    description: 检查 运行
+    action: assert_element
+    selector: *id016
+- id: case_1653003_s1
+  name: 开启
+  module: 自定义命令(#116137)
+  status: active
+  annotation:
+    测试界面: 终端-自定义命令(#116137)
+    测试功能: 开启
+    前置条件: deepin-terminal 已启动
+    AT元素引用:
+    - deepin-terminal
+  steps:
+  - step_type: action
+    description: 1. 终端右键菜单-自定义命令
+    action: dtk_context_menu
+    items: *id004
+  - step_type: action
+    description: 2. 点击终端上方设置-自定义命令
+    action: dtk_context_menu
+    items: *id004
+  - step_type: action
+    description: 3. alt+Ins
+    action: dtk_context_menu
+    items: *id004
+  - step_type: assert
+    description: 检查 开启
+    action: assert_element
+    selector: *id016
+- id: case_1653001_s1
+  name: '[008]隐藏'
+  module: 自定义命令(#116137)
+  status: active
+  annotation:
+    测试界面: 终端-自定义命令(#116137)
+    测试功能: '[008]隐藏'
+    前置条件: deepin-terminal 已启动
+    AT元素引用:
+    - deepin-terminal
+  steps:
+  - step_type: action
+    description: 1. 开启自定义命令模块后，鼠标点一下终端
+    action: dtk_context_menu
+    items: *id004
+  - step_type: assert
+    description: 检查 [008]隐藏
+    action: assert_element
+    selector: *id016
+- id: case_1652989_s1
+  name: 正常窗口
+  module: 104X(#116091)
+  status: active
+  annotation:
+    测试界面: 终端-104X(#116091)
+    测试功能: 正常窗口
+    前置条件: deepin-terminal 已启动
+    AT元素引用:
+    - deepin-terminal
+  steps:
+  - step_type: action
+    description: 3. 修改窗口大小，关闭窗口，重新打开
+    action: session_start
+    command: deepin-terminal
+  - step_type: assert
+    description: 检查 正常窗口
+    action: assert_element
+    selector: &id017
+      name: deepin-terminal
+      role: frame
+- id: case_1652983_s1
+  name: 全屏窗口
+  module: 104X(#116091)
+  status: active
+  annotation:
+    测试界面: 终端-104X(#116091)
+    测试功能: 全屏窗口
+    前置条件: deepin-terminal 已启动
+    AT元素引用:
+    - deepin-terminal
+  steps:
+  - step_type: action
+    description: 1. 打开终端，右键选择全屏或者快捷键F11
+    action: session_start
+    command: deepin-terminal
+  - step_type: assert
+    description: 检查 全屏窗口
+    action: assert_element
+    selector: *id017
+- id: case_1652981_s1
+  name: '[005]雷神窗口显示'
+  module: 104X(#116091)
+  status: active
+  annotation:
+    测试界面: 终端-104X(#116091)
+    测试功能: '[005]雷神窗口显示'
+    前置条件: deepin-terminal 已启动
+    AT元素引用:
+    - deepin-terminal
+  steps:
+  - step_type: action
+    description: 1. 右键dock上终端图标，选择雷神终端
+    action: session_start
+    command: deepin-terminal
+  - step_type: assert
+    description: 检查 [005]雷神窗口显示
+    action: assert_element
+    selector: *id017
+- id: case_1652979_s1
+  name: 雷神窗口切换
+  module: 104X(#116091)
+  status: active
+  annotation:
+    测试界面: 终端-104X(#116091)
+    测试功能: 雷神窗口切换
+    前置条件: deepin-terminal 已启动
+    AT元素引用:
+    - deepin-terminal
+  steps:
+  - step_type: action
+    description: 1. 使用快捷键 Alt+F2调出雷神窗口
+    action: session_start
+    command: deepin-terminal
+  - step_type: assert
+    description: 检查 雷神窗口切换
+    action: assert_element
+    selector: *id017
+- id: case_1652977_s1
+  name: windowmod
+  module: 104X(#116091)
+  status: active
+  annotation:
+    测试界面: 终端-104X(#116091)
+    测试功能: windowmod
+    前置条件: deepin-terminal 已启动
+    AT元素引用:
+    - deepin-terminal
+  steps:
+  - step_type: action
+    description: 1. 终端输入deepin-terminal  --help
+    action: session_start
+    command: deepin-terminal
+  - step_type: assert
+    description: 检查 windowmod
+    action: assert_element
+    selector: *id017
+- id: case_1652975_s1
+  name: 优先级
+  module: 104X(#116091)
+  status: active
+  annotation:
+    测试界面: 终端-104X(#116091)
+    测试功能: 优先级
+    前置条件: deepin-terminal 已启动
+    AT元素引用:
+    - deepin-terminal
+  steps:
+  - step_type: action
+    description: 1. 终端设置中设置窗口启动为全屏模式，右侧上方设置中点击关闭;新建窗口;
+    action: session_start
+    command: deepin-terminal
+  - step_type: assert
+    description: 检查 优先级
+    action: assert_element
+    selector: *id017
+- id: case_1652969_s1
+  name: '[019]设置'
+  module: 主界面右上角菜单栏(#116141)
+  status: active
+  annotation:
+    测试界面: 终端-主界面右上角菜单栏(#116141)
+    测试功能: '[019]设置'
+    前置条件: deepin-terminal 已启动
+    AT元素引用:
+    - deepin-terminal
+  steps:
+  - step_type: action
+    description: 1. 进入终端，菜单栏点击设置选项
+    action: dtk_main_menu
+  - step_type: assert
+    description: 检查 [019]设置
+    action: assert_element
+    selector: &id018
+      role: menu
+- id: case_1652967_s1
+  name: '[010]切换主题'
+  module: 主界面右上角菜单栏(#116141)
+  status: active
+  annotation:
+    测试界面: 终端-主界面右上角菜单栏(#116141)
+    测试功能: '[010]切换主题'
+    前置条件: deepin-terminal 已启动
+    AT元素引用:
+    - deepin-terminal
+  steps:
+  - step_type: action
+    description: 1. 进入终端，菜单栏点击主题选项
+    action: dtk_main_menu
+  - step_type: action
+    description: 2. 切换主题选项为浅色主题
+    action: dtk_main_menu
+  - step_type: action
+    description: 3. 切换主题选项为跟随系统
+    action: dtk_main_menu
+  - step_type: action
+    description: 4. 三个主题之间多次来回切换
+    action: dtk_main_menu
+  - step_type: assert
+    description: 检查 [010]切换主题
+    action: assert_element
+    selector: *id018
+- id: case_1652965_s1
+  name: 帮助
+  module: 主界面右上角菜单栏(#116141)
+  status: active
+  annotation:
+    测试界面: 终端-主界面右上角菜单栏(#116141)
+    测试功能: 帮助
+    前置条件: deepin-terminal 已启动
+    AT元素引用:
+    - deepin-terminal
+  steps:
+  - step_type: action
+    description: 1. 进入终端，菜单栏点击帮助选项
+    action: dtk_main_menu
+  - step_type: action
+    description: 3. 浏览帮助内容，以及文案、插图显示
+    action: dtk_main_menu
+  - step_type: assert
+    description: 检查 帮助
+    action: assert_element
+    selector: *id018
+- id: case_1652963_s1
+  name: 关于1
+  module: 主界面右上角菜单栏(#116141)
+  status: active
+  annotation:
+    测试界面: 终端-主界面右上角菜单栏(#116141)
+    测试功能: 关于1
+    前置条件: deepin-terminal 已启动
+    AT元素引用:
+    - deepin-terminal
+  steps:
+  - step_type: action
+    description: 1. 进入终端，菜单栏点击关于选项
+    action: dtk_main_menu
+  - step_type: assert
+    description: 检查 关于1
+    action: assert_element
+    selector: *id018
+- id: case_1652961_s1
+  name: 关于2
+  module: 主界面右上角菜单栏(#116141)
+  status: active
+  annotation:
+    测试界面: 终端-主界面右上角菜单栏(#116141)
+    测试功能: 关于2
+    前置条件: deepin-terminal 已启动
+    AT元素引用:
+    - deepin-terminal
+  steps:
+  - step_type: action
+    description: 1. 打开终端，点击右上角的设置－关于，软件显示
+    action: dtk_main_menu
+  - step_type: assert
+    description: 检查 关于2
+    action: assert_element
+    selector: *id018
+- id: case_1652959_s1
+  name: 链接
+  module: 主界面右上角菜单栏(#116141)
+  status: active
+  annotation:
+    测试界面: 终端-主界面右上角菜单栏(#116141)
+    测试功能: 链接
+    前置条件: deepin-terminal 已启动
+    AT元素引用:
+    - deepin-terminal
+  steps:
+  - step_type: action
+    description: 1. 打开终端，点击右上方的设置-关于
+    action: dtk_main_menu
+  - step_type: action
+    description: 2. 点击www.chinauos.com
+    action: dtk_main_menu
+  - step_type: assert
+    description: 检查 链接
+    action: assert_element
+    selector: *id018
+- id: case_1652957_s1
+  name: '[007]最大化还原'
+  module: 主界面右上角菜单栏(#116141)
+  status: active
+  annotation:
+    测试界面: 终端-主界面右上角菜单栏(#116141)
+    测试功能: '[007]最大化还原'
+    前置条件: deepin-terminal 已启动
+    AT元素引用:
+    - deepin-terminal
+  steps:
+  - step_type: action
+    description: 1. 点击最大化窗口
+    action: dtk_main_menu
+  - step_type: action
+    description: 2. 点击还原
+    action: dtk_main_menu
+  - step_type: assert
+    description: 检查 [007]最大化还原
+    action: assert_element
+    selector: *id018
+- id: case_1652955_s1
+  name: '[006]最小化'
+  module: 主界面右上角菜单栏(#116141)
+  status: active
+  annotation:
+    测试界面: 终端-主界面右上角菜单栏(#116141)
+    测试功能: '[006]最小化'
+    前置条件: deepin-terminal 已启动
+    AT元素引用:
+    - deepin-terminal
+  steps:
+  - step_type: action
+    description: 1. 打开默认窗口大小，点击最小化
+    action: dtk_main_menu
+  - step_type: action
+    description: 2. 再次点击图标
+    action: dtk_main_menu
+  - step_type: action
+    description: 3. 最大化窗口时点击最小化
+    action: dtk_main_menu
+  - step_type: action
+    description: 4. 点击图标
+    action: dtk_main_menu
+  - step_type: assert
+    description: 检查 [006]最小化
+    action: assert_element
+    selector: *id018
+- id: case_1652953_s1
+  name: 关闭
+  module: 主界面右上角菜单栏(#116141)
+  status: active
+  annotation:
+    测试界面: 终端-主界面右上角菜单栏(#116141)
+    测试功能: 关闭
+    前置条件: deepin-terminal 已启动
+    AT元素引用:
+    - deepin-terminal
+  steps:
+  - step_type: action
+    description: 1. 打开多个窗口，点击关闭
+    action: dtk_main_menu
+  - step_type: action
+    description: 2. 打开2个窗口，然后最小化，点击dock上图标；在预览中点击关闭1个窗口
+    action: dtk_main_menu
+  - step_type: assert
+    description: 检查 关闭
+    action: assert_element
+    selector: *id018
+- id: case_1652949_s1
+  name: 主菜单主题
+  module: 主界面右上角菜单栏(#116141)
+  status: active
+  annotation:
+    测试界面: 终端-主界面右上角菜单栏(#116141)
+    测试功能: 主菜单主题
+    前置条件: deepin-terminal 已启动
+    AT元素引用:
+    - deepin-terminal
+  steps:
+  - step_type: action
+    description: 1. 打开终端，主菜单点击主题，切换深色
+    action: dtk_main_menu
+  - step_type: action
+    description: 2. 主菜单切换跟随系统主题
+    action: dtk_main_menu
+  - step_type: action
+    description: 3. 打开多个终端窗口，在有弹框界面，切换主题
+    action: dtk_main_menu
+  - step_type: assert
+    description: 检查 主菜单主题
+    action: assert_element
+    selector: *id018
+- id: case_1652945_s1
+  name: 删除工作区
+  module: 主界面工作区显示(#116143)
+  status: active
+  annotation:
+    测试界面: 终端-主界面工作区显示(#116143)
+    测试功能: 删除工作区
+    前置条件: deepin-terminal 已启动
+    AT元素引用:
+    - TabBar
+  steps:
+  - step_type: action
+    description: 1. 打开终端，鼠标移动到工作区标签
+    action: session_start
+    command: deepin-terminal
+  - step_type: assert
+    description: 检查 删除工作区
+    action: assert_element
+    selector: *id003
+- id: case_1652943_s1
+  name: 启动器启动
+  module: 启动终端(#116145)
+  status: active
+  annotation:
+    测试界面: 终端-启动终端(#116145)
+    测试功能: 启动器启动
+    前置条件: deepin-terminal 已启动
+    AT元素引用:
+    - deepin-terminal
+  steps:
+  - step_type: assert
+    description: 检查 启动器启动
+    action: assert_element
+    selector: &id019
+      name: deepin-terminal
+      role: frame
+- id: case_1652935_s1
+  name: '[003]快捷键启动'
+  module: 启动终端(#116145)
+  status: active
+  annotation:
+    测试界面: 终端-启动终端(#116145)
+    测试功能: '[003]快捷键启动'
+    前置条件: deepin-terminal 已启动
+    AT元素引用:
+    - deepin-terminal
+  steps:
+  - step_type: assert
+    description: 检查 [003]快捷键启动
+    action: assert_element
+    selector: *id019
+- id: case_1652911_s1
+  name: 内置主题显示以及功能
+  module: 标签页移动(#116155)
+  status: active
+  annotation:
+    测试界面: 终端-标签页移动(#116155)
+    测试功能: 内置主题显示以及功能
+    前置条件: deepin-terminal 已启动
+    AT元素引用:
+    - TabBar
+  steps:
+  - step_type: action
+    description: 1. 打开终端，点击主菜单进入主题
+    action: session_start
+    command: deepin-terminal
+  - step_type: assert
+    description: 检查 内置主题显示以及功能
+    action: assert_element
+    selector: &id020
+      name: TabBar
+      role: page tab list
+- id: case_1652909_s1
+  name: 拖动标签页位置
+  module: 标签页移动(#116155)
+  status: active
+  annotation:
+    测试界面: 终端-标签页移动(#116155)
+    测试功能: 拖动标签页位置
+    前置条件: deepin-terminal 已启动
+    AT元素引用:
+    - TabBar
+  steps:
+  - step_type: action
+    description: 1. 打开终端，只有一个标签页
+    action: session_start
+    command: deepin-terminal
+  - step_type: assert
+    description: 检查 拖动标签页位置
+    action: assert_element
+    selector: *id020
+- id: case_1652903_s1
+  name: 普通窗口标签页拖拽到新窗口
+  module: 标签页移动(#116155)
+  status: active
+  annotation:
+    测试界面: 终端-标签页移动(#116155)
+    测试功能: 普通窗口标签页拖拽到新窗口
+    前置条件: deepin-terminal 已启动
+    AT元素引用:
+    - TabBar
+  steps:
+  - step_type: action
+    description: 1. 打开终端（只有一个标签页），选择标签页按住鼠标左键，拖拽此标签页图标，鼠标位置拖动到标签栏外
+    action: session_start
+    command: deepin-terminal
+  - step_type: assert
+    description: 检查 普通窗口标签页拖拽到新窗口
+    action: assert_element
+    selector: *id020
+- id: case_1652899_s1
+  name: 雷神窗口动画效果
+  module: 雷神窗口动画效果(#116157)
+  status: unsupported
+  reason: 视觉效果验证需求，AT-SPI 无法验证颜色/动画/外观
+  annotation:
+    测试界面: 终端-雷神窗口动画效果(#116157)
+    测试功能: 雷神窗口动画效果
+    前置条件: deepin-terminal 已启动
+    AT元素引用: []
+  steps: []
+- id: case_1652893_s1
+  name: 自定义主题主题风格
+  module: 自定义主题(#116159)
+  status: unsupported
+  reason: 视觉效果验证需求，AT-SPI 无法验证颜色/动画/外观
+  annotation:
+    测试界面: 终端-自定义主题(#116159)
+    测试功能: 自定义主题主题风格
+    前置条件: deepin-terminal 已启动
+    AT元素引用: []
+  steps: []
+- id: case_1652891_s1
+  name: 自定义主题前景颜色控件功能
+  module: 自定义主题(#116159)
+  status: unsupported
+  reason: 视觉效果验证需求，AT-SPI 无法验证颜色/动画/外观
+  annotation:
+    测试界面: 终端-自定义主题(#116159)
+    测试功能: 自定义主题前景颜色控件功能
+    前置条件: deepin-terminal 已启动
+    AT元素引用: []
+  steps: []
+- id: case_1652889_s1
+  name: 自定义主题背景色控件功能
+  module: 自定义主题(#116159)
+  status: unsupported
+  reason: 视觉效果验证需求，AT-SPI 无法验证颜色/动画/外观
+  annotation:
+    测试界面: 终端-自定义主题(#116159)
+    测试功能: 自定义主题背景色控件功能
+    前置条件: deepin-terminal 已启动
+    AT元素引用: []
+  steps: []
+- id: case_1652887_s1
+  name: 自定义主题提示符PS1控件功能
+  module: 自定义主题(#116159)
+  status: unsupported
+  reason: 视觉效果验证需求，AT-SPI 无法验证颜色/动画/外观
+  annotation:
+    测试界面: 终端-自定义主题(#116159)
+    测试功能: 自定义主题提示符PS1控件功能
+    前置条件: deepin-terminal 已启动
+    AT元素引用: []
+  steps: []
+- id: case_1652885_s1
+  name: 自定义主题提示符PS2控件功能
+  module: 自定义主题(#116159)
+  status: unsupported
+  reason: 视觉效果验证需求，AT-SPI 无法验证颜色/动画/外观
+  annotation:
+    测试界面: 终端-自定义主题(#116159)
+    测试功能: 自定义主题提示符PS2控件功能
+    前置条件: deepin-terminal 已启动
+    AT元素引用: []
+  steps: []
+- id: case_1652883_s1
+  name: 自定义主题中前景色、背景色、提示符PS1、提示符PS2组合设置功能
+  module: 自定义主题(#116159)
+  status: unsupported
+  reason: 视觉效果验证需求，AT-SPI 无法验证颜色/动画/外观
+  annotation:
+    测试界面: 终端-自定义主题(#116159)
+    测试功能: 自定义主题中前景色、背景色、提示符PS1、提示符PS2组合设置功能
+    前置条件: deepin-terminal 已启动
+    AT元素引用: []
+  steps: []
+- id: case_1652881_s1
+  name: 设置自定义主题后做新建窗口、新建标签页、分屏操作
+  module: 自定义主题(#116159)
+  status: unsupported
+  reason: 视觉效果验证需求，AT-SPI 无法验证颜色/动画/外观
+  annotation:
+    测试界面: 终端-自定义主题(#116159)
+    测试功能: 设置自定义主题后做新建窗口、新建标签页、分屏操作
+    前置条件: deepin-terminal 已启动
+    AT元素引用: []
+  steps: []
+- id: case_1652877_s1
+  name: 鼠标放置超链接处显示以及跳转
+  module: 超链接(#116163)
+  status: active
+  annotation:
+    测试界面: 终端-超链接(#116163)
+    测试功能: 鼠标放置超链接处显示以及跳转
+    前置条件: deepin-terminal 已启动
+    AT元素引用:
+    - deepin-terminal
+  steps:
+  - step_type: action
+    description: 1. 打开终端，输入一个带有网址的命令，比如：ping www.baidu.com，鼠标放置超链接处
+    action: session_start
+    command: deepin-terminal
+  - step_type: assert
+    description: 检查 鼠标放置超链接处显示以及跳转
+    action: assert_element
+    selector:
+      name: deepin-terminal
+      role: frame
+- id: case_1652875_s1
+  name: 终端界面内容自动换行显示
+  module: 自动换行(#116165)
+  status: active
+  annotation:
+    测试界面: 终端-自动换行(#116165)
+    测试功能: 终端界面内容自动换行显示
+    前置条件: deepin-terminal 已启动
+    AT元素引用:
+    - deepin-terminal
+  steps:
+  - step_type: action
+    description: 1. 进入终端，在终端中输入一些内容，如执行命令ss
+    action: session_start
+    command: deepin-terminal
+  - step_type: assert
+    description: 检查 终端界面内容自动换行显示
+    action: assert_element
+    selector:
+      name: deepin-terminal
+      role: frame
+- id: case_1652841_s1
+  name: 多语言界面翻译
+  module: 翻译(#116175)
+  status: unsupported
+  reason: 多语言翻译是人工校验需求，AT-SPI 无法自动化验证翻译准确性
+  annotation:
+    测试界面: 终端-翻译(#116175)
+    测试功能: 多语言界面翻译
+    前置条件: deepin-terminal 已安装
+    AT元素引用: []
+  steps: []
+- id: case_1652833_s1
+  name: 默认shell下拉列表显示
+  module: shell(#116161)
+  status: active
+  annotation:
+    测试界面: 终端-shell(#116161)
+    测试功能: 默认shell下拉列表显示
+    前置条件: deepin-terminal 已启动
+    AT元素引用:
+    - deepin-terminal
+  steps:
+  - step_type: action
+    description: 1. 打开终端，进入设置，高级设置下
+    action: session_start
+    command: deepin-terminal
+  - step_type: assert
+    description: 检查 默认shell下拉列表显示
+    action: assert_element
+    selector: &id021
+      name: deepin-terminal
+      role: frame
+- id: case_1652831_s1
+  name: 切换下拉列表shell程序
+  module: shell(#116161)
+  status: active
+  annotation:
+    测试界面: 终端-shell(#116161)
+    测试功能: 切换下拉列表shell程序
+    前置条件: deepin-terminal 已启动
+    AT元素引用:
+    - deepin-terminal
+  steps:
+  - step_type: action
+    description: 1. 打开终端，进入设置，高级设置下“默认shell”，点击默认shell选项
+    action: session_start
+    command: deepin-terminal
+  - step_type: assert
+    description: 检查 切换下拉列表shell程序
+    action: assert_element
+    selector: *id021
+- id: case_1652807_s1
+  name: 切换shell后终端中基本功能操作
+  module: shell(#116161)
+  status: active
+  annotation:
+    测试界面: 终端-shell(#116161)
+    测试功能: 切换shell后终端中基本功能操作
+    前置条件: deepin-terminal 已启动
+    AT元素引用:
+    - deepin-terminal
+  steps:
+  - step_type: action
+    description: 1. 打开终端，进入设置高级设置默认shell下，切换默认shell程序，如：rbash
+    action: session_start
+    command: deepin-terminal
+  - step_type: assert
+    description: 检查 切换shell后终端中基本功能操作
+    action: assert_element
+    selector: *id021
+- id: case_1652793_s1
+  name: 【日志适配规范】终端日志配置文件查看
+  module: 终端(#110625)
+  status: active
+  annotation:
+    测试界面: 终端-终端(#110625)
+    测试功能: 【日志适配规范】终端日志配置文件查看
+    前置条件: deepin-terminal 已启动
+    AT元素引用:
+    - deepin-terminal
+  steps:
+  - step_type: action
+    description: 1. 终端执行命令：
+    action: session_start
+    command: deepin-terminal
+  - step_type: assert
+    description: 检查 【日志适配规范】终端日志配置文件查看
+    action: assert_element
+    selector: &id022
+      name: deepin-terminal
+      role: frame
+- id: case_1652791_s1
+  name: 【日志适配规范】日志收集工具查看终端应用日志
+  module: 终端(#110625)
+  status: active
+  annotation:
+    测试界面: 终端-终端(#110625)
+    测试功能: 【日志适配规范】日志收集工具查看终端应用日志
+    前置条件: deepin-terminal 已启动
+    AT元素引用:
+    - deepin-terminal
+  steps:
+  - step_type: action
+    description: 1. 点击【日志收集工具】左侧导航栏【应用日志】
+    action: session_start
+    command: deepin-terminal
+  - step_type: assert
+    description: 检查 【日志适配规范】日志收集工具查看终端应用日志
+    action: assert_element
+    selector: *id022

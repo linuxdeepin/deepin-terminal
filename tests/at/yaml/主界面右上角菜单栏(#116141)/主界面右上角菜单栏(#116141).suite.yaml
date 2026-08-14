@@ -1,0 +1,148 @@
+name: 主界面右上角菜单栏(#116141)_suite
+app: deepin-terminal
+description: ''
+module: 主界面右上角菜单栏(#116141)
+tags: []
+fast_fail: false
+env_check: []
+setup:
+- action: session_start
+  command: deepin-terminal
+  wait: 3.0
+suites:
+- id: case_1652969_s1_s1
+  name: '[019]设置'
+  description: ''
+  tags: []
+  steps:
+  - action: dtk_main_menu
+    items: []
+  assert_steps:
+  - action: assert_element
+    selector:
+      role: menu
+- id: case_1652967_s1_s1
+  name: '[010]切换主题'
+  description: ''
+  tags: []
+  steps:
+  - action: dtk_main_menu
+    items: []
+  - action: dtk_main_menu
+    items: []
+  - action: dtk_main_menu
+    items: []
+  - action: dtk_main_menu
+    items: []
+  assert_steps:
+  - action: assert_element
+    selector:
+      role: menu
+- id: case_1652965_s1_s1
+  name: 帮助
+  description: ''
+  tags: []
+  steps:
+  - action: dtk_main_menu
+    items: []
+  - action: dtk_main_menu
+    items: []
+  assert_steps:
+  - action: assert_element
+    selector:
+      role: menu
+- id: case_1652963_s1_s1
+  name: 关于1
+  description: ''
+  tags: []
+  steps:
+  - action: dtk_main_menu
+    items: []
+  assert_steps:
+  - action: assert_element
+    selector:
+      role: menu
+- id: case_1652961_s1_s1
+  name: 关于2
+  description: ''
+  tags: []
+  steps:
+  - action: dtk_main_menu
+    items: []
+  assert_steps:
+  - action: assert_element
+    selector:
+      role: menu
+- id: case_1652959_s1_s1
+  name: 链接
+  description: ''
+  tags: []
+  steps:
+  - action: dtk_main_menu
+    items: []
+  - action: dtk_main_menu
+    items: []
+  assert_steps:
+  - action: assert_element
+    selector:
+      role: menu
+- id: case_1652957_s1_s1
+  name: '[007]最大化还原'
+  description: ''
+  tags: []
+  steps:
+  - action: dtk_main_menu
+    items: []
+  - action: dtk_main_menu
+    items: []
+  assert_steps:
+  - action: assert_element
+    selector:
+      role: menu
+- id: case_1652955_s1_s1
+  name: '[006]最小化'
+  description: ''
+  tags: []
+  steps:
+  - action: dtk_main_menu
+    items: []
+  - action: dtk_main_menu
+    items: []
+  - action: dtk_main_menu
+    items: []
+  - action: dtk_main_menu
+    items: []
+  assert_steps:
+  - action: assert_element
+    selector:
+      role: menu
+- id: case_1652953_s1_s1
+  name: 关闭
+  description: ''
+  tags: []
+  steps:
+  - action: dtk_main_menu
+    items: []
+  - action: dtk_main_menu
+    items: []
+  assert_steps:
+  - action: assert_element
+    selector:
+      role: menu
+- id: case_1652949_s1_s1
+  name: 主菜单主题
+  description: ''
+  tags: []
+  steps:
+  - action: dtk_main_menu
+    items: []
+  - action: dtk_main_menu
+    items: []
+  - action: dtk_main_menu
+    items: []
+  assert_steps:
+  - action: assert_element
+    selector:
+      role: menu
+teardown:
+- action: session_stop

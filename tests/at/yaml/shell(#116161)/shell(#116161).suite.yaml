@@ -1,0 +1,44 @@
+name: shell(#116161)_suite
+app: deepin-terminal
+description: ''
+module: shell(#116161)
+tags: []
+fast_fail: false
+env_check: []
+setup:
+- action: session_start
+  command: deepin-terminal
+  wait: 3.0
+suites:
+- id: case_1652833_s1_s1
+  name: 默认shell下拉列表显示
+  description: ''
+  tags: []
+  steps: []
+  assert_steps:
+  - action: assert_element
+    selector:
+      name: deepin-terminal
+      role: frame
+- id: case_1652831_s1_s1
+  name: 切换下拉列表shell程序
+  description: ''
+  tags: []
+  steps: []
+  assert_steps:
+  - action: assert_element
+    selector:
+      name: deepin-terminal
+      role: frame
+- id: case_1652807_s1_s1
+  name: 切换shell后终端中基本功能操作
+  description: ''
+  tags: []
+  steps: []
+  assert_steps:
+  - action: assert_element
+    selector:
+      name: deepin-terminal
+      role: frame
+teardown:
+- action: session_stop

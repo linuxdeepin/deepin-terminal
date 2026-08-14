@@ -1,0 +1,184 @@
+---
+class_name: TitleBar
+source_file: views/titlebar.cpp
+base_classes:
+- QWidget
+is_ui_widget: true
+object_names:
+- TitleBarLayout
+accessible_names:
+- TitleBar
+dtk_instantiations: []
+action_texts: []
+menu_actions: []
+---
+class_name: NewDspinBox
+source_file: settings/newdspinbox.cpp
+base_classes:
+- DSpinBox
+is_ui_widget: true
+object_names: []
+accessible_names:
+- FontSizeSpinBox
+dtk_instantiations:
+- DSpinBox
+action_texts: []
+menu_actions: []
+---
+class_name: Settings
+source_file: settings/settings.cpp
+base_classes:
+- QObject
+is_ui_widget: false
+object_names:
+- SettingsFontFamilyComboBox
+- SettingsQSettingBackend
+accessible_names: []
+dtk_instantiations:
+- DComboBox
+action_texts: []
+menu_actions: []
+---
+class_name: CommonPanel
+source_file: views/commonpanel.cpp
+base_classes:
+- QFrame
+is_ui_widget: true
+object_names: []
+accessible_names:
+- CommonPanel
+dtk_instantiations: []
+action_texts: []
+menu_actions: []
+---
+class_name: RightPanel
+source_file: views/rightpanel.cpp
+base_classes:
+- QWidget
+is_ui_widget: true
+object_names: []
+accessible_names:
+- RightPanel
+dtk_instantiations: []
+action_texts: []
+menu_actions: []
+---
+class_name: TabBar
+source_file: views/tabbar.cpp
+base_classes:
+- DTabBar
+is_ui_widget: true
+object_names:
+- TabBarCloseOtherTabAction
+- TabBarCloseTabAction
+- TabBarRightMenu
+- TabTitleRenameAction
+accessible_names:
+- TabBar
+dtk_instantiations:
+- DTabBar
+action_texts:
+- Close other tabs
+- Close tab
+- Rename title
+menu_actions: []
+---
+class_name: TabRenameDlg
+source_file: views/tabrenamedlg.cpp
+base_classes:
+- DAbstractDialog
+is_ui_widget: true
+object_names:
+- closeButton
+- content
+- contentLayout
+- logoIcon
+- mainLayout
+- titleBar
+- titleText
+accessible_names: []
+dtk_instantiations:
+- DAbstractDialog
+- DLabel
+- DSuggestButton
+action_texts: []
+menu_actions: []
+---
+class_name: TermCommandLinkButton
+source_file: views/termcommandlinkbutton.cpp
+base_classes:
+- DPushButton
+is_ui_widget: true
+object_names: []
+accessible_names:
+- TermCommandLinkButton
+dtk_instantiations: []
+action_texts: []
+menu_actions: []
+---
+class_name: MainWindow
+source_file: main/mainwindow.cpp
+base_classes:
+- DMainWindow
+is_ui_widget: true
+object_names:
+- MainWindowCentralLayout
+- MainWindowCentralQWidget
+- MainWindowQMenu
+- MainWindowTermQStackedWidget
+- MainWindowWindowQSettings
+accessible_names: []
+dtk_instantiations:
+- DMainWindow
+action_texts: []
+menu_actions: []
+---
+class_name: MainWindow
+source_file: main/mainwindow.cpp
+base_classes: []
+is_ui_widget: false
+object_names:
+- MainWindowCentralLayout
+- MainWindowCentralQWidget
+- MainWindowQMenu
+- MainWindowTermQStackedWidget
+- MainWindowWindowQSettings
+accessible_names: []
+dtk_instantiations:
+- DMainWindow
+action_texts: []
+menu_actions: []
+---
+class_name: IconButton
+source_file: views/iconbutton.cpp
+base_classes:
+- DIconButton
+is_ui_widget: true
+object_names: []
+accessible_names:
+- IconButton
+dtk_instantiations:
+- DIconButton
+action_texts: []
+menu_actions: []
+---
+class_name: PageSearchBar
+source_file: views/pagesearchbar.cpp
+base_classes:
+- DFloatingWidget
+is_ui_widget: true
+object_names:
+- PageSearchBarFindNextDIconButton
+- PageSearchBarFindPrevDIconButton
+- PageSearchBarSearchEdit
+accessible_names:
+- FindNext
+- FindPrevious
+- PageSearchBar
+- Search
+dtk_instantiations:
+- DFloatingWidget
+- DIconButton
+- DSearchEdit
+action_texts: []
+menu_actions: []

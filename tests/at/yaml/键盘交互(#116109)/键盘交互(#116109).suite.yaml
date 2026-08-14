@@ -1,0 +1,350 @@
+name: 键盘交互(#116109)_suite
+app: deepin-terminal
+description: ''
+module: 键盘交互(#116109)
+tags: []
+fast_fail: false
+env_check: []
+setup:
+- action: session_start
+  command: deepin-terminal
+  wait: 3.0
+suites:
+- id: case_1653595_s1_s1
+  name: 键盘交互主界面只有一个工作区
+  description: ''
+  tags: []
+  steps: []
+  assert_steps:
+  - action: assert_window
+- id: case_1653593_s1_s1
+  name: 键盘交互主界面有多个工作区
+  description: ''
+  tags: []
+  steps: []
+  assert_steps:
+  - action: assert_window
+- id: case_1653591_s1_s1
+  name: 键盘交互焦点在最小化，最大化，关闭按钮
+  description: ''
+  tags: []
+  steps: []
+  assert_steps:
+  - action: assert_window
+- id: case_1653589_s1_s1
+  name: 键盘交互Tab键切换到主菜单按Enter键
+  description: ''
+  tags: []
+  steps: []
+  assert_steps:
+  - action: assert_window
+- id: case_1653587_s1_s1
+  name: 键盘交互焦点在标签栏
+  description: ''
+  tags: []
+  steps: []
+  assert_steps:
+  - action: assert_window
+- id: case_1653585_s1_s1
+  name: 键盘交互焦点在插件
+  description: ''
+  tags: []
+  steps: []
+  assert_steps:
+  - action: assert_window
+- id: case_1653583_s1_s1
+  name: 键盘交互焦点在终端，按“→”方向键或Alt+M快捷键
+  description: ''
+  tags: []
+  steps: []
+  assert_steps:
+  - action: assert_window
+- id: case_1653581_s1_s1
+  name: 键盘交互选中文字功能
+  description: ''
+  tags: []
+  steps: []
+  assert_steps:
+  - action: assert_window
+- id: case_1653579_s1_s1
+  name: 键盘交互设置界面Tab键切换顺序
+  description: ''
+  tags: []
+  steps: []
+  assert_steps:
+  - action: assert_window
+- id: case_1653577_s1_s1
+  name: 键盘交互焦点在光标在透明度
+  description: ''
+  tags: []
+  steps: []
+  assert_steps:
+  - action: assert_window
+- id: case_1653575_s1_s1
+  name: 键盘交互焦点在字体
+  description: ''
+  tags: []
+  steps: []
+  assert_steps:
+  - action: assert_window
+- id: case_1653573_s1_s1
+  name: 键盘交互焦点在字体大小
+  description: ''
+  tags: []
+  steps: []
+  assert_steps:
+  - action: assert_window
+- id: case_1653571_s1_s1
+  name: 键盘交互焦点在快捷键
+  description: ''
+  tags: []
+  steps: []
+  assert_steps:
+  - action: assert_window
+- id: case_1653569_s1_s1
+  name: 键盘交互焦点在光标
+  description: ''
+  tags: []
+  steps: []
+  assert_steps:
+  - action: assert_window
+- id: case_1653567_s1_s1
+  name: 键盘交互焦点在光标闪烁复选框
+  description: ''
+  tags: []
+  steps: []
+  assert_steps:
+  - action: assert_window
+- id: case_1653565_s1_s1
+  name: 键盘交互焦点在选中文字时自动复制到剪贴板复选框
+  description: ''
+  tags: []
+  steps: []
+  assert_steps:
+  - action: assert_window
+- id: case_1653563_s1_s1
+  name: 键盘交互焦点在按键时滚动复选框
+  description: ''
+  tags: []
+  steps: []
+  assert_steps:
+  - action: assert_window
+- id: case_1653561_s1_s1
+  name: 键盘交互焦点在输出时滚动复选框
+  description: ''
+  tags: []
+  steps: []
+  assert_steps:
+  - action: assert_window
+- id: case_1653559_s1_s1
+  name: 键盘交互焦点在启动时使用下拉框
+  description: ''
+  tags: []
+  steps: []
+  assert_steps:
+  - action: assert_window
+- id: case_1653557_s1_s1
+  name: 键盘交互焦点在背景模糊复选框
+  description: ''
+  tags: []
+  steps: []
+  assert_steps:
+  - action: assert_window
+- id: case_1653555_s1_s1
+  name: 键盘交互焦点在丢失焦点隐藏雷神窗口复选框
+  description: ''
+  tags: []
+  steps: []
+  assert_steps:
+  - action: assert_window
+- id: case_1653553_s1_s1
+  name: 键盘交互焦点在设置全局事件
+  description: ''
+  tags: []
+  steps: []
+  assert_steps:
+  - action: assert_window
+- id: case_1653551_s1_s1
+  name: 键盘交互编码插件打开状态
+  description: ''
+  tags: []
+  steps: []
+  assert_steps:
+  - action: assert_window
+- id: case_1653549_s1_s1
+  name: 键盘交互右键菜单调出编码
+  description: ''
+  tags: []
+  steps: []
+  assert_steps:
+  - action: assert_window
+- id: case_1653547_s1_s1
+  name: 键盘交互自定义列表为空
+  description: ''
+  tags: []
+  steps: []
+  assert_steps:
+  - action: assert_window
+- id: case_1653545_s1_s1
+  name: 键盘交互有一个自定义命令
+  description: ''
+  tags: []
+  steps: []
+  assert_steps:
+  - action: assert_window
+- id: case_1653543_s1_s1
+  name: 键盘交互自定义功能
+  description: ''
+  tags: []
+  steps: []
+  assert_steps:
+  - action: assert_window
+- id: case_1653541_s1_s1
+  name: 键盘交互自定义命令全局功能按ESC键
+  description: ''
+  tags: []
+  steps: []
+  assert_steps:
+  - action: assert_window
+- id: case_1653539_s1_s1
+  name: 键盘交互自定义命令搜索结果为空
+  description: ''
+  tags: []
+  steps: []
+  assert_steps:
+  - action: assert_window
+- id: case_1653537_s1_s1
+  name: 键盘交互自定义命令搜索有结果
+  description: ''
+  tags: []
+  steps: []
+  assert_steps:
+  - action: assert_window
+- id: case_1653535_s1_s1
+  name: 键盘交互编辑自定义命令
+  description: ''
+  tags: []
+  steps: []
+  assert_steps:
+  - action: assert_window
+- id: case_1653533_s1_s1
+  name: 键盘交互添加命令
+  description: ''
+  tags: []
+  steps: []
+  assert_steps:
+  - action: assert_window
+- id: case_1653531_s1_s1
+  name: 键盘交互删除命令
+  description: ''
+  tags: []
+  steps: []
+  assert_steps:
+  - action: assert_window
+- id: case_1653529_s1_s1
+  name: 键盘交互右键菜单中调出自定义命令插件
+  description: ''
+  tags: []
+  steps: []
+  assert_steps:
+  - action: assert_window
+- id: case_1653527_s1_s1
+  name: 键盘交互远程管理列表为空
+  description: ''
+  tags: []
+  steps: []
+  assert_steps:
+  - action: assert_window
+- id: case_1653525_s1_s1
+  name: 键盘交互远程管理列表有一个服务器（分组或未分组）
+  description: ''
+  tags: []
+  steps: []
+  assert_steps:
+  - action: assert_window
+- id: case_1653523_s1_s1
+  name: 键盘交互远程管理功能，焦点在服务器列表不是组上
+  description: ''
+  tags: []
+  steps: []
+  assert_steps:
+  - action: assert_window
+- id: case_1653521_s1_s1
+  name: 键盘交互远程管理功能，焦点在服务器列表组上
+  description: ''
+  tags: []
+  steps: []
+  assert_steps:
+  - action: assert_window
+- id: case_1653519_s1_s1
+  name: 键盘交互远程管理搜索结果为空
+  description: ''
+  tags: []
+  steps: []
+  assert_steps:
+  - action: assert_window
+- id: case_1653517_s1_s1
+  name: 键盘交互远程管理搜索有结果
+  description: ''
+  tags: []
+  steps: []
+  assert_steps:
+  - action: assert_window
+- id: case_1653515_s1_s1
+  name: 键盘交互远程管理全局功能按ESC键
+  description: ''
+  tags: []
+  steps: []
+  assert_steps:
+  - action: assert_window
+- id: case_1653513_s1_s1
+  name: 键盘交互添加服务器
+  description: ''
+  tags: []
+  steps: []
+  assert_steps:
+  - action: assert_window
+- id: case_1653511_s1_s1
+  name: 键盘交互编辑远程服务器
+  description: ''
+  tags: []
+  steps: []
+  assert_steps:
+  - action: assert_window
+- id: case_1653509_s1_s1
+  name: 键盘交互删除服务器
+  description: ''
+  tags: []
+  steps: []
+  assert_steps:
+  - action: assert_window
+- id: case_1653507_s1_s1
+  name: 键盘交互编码、退格键、删除键
+  description: ''
+  tags: []
+  steps: []
+  assert_steps:
+  - action: assert_window
+- id: case_1653505_s1_s1
+  name: 键盘交互右键菜单中调出远程管理插件
+  description: ''
+  tags: []
+  steps: []
+  assert_steps:
+  - action: assert_window
+- id: case_1653503_s1_s1
+  name: 键盘交互查找框
+  description: ''
+  tags: []
+  steps: []
+  assert_steps:
+  - action: assert_window
+- id: case_1653501_s1_s1
+  name: 键盘交互多窗口中操作
+  description: ''
+  tags: []
+  steps: []
+  assert_steps:
+  - action: assert_window
+teardown:
+- action: session_stop

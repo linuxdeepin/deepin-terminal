@@ -1,0 +1,221 @@
+name: 设置界面高级设置(#116119)_suite
+app: deepin-terminal
+description: ''
+module: 设置界面高级设置(#116119)
+tags: []
+fast_fail: false
+env_check: []
+setup:
+- action: session_start
+  command: deepin-terminal
+  wait: 3.0
+suites:
+- id: case_1693083_s1_s1
+  name: 背景模糊
+  description: ''
+  tags: []
+  steps: []
+  assert_steps:
+  - action: assert_element
+    selector:
+      role: dialog
+- id: case_1653321_s1_s1
+  name: 光标风格
+  description: ''
+  tags: []
+  steps:
+  - action: dtk_main_menu
+    items:
+    - 设置
+  - action: dtk_main_menu
+    items:
+    - 设置
+  assert_steps:
+  - action: assert_element
+    selector:
+      role: dialog
+- id: case_1653319_s1_s1
+  name: 光标闪烁
+  description: ''
+  tags: []
+  steps: []
+  assert_steps:
+  - action: assert_element
+    selector:
+      role: dialog
+- id: case_1653313_s1_s1
+  name: 按键时滚动
+  description: ''
+  tags: []
+  steps:
+  - action: dtk_main_menu
+    items:
+    - 设置
+  - action: dtk_main_menu
+    items:
+    - 设置
+  assert_steps:
+  - action: assert_element
+    selector:
+      role: dialog
+- id: case_1653311_s1_s1
+  name: 启动时使用普通、分屏、最大化和全屏窗口
+  description: ''
+  tags: []
+  steps:
+  - action: dtk_main_menu
+    items:
+    - 设置
+  - action: dtk_main_menu
+    items:
+    - 设置
+  assert_steps:
+  - action: assert_element
+    selector:
+      role: dialog
+- id: case_1653309_s1_s1
+  name: 丢失焦点隐藏雷神窗口
+  description: ''
+  tags: []
+  steps: []
+  assert_steps:
+  - action: assert_element
+    selector:
+      role: dialog
+- id: case_1653307_s1_s1
+  name: 背景模糊
+  description: ''
+  tags: []
+  steps: []
+  assert_steps:
+  - action: assert_element
+    selector:
+      role: dialog
+- id: case_1653305_s1_s1
+  name: 恢复默认
+  description: ''
+  tags: []
+  steps:
+  - action: dtk_main_menu
+    items:
+    - 设置
+  - action: dtk_main_menu
+    items:
+    - 设置
+  assert_steps:
+  - action: assert_element
+    selector:
+      role: dialog
+- id: case_1653303_s1_s1
+  name: 输出时滚动
+  description: ''
+  tags: []
+  steps: []
+  assert_steps:
+  - action: assert_element
+    selector:
+      role: dialog
+- id: case_1653301_s1_s1
+  name: 普通窗口Ctrl+S和Ctrl+Q流控制
+  description: ''
+  tags: []
+  steps:
+  - action: dtk_main_menu
+    items:
+    - 设置
+  - action: dtk_main_menu
+    items:
+    - 设置
+  - action: dtk_main_menu
+    items:
+    - 设置
+  - action: dtk_main_menu
+    items:
+    - 设置
+  - action: dtk_main_menu
+    items:
+    - 设置
+  - action: dtk_main_menu
+    items:
+    - 设置
+  - action: dtk_main_menu
+    items:
+    - 设置
+  - action: dtk_main_menu
+    items:
+    - 设置
+  assert_steps:
+  - action: assert_element
+    selector:
+      role: dialog
+- id: case_1653299_s1_s1
+  name: 分屏窗口中Ctrl+S和Ctrl+Q流控制
+  description: ''
+  tags: []
+  steps:
+  - action: dtk_main_menu
+    items:
+    - 设置
+  - action: dtk_main_menu
+    items:
+    - 设置
+  - action: dtk_main_menu
+    items:
+    - 设置
+  - action: dtk_main_menu
+    items:
+    - 设置
+  - action: dtk_main_menu
+    items:
+    - 设置
+  - action: dtk_main_menu
+    items:
+    - 设置
+  - action: dtk_main_menu
+    items:
+    - 设置
+  - action: dtk_main_menu
+    items:
+    - 设置
+  assert_steps:
+  - action: assert_element
+    selector:
+      role: dialog
+- id: case_1653297_s1_s1
+  name: 多个窗口/多工作区中Ctrl+S和Ctrl+Q流控制
+  description: ''
+  tags: []
+  steps:
+  - action: dtk_main_menu
+    items:
+    - 设置
+  - action: dtk_main_menu
+    items:
+    - 设置
+  - action: dtk_main_menu
+    items:
+    - 设置
+  assert_steps:
+  - action: assert_element
+    selector:
+      role: dialog
+- id: case_1653295_s1_s1
+  name: 选中文字时自动复制到剪贴板选项勾选与不勾选功能
+  description: ''
+  tags: []
+  steps:
+  - action: dtk_main_menu
+    items:
+    - 设置
+  - action: dtk_main_menu
+    items:
+    - 设置
+  - action: dtk_main_menu
+    items:
+    - 设置
+  assert_steps:
+  - action: assert_element
+    selector:
+      role: dialog
+teardown:
+- action: session_stop
