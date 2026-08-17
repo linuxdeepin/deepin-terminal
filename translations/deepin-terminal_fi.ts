@@ -616,7 +616,7 @@
         <location filename="../src/main/mainwindow.cpp" line="1623"/>
         <location filename="../src/settings/settings_translation.cpp" line="89"/>
         <source>Zoom out</source>
-        <translation>Loitonna</translation>
+        <translation>Kauemmaksi</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="91"/>
