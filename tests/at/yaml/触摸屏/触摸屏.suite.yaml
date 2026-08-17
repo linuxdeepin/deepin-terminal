@@ -1,0 +1,140 @@
+name: 触摸屏_suite
+app: deepin-terminal
+description: ''
+module: 触摸屏
+tags: []
+fast_fail: false
+env_check: []
+setup:
+- action: session_start
+  command: deepin-terminal
+  wait: 5.0
+suites:
+- id: suite_触摸屏查找功能_1_s1
+  name: 触摸屏查找功能
+  description: ''
+  tags: []
+  steps:
+  - action: dtk_context_menu
+    selector:
+      name: Terminal
+    items:
+    - 搜索
+  - action: keyboard_type
+    text: test
+  - action: element_action
+    selector:
+      name: PageSearchBarFindNextDIconButton
+      role: panel
+    do: click
+  - action: element_action
+    selector:
+      name: PageSearchBarFindPrevDIconButton
+      role: panel
+    do: click
+  - action: keyboard_press
+    key: escape
+  assert_steps:
+  - action: assert_element
+    selector:
+      name: PageSearchBar
+  - action: assert_element
+    selector:
+      name: PageSearchBarFindNextDIconButton
+  - action: assert_element
+    selector:
+      name: PageSearchBarFindPrevDIconButton
+- id: suite_触摸屏右键菜单_1_s1
+  name: 触摸屏右键菜单基本功能
+  description: ''
+  tags: []
+  steps:
+  - action: dtk_context_menu
+    selector:
+      name: Terminal
+    items: []
+  - action: dtk_context_menu
+    selector:
+      name: Terminal
+    items:
+    - 新建工作区
+  - action: dtk_context_menu
+    selector:
+      name: Terminal
+    items: []
+  - action: dtk_context_menu
+    selector:
+      name: Terminal
+    items:
+    - 横向分屏
+  assert_steps:
+  - action: assert_element
+    selector:
+      name: NormalWindow
+  - action: assert_element
+    selector:
+      name: TabBar
+  - action: assert_element
+    selector:
+      name: NormalWindow
+- id: suite_触摸屏右键菜单重命名_1_s1
+  name: 触摸屏重命名功能
+  description: ''
+  tags: []
+  steps:
+  - action: dtk_context_menu
+    selector:
+      name: TabBar
+      child_index: 0
+    items:
+    - 重命名标题
+  - action: keyboard_press
+    key: escape
+  assert_steps:
+  - action: assert_element
+    selector:
+      name: TabBar
+- id: suite_触摸屏标签页右键菜单_1_s1
+  name: 触摸屏标签页右键菜单
+  description: ''
+  tags: []
+  steps:
+  - action: dtk_context_menu
+    selector:
+      name: Terminal
+    items:
+    - 新建工作区
+  - action: dtk_context_menu
+    selector:
+      name: TabBar
+      child_index: 0
+    items:
+    - 关闭标签页
+  - action: dtk_context_menu
+    selector:
+      name: Terminal
+    items:
+    - 新建工作区
+  - action: dtk_context_menu
+    selector:
+      name: Terminal
+    items:
+    - 新建工作区
+  - action: dtk_context_menu
+    selector:
+      name: TabBar
+      child_index: 0
+    items:
+    - 关闭其他标签页
+  assert_steps:
+  - action: assert_element
+    selector:
+      name: TabBar
+  - action: assert_element
+    selector:
+      name: TabBar
+  - action: assert_element
+    selector:
+      name: TabBar
+teardown:
+- action: session_stop

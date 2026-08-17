@@ -1,0 +1,70 @@
+name: 主窗口操作_suite
+app: deepin-terminal
+description: ''
+module: 主窗口操作
+tags: []
+fast_fail: false
+env_check: []
+setup:
+- action: session_start
+  command: deepin-terminal
+  wait: 5.0
+suites:
+- id: suite_主窗口操作_正常窗口_1_s1
+  name: 正常窗口
+  description: ''
+  tags: []
+  steps:
+  - action: keyboard_press
+    key: alt+f4
+  - action: keyboard_hot_key
+    key: ctrl+alt+t
+  - action: wait
+    wait: 1.0
+  assert_steps:
+  - action: assert_element
+    selector:
+      name: NormalWindow
+  - action: assert_element
+    selector:
+      name: NormalWindow
+- id: suite_主窗口操作_全屏窗口_1_s1
+  name: 全屏窗口
+  description: ''
+  tags: []
+  steps:
+  - action: keyboard_press
+    key: f11
+  - action: wait
+    wait: 1.0
+  - action: keyboard_press
+    key: f11
+  - action: wait
+    wait: 1.0
+  assert_steps: []
+- id: suite_主窗口操作_雷神窗口显示_1_s1
+  name: 雷神窗口显示
+  description: ''
+  tags: []
+  steps:
+  - action: keyboard_hot_key
+    key: alt+f2
+  - action: wait
+    wait: 1.0
+  - action: keyboard_hot_key
+    key: alt+f2
+  - action: wait
+    wait: 1.0
+  - action: keyboard_hot_key
+    key: alt+f2
+  - action: wait
+    wait: 1.0
+  assert_steps:
+  - action: assert_element
+    selector:
+      name: NormalWindow
+  - action: assert_element
+    selector:
+      name: NormalWindow
+teardown:
+- action: session_stop

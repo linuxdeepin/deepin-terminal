@@ -1,0 +1,62 @@
+name: 设置界面基础设置_suite
+app: deepin-terminal
+description: ''
+module: 设置界面基础设置
+tags: []
+fast_fail: false
+env_check: []
+setup:
+- action: session_start
+  command: deepin-terminal
+  wait: 5.0
+suites:
+- id: suite_设置界面基础设置_1_s1
+  name: 设置-基础设置模块测试
+  description: ''
+  tags: []
+  steps:
+  - action: element_action
+    description: "打开菜单 → 设置"
+    selector:
+      name: 设置
+    do: click
+  - action: wait
+    wait: 1.0
+  - action: keyboard_press
+    key: escape
+  assert_steps:
+  - action: assert_element
+    selector:
+      name: NormalWindow
+  - action: assert_element
+    selector:
+      name: SettingsFontFamilyComboBox
+  - action: assert_element
+    selector:
+      name: NewDspinBox
+- id: suite_设置界面基础设置_3_s1
+  name: 设置-功能项显示测试
+  description: ''
+  tags: []
+  steps:
+  - action: element_action
+    description: "打开菜单 → 设置"
+    selector:
+      name: 设置
+    do: click
+  - action: wait
+    wait: 1.0
+  - action: keyboard_press
+    key: escape
+  assert_steps:
+  - action: assert_element
+    selector:
+      name: NormalWindow
+  - action: assert_element
+    selector:
+      name: SettingsFontFamilyComboBox
+  - action: assert_element
+    selector:
+      name: NewDspinBox
+teardown:
+- action: session_stop

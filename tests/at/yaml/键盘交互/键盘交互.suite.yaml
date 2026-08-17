@@ -1,0 +1,804 @@
+name: 键盘交互_suite
+app: deepin-terminal
+description: ''
+module: 键盘交互
+tags: []
+fast_fail: false
+env_check: []
+setup:
+- action: session_start
+  command: deepin-terminal
+  wait: 5.0
+suites:
+- id: suite_键盘交互查找框_1_s1
+  name: 键盘交互查找框
+  description: ''
+  tags: []
+  steps:
+  - action: keyboard_hot_key
+    key: ctrl+alt+f
+  - action: keyboard_press
+    key: tab
+  - action: keyboard_press
+    key: tab
+  - action: keyboard_press
+    key: escape
+  assert_steps:
+  - action: assert_element
+    selector:
+      name: PageSearchBarSearchEdit
+  - action: assert_element
+    selector:
+      name: PageSearchBarFindNextDIconButton
+  - action: assert_element
+    selector:
+      name: PageSearchBarFindPrevDIconButton
+- id: suite_键盘交互右键菜单_1_s1
+  name: 键盘交互右键菜单（Alt+M）
+  description: ''
+  tags: []
+  steps:
+  - action: keyboard_hot_key
+    key: alt+m
+  - action: keyboard_press
+    key: down
+  - action: keyboard_press
+    key: up
+  - action: keyboard_press
+    key: enter
+  - action: keyboard_hot_key
+    key: alt+m
+  - action: keyboard_press
+    key: tab
+  - action: keyboard_press
+    key: enter
+  assert_steps:
+  - action: assert_element
+    selector:
+      name: NormalWindow
+  - action: assert_element
+    selector:
+      name: NormalWindow
+- id: suite_键盘交互_远程管理列表为空_1_s1
+  name: 键盘交互-远程管理列表为空
+  description: ''
+  tags: []
+  steps:
+  - action: keyboard_hot_key
+    key: tab
+  - action: keyboard_press
+    key: enter
+  - action: keyboard_press
+    key: down
+  - action: keyboard_press
+    key: enter
+  assert_steps:
+  - action: assert_element
+    selector:
+      name: MainMenuPanel
+  - action: assert_element
+    selector:
+      name: RemoteManagementPanel
+  - action: assert_element
+    selector:
+      name: RemoteManagementAddServerBtn
+- id: suite_键盘交互_远程管理列表有一个服务器_1_s1
+  name: 键盘交互-远程管理列表有一个服务器
+  description: ''
+  tags: []
+  steps:
+  - action: keyboard_press
+    key: tab
+  - action: keyboard_press
+    key: tab
+  assert_steps:
+  - action: assert_element
+    selector:
+      name: RemoteManagementPanel
+  - action: assert_element
+    selector:
+      name: RemoteManagementAddServerBtn
+- id: suite_键盘交互_远程管理功能焦点非组_1_s1
+  name: 键盘交互-远程管理功能焦点在服务器列表（非组）
+  description: ''
+  tags: []
+  steps:
+  - action: keyboard_press
+    key: tab
+  - action: keyboard_press
+    key: tab
+  - action: keyboard_press
+    key: down
+  - action: keyboard_press
+    key: right
+  - action: keyboard_press
+    key: enter
+  - action: keyboard_press
+    key: escape
+  - action: keyboard_press
+    key: down
+  - action: keyboard_press
+    key: enter
+  assert_steps:
+  - action: assert_element
+    selector:
+      name: RemoteManagementPanel
+  - action: assert_element
+    selector:
+      name: RemoteManagementPanel
+  - action: assert_element
+    selector:
+      name: ServerConfigOptDlg
+  - action: assert_element
+    selector:
+      name: RemoteManagementPanel
+- id: suite_键盘交互_远程管理功能焦点在组_1_s1
+  name: 键盘交互-远程管理功能焦点在服务器列表组上
+  description: ''
+  tags: []
+  steps:
+  - action: keyboard_press
+    key: tab
+  - action: keyboard_press
+    key: tab
+  - action: keyboard_press
+    key: enter
+  - action: keyboard_press
+    key: tab
+  - action: keyboard_press
+    key: down
+  - action: keyboard_press
+    key: enter
+  assert_steps:
+  - action: assert_element
+    selector:
+      name: RemoteManagementPanel
+  - action: assert_element
+    selector:
+      name: RemoteManagementPanel
+  - action: assert_element
+    selector:
+      name: RemoteManagementPanel
+- id: suite_键盘交互_远程管理搜索为空_1_s1
+  name: 键盘交互-远程管理搜索结果为空
+  description: ''
+  tags: []
+  steps:
+  - action: keyboard_press
+    key: tab
+  - action: keyboard_press
+    key: enter
+  - action: keyboard_type
+    text: no_match
+  - action: keyboard_press
+    key: enter
+  assert_steps:
+  - action: assert_element
+    selector:
+      name: RemoteManagementSearchEdit
+  - action: assert_element
+    selector:
+      name: RemoteManagementSearchEdit
+  - action: assert_element
+    selector:
+      name: RemoteManagementPanel
+- id: suite_键盘交互_远程管理搜索有结果_1_s1
+  name: 键盘交互-远程管理搜索有结果
+  description: ''
+  tags: []
+  steps:
+  - action: keyboard_press
+    key: tab
+  - action: keyboard_type
+    text: server
+  - action: keyboard_press
+    key: enter
+  - action: keyboard_press
+    key: tab
+  - action: keyboard_press
+    key: right
+  - action: keyboard_press
+    key: down
+  - action: keyboard_press
+    key: enter
+  assert_steps:
+  - action: assert_element
+    selector:
+      name: RemoteManagementPanel
+- id: suite_键盘交互_远程管理ESC_1_s1
+  name: 键盘交互-远程管理全局功能按ESC键
+  description: ''
+  tags: []
+  steps:
+  - action: keyboard_press
+    key: tab
+  - action: keyboard_press
+    key: escape
+  assert_steps:
+  - action: assert_element
+    selector:
+      name: NormalWindow
+- id: suite_键盘交互_添加服务器_1_s1
+  name: 键盘交互-添加服务器
+  description: ''
+  tags: []
+  steps:
+  - action: keyboard_press
+    key: tab
+  - action: keyboard_press
+    key: tab
+  - action: keyboard_press
+    key: enter
+  - action: keyboard_press
+    key: tab
+  - action: keyboard_press
+    key: tab
+  - action: keyboard_press
+    key: tab
+  - action: keyboard_press
+    key: tab
+  - action: keyboard_press
+    key: space
+  - action: keyboard_press
+    key: enter
+  - action: keyboard_press
+    key: escape
+  assert_steps:
+  - action: assert_element
+    selector:
+      name: ServerConfigOptDlg
+  - action: assert_element
+    selector:
+      name: RemoteManagementAddServerBtn
+  - action: assert_element
+    selector:
+      name: RemoteManagementAddServerBtn
+- id: suite_键盘交互_编辑远程服务器_1_s1
+  name: 键盘交互-编辑远程服务器
+  description: ''
+  tags: []
+  steps:
+  - action: keyboard_press
+    key: tab
+  - action: keyboard_press
+    key: tab
+  - action: keyboard_press
+    key: right
+  - action: keyboard_press
+    key: enter
+  - action: keyboard_press
+    key: tab
+  - action: keyboard_press
+    key: tab
+  - action: keyboard_press
+    key: tab
+  - action: keyboard_press
+    key: enter
+  - action: keyboard_press
+    key: right
+  - action: keyboard_press
+    key: enter
+  - action: keyboard_press
+    key: escape
+  assert_steps:
+  - action: assert_element
+    selector:
+      name: ServerConfigOptDlg
+  - action: assert_element
+    selector:
+      name: RemoteManagementPanel
+  - action: assert_element
+    selector:
+      name: RemoteManagementPanel
+- id: suite_键盘交互_删除服务器_1_s1
+  name: 键盘交互-删除服务器
+  description: ''
+  tags: []
+  steps:
+  - action: keyboard_press
+    key: tab
+  - action: keyboard_press
+    key: tab
+  - action: keyboard_press
+    key: right
+  - action: keyboard_press
+    key: enter
+  - action: keyboard_press
+    key: tab
+  - action: keyboard_press
+    key: enter
+  - action: keyboard_press
+    key: tab
+  - action: keyboard_press
+    key: space
+  - action: keyboard_press
+    key: right
+  - action: keyboard_press
+    key: enter
+  - action: keyboard_press
+    key: escape
+  - action: keyboard_press
+    key: right
+  - action: keyboard_press
+    key: enter
+  - action: keyboard_press
+    key: tab
+  - action: keyboard_press
+    key: enter
+  assert_steps:
+  - action: assert_element
+    selector:
+      name: DMessageBox
+  - action: assert_element
+    selector:
+      name: RemoteManagementPanel
+  - action: assert_element
+    selector:
+      name: RemoteManagementPanel
+  - action: assert_element
+    selector:
+      name: RemoteManagementAddServerBtn
+- id: suite_键盘交互_右键菜单调出远程管理_1_s1
+  name: 键盘交互-右键菜单中调出远程管理插件
+  description: ''
+  tags: []
+  steps:
+  - action: keyboard_hot_key
+    key: alt+m
+  - action: keyboard_press
+    key: tab
+  - action: keyboard_press
+    key: enter
+  assert_steps:
+  - action: assert_element
+    selector:
+      name: RemoteManagementPanel
+  - action: assert_element
+    selector:
+      name: RemoteManagementPanel
+- id: suite_键盘交互_多窗口远程管理_1_s1
+  name: 键盘交互-多窗口中操作远程管理
+  description: ''
+  tags: []
+  steps:
+  - action: dtk_context_menu
+    selector:
+      name: Terminal
+    items:
+    - 远程管理
+  - action: keyboard_press
+    key: escape
+  assert_steps:
+  - action: assert_element
+    selector:
+      name: RemoteManagementPanel
+- id: suite_键盘交互_主窗口Tab导航_1_s1
+  name: 键盘交互-主窗口Tab导航
+  description: ''
+  tags: []
+  steps:
+  - action: keyboard_hot_key
+    key: ctrl+alt+t
+  - action: keyboard_hot_key
+    key: super+tab
+  - action: keyboard_press
+    key: tab
+  - action: keyboard_press
+    key: enter
+  - action: keyboard_press
+    key: tab
+  - action: keyboard_press
+    key: tab
+  - action: keyboard_press
+    key: shift+tab
+  - action: mouse_click
+    selector:
+      accessible_id: AddButton
+  - action: keyboard_hot_key
+    key: super+tab
+  - action: keyboard_hot_key
+    key: ctrl+shift+1
+  - action: keyboard_hot_key
+    key: ctrl+shift+9
+  - action: keyboard_press
+    key: tab
+  - action: keyboard_press
+    key: tab
+  - action: keyboard_press
+    key: enter
+  - action: keyboard_press
+    key: tab
+  - action: keyboard_press
+    key: shift+tab
+  - action: keyboard_press
+    key: tab
+  - action: keyboard_press
+    key: enter
+  - action: keyboard_press
+    key: down
+  - action: keyboard_press
+    key: enter
+  - action: keyboard_press
+    key: right
+  - action: keyboard_press
+    key: left
+  - action: keyboard_hot_key
+    key: super+tab
+  - action: keyboard_press
+    key: escape
+  - action: keyboard_press
+    key: tab
+  - action: keyboard_press
+    key: escape
+  - action: keyboard_press
+    key: menu
+  - action: keyboard_hot_key
+    key: alt+m
+  - action: keyboard_press
+    key: down
+  - action: keyboard_press
+    key: enter
+  - action: keyboard_press
+    key: shift+left
+  - action: keyboard_press
+    key: shift+right
+  - action: dtk_context_menu
+    selector:
+      name: Terminal
+    items:
+    - 横向分屏
+  - action: keyboard_hot_key
+    key: ctrl+alt+t
+  - action: dtk_context_menu
+    selector:
+      name: Terminal
+    items:
+    - 自定义命令
+  - action: keyboard_press
+    key: escape
+  assert_steps:
+  - action: assert_window
+  - action: assert_element
+    selector:
+      name: AddButton
+  - action: assert_window
+  - action: assert_window
+  - action: assert_window
+  - action: assert_window
+  - action: assert_window
+  - action: assert_window
+  - action: assert_window
+  - action: assert_window
+  - action: assert_window
+- id: suite_键盘交互_设置界面Tab导航_2_s1
+  name: 键盘交互-设置界面Tab导航
+  description: ''
+  tags: []
+  steps:
+  - action: element_action
+    description: "打开菜单 → 设置"
+    selector:
+      name: 设置
+    do: click
+  - action: keyboard_press
+    key: tab
+  - action: keyboard_press
+    key: tab
+  - action: keyboard_press
+    key: tab
+  - action: keyboard_press
+    key: tab
+  - action: keyboard_press
+    key: down
+  - action: keyboard_press
+    key: shift+tab
+  - action: keyboard_press
+    key: tab
+  - action: keyboard_press
+    key: right
+  - action: keyboard_press
+    key: down
+  - action: keyboard_press
+    key: tab
+  - action: keyboard_press
+    key: enter
+  - action: keyboard_press
+    key: down
+  - action: keyboard_press
+    key: enter
+  - action: keyboard_press
+    key: escape
+  - action: keyboard_press
+    key: tab
+  - action: keyboard_press
+    key: up
+  - action: keyboard_press
+    key: down
+  - action: keyboard_press
+    key: enter
+  - action: keyboard_press
+    key: tab
+  - action: keyboard_press
+    key: enter
+  - action: keyboard_hot_key
+    key: ctrl+shift+a
+  - action: keyboard_press
+    key: tab
+  - action: keyboard_press
+    key: right
+  - action: keyboard_press
+    key: left
+  - action: keyboard_press
+    key: space
+  - action: keyboard_press
+    key: tab
+  - action: keyboard_press
+    key: enter
+  - action: keyboard_press
+    key: tab
+  - action: keyboard_press
+    key: enter
+  - action: keyboard_press
+    key: tab
+  - action: keyboard_press
+    key: enter
+  - action: keyboard_press
+    key: tab
+  - action: keyboard_press
+    key: enter
+  - action: keyboard_press
+    key: tab
+  - action: keyboard_press
+    key: enter
+  - action: keyboard_press
+    key: down
+  - action: keyboard_press
+    key: enter
+  - action: keyboard_press
+    key: escape
+  - action: keyboard_press
+    key: tab
+  - action: keyboard_press
+    key: space
+  - action: keyboard_press
+    key: tab
+  - action: keyboard_press
+    key: enter
+  - action: keyboard_press
+    key: tab
+  - action: keyboard_press
+    key: escape
+  assert_steps:
+  - action: assert_window
+  - action: assert_window
+  - action: assert_window
+  - action: assert_window
+  - action: assert_window
+  - action: assert_window
+  - action: assert_window
+  - action: assert_window
+  - action: assert_window
+  - action: assert_window
+  - action: assert_window
+  - action: assert_window
+  - action: assert_window
+  - action: assert_window
+- id: suite_键盘交互_编码与自定义命令_3_s1
+  name: 键盘交互-编码与自定义命令
+  description: ''
+  tags: []
+  steps:
+  - action: keyboard_hot_key
+    key: alt+m
+  - action: keyboard_press
+    key: down
+  - action: keyboard_press
+    key: enter
+  - action: keyboard_hot_key
+    key: super+tab
+  - action: keyboard_press
+    key: tab
+  - action: keyboard_press
+    key: down
+  - action: keyboard_press
+    key: enter
+  - action: keyboard_press
+    key: tab
+  - action: keyboard_press
+    key: escape
+  - action: keyboard_press
+    key: shift+tab
+  - action: keyboard_press
+    key: tab
+  - action: keyboard_press
+    key: down
+  - action: keyboard_press
+    key: enter
+  - action: keyboard_press
+    key: tab
+  - action: keyboard_press
+    key: tab
+  - action: keyboard_press
+    key: tab
+  - action: keyboard_press
+    key: right
+  - action: keyboard_press
+    key: down
+  - action: keyboard_press
+    key: enter
+  - action: keyboard_press
+    key: left
+  - action: keyboard_press
+    key: enter
+  - action: keyboard_press
+    key: escape
+  - action: keyboard_press
+    key: enter
+  - action: keyboard_type
+    text: nonexistent
+  - action: keyboard_press
+    key: enter
+  - action: keyboard_type
+    text: test
+  - action: keyboard_press
+    key: enter
+  - action: keyboard_press
+    key: tab
+  - action: keyboard_press
+    key: right
+  - action: keyboard_press
+    key: down
+  - action: keyboard_press
+    key: enter
+  - action: keyboard_press
+    key: tab
+  - action: keyboard_press
+    key: enter
+  - action: keyboard_press
+    key: escape
+  - action: keyboard_press
+    key: enter
+  - action: keyboard_press
+    key: tab
+  - action: keyboard_press
+    key: enter
+  - action: keyboard_press
+    key: escape
+  - action: keyboard_press
+    key: tab
+  - action: keyboard_press
+    key: space
+  - action: keyboard_press
+    key: escape
+  - action: keyboard_hot_key
+    key: alt+m
+  - action: keyboard_press
+    key: tab
+  - action: keyboard_press
+    key: enter
+  assert_steps:
+  - action: assert_window
+  - action: assert_window
+  - action: assert_window
+  - action: assert_window
+  - action: assert_window
+  - action: assert_window
+  - action: assert_window
+  - action: assert_window
+  - action: assert_window
+  - action: assert_window
+  - action: assert_window
+  - action: assert_window
+- id: suite_键盘交互_远程管理与查找_4_s1
+  name: 键盘交互-远程管理与查找
+  description: ''
+  tags: []
+  steps:
+  - action: keyboard_press
+    key: tab
+  - action: keyboard_press
+    key: down
+  - action: keyboard_press
+    key: enter
+  - action: keyboard_press
+    key: tab
+  - action: keyboard_press
+    key: down
+  - action: keyboard_press
+    key: right
+  - action: keyboard_press
+    key: enter
+  - action: keyboard_press
+    key: down
+  - action: keyboard_press
+    key: enter
+  - action: keyboard_press
+    key: tab
+  - action: keyboard_press
+    key: right
+  - action: keyboard_press
+    key: tab
+  - action: keyboard_press
+    key: down
+  - action: keyboard_press
+    key: enter
+  - action: keyboard_press
+    key: enter
+  - action: keyboard_type
+    text: nonexistent
+  - action: keyboard_press
+    key: enter
+  - action: keyboard_type
+    text: test
+  - action: keyboard_press
+    key: enter
+  - action: keyboard_press
+    key: tab
+  - action: keyboard_press
+    key: right
+  - action: keyboard_press
+    key: down
+  - action: keyboard_press
+    key: enter
+  - action: keyboard_press
+    key: escape
+  - action: keyboard_press
+    key: escape
+  - action: keyboard_press
+    key: enter
+  - action: keyboard_press
+    key: tab
+  - action: keyboard_press
+    key: enter
+  - action: keyboard_press
+    key: escape
+  - action: keyboard_press
+    key: tab
+  - action: keyboard_press
+    key: space
+  - action: keyboard_press
+    key: escape
+  - action: keyboard_press
+    key: tab
+  - action: keyboard_press
+    key: space
+  - action: keyboard_press
+    key: escape
+  - action: keyboard_press
+    key: tab
+  - action: keyboard_press
+    key: space
+  - action: keyboard_press
+    key: down
+  - action: keyboard_press
+    key: enter
+  - action: keyboard_press
+    key: escape
+  - action: keyboard_hot_key
+    key: alt+m
+  - action: keyboard_press
+    key: tab
+  - action: keyboard_press
+    key: enter
+  - action: keyboard_hot_key
+    key: ctrl+alt+f
+  - action: keyboard_press
+    key: tab
+  - action: keyboard_press
+    key: escape
+  assert_steps:
+  - action: assert_window
+  - action: assert_window
+  - action: assert_window
+  - action: assert_window
+  - action: assert_window
+  - action: assert_window
+  - action: assert_window
+  - action: assert_window
+  - action: assert_window
+  - action: assert_window
+  - action: assert_window
+  - action: assert_window
+  - action: assert_window
+teardown:
+- action: session_stop

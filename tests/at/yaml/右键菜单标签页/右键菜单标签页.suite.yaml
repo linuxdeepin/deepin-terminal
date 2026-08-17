@@ -1,0 +1,93 @@
+name: 右键菜单标签页_suite
+app: deepin-terminal
+description: ''
+module: 右键菜单标签页
+tags: []
+fast_fail: false
+env_check: []
+setup:
+- action: session_start
+  command: deepin-terminal
+  wait: 5.0
+suites:
+- id: suite_右键菜单标签页_关闭其它标签页_1_s1
+  name: 关闭其它标签页
+  description: ''
+  tags: []
+  steps:
+  - action: keyboard_hot_key
+    key: ctrl+shift+t
+  - action: wait
+    wait: 1.0
+  - action: keyboard_hot_key
+    key: ctrl+shift+t
+  - action: wait
+    wait: 1.0
+  - action: dtk_context_menu
+    selector:
+      name: Terminal
+    items:
+    - 关闭其它标签页
+  - action: wait
+    wait: 1.0
+  assert_steps: []
+- id: suite_右键菜单标签页_关闭标签页_1_s1
+  name: 关闭标签页
+  description: ''
+  tags: []
+  steps:
+  - action: keyboard_hot_key
+    key: ctrl+shift+t
+  - action: wait
+    wait: 1.0
+  - action: dtk_context_menu
+    selector:
+      name: Terminal
+    items:
+    - 关闭标签页
+  - action: wait
+    wait: 1.0
+  assert_steps: []
+- id: suite_右键菜单标签页_标签页右键菜单_1_s1
+  name: 标签页右键菜单
+  description: ''
+  tags: []
+  steps:
+  - action: dtk_context_menu
+    selector:
+      name: Terminal
+    items:
+    - 重命名标题
+  - action: wait
+    wait: 1.0
+  - action: element_action
+    selector:
+      name: NewTab
+    do: click
+  - action: wait
+    wait: 1.0
+  - action: dtk_context_menu
+    selector:
+      name: Terminal
+    items:
+    - 关闭标签页
+  - action: wait
+    wait: 1.0
+  - action: keyboard_hot_key
+    key: ctrl+shift+t
+  - action: wait
+    wait: 1.0
+  - action: keyboard_hot_key
+    key: ctrl+shift+t
+  - action: wait
+    wait: 1.0
+  - action: dtk_context_menu
+    selector:
+      name: Terminal
+    items:
+    - 关闭其它标签页
+  - action: wait
+    wait: 1.0
+  assert_steps: []
+teardown:
+- action: session_stop

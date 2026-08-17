@@ -1,0 +1,180 @@
+name: 查找_suite
+app: deepin-terminal
+description: ''
+module: 查找
+tags: []
+fast_fail: false
+env_check: []
+setup:
+- action: session_start
+  command: deepin-terminal
+  wait: 5.0
+suites:
+- id: suite_查找显示_1_s1
+  name: 查找显示
+  description: ''
+  tags: []
+  steps:
+  - action: dtk_context_menu
+    selector:
+      name: Terminal
+    items:
+    - 搜索
+  - action: keyboard_press
+    key: escape
+  - action: keyboard_hot_key
+    key: ctrl+alt+f
+  - action: keyboard_press
+    key: escape
+  assert_steps:
+  - action: assert_element
+    selector:
+      name: PageSearchBar
+  - action: assert_element
+    selector:
+      name: PageSearchBar
+- id: suite_查找输入框_1_s1
+  name: 查找输入框
+  description: ''
+  tags: []
+  steps:
+  - action: dtk_context_menu
+    selector:
+      name: Terminal
+    items:
+    - 搜索
+  - action: keyboard_type
+    text: 123ASsdh周圣》?:%$%^&
+  - action: keyboard_hot_key
+    key: ctrl+a
+  - action: keyboard_type
+    text: abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()_+-=[]{}|;:',.<>?/~
+      中文长文本输入测试无长度限制gG
+  - action: keyboard_hot_key
+    key: ctrl+a
+  - action: keyboard_press
+    key: backspace
+  - action: keyboard_type
+    text: test_content
+  - action: keyboard_press
+    key: escape
+  assert_steps:
+  - action: assert_element
+    selector:
+      name: PageSearchBarSearchEdit
+  - action: assert_element
+    selector:
+      name: PageSearchBarSearchEdit
+- id: suite_查找过程_1_s1
+  name: 查找过程
+  description: ''
+  tags: []
+  steps:
+  - action: dtk_context_menu
+    selector:
+      name: Terminal
+    items:
+    - 搜索
+  - action: keyboard_type
+    text: root
+  - action: keyboard_press
+    key: enter
+  - action: keyboard_hot_key
+    key: ctrl+a
+  - action: keyboard_press
+    key: backspace
+  - action: keyboard_type
+    text: ZZZZ_NO_MATCH_ZZZZ
+  - action: keyboard_press
+    key: enter
+  - action: keyboard_press
+    key: escape
+  assert_steps:
+  - action: assert_element
+    selector:
+      name: PageSearchBar
+  - action: assert_element
+    selector:
+      name: PageSearchBar
+- id: suite_向上查找_1_s1
+  name: 向上查找
+  description: ''
+  tags: []
+  steps:
+  - action: dtk_context_menu
+    selector:
+      name: Terminal
+    items:
+    - 搜索
+  - action: keyboard_type
+    text: root
+  - action: element_action
+    selector:
+      name: PageSearchBarFindPrevDIconButton
+    do: click
+  - action: keyboard_hot_key
+    key: shift+return
+  - action: keyboard_press
+    key: escape
+  assert_steps:
+  - action: assert_element
+    selector:
+      name: PageSearchBarFindPrevDIconButton
+  - action: assert_element
+    selector:
+      name: PageSearchBar
+- id: suite_向下查找_1_s1
+  name: 向下查找
+  description: ''
+  tags: []
+  steps:
+  - action: dtk_context_menu
+    selector:
+      name: Terminal
+    items:
+    - 搜索
+  - action: keyboard_type
+    text: root
+  - action: element_action
+    selector:
+      name: PageSearchBarFindNextDIconButton
+    do: click
+  - action: keyboard_press
+    key: enter
+  - action: keyboard_press
+    key: escape
+  assert_steps:
+  - action: assert_element
+    selector:
+      name: PageSearchBarFindNextDIconButton
+  - action: assert_element
+    selector:
+      name: PageSearchBar
+- id: suite_查找隐藏_1_s1
+  name: 查找隐藏
+  description: ''
+  tags: []
+  steps:
+  - action: dtk_context_menu
+    selector:
+      name: Terminal
+    items:
+    - 搜索
+  - action: keyboard_press
+    key: escape
+  - action: dtk_context_menu
+    selector:
+      name: Terminal
+    items:
+    - 搜索
+  - action: keyboard_press
+    key: escape
+  assert_steps:
+  - action: assert_element
+    selector:
+      name: PageSearchBar
+  - action: assert_element
+    selector:
+      name: PageSearchBar
+teardown:
+- action: session_stop

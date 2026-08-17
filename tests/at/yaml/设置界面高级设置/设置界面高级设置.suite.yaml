@@ -1,0 +1,32 @@
+name: 设置界面高级设置_suite
+app: deepin-terminal
+description: ''
+module: 设置界面高级设置
+tags: []
+fast_fail: false
+env_check: []
+setup:
+- action: session_start
+  command: deepin-terminal
+  wait: 5.0
+suites:
+- id: suite_设置界面高级设置_1_s1
+  name: 设置-高级设置模块测试
+  description: ''
+  tags: []
+  steps:
+  - action: element_action
+    description: "打开菜单 → 设置"
+    selector:
+      name: 设置
+    do: click
+  - action: wait
+    wait: 1.0
+  - action: keyboard_press
+    key: escape
+  assert_steps:
+  - action: assert_element
+    selector:
+      name: NormalWindow
+teardown:
+- action: session_stop

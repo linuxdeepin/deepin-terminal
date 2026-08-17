@@ -1,0 +1,213 @@
+name: 主界面右上角菜单栏_suite
+app: deepin-terminal
+description: ''
+module: 主界面右上角菜单栏
+tags: []
+fast_fail: false
+env_check: []
+setup:
+- action: session_start
+  command: deepin-terminal
+  wait: 5.0
+suites:
+- id: suite_主界面右上角菜单栏_设置_1_s1
+  name: 设置
+  description: ''
+  tags: []
+  steps:
+  - action: element_action
+    description: "打开菜单 → 设置"
+    selector:
+      name: 设置
+    do: click
+  - action: wait
+    wait: 1.0
+  - action: keyboard_press
+    key: escape
+  assert_steps:
+  - action: assert_element
+    selector:
+      name: NormalWindow
+- id: suite_主界面右上角菜单栏_切换主题_1_s1
+  name: 切换主题
+  description: ''
+  tags: []
+  steps:
+  - action: element_action
+    description: "打开菜单 → 主题"
+    selector:
+      name: 主题
+    do: click
+  - action: element_action
+    description: "打开菜单 → 主题"
+    selector:
+      name: 主题
+    do: click
+    - 浅色
+  - action: wait
+    wait: 1.0
+  - action: element_action
+    description: "打开菜单 → 主题"
+    selector:
+      name: 主题
+    do: click
+  - action: element_action
+    description: "打开菜单 → 主题"
+    selector:
+      name: 主题
+    do: click
+    - 跟随系统
+  - action: wait
+    wait: 1.0
+  - action: element_action
+    description: "打开菜单 → 主题"
+    selector:
+      name: 主题
+    do: click
+  - action: element_action
+    description: "打开菜单 → 主题"
+    selector:
+      name: 主题
+    do: click
+    - 深色
+  - action: wait
+    wait: 1.0
+  assert_steps: []
+- id: suite_主界面右上角菜单栏_关于1_1_s1
+  name: 关于1
+  description: ''
+  tags: []
+  steps:
+  - action: element_action
+    description: "打开菜单 → 关于"
+    selector:
+      name: 关于
+    do: click
+  - action: wait
+    wait: 1.0
+  - action: keyboard_press
+    key: escape
+  assert_steps:
+  - action: assert_element
+    selector:
+      name: About
+- id: suite_主界面右上角菜单栏_关于2_1_s1
+  name: 关于2
+  description: ''
+  tags: []
+  steps:
+  - action: element_action
+    description: "打开菜单 → 设置"
+    selector:
+      name: 设置
+    do: click
+    - 关于
+  - action: wait
+    wait: 1.0
+  - action: keyboard_press
+    key: escape
+  - action: element_action
+    description: "打开菜单 → 设置"
+    selector:
+      name: 设置
+    do: click
+    - 关于
+  - action: wait
+    wait: 1.0
+  - action: keyboard_press
+    key: alt+f4
+  - action: wait
+    wait: 1.0
+  assert_steps:
+  - action: assert_element
+    selector:
+      name: About
+  - action: assert_element
+    selector:
+      name: About
+- id: suite_主界面右上角菜单栏_最大化还原_1_s1
+  name: 最大化还原
+  description: ''
+  tags: []
+  steps:
+  - action: element_action
+    selector:
+      accessible_id: DTitlebarDWindowMaxButton
+    do: click
+  - action: wait
+    wait: 1.0
+  - action: element_action
+    selector:
+      accessible_id: DTitlebarDWindowMaxButton
+    do: click
+  - action: wait
+    wait: 1.0
+  assert_steps: []
+- id: suite_主界面右上角菜单栏_最小化_1_s1
+  name: 最小化
+  description: ''
+  tags: []
+  steps:
+  - action: element_action
+    selector:
+      accessible_id: DTitlebarDWindowMinButton
+    do: click
+  - action: wait
+    wait: 1.0
+  - action: keyboard_hot_key
+    key: alt+tab
+  - action: wait
+    wait: 1.0
+  - action: element_action
+    selector:
+      accessible_id: DTitlebarDWindowMaxButton
+    do: click
+  - action: wait
+    wait: 1.0
+  - action: element_action
+    selector:
+      accessible_id: DTitlebarDWindowMinButton
+    do: click
+  - action: wait
+    wait: 1.0
+  - action: keyboard_hot_key
+    key: alt+tab
+  - action: wait
+    wait: 1.0
+  assert_steps: []
+- id: suite_主界面右上角菜单栏_关闭_1_s1
+  name: 关闭
+  description: ''
+  tags: []
+  steps:
+  - action: element_action
+    selector:
+      accessible_id: DTitlebarDWindowCloseButton
+    do: click
+  - action: wait
+    wait: 1.0
+  assert_steps: []
+- id: suite_主界面右上角菜单栏_主菜单主题_1_s1
+  name: 主菜单主题
+  description: ''
+  tags: []
+  steps:
+  - action: element_action
+    description: "打开菜单 → 主题"
+    selector:
+      name: 主题
+    do: click
+    - 深色
+  - action: wait
+    wait: 1.0
+  - action: element_action
+    description: "打开菜单 → 主题"
+    selector:
+      name: 主题
+    do: click
+    - 跟随系统
+  - action: wait
+    wait: 1.0
+  assert_steps: []
+teardown:
+- action: session_stop
