@@ -976,8 +976,15 @@ QString MainWindow::getConfigWindowState()
 
 QSize MainWindow::halfScreenSize()
 {
-    int w = qApp->desktop()->availableGeometry().width();
-    int h = qApp->desktop()->availableGeometry().height();
+    qCDebug(mainprocess) << "Enter MainWindow::halfScreenSize";
+    QScreen *screen = QGuiApplication::screenAt(QCursor::pos());
+    if (!screen) {
+        qCritical() << "Can't get the screen where the cursor is located!";
+        return QSize(0, 0);
+    }
+
+    int w = screen->availableGeometry().width();
+    int h = screen->availableGeometry().height();
 
     QSize size;
     //开启窗管特效时会有1px的border
