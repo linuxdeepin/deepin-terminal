@@ -373,7 +373,7 @@ void Emulation::receiveData(const char *text, int length, bool isCommandExec)
         textCodec = QTextCodec::codecForName(_codec->name());
         _decoder = textCodec->makeDecoder();
         utf16Text = _decoder->toUnicode(gbkarr);
-        //setIsCodecGB18030(false);
+        setIsCodecGB18030(false);
     }
     else {
         if(isUse2005Standard == -1){
@@ -381,14 +381,14 @@ void Emulation::receiveData(const char *text, int length, bool isCommandExec)
             qInfo() << "Is Used 2005 standard's gb18030 iconv?" << isUse2005Standard;
         }
         if(_codec->name().toUpper().contains("GB18030") && isUse2005Standard == 1) {
-            //setIsCodecGB18030(true);
+            setIsCodecGB18030(true);
             QByteArray gbkarr(text, length);
             QByteArray Outdata;
             DetectCode::ChangeFileEncodingFormat(gbkarr, Outdata, QString("GB18030"), QString("UTF-8"));
             utf16Text = QString(Outdata);
         } else {
             utf16Text = _decoder->toUnicode(text, length);
-            //setIsCodecGB18030(false);
+            setIsCodecGB18030(false);
         }
     }
 
