@@ -2797,10 +2797,16 @@ void TerminalDisplay::mouseTripleClickEvent(QMouseEvent* ev)
 
 bool TerminalDisplay::focusNextPrevChild( bool next )
 {
-  if (next)
-    return false; // This disables changing the active part in konqueror
-                  // when pressing Tab
-  return QWidget::focusNextPrevChild( next );
+  // 原实现中，Tab 会留给终端处理；Shift+Tab 则会调用
+  // QWidget::focusNextPrevChild(false)，导致焦点从终端切换到标题栏控件。
+  // 为了让依赖 Shift+Tab 的终端程序能够正常接收该按键，屏蔽原有焦点切换逻辑。
+  // if (next)
+  //   return false; // This disables changing the active part in konqueror
+  //                 // when pressing Tab
+  // return QWidget::focusNextPrevChild( next );
+
+  Q_UNUSED(next)
+  return false;
 }
 
 
