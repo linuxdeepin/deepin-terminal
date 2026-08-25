@@ -47,7 +47,43 @@ bool ut_contains()
     return true;
 }
 
+class TestTerminalDisplay : public Konsole::TerminalDisplay
+{
+public:
+    explicit TestTerminalDisplay(QWidget *parent = nullptr)
+        : Konsole::TerminalDisplay(parent)
+    {
+    }
+
+    using Konsole::TerminalDisplay::focusNextPrevChild;
+};
+
 #ifdef UT_TERMWIDGET_TEST
+TEST_F(UT_TermWidget_Test, focusNextPrevChild)
+{
+    QWidget window;
+    QWidget previousWidget(&window);
+    TestTerminalDisplay terminalDisplay(&window);
+
+    window.resize(400, 300);
+    previousWidget.setGeometry(0, 0, 100, 30);
+    terminalDisplay.setGeometry(0, 40, 400, 260);
+    previousWidget.setFocusPolicy(Qt::StrongFocus);
+    terminalDisplay.setFocusPolicy(Qt::StrongFocus);
+    QWidget::setTabOrder(&previousWidget, &terminalDisplay);
+
+    window.show();
+    window.activateWindow();
+    terminalDisplay.setFocus(Qt::OtherFocusReason);
+    QApplication::processEvents();
+
+    ASSERT_TRUE(terminalDisplay.hasFocus());
+    EXPECT_FALSE(terminalDisplay.focusNextPrevChild(true));
+    EXPECT_TRUE(terminalDisplay.hasFocus());
+    EXPECT_FALSE(terminalDisplay.focusNextPrevChild(false));
+    EXPECT_TRUE(terminalDisplay.hasFocus());
+}
+
 TEST_F(UT_TermWidget_Test, TermWidgetTest)
 {
     m_normalWindow->resize(800, 600);
