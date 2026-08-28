@@ -34,6 +34,8 @@ void ServerConfigGroupPanel::initUI()
     this->setAutoFillBackground(true);
 
     m_rebackButton = new IconButton(this);
+    m_rebackButton->setObjectName("RemoteServerConfigGroupRebackButton");
+    m_rebackButton->setAccessibleName("RemoteServerConfigGroupRebackButton");
     m_searchEdit = new DSearchEdit(this);
     //fix bug#64976 按tab键循环切换到右上角X按钮时继续按tab键，焦点不能切换到搜索框
     m_searchEdit->setFocusPolicy(Qt::StrongFocus);

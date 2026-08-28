@@ -1,4 +1,4 @@
-// Copyright (C) 2019 ~ 2020 Uniontech Software Technology Co.,Ltd
+// Copyright (C) 2019 ~ 2026 Uniontech Software Technology Co.,Ltd
 // SPDX-FileCopyrightText: 2022 UnionTech Software Technology Co., Ltd.
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
@@ -56,6 +56,7 @@ void TabRenameDlg::initUi()
     m_logoIcon->setPixmap(QIcon::fromTheme("deepin-terminal").pixmap(QSize(32, 32)));
 
     m_closeButton = new DWindowCloseButton(this);
+    m_closeButton->setAccessibleName("TabRenameDlgCloseButton");
     m_closeButton->setObjectName("closeButton");//Add by ut001000 renfeixiang 2020-08-13
     m_closeButton->setFocusPolicy(Qt::TabFocus);
     m_closeButton->setIconSize(QSize(50, 50));
@@ -339,11 +340,15 @@ void TabRenameDlg::initButtonWidget()
 
     qCDebug(views) << "Branch: Creating cancel button";
     m_cancelButton = new DPushButton(QObject::tr("Cancel", "button"));
+    m_cancelButton->setObjectName("TabRenameDlgCancelButton");
+    m_cancelButton->setAccessibleName("TabRenameDlgCancelButton");
     Utils::setSpaceInWord(m_cancelButton);
     DFontSizeManager::instance()->bind(m_cancelButton, DFontSizeManager::T6);
 
     qCDebug(views) << "Branch: Creating confirm button";
     m_confirmButton = new DSuggestButton(QObject::tr("Confirm", "button"));
+    m_confirmButton->setObjectName("TabRenameDlgConfirmButton");
+    m_confirmButton->setAccessibleName("TabRenameDlgConfirmButton");
     Utils::setSpaceInWord(m_confirmButton);
     DFontSizeManager::instance()->bind(m_confirmButton, DFontSizeManager::T6);
 

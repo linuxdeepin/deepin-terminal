@@ -300,6 +300,8 @@ void MainWindow::initTabBar()
 {
     qCDebug(mainprocess) << "Enter MainWindow::initTabBar";
     m_tabbar = new TabBar(this);
+    m_tabbar->setObjectName("MainWindowTabbar");
+    m_tabbar->setAccessibleName("MainWindowTabbar");
     m_tabbar->setFocusPolicy(Qt::NoFocus);
 
     qCDebug(mainprocess) << "Connecting tab bar signals";
@@ -412,6 +414,7 @@ void MainWindow::initOptionMenu()
     connect(m_createTimer, &QTimer::timeout, this, &MainWindow::slotClickNewWindowTimeout);
     connect(newWindowAction, &QAction::triggered, this, &MainWindow::slotNewWindowActionTriggered);
     m_menu->addAction(newWindowAction);
+    m_menu->setAccessibleName("MainWindowQMenu");
     /********************* Modify by m000714 daizhengwen End ************************/
     qCDebug(mainprocess) << "Adding plugin menus";
     for (auto &plugin : m_plugins) {
@@ -2458,6 +2461,8 @@ void MainWindow::addThemeMenuItems()
     if (!disableDtkSwitchThemeMenu) {
         //浅色 深色 跟随系统  的 翻译 不需要终端自己翻译，这里直接用dtk的翻译即可
         switchThemeMenu = new SwitchThemeMenu(qApp->translate("TitleBarMenu", THEME), menu);
+        switchThemeMenu->setObjectName("MainWindowSwitchThemeMenu");
+        switchThemeMenu->setAccessibleName("MainWindowSwitchThemeMenu");
         lightThemeAction = switchThemeMenu->addAction(qApp->translate("TitleBarMenu", THEME_SYSTEN_LIGHT));
         darkThemeAction = switchThemeMenu->addAction(qApp->translate("TitleBarMenu", THEME_SYSTEN_DARK));
         autoThemeAction = switchThemeMenu->addAction(qApp->translate("TitleBarMenu", THEME_SYSTEN));
@@ -2517,6 +2522,7 @@ void MainWindow::addThemeMenuItems()
 
         //创建主题项快捷键组
         group = new QActionGroup(switchThemeMenu);
+        group->setObjectName("MainWindowThemeActionGroup");
         group->addAction(autoThemeAction);
         group->addAction(lightThemeAction);
         group->addAction(darkThemeAction);
