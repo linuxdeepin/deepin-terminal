@@ -1,5 +1,5 @@
 /*
-* Copyright (C) 2022 ~ 2022 Uniontech Software Technology Co.,Ltd.
+* Copyright (C) 2022 ~ 2026 Uniontech Software Technology Co.,Ltd.
 *
 * Author:     Yutao Meng <mengyutao@uniontech.com>
 *
@@ -37,6 +37,10 @@ GroupConfigOptDlg::GroupConfigOptDlg(const QString &groupName, QWidget *parent)
       m_groupNameEdit(new DLineEdit(this)),
       m_serverList(new ListView(ListType_Remote, this))
 {
+    m_groupNameEdit->setObjectName("RemoteGroupNameEdit");
+    m_groupNameEdit->setAccessibleName("RemoteGroupNameEdit");
+    m_closeButton->setObjectName("RemoteGroupConfigCloseButton");
+    m_closeButton->setAccessibleName("RemoteGroupConfigCloseButton");
     m_groupNameEdit->setPlaceholderText(tr("Group Name(Required)"));
     if (groupName.isEmpty()) {
         m_titleLabel->setText(tr("Add Group"));

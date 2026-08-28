@@ -1,4 +1,4 @@
-// Copyright (C) 2019 ~ 2020 Uniontech Software Technology Co.,Ltd
+// Copyright (C) 2019 ~ 2026 Uniontech Software Technology Co.,Ltd
 // SPDX-FileCopyrightText: 2022 UnionTech Software Technology Co., Ltd.
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
@@ -39,6 +39,8 @@ void TabRenameWidget::initUi()
 
     // 内容输入框
     m_inputedit = new DLineEdit(this);
+    m_inputedit->setObjectName("TabRenameWidgetInputEdit");
+    m_inputedit->setAccessibleName("TabRenameWidgetInputEdit");
     m_inputedit->setText("%n:%d");
     // Keep the edit width stable; otherwise the widget shrinks when the text becomes empty,
     // which makes the two rows in "Rename title" dialog look inconsistent.
@@ -48,6 +50,8 @@ void TabRenameWidget::initUi()
 
     // 插入按钮
     m_choseButton = new DPushButton(tr("Insert"), this);
+    m_choseButton->setObjectName("TabRenameWidgetChoseButton");
+    m_choseButton->setAccessibleName("TabRenameWidgetChoseButton");
     // 添加下拉菜单
     m_choseButton->setMenu(m_choseMenu);
     m_choseButton->setAutoDefault(false);
@@ -74,6 +78,8 @@ void TabRenameWidget::initChoseMenu()
     qCDebug(views) << "TabRenameWidget::initChoseMenu enter";
 
     m_choseMenu = new DMenu(this);
+    m_choseMenu->setObjectName("TabRenameWidgetChoseMenu");
+    m_choseMenu->setAccessibleName("TabRenameWidgetChoseMenu");
     DFontSizeManager::instance()->bind(m_choseMenu, DFontSizeManager::T6);
     if (m_isRemote) {
         qCDebug(views) << "Branch: Remote mode, initializing remote menu";

@@ -48,6 +48,9 @@ CustomCommandOptDlg::CustomCommandOptDlg(CustomCmdOptType type, CustomCommandDat
     m_nameLineEdit->setObjectName("CustomNameLineEdit");
     m_commandLineEdit->setObjectName("CustomCommandLineEdit");
     m_shortCutLineEdit->setObjectName("CustomShortCutLineEdit");
+    m_nameLineEdit->setAccessibleName("CustomNameLineEdit");
+    m_commandLineEdit->setAccessibleName("CustomCommandLineEdit");
+    m_shortCutLineEdit->setAccessibleName("CustomShortCutLineEdit");
     /******** Add by ut001000 renfeixiang 2020-08-13:增加 End***************/
     setWindowModality(Qt::WindowModal);
     if (currItemData) {
@@ -309,6 +312,7 @@ void CustomCommandOptDlg::initUITitle()
     m_logoIcon->setAttribute(Qt::WA_TransparentForMouseEvents);
 
     m_closeButton = new DWindowCloseButton(this);
+    m_closeButton->setAccessibleName("CustomCloseButton");
     m_closeButton->setObjectName("CustomCloseButton");//Add by ut001000 renfeixiang 2020-08-13
     m_closeButton->setFocusPolicy(Qt::TabFocus);//m_closeButton->setFocusPolicy(Qt::NoFocus);
     m_closeButton->setIconSize(QSize(50, 50));
@@ -555,12 +559,14 @@ void CustomCommandOptDlg::addCancelConfirmButtons()
 
     QFont btnFont;
     m_cancelBtn = new DPushButton(this);
+    m_cancelBtn->setAccessibleName("CustomCancelButton");
     m_cancelBtn->setObjectName("CustomCancelButton");//Add by ut001000 renfeixiang 2020-08-13
     m_cancelBtn->setFixedWidth(209);
     m_cancelBtn->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Fixed);
     m_cancelBtn->setFont(btnFont);
 
     m_confirmBtn = new DSuggestButton(this);
+    m_confirmBtn->setAccessibleName("CustomConfirmButton");
     m_confirmBtn->setObjectName("CustomConfirmButton");//Add by ut001000 renfeixiang 2020-08-13
     m_confirmBtn->setFixedWidth(209);
     m_confirmBtn->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Fixed);

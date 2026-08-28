@@ -1,4 +1,4 @@
-// Copyright (C) 2019 ~ 2020 Uniontech Software Technology Co.,Ltd.
+// Copyright (C) 2019 ~ 2026 Uniontech Software Technology Co.,Ltd.
 // SPDX-FileCopyrightText: 2022 UnionTech Software Technology Co., Ltd.
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
@@ -232,6 +232,8 @@ void CustomThemeSettingDialog::initUITitle()
     m_logoIcon->setAttribute(Qt::WA_TransparentForMouseEvents);
 
     m_closeButton = new DWindowCloseButton(this);
+    m_closeButton->setObjectName("CustomThemeCloseButton");
+    m_closeButton->setAccessibleName("CustomThemeCloseButton");
     m_closeButton->setFocusPolicy(Qt::TabFocus);
     m_closeButton->setIconSize(QSize(50, 50));
 
@@ -299,11 +301,15 @@ void CustomThemeSettingDialog::initUI()
     titleStyleLabel->setFixedWidth(90);
 
     m_lightRadioButton = new TitleStyleRadioButton(tr("Light"));
+    m_lightRadioButton->setObjectName("CustomThemeLightRadioButton");
+    m_lightRadioButton->setAccessibleName("CustomThemeLightRadioButton");
     DFontSizeManager::instance()->bind(m_lightRadioButton, DFontSizeManager::T6, QFont::Normal);
     //单选框只设置长度限制，不做高度限制，否则最新dtk选中框容易出现截断
     m_lightRadioButton->setFixedWidth(74);
 
     m_darkRadioButton = new TitleStyleRadioButton(tr("Dark"));
+    m_darkRadioButton->setObjectName("CustomThemeDarkRadioButton");
+    m_darkRadioButton->setAccessibleName("CustomThemeDarkRadioButton");
     DFontSizeManager::instance()->bind(m_darkRadioButton, DFontSizeManager::T6, QFont::Normal);
     //单选框只设置长度限制，不做高度限制，否则最新dtk选中框容易出现截断
     m_darkRadioButton->setFixedWidth(74);
@@ -312,6 +318,15 @@ void CustomThemeSettingDialog::initUI()
     m_lightRadioButton->setFocusPolicy(Qt::TabFocus);
     m_foregroundButton->setFocusPolicy(Qt::TabFocus);
     m_backgroundButton->setFocusPolicy(Qt::TabFocus);
+    m_titleStyleButtonGroup->setObjectName("CustomThemeTitleStyleButtonGroup");
+    m_foregroundButton->setObjectName("CustomThemeForegroundButton");
+    m_foregroundButton->setAccessibleName("CustomThemeForegroundButton");
+    m_backgroundButton->setObjectName("CustomThemeBackgroundButton");
+    m_backgroundButton->setAccessibleName("CustomThemeBackgroundButton");
+    m_ps1Button->setObjectName("CustomThemePs1Button");
+    m_ps1Button->setAccessibleName("CustomThemePs1Button");
+    m_ps2Button->setObjectName("CustomThemePs2Button");
+    m_ps2Button->setAccessibleName("CustomThemePs2Button");
 
     //将浅色标题风格单选按钮放入单选按钮分组中
     m_titleStyleButtonGroup->addButton(m_lightRadioButton);

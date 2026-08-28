@@ -642,6 +642,7 @@ inline bool TabBar::handleRightButtonClick(QMouseEvent *mouseEvent)
         // qCDebug(views) << "Branch: Right click tab found, showing menu";
         if (m_rightMenu == nullptr) {
             m_rightMenu = new DMenu(this);
+            m_rightMenu->setAccessibleName("TabBarRightMenu");
             m_rightMenu->setObjectName("TabBarRightMenu");//Add by ut001000 renfeixiang 2020-08-13
         } else {
             // clear时，对于绑在menu下面的action会自动释放，无需单独处理action释放

@@ -78,6 +78,21 @@ ServerConfigOptDlg::ServerConfigOptDlg(ServerConfigOptType type, ServerConfig *c
     m_deleteKey->setObjectName("RemoteDeleteKeyComboBox");
     m_advancedOptions->setObjectName("RemoteAdvancedOptionsButton");
     m_delServer->setObjectName("RemoteDelServerButton");
+    m_closeButton->setAccessibleName("RemoteCloseButton");
+    m_serverName->setAccessibleName("RemoteServerNameLineEdit");
+    m_address->setAccessibleName("RemoteAddressLineEdit");
+    m_port->setAccessibleName("RemotePortDSpinBox");
+    m_userName->setAccessibleName("RemoteUserNameLineEdit");
+    m_password->setAccessibleName("RemoteDPasswordEdit");
+    m_privateKey->setAccessibleName("RemotePrivateKeyLineEdit");
+    m_group->setAccessibleName("RemoteGroupComboBox");
+    m_path->setAccessibleName("RemotePathLineEdit");
+    m_command->setAccessibleName("RemoteCommandLineEdit");
+    m_coding->setAccessibleName("RemoteEncodeComboBox");
+    m_backSapceKey->setAccessibleName("RemoteBackSapceKeyComboBox");
+    m_deleteKey->setAccessibleName("RemoteDeleteKeyComboBox");
+    m_advancedOptions->setAccessibleName("RemoteAdvancedOptionsButton");
+    m_delServer->setAccessibleName("RemoteDelServerButton");
     /******** Add by ut001000 renfeixiang 2020-08-13:增加 End***************/
     setWindowModality(Qt::WindowModal);
     setAutoFillBackground(true);

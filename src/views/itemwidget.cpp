@@ -51,6 +51,13 @@ ItemWidget::ItemWidget(ItemFuncType itemType, QWidget *parent)
     m_iconButton->setObjectName("ItemWidgetIconButton");
     m_firstline->setObjectName("ItemWidgetFirstLineLabel");
     m_secondline->setObjectName("ItemWidgetSecondLineLabel");
+    m_checkBox->setObjectName("ItemWidgetCheckBox");
+    m_checkBox->setAccessibleName("ItemWidgetCheckBox");
+    m_iconButton->setAccessibleName("ItemWidgetIconButton");
+    m_deleteButton->setObjectName("ItemWidgetDeleteButton");
+    m_deleteButton->setAccessibleName("ItemWidgetDeleteButton");
+    m_funcButton->setObjectName("ItemWidgetFuncButton");
+    m_funcButton->setAccessibleName("ItemWidgetFuncButton");
     /******** Add by ut001000 renfeixiang 2020-08-13:增加 End***************/
     // 界面初始化
     initUI();

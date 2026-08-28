@@ -247,6 +247,8 @@ void RemoteManagementPanel::initUI()
     m_addGroupButton->setFocusPolicy(Qt::TabFocus);
     m_pushButton = new DPushButton(this);
     m_pushButton->setObjectName("RemoteAddPushButton");
+    m_addGroupButton->setAccessibleName("AddServerGroupButton");
+    m_pushButton->setAccessibleName("RemoteAddPushButton");
     m_pushButton->setFocusPolicy(Qt::TabFocus);
 
     m_searchEdit->setClearButtonEnabled(true);

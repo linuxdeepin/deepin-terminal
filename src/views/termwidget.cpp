@@ -544,6 +544,7 @@ void TermWidget::addMenuActions(const QPoint &pos)
     QList<QAction *> termActions = filterActions(pos);
     for (QAction *&action : termActions)
         m_menu->addAction(action);
+        m_menu->setAccessibleName("TermMenu");
 
     if (!m_menu->isEmpty())
         m_menu->addSeparator();
