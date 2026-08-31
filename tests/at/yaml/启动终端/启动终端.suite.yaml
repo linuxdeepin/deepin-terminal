@@ -1,0 +1,27 @@
+name: 启动终端_suite
+app: deepin-terminal
+description: ''
+module: 启动终端
+tags: []
+fast_fail: false
+env_check: []
+setup:
+- action: session_start
+  command: deepin-terminal
+  wait: 5.0
+suites:
+- id: suite_启动终端_快捷键启动_1_s1
+  name: 快捷键启动
+  description: ''
+  tags: []
+  steps:
+  - action: keyboard_hot_key
+    key: ctrl+alt+t
+  - action: wait
+    wait: 1.0
+  assert_steps:
+  - action: assert_element
+    selector:
+      name: NormalWindow
+teardown:
+- action: session_stop

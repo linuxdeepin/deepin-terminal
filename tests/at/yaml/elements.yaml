@@ -1,0 +1,92 @@
+elements:
+  PageSearchBar:
+    name: PageSearchBar
+    role: panel
+  PageSearchBarSearchEdit:
+    name: PageSearchBarSearchEdit
+    role: panel
+  PageSearchBarFindPrevDIconButton:
+    name: PageSearchBarFindPrevDIconButton
+    role: panel
+  PageSearchBarFindNextDIconButton:
+    name: PageSearchBarFindNextDIconButton
+    role: panel
+  MainWindow:
+    name: MainWindow
+    role: panel
+  TabBar:
+    name: TabBar
+    role: panel
+  Settings:
+    name: Settings
+    role: panel
+  SettingsFontFamilyComboBox:
+    name: SettingsFontFamilyComboBox
+    role: panel
+  NewDspinBox:
+    name: NewDspinBox
+    role: panel
+  RightPanel:
+    name: RightPanel
+    role: panel
+  IconButton:
+    name: IconButton
+    role: panel
+  Terminal:
+    name: Terminal
+    role: panel
+  ListView:
+    name: ListView
+    role: panel
+    child_index: 0
+  closeButton:
+    name: closeButton
+    role: panel
+  RemoteManagementPanel:
+    name: RemoteManagementPanel
+    role: panel
+  RemoteManagementAddServerBtn:
+    name: RemoteManagementAddServerBtn
+    role: push_button
+  ServerConfigOptDlg:
+    name: ServerConfigOptDlg
+    role: dialog
+  RemoteManagementSearchBtn:
+    name: RemoteManagementSearchBtn
+    role: push_button
+  RemoteManagementSearchEdit:
+    name: RemoteManagementSearchEdit
+    role: panel
+  ServerConfigOptDlgAddBtn:
+    name: ServerConfigOptDlgAddBtn
+    role: push_button
+  DMessageBox:
+    name: DMessageBox
+    role: dialog
+  RemoteManagementAddGroupBtn:
+    name: RemoteManagementAddGroupBtn
+    role: push_button
+  MainMenuPanel:
+    name: MainMenuPanel
+    role: panel
+  NewTabButton:
+    name: NewTabButton
+    role: push button
+  About:
+    name: About
+    role: dialog
+  Maximize:
+    name: Maximize
+    role: push button
+  Restore:
+    name: Restore
+    role: push button
+  Minimize:
+    name: Minimize
+    role: push button
+  Close:
+    name: Close
+    role: push button
+  NewTab:
+    name: NewTab
+    role: push button

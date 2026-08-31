@@ -1,0 +1,482 @@
+name: 远程管理器_suite
+app: deepin-terminal
+description: ''
+module: 远程管理器
+tags: []
+fast_fail: false
+env_check: []
+setup:
+- action: session_start
+  command: deepin-terminal
+  wait: 5.0
+suites:
+- id: suite_远程管理器_服务器窗口_1_s1
+  name: 远程管理器-服务器窗口
+  description: ''
+  tags: []
+  steps:
+  - action: dtk_context_menu
+    selector:
+      name: Terminal
+    items:
+    - 远程管理
+  - action: dtk_context_menu
+    selector:
+      name: Terminal
+    items:
+    - 远程管理
+  - action: element_action
+    description: "打开菜单 → 远程管理"
+    selector:
+      name: 远程管理
+    do: click
+  - action: keyboard_press
+    key: escape
+  - action: keyboard_hot_key
+    key: alt+delete
+  - action: keyboard_hot_key
+    key: alt+delete
+  - action: element_action
+    description: "打开菜单 → 远程管理"
+    selector:
+      name: 远程管理
+    do: click
+  - action: element_action
+    selector:
+      name: RemoteManagementAddServerBtn
+      role: push_button
+    do: click
+  - action: keyboard_press
+    key: escape
+  assert_steps:
+  - action: assert_element
+    selector:
+      name: RemoteManagementPanel
+  - action: assert_element
+    selector:
+      name: RemoteManagementPanel
+  - action: assert_element
+    selector:
+      name: RemoteManagementPanel
+  - action: assert_element
+    selector:
+      name: RemoteManagementPanel
+  - action: assert_element
+    selector:
+      name: ServerConfigOptDlg
+- id: suite_远程管理器_搜索服务器_1_s1
+  name: 远程管理器-搜索服务器
+  description: ''
+  tags: []
+  steps:
+  - action: dtk_context_menu
+    selector:
+      name: Terminal
+    items:
+    - 远程管理
+  - action: element_action
+    selector:
+      name: RemoteManagementSearchBtn
+    do: click
+  - action: keyboard_type
+    text: '!@#$%'
+  - action: keyboard_press
+    key: enter
+  - action: keyboard_hot_key
+    key: ctrl+a
+  - action: keyboard_type
+    text: test_server
+  - action: keyboard_press
+    key: enter
+  - action: keyboard_hot_key
+    key: ctrl+a
+  - action: keyboard_type
+    text: 192.168.1.1
+  - action: keyboard_press
+    key: enter
+  - action: keyboard_hot_key
+    key: ctrl+a
+  - action: keyboard_type
+    text: test_group
+  - action: keyboard_press
+    key: enter
+  assert_steps:
+  - action: assert_element
+    selector:
+      name: RemoteManagementSearchBtn
+  - action: assert_element
+    selector:
+      name: RemoteManagementSearchEdit
+  - action: assert_element
+    selector:
+      name: RemoteManagementPanel
+  - action: assert_element
+    selector:
+      name: RemoteManagementPanel
+  - action: assert_element
+    selector:
+      name: RemoteManagementPanel
+  - action: assert_element
+    selector:
+      name: RemoteManagementPanel
+- id: suite_远程管理器_搜索服务器_清除_2_s1
+  name: 远程管理器-搜索清除
+  description: ''
+  tags: []
+  steps:
+  - action: dtk_context_menu
+    selector:
+      name: Terminal
+    items:
+    - 远程管理
+  - action: element_action
+    selector:
+      name: RemoteManagementSearchBtn
+    do: click
+  - action: keyboard_type
+    text: test
+  - action: keyboard_hot_key
+    key: ctrl+a
+  - action: keyboard_press
+    key: backspace
+  assert_steps:
+  - action: assert_element
+    selector:
+      name: RemoteManagementSearchEdit
+- id: suite_远程管理器_服务器分组_1_s1
+  name: 远程管理器-服务器分组
+  description: ''
+  tags: []
+  steps:
+  - action: dtk_context_menu
+    selector:
+      name: Terminal
+    items:
+    - 远程管理
+  - action: element_action
+    selector:
+      name: RemoteManagementAddServerBtn
+    do: click
+  - action: keyboard_type
+    text: server_1
+  - action: keyboard_type
+    text: 192.168.1.1
+  - action: keyboard_type
+    text: user
+  - action: keyboard_type
+    text: password
+  - action: keyboard_type
+    text: new_group
+  - action: element_action
+    selector:
+      name: ServerConfigOptDlgAddBtn
+    do: click
+  - action: element_action
+    selector:
+      name: RemoteManagementAddServerBtn
+    do: click
+  - action: keyboard_type
+    text: server_2
+  - action: keyboard_type
+    text: 192.168.1.2
+  - action: keyboard_type
+    text: user
+  - action: keyboard_type
+    text: password
+  - action: keyboard_type
+    text: new_group
+  - action: element_action
+    selector:
+      name: ServerConfigOptDlgAddBtn
+    do: click
+  - action: keyboard_press
+    key: escape
+  assert_steps:
+  - action: assert_element
+    selector:
+      name: ServerConfigOptDlg
+  - action: assert_element
+    selector:
+      name: RemoteManagementPanel
+  - action: assert_element
+    selector:
+      name: RemoteManagementPanel
+- id: suite_远程管理器_删除服务器_1_s1
+  name: 远程管理器-删除服务器
+  description: ''
+  tags: []
+  steps:
+  - action: dtk_context_menu
+    selector:
+      name: Terminal
+    items:
+    - 远程管理
+  - action: keyboard_type
+    text: ''
+  - action: keyboard_press
+    key: right
+  - action: keyboard_press
+    key: enter
+  - action: keyboard_press
+    key: enter
+  - action: keyboard_press
+    key: tab
+  - action: keyboard_press
+    key: space
+  - action: keyboard_press
+    key: enter
+  - action: keyboard_press
+    key: enter
+  - action: keyboard_press
+    key: escape
+  - action: keyboard_press
+    key: enter
+  - action: keyboard_press
+    key: escape
+  - action: keyboard_press
+    key: enter
+  - action: keyboard_press
+    key: tab
+  - action: keyboard_press
+    key: enter
+  assert_steps:
+  - action: assert_element
+    selector:
+      name: ServerConfigOptDlg
+  - action: assert_element
+    selector:
+      name: DMessageBox
+  - action: assert_element
+    selector:
+      name: RemoteManagementPanel
+- id: suite_远程管理器_编辑服务器_1_s1
+  name: 远程管理器-编辑服务器
+  description: ''
+  tags: []
+  steps:
+  - action: dtk_context_menu
+    selector:
+      name: Terminal
+    items:
+    - 远程管理
+  - action: keyboard_press
+    key: right
+  - action: keyboard_press
+    key: enter
+  - action: keyboard_type
+    text: edited_server
+  - action: keyboard_press
+    key: tab
+  - action: keyboard_press
+    key: enter
+  - action: keyboard_press
+    key: right
+  - action: keyboard_press
+    key: enter
+  - action: keyboard_type
+    text: 10.0.0.1
+  - action: keyboard_press
+    key: tab
+  - action: keyboard_type
+    text: '2222'
+  - action: keyboard_press
+    key: tab
+  - action: keyboard_press
+    key: enter
+  - action: keyboard_press
+    key: right
+  - action: keyboard_press
+    key: enter
+  - action: keyboard_type
+    text: newuser
+  - action: keyboard_press
+    key: tab
+  - action: keyboard_type
+    text: newpassword
+  - action: keyboard_press
+    key: tab
+  - action: keyboard_press
+    key: enter
+  - action: keyboard_press
+    key: right
+  - action: keyboard_press
+    key: enter
+  - action: keyboard_type
+    text: edited_group
+  - action: keyboard_press
+    key: tab
+  - action: keyboard_press
+    key: enter
+  - action: keyboard_press
+    key: right
+  - action: keyboard_press
+    key: enter
+  - action: keyboard_type
+    text: /home
+  - action: keyboard_press
+    key: tab
+  - action: keyboard_press
+    key: enter
+  - action: keyboard_press
+    key: right
+  - action: keyboard_press
+    key: enter
+  - action: keyboard_type
+    text: ''
+  - action: keyboard_press
+    key: tab
+  - action: keyboard_press
+    key: enter
+  assert_steps:
+  - action: assert_element
+    selector:
+      name: ServerConfigOptDlg
+  - action: assert_element
+    selector:
+      name: RemoteManagementPanel
+  - action: assert_element
+    selector:
+      name: RemoteManagementPanel
+  - action: assert_element
+    selector:
+      name: RemoteManagementPanel
+  - action: assert_element
+    selector:
+      name: RemoteManagementPanel
+  - action: assert_element
+    selector:
+      name: RemoteManagementPanel
+  - action: assert_element
+    selector:
+      name: RemoteManagementPanel
+- id: suite_远程管理器_面板自动隐藏_1_s1
+  name: 远程管理器-面板自动隐藏
+  description: ''
+  tags: []
+  steps:
+  - action: dtk_context_menu
+    selector:
+      name: Terminal
+    items:
+    - 远程管理
+  - action: keyboard_press
+    key: escape
+  assert_steps:
+  - action: assert_element
+    selector:
+      name: RemoteManagementPanel
+- id: suite_远程管理器_必填项_1_s1
+  name: 远程管理器-必填项验证
+  description: ''
+  tags: []
+  steps:
+  - action: dtk_context_menu
+    selector:
+      name: Terminal
+    items:
+    - 远程管理
+  - action: element_action
+    selector:
+      name: RemoteManagementAddServerBtn
+    do: click
+  - action: keyboard_type
+    text: test_server
+  - action: keyboard_press
+    key: tab
+  - action: keyboard_press
+    key: enter
+  - action: keyboard_press
+    key: escape
+  - action: element_action
+    selector:
+      name: RemoteManagementAddServerBtn
+    do: click
+  - action: keyboard_type
+    text: 192.168.1.1
+  - action: keyboard_press
+    key: tab
+  - action: keyboard_press
+    key: enter
+  - action: keyboard_press
+    key: escape
+  - action: element_action
+    selector:
+      name: RemoteManagementAddServerBtn
+    do: click
+  - action: keyboard_type
+    text: user
+  - action: keyboard_press
+    key: tab
+  - action: keyboard_press
+    key: enter
+  - action: keyboard_press
+    key: escape
+  - action: element_action
+    selector:
+      name: RemoteManagementAddServerBtn
+    do: click
+  - action: keyboard_type
+    text: test_server
+  - action: keyboard_type
+    text: 192.168.1.1
+  - action: keyboard_press
+    key: tab
+  - action: keyboard_press
+    key: enter
+  - action: keyboard_press
+    key: escape
+  - action: element_action
+    selector:
+      name: RemoteManagementAddServerBtn
+    do: click
+  - action: keyboard_type
+    text: valid_server
+  - action: keyboard_type
+    text: 192.168.1.1
+  - action: keyboard_type
+    text: user
+  - action: keyboard_press
+    key: tab
+  - action: keyboard_press
+    key: enter
+  assert_steps:
+  - action: assert_element
+    selector:
+      name: ServerConfigOptDlg
+  - action: assert_element
+    selector:
+      name: ServerConfigOptDlg
+  - action: assert_element
+    selector:
+      name: ServerConfigOptDlg
+  - action: assert_element
+    selector:
+      name: ServerConfigOptDlg
+  - action: assert_element
+    selector:
+      name: ServerConfigOptDlg
+  - action: assert_element
+    selector:
+      name: RemoteManagementPanel
+- id: suite_远程管理器_添加按钮_1_s1
+  name: 远程管理器-添加按钮
+  description: ''
+  tags: []
+  steps:
+  - action: dtk_context_menu
+    selector:
+      name: Terminal
+    items:
+    - 远程管理
+  assert_steps:
+  - action: assert_element
+    selector:
+      name: RemoteManagementPanel
+  - action: assert_element
+    selector:
+      name: RemoteManagementAddServerBtn
+  - action: assert_element
+    selector:
+      name: RemoteManagementAddGroupBtn
+teardown:
+- action: session_stop

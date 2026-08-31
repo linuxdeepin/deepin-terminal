@@ -1,0 +1,333 @@
+name: 自定义命令_suite
+app: deepin-terminal
+description: ''
+module: 自定义命令
+tags: []
+fast_fail: false
+env_check: []
+setup:
+- action: session_start
+  command: deepin-terminal
+  wait: 5.0
+suites:
+- id: suite_自定义命令_输入名称_1_s1
+  name: 自定义命令-输入名称
+  description: ''
+  tags: []
+  steps:
+  - action: element_action
+    description: "打开菜单 → 自定义命令"
+    selector:
+      name: 自定义命令
+    do: click
+  - action: element_action
+    selector:
+      name: IconButton
+      role: panel
+    do: click
+  - action: keyboard_press
+    key: escape
+  - action: element_action
+    selector:
+      name: IconButton
+      role: panel
+    do: click
+  - action: keyboard_type
+    text: test_cmd_1
+  - action: keyboard_press
+    key: escape
+  - action: element_action
+    selector:
+      name: IconButton
+      role: panel
+    do: click
+  - action: keyboard_type
+    text: '*&！@#￥'
+  - action: keyboard_press
+    key: escape
+  - action: element_action
+    selector:
+      name: IconButton
+      role: panel
+    do: click
+  - action: keyboard_type
+    text: test命令_123@#
+  - action: keyboard_press
+    key: escape
+  assert_steps:
+  - action: assert_element
+    selector:
+      name: RightPanel
+- id: suite_自定义命令_输入命令_1_s1
+  name: 自定义命令-输入命令
+  description: ''
+  tags: []
+  steps:
+  - action: element_action
+    description: "打开菜单 → 自定义命令"
+    selector:
+      name: 自定义命令
+    do: click
+  - action: element_action
+    selector:
+      name: IconButton
+    do: click
+  - action: keyboard_press
+    key: escape
+  - action: element_action
+    selector:
+      name: IconButton
+    do: click
+  - action: keyboard_type
+    text: ls -la /usr
+  - action: keyboard_press
+    key: escape
+  - action: element_action
+    selector:
+      name: IconButton
+    do: click
+  - action: keyboard_type
+    text: echo 'this is a very long command that exceeds thirty two characters intentionally'
+  - action: keyboard_press
+    key: escape
+  - action: element_action
+    selector:
+      name: IconButton
+    do: click
+  - action: keyboard_type
+    text: echo 'hello!@#$%^&'
+  - action: keyboard_press
+    key: escape
+  - action: element_action
+    selector:
+      name: IconButton
+    do: click
+  - action: keyboard_type
+    text: systemctl status sshd
+  - action: keyboard_press
+    key: escape
+  assert_steps: []
+- id: suite_自定义命令_键入快捷键_1_s1
+  name: 自定义命令-键入快捷键
+  description: ''
+  tags: []
+  steps:
+  - action: element_action
+    description: "打开菜单 → 自定义命令"
+    selector:
+      name: 自定义命令
+    do: click
+  - action: element_action
+    selector:
+      name: IconButton
+    do: click
+  - action: keyboard_press
+    key: escape
+  - action: element_action
+    selector:
+      name: IconButton
+    do: click
+  - action: keyboard_press
+    key: tab
+  - action: keyboard_type
+    text: a
+  - action: keyboard_press
+    key: escape
+  assert_steps: []
+- id: suite_自定义命令_添加约束_1_s1
+  name: 自定义命令-添加约束
+  description: ''
+  tags: []
+  steps:
+  - action: element_action
+    description: "打开菜单 → 自定义命令"
+    selector:
+      name: 自定义命令
+    do: click
+  - action: element_action
+    selector:
+      name: IconButton
+    do: click
+  - action: keyboard_type
+    text: ls -la
+  - action: keyboard_press
+    key: tab
+  - action: keyboard_press
+    key: enter
+  - action: keyboard_press
+    key: escape
+  assert_steps: []
+- id: suite_自定义命令_自动粘贴_1_s1
+  name: 自定义命令-自动粘贴
+  description: ''
+  tags: []
+  steps:
+  - action: keyboard_type
+    text: deepin-music
+  - action: element_action
+    selector:
+      name: Terminal
+    do: click
+  - action: dtk_context_menu
+    selector:
+      name: Terminal
+    items:
+    - 复制
+  - action: dtk_context_menu
+    selector:
+      name: Terminal
+    items:
+    - 自定义命令
+  - action: element_action
+    selector:
+      name: IconButton
+    do: click
+  - action: keyboard_type
+    text: music_cmd
+  - action: keyboard_type
+    text: deepin-music
+  - action: keyboard_press
+    key: escape
+  assert_steps: []
+- id: suite_自定义命令_搜索_1_s1
+  name: 自定义命令-搜索
+  description: ''
+  tags: []
+  steps:
+  - action: dtk_context_menu
+    selector:
+      name: Terminal
+    items:
+    - 自定义命令
+  - action: keyboard_press
+    key: enter
+  - action: keyboard_type
+    text: test
+  - action: keyboard_type
+    text: ''
+  - action: keyboard_type
+    text: ls
+  - action: keyboard_type
+    text: ''
+  - action: keyboard_press
+    key: enter
+  - action: keyboard_press
+    key: escape
+  assert_steps: []
+- id: suite_自定义命令_编辑成功_1_s1
+  name: 自定义命令-编辑成功
+  description: ''
+  tags: []
+  steps:
+  - action: dtk_context_menu
+    selector:
+      name: Terminal
+    items:
+    - 自定义命令
+  - action: element_action
+    selector:
+      name: ListView
+      child_index: 0
+    do: click
+  - action: keyboard_type
+    text: edited_name_v2
+  - action: keyboard_press
+    key: tab
+  - action: keyboard_press
+    key: escape
+  assert_steps: []
+- id: suite_自定义命令_删除_1_s1
+  name: 自定义命令-删除
+  description: ''
+  tags: []
+  steps:
+  - action: dtk_context_menu
+    selector:
+      name: Terminal
+    items:
+    - 自定义命令
+  - action: element_action
+    selector:
+      name: ListView
+      child_index: 0
+    do: click
+  - action: element_action
+    selector:
+      name: closeButton
+    do: click
+  - action: keyboard_press
+    key: enter
+  - action: keyboard_press
+    key: escape
+  assert_steps: []
+- id: suite_自定义命令_运行_1_s1
+  name: 自定义命令-运行
+  description: ''
+  tags: []
+  steps:
+  - action: dtk_context_menu
+    selector:
+      name: Terminal
+    items:
+    - 自定义命令
+  - action: element_action
+    selector:
+      name: IconButton
+    do: click
+  - action: keyboard_type
+    text: 深度音乐
+  - action: keyboard_press
+    key: tab
+  - action: keyboard_type
+    text: echo 'hello'
+  - action: keyboard_press
+    key: tab
+  - action: element_action
+    selector:
+      name: ListView
+      child_index: 0
+    do: click
+  - action: keyboard_press
+    key: escape
+  assert_steps: []
+- id: suite_自定义命令_开启_1_s1
+  name: 自定义命令-开启
+  description: ''
+  tags: []
+  steps:
+  - action: dtk_context_menu
+    selector:
+      name: Terminal
+    items:
+    - 自定义命令
+  - action: mouse_click
+  - action: element_action
+    description: "打开菜单 → 自定义命令"
+    selector:
+      name: 自定义命令
+    do: click
+  - action: mouse_click
+  assert_steps:
+  - action: assert_element
+    selector:
+      name: RightPanel
+  - action: assert_element
+    selector:
+      name: RightPanel
+- id: suite_自定义命令_隐藏_1_s1
+  name: 自定义命令-隐藏
+  description: ''
+  tags: []
+  steps:
+  - action: dtk_context_menu
+    selector:
+      name: Terminal
+    items:
+    - 自定义命令
+  - action: mouse_click
+  assert_steps:
+  - action: assert_element
+    selector:
+      name: RightPanel
+teardown:
+- action: session_stop

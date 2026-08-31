@@ -1,0 +1,44 @@
+name: 标签页移动_suite
+app: deepin-terminal
+description: ''
+module: 标签页移动
+tags: []
+fast_fail: false
+env_check: []
+setup:
+- action: session_start
+  command: deepin-terminal
+  wait: 5.0
+suites:
+- id: suite_标签页移动_内置主题显示_1_s1
+  name: 内置主题显示以及功能
+  description: ''
+  tags: []
+  steps:
+  - action: element_action
+    selector:
+      name: 主题
+    do: click
+  - action: wait
+    wait: 0.3
+  - action: element_action
+    selector:
+      name: 浅色
+    do: click
+  - action: wait
+    wait: 1.0
+  - action: element_action
+    selector:
+      name: 主题
+    do: click
+  - action: wait
+    wait: 0.3
+  - action: element_action
+    selector:
+      name: 深色
+    do: click
+  - action: wait
+    wait: 1.0
+  assert_steps: []
+teardown:
+- action: session_stop

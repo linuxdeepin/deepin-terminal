@@ -1,0 +1,30 @@
+name: 右键菜单工作区_suite
+app: deepin-terminal
+description: ''
+module: 右键菜单工作区
+tags: []
+fast_fail: false
+env_check: []
+setup:
+- action: session_start
+  command: deepin-terminal
+  wait: 5.0
+suites:
+- id: suite_右键菜单工作区_远程管理_1_s1
+  name: 右键菜单工作区-远程管理
+  description: ''
+  tags: []
+  steps:
+  - action: dtk_context_menu
+    selector:
+      name: Terminal
+    items:
+    - 远程管理
+  - action: keyboard_press
+    key: escape
+  assert_steps:
+  - action: assert_element
+    selector:
+      name: RemoteManagementPanel
+teardown:
+- action: session_stop

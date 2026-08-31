@@ -1,0 +1,103 @@
+name: 设置界面快捷键_suite
+app: deepin-terminal
+description: ''
+module: 设置界面快捷键
+tags: []
+fast_fail: false
+env_check: []
+setup:
+- action: session_start
+  command: deepin-terminal
+  wait: 5.0
+suites:
+- id: suite_设置界面快捷键_1_s1
+  name: 设置-快捷键模块测试
+  description: ''
+  tags: []
+  steps:
+  - action: element_action
+    description: "打开菜单 → 设置"
+    selector:
+      name: 设置
+    do: click
+  - action: wait
+    wait: 1.0
+  - action: keyboard_press
+    key: escape
+  assert_steps:
+  - action: assert_element
+    selector:
+      name: NormalWindow
+- id: suite_设置界面快捷键_4_s1
+  name: 设置-新建标签页快捷键测试
+  description: ''
+  tags: []
+  steps:
+  - action: keyboard_hot_key
+    key: ctrl+shift+t
+  - action: wait
+    wait: 1.0
+  - action: keyboard_hot_key
+    key: alt+w
+  - action: wait
+    wait: 1.0
+  assert_steps:
+  - action: assert_element
+    selector:
+      name: TabBar
+- id: suite_设置界面快捷键_5_s1
+  name: 设置-关闭标签页快捷键测试
+  description: ''
+  tags: []
+  steps:
+  - action: keyboard_hot_key
+    key: ctrl+shift+t
+  - action: wait
+    wait: 1.0
+  - action: keyboard_hot_key
+    key: alt+w
+  - action: wait
+    wait: 1.0
+  assert_steps:
+  - action: assert_element
+    selector:
+      name: TabBar
+- id: suite_设置界面快捷键_6_s1
+  name: 设置-纵向分屏快捷键测试
+  description: ''
+  tags: []
+  steps:
+  - action: keyboard_hot_key
+    key: ctrl+shift+j
+  - action: wait
+    wait: 1.0
+  - action: keyboard_hot_key
+    key: alt+q
+  - action: wait
+    wait: 1.0
+  assert_steps:
+  - action: assert_element
+    selector:
+      name: TabBar
+- id: suite_设置界面快捷键_8_s1
+  name: 设置-关闭工作区快捷键测试
+  description: ''
+  tags: []
+  steps:
+  - action: keyboard_hot_key
+    key: ctrl+shift+j
+  - action: wait
+    wait: 1.0
+  - action: keyboard_hot_key
+    key: alt+q
+  - action: wait
+    wait: 1.0
+  assert_steps:
+  - action: assert_element
+    selector:
+      name: TabBar
+  - action: assert_element
+    selector:
+      name: TabBar
+teardown:
+- action: session_stop

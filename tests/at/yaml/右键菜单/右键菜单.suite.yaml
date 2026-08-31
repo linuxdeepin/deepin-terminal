@@ -1,0 +1,218 @@
+name: 右键菜单_suite
+app: deepin-terminal
+description: ''
+module: 右键菜单
+tags: []
+fast_fail: false
+env_check: []
+setup:
+- action: session_start
+  command: deepin-terminal
+  wait: 5.0
+suites:
+- id: suite_右键菜单_1_s1
+  name: 右键菜单基本显示
+  description: ''
+  tags: []
+  steps:
+  - action: dtk_context_menu
+    selector:
+      name: Terminal
+    items: []
+  - action: dtk_context_menu
+    selector:
+      name: Terminal
+    items:
+    - 全屏
+  - action: keyboard_press
+    key: escape
+  - action: dtk_context_menu
+    selector:
+      name: Terminal
+    items:
+    - 查找
+  - action: keyboard_press
+    key: escape
+  - action: dtk_context_menu
+    selector:
+      name: Terminal
+    items:
+    - 远程管理
+  - action: dtk_context_menu
+    selector:
+      name: Terminal
+    items:
+    - 设置
+  - action: keyboard_press
+    key: escape
+  assert_steps:
+  - action: assert_element
+    selector:
+      name: NormalWindow
+  - action: assert_element
+    selector:
+      name: PageSearchBar
+- id: suite_右键菜单分屏操作_1_s1
+  name: 右键菜单分屏操作
+  description: ''
+  tags: []
+  steps:
+  - action: dtk_context_menu
+    selector:
+      name: Terminal
+    items:
+    - 横向分屏
+  - action: dtk_context_menu
+    selector:
+      name: Terminal
+    items:
+    - 纵向分屏
+  - action: dtk_context_menu
+    selector:
+      name: Terminal
+    items:
+    - 关闭工作区
+  - action: dtk_context_menu
+    selector:
+      name: Terminal
+    items:
+    - 关闭其他工作区
+  assert_steps:
+  - action: assert_element
+    selector:
+      name: NormalWindow
+  - action: assert_element
+    selector:
+      name: NormalWindow
+- id: suite_右键菜单新建工作区_1_s1
+  name: 右键菜单新建工作区
+  description: ''
+  tags: []
+  steps:
+  - action: dtk_context_menu
+    selector:
+      name: Terminal
+    items:
+    - 新建标签页
+  - action: dtk_context_menu
+    selector:
+      name: Terminal
+    items:
+    - 查找
+  - action: keyboard_press
+    key: escape
+  - action: dtk_context_menu
+    selector:
+      name: Terminal
+    items:
+    - 设置
+  - action: keyboard_press
+    key: escape
+  assert_steps:
+  - action: assert_element
+    selector:
+      name: TabBar
+  - action: assert_element
+    selector:
+      name: PageSearchBar
+- id: suite_链接右键菜单_1_s1
+  name: 链接右键菜单
+  description: ''
+  tags: []
+  steps:
+  - action: keyboard_type
+    text: "www.bing.com"
+  - action: keyboard_press
+    key: return
+  - action: wait
+    wait: 0.3
+  - action: dtk_context_menu
+    selector:
+      name: Terminal
+    items:
+    - 打开链接
+    - Bing
+  - action: keyboard_press
+    key: escape
+  - action: dtk_context_menu
+    selector:
+      name: Terminal
+    items:
+    - 复制链接
+  assert_steps:
+  - action: assert_element
+    selector:
+      name: NormalWindow
+  - action: assert_element
+    selector:
+      name: NormalWindow
+- id: suite_右键菜单分割线_1_s1
+  name: 右键菜单分割线
+  description: ''
+  tags: []
+  steps:
+  - action: dtk_context_menu
+    selector:
+      name: Terminal
+    items: []
+  - action: dtk_context_menu
+    selector:
+      name: Terminal
+    items:
+    - 粘贴
+  - action: dtk_context_menu
+    selector:
+      name: Terminal
+    items:
+    - 关闭其他工作区
+  assert_steps:
+  - action: assert_element
+    selector:
+      name: NormalWindow
+  - action: assert_element
+    selector:
+      name: NormalWindow
+  - action: assert_element
+    selector:
+      name: NormalWindow
+- id: suite_重命名标题_1_s1
+  name: 重命名标题
+  description: ''
+  tags: []
+  steps:
+  - action: dtk_context_menu
+    selector:
+      name: TabBar
+    items:
+    - 重命名标题
+  - action: keyboard_press
+    key: escape
+  - action: dtk_context_menu
+    selector:
+      name: TabBar
+    items:
+    - 重命名标题
+  - action: keyboard_type
+    text: 新标签标题
+  - action: keyboard_press
+    key: enter
+  assert_steps:
+  - action: assert_element
+    selector:
+      name: TabBar
+  - action: assert_element
+    selector:
+      name: TabBar
+- id: suite_右键菜单_远程管理存在性_1_s1
+  name: 右键菜单-远程管理菜单项
+  description: ''
+  tags: []
+  steps:
+  - action: keyboard_hot_key
+    key: alt+m
+  assert_steps:
+  - action: assert_element
+    selector:
+      name: NormalWindow
+teardown:
+- action: session_stop

@@ -1,0 +1,28 @@
+name: 主菜单_suite
+app: deepin-terminal
+description: ''
+module: 主菜单
+tags: []
+fast_fail: false
+env_check: []
+setup:
+- action: session_start
+  command: deepin-terminal
+  wait: 5.0
+suites:
+- id: suite_主菜单_远程管理_1_s1
+  name: 主菜单-远程管理插件
+  description: ''
+  tags: []
+  steps:
+  - action: element_action
+    description: "打开菜单 → 远程管理"
+    selector:
+      name: 远程管理
+    do: click
+  assert_steps:
+  - action: assert_element
+    selector:
+      name: RemoteManagementPanel
+teardown:
+- action: session_stop

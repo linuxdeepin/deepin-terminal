@@ -1,0 +1,235 @@
+name: 工作区_suite
+app: deepin-terminal
+description: ''
+module: 工作区
+tags: []
+fast_fail: false
+env_check: []
+setup:
+- action: session_start
+  command: deepin-terminal
+  wait: 5.0
+suites:
+- id: suite_切换工作区_1_s1
+  name: 切换工作区
+  description: ''
+  tags: []
+  steps:
+  - action: dtk_context_menu
+    selector:
+      name: Terminal
+    items:
+    - 新建工作区
+  - action: dtk_context_menu
+    selector:
+      name: Terminal
+    items:
+    - 新建工作区
+  - action: keyboard_hot_key
+    key: ctrl+tab
+  - action: keyboard_hot_key
+    key: ctrl+shift+tab
+  - action: keyboard_hot_key
+    key: ctrl+shift+1
+  - action: keyboard_hot_key
+    key: ctrl+shift+2
+  assert_steps:
+  - action: assert_element
+    selector:
+      name: TabBar
+- id: suite_删除工作区_1_s1
+  name: 删除工作区
+  description: ''
+  tags: []
+  steps:
+  - action: dtk_context_menu
+    selector:
+      name: Terminal
+    items:
+    - 新建工作区
+  - action: keyboard_hot_key
+    key: alt+w
+  - action: dtk_context_menu
+    selector:
+      name: Terminal
+    items:
+    - 新建工作区
+  - action: dtk_context_menu
+    selector:
+      name: Terminal
+    items:
+    - 新建工作区
+  - action: keyboard_hot_key
+    key: alt+w
+  assert_steps:
+  - action: assert_element
+    selector:
+      name: TabBar
+- id: suite_窗口删除_1_s1
+  name: 窗口删除（分屏窗口关闭）
+  description: ''
+  tags: []
+  steps:
+  - action: dtk_context_menu
+    selector:
+      name: Terminal
+    items:
+    - 横向分屏
+  - action: dtk_context_menu
+    selector:
+      name: Terminal
+    items:
+    - 关闭窗口
+  - action: dtk_context_menu
+    selector:
+      name: Terminal
+    items:
+    - 横向分屏
+  - action: dtk_context_menu
+    selector:
+      name: Terminal
+    items:
+    - 纵向分屏
+  - action: dtk_context_menu
+    selector:
+      name: Terminal
+    items:
+    - 关闭其他窗口
+  assert_steps:
+  - action: assert_element
+    selector:
+      name: NormalWindow
+- id: suite_标签标题编号分屏_1_s1
+  name: 设置标签标题编号后，对标签页进行分屏操作
+  description: ''
+  tags: []
+  steps:
+  - action: dtk_context_menu
+    selector:
+      name: Terminal
+    items:
+    - 横向分屏
+  assert_steps:
+  - action: assert_element
+    selector:
+      name: TabBar
+- id: suite_工作区_新建工作区_1_s1
+  name: 工作区-新建工作区
+  description: ''
+  tags: []
+  steps:
+  - action: element_action
+    selector:
+      name: TabBar
+    do: click
+  - action: keyboard_type
+    text: ''
+  assert_steps:
+  - action: assert_element
+    selector:
+      name: NormalWindow
+  - action: assert_element
+    selector:
+      name: NormalWindow
+- id: suite_工作区_标签页消息提醒_1_s1
+  name: 工作区-标签页消息提醒
+  description: ''
+  tags: []
+  steps:
+  - action: element_action
+    selector:
+      name: TabBar
+    do: click
+  - action: element_action
+    selector:
+      name: TabBar
+    do: click
+  - action: keyboard_type
+    text: sleep 2
+  - action: keyboard_press
+    key: enter
+  - action: element_action
+    selector:
+      name: TabBar
+      child_index: 0
+    do: click
+  assert_steps:
+  - action: assert_element
+    selector:
+      name: TabBar
+- id: suite_工作区_窗口横向分屏_1_s1
+  name: 工作区-窗口横向分屏
+  description: ''
+  tags: []
+  steps:
+  - action: dtk_context_menu
+    selector:
+      name: Terminal
+    items:
+    - 横向分屏
+  - action: keyboard_type
+    text: ''
+  assert_steps:
+  - action: assert_element
+    selector:
+      name: NormalWindow
+- id: suite_工作区_窗口纵向分屏_1_s1
+  name: 工作区-窗口纵向分屏
+  description: ''
+  tags: []
+  steps:
+  - action: dtk_context_menu
+    selector:
+      name: Terminal
+    items:
+    - 纵向分屏
+  - action: keyboard_type
+    text: ''
+  assert_steps:
+  - action: assert_element
+    selector:
+      name: NormalWindow
+- id: suite_工作区_窗口选择_1_s1
+  name: 工作区-窗口选择
+  description: ''
+  tags: []
+  steps:
+  - action: dtk_context_menu
+    selector:
+      name: Terminal
+    items:
+    - 横向分屏
+  - action: dtk_context_menu
+    selector:
+      name: Terminal
+    items:
+    - 纵向分屏
+  - action: keyboard_type
+    text: ''
+  assert_steps:
+  - action: assert_element
+    selector:
+      name: NormalWindow
+- id: suite_工作区_滚动条显示_1_s1
+  name: 工作区-滚动条显示
+  description: ''
+  tags: []
+  steps:
+  - action: keyboard_type
+    text: ls -la /usr/bin
+  - action: keyboard_press
+    key: enter
+  - action: keyboard_type
+    text: ''
+  - action: keyboard_type
+    text: ''
+  assert_steps: []
+- id: suite_工作区_窗口标题显示_1_s1
+  name: 工作区-窗口标题显示
+  description: ''
+  tags: []
+  steps: []
+  assert_steps:
+  - action: assert_window
+teardown:
+- action: session_stop
