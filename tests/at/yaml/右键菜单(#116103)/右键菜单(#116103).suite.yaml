@@ -1,0 +1,74 @@
+name: 右键菜单(#116103)_suite
+app: deepin-terminal
+description: ''
+module: 右键菜单(#116103)
+tags: []
+fast_fail: false
+env_check: []
+setup:
+- action: session_start
+  command: deepin-terminal
+  wait: 3.0
+suites:
+- id: case_1653611_s1_s1
+  name: 右键菜单
+  description: ''
+  tags: []
+  steps:
+  - action: dtk_context_menu
+    items: []
+  - action: dtk_context_menu
+    items: []
+  - action: dtk_context_menu
+    items: []
+  - action: dtk_context_menu
+    items: []
+  assert_steps:
+  - action: assert_element
+    selector:
+      role: menu
+- id: case_1653609_s1_s1
+  name: 链接
+  description: ''
+  tags: []
+  steps:
+  - action: dtk_context_menu
+    items: []
+  - action: dtk_context_menu
+    items: []
+  - action: dtk_context_menu
+    items: []
+  - action: dtk_context_menu
+    items: []
+  assert_steps:
+  - action: assert_element
+    selector:
+      role: menu
+- id: case_1653607_s1_s1
+  name: 分割线
+  description: ''
+  tags: []
+  steps:
+  - action: dtk_context_menu
+    items: []
+  - action: dtk_context_menu
+    items: []
+  - action: dtk_context_menu
+    items: []
+  - action: dtk_context_menu
+    items: []
+  assert_steps:
+  - action: assert_element
+    selector:
+      role: menu
+- id: case_1653605_s1_s1
+  name: 重命名标题
+  description: ''
+  tags: []
+  steps: []
+  assert_steps:
+  - action: assert_element
+    selector:
+      role: menu
+teardown:
+- action: session_stop

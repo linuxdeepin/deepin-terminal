@@ -1,0 +1,166 @@
+name: 右键菜单工作区(#116125)_suite
+app: deepin-terminal
+description: ''
+module: 右键菜单工作区(#116125)
+tags: []
+fast_fail: false
+env_check: []
+setup:
+- action: session_start
+  command: deepin-terminal
+  wait: 3.0
+suites:
+- id: case_1653213_s1_s1
+  name: 右键菜单显示项
+  description: ''
+  tags: []
+  steps:
+  - action: dtk_context_menu
+    items: []
+  - action: dtk_context_menu
+    items: []
+  - action: dtk_context_menu
+    items: []
+  - action: dtk_context_menu
+    items: []
+  assert_steps:
+  - action: assert_element
+    selector:
+      role: menu
+- id: case_1653211_s1_s1
+  name: 粘贴
+  description: ''
+  tags: []
+  steps:
+  - action: dtk_context_menu
+    items: []
+  - action: dtk_context_menu
+    items: []
+  assert_steps:
+  - action: assert_element
+    selector:
+      role: menu
+- id: case_1653207_s1_s1
+  name: 自定义命令
+  description: ''
+  tags: []
+  steps:
+  - action: dtk_context_menu
+    items: []
+  - action: dtk_context_menu
+    items: []
+  - action: dtk_context_menu
+    items: []
+  assert_steps:
+  - action: assert_element
+    selector:
+      role: menu
+- id: case_1653205_s1_s1
+  name: 编码方式
+  description: ''
+  tags: []
+  steps:
+  - action: dtk_context_menu
+    items: []
+  - action: dtk_context_menu
+    items: []
+  - action: dtk_context_menu
+    items: []
+  - action: dtk_context_menu
+    items: []
+  - action: dtk_context_menu
+    items: []
+  assert_steps:
+  - action: assert_element
+    selector:
+      role: menu
+- id: case_1653199_s1_s1
+  name: 远程管理
+  description: ''
+  tags: []
+  steps:
+  - action: dtk_context_menu
+    items: []
+  - action: dtk_context_menu
+    items: []
+  assert_steps:
+  - action: assert_element
+    selector:
+      role: menu
+- id: case_1653197_s1_s1
+  name: '[015]查找'
+  description: ''
+  tags: []
+  steps:
+  - action: dtk_context_menu
+    items: []
+  - action: dtk_context_menu
+    items: []
+  assert_steps:
+  - action: assert_element
+    selector:
+      role: menu
+- id: case_1653195_s1_s1
+  name: 纵向分屏
+  description: ''
+  tags: []
+  steps:
+  - action: dtk_context_menu
+    items: []
+  - action: dtk_context_menu
+    items: []
+  - action: dtk_context_menu
+    items: []
+  assert_steps:
+  - action: assert_element
+    selector:
+      role: menu
+- id: case_1653193_s1_s1
+  name: 横向分屏
+  description: ''
+  tags: []
+  steps:
+  - action: dtk_context_menu
+    items: []
+  - action: dtk_context_menu
+    items: []
+  assert_steps:
+  - action: assert_element
+    selector:
+      role: menu
+- id: case_1653189_s1_s1
+  name: 本地编码
+  description: ''
+  tags: []
+  steps:
+  - action: dtk_context_menu
+    items: []
+  - action: dtk_context_menu
+    items: []
+  - action: dtk_context_menu
+    items: []
+  - action: dtk_context_menu
+    items: []
+  assert_steps:
+  - action: assert_element
+    selector:
+      role: menu
+- id: case_1653185_s1_s1
+  name: 插入不同类型标签标题格式
+  description: ''
+  tags: []
+  steps:
+  - action: dtk_context_menu
+    items: []
+  - action: dtk_context_menu
+    items: []
+  - action: dtk_context_menu
+    items: []
+  - action: dtk_context_menu
+    items: []
+  assert_steps:
+  - action: assert_element
+    selector:
+      role: menu
+teardown:
+- action: session_stop

@@ -1,0 +1,68 @@
+app: deepin-terminal
+tree:
+- accessible_name: NormalWindow
+  children: []
+  id: n0
+  name: deepin-terminal
+  role: frame
+- accessible_name: TitleBar
+  children: []
+  id: n1
+  name: TitleBar
+  role: panel
+- accessible_name: TabBar
+  children: []
+  id: n2
+  name: TabBar
+  role: page tab list
+- accessible_name: Terminal
+  children: []
+  id: n3
+  name: Terminal
+  role: terminal
+- accessible_name: PageSearchBar
+  children:
+  - accessible_name: Search
+    children: []
+    id: n5
+    name: Search
+    role: text
+  - accessible_name: FindNext
+    children: []
+    id: n6
+    name: FindNext
+    role: push button
+  - accessible_name: FindPrevious
+    children: []
+    id: n7
+    name: FindPrevious
+    role: push button
+  id: n4
+  name: PageSearchBar
+  role: floating panel
+- accessible_name: RightPanel
+  children: []
+  id: n8
+  name: RightPanel
+  role: panel
+- accessible_name: CommonPanel
+  children: []
+  id: n9
+  name: CommonPanel
+  role: panel
+- accessible_name: IconButton
+  children: []
+  id: n10
+  name: IconButton
+  role: push button
+- accessible_name: TermCommandLinkButton
+  children: []
+  id: n11
+  name: TermCommandLinkButton
+  role: push button
+- accessible_name: FontSizeSpinBox
+  children: []
+  id: n12
+  name: FontSizeSpinBox
+  role: spin button
+version: '1.0'

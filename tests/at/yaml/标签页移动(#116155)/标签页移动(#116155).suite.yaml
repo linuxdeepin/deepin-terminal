@@ -1,0 +1,44 @@
+name: 标签页移动(#116155)_suite
+app: deepin-terminal
+description: ''
+module: 标签页移动(#116155)
+tags: []
+fast_fail: false
+env_check: []
+setup:
+- action: session_start
+  command: deepin-terminal
+  wait: 3.0
+suites:
+- id: case_1652911_s1_s1
+  name: 内置主题显示以及功能
+  description: ''
+  tags: []
+  steps: []
+  assert_steps:
+  - action: assert_element
+    selector:
+      name: TabBar
+      role: page tab list
+- id: case_1652909_s1_s1
+  name: 拖动标签页位置
+  description: ''
+  tags: []
+  steps: []
+  assert_steps:
+  - action: assert_element
+    selector:
+      name: TabBar
+      role: page tab list
+- id: case_1652903_s1_s1
+  name: 普通窗口标签页拖拽到新窗口
+  description: ''
+  tags: []
+  steps: []
+  assert_steps:
+  - action: assert_element
+    selector:
+      name: TabBar
+      role: page tab list
+teardown:
+- action: session_stop

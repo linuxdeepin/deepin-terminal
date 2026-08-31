@@ -1,0 +1,24 @@
+name: 超链接(#116163)_suite
+app: deepin-terminal
+description: ''
+module: 超链接(#116163)
+tags: []
+fast_fail: false
+env_check: []
+setup:
+- action: session_start
+  command: deepin-terminal
+  wait: 3.0
+suites:
+- id: case_1652877_s1_s1
+  name: 鼠标放置超链接处显示以及跳转
+  description: ''
+  tags: []
+  steps: []
+  assert_steps:
+  - action: assert_element
+    selector:
+      name: deepin-terminal
+      role: frame
+teardown:
+- action: session_stop

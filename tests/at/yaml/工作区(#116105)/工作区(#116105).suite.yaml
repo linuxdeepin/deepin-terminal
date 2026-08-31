@@ -1,0 +1,44 @@
+name: 工作区(#116105)_suite
+app: deepin-terminal
+description: ''
+module: 工作区(#116105)
+tags: []
+fast_fail: false
+env_check: []
+setup:
+- action: session_start
+  command: deepin-terminal
+  wait: 3.0
+suites:
+- id: case_1653603_s1_s1
+  name: 切换工作区
+  description: ''
+  tags: []
+  steps: []
+  assert_steps:
+  - action: assert_element
+    selector:
+      name: TabBar
+      role: page tab list
+- id: case_1653601_s1_s1
+  name: 删除工作区
+  description: ''
+  tags: []
+  steps: []
+  assert_steps:
+  - action: assert_element
+    selector:
+      name: TabBar
+      role: page tab list
+- id: case_1653599_s1_s1
+  name: 窗口删除
+  description: ''
+  tags: []
+  steps: []
+  assert_steps:
+  - action: assert_element
+    selector:
+      name: TabBar
+      role: page tab list
+teardown:
+- action: session_stop

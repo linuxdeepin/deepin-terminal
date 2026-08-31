@@ -1,0 +1,232 @@
+name: 右键菜单标签页(#116127)_suite
+app: deepin-terminal
+description: ''
+module: 右键菜单标签页(#116127)
+tags: []
+fast_fail: false
+env_check: []
+setup:
+- action: session_start
+  command: deepin-terminal
+  wait: 3.0
+suites:
+- id: case_1653173_s1_s1
+  name: 关闭其它标签页
+  description: ''
+  tags: []
+  steps:
+  - action: dtk_context_menu
+    selector:
+      name: TabBar
+      role: page tab list
+    items: []
+  - action: dtk_context_menu
+    selector:
+      name: TabBar
+      role: page tab list
+    items: []
+  - action: dtk_context_menu
+    selector:
+      name: TabBar
+      role: page tab list
+    items: []
+  assert_steps:
+  - action: assert_element
+    selector:
+      role: menu
+- id: case_1653171_s1_s1
+  name: 关闭标签页
+  description: ''
+  tags: []
+  steps:
+  - action: dtk_context_menu
+    selector:
+      name: TabBar
+      role: page tab list
+    items: []
+  - action: dtk_context_menu
+    selector:
+      name: TabBar
+      role: page tab list
+    items: []
+  assert_steps:
+  - action: assert_element
+    selector:
+      role: menu
+- id: case_1653169_s1_s1
+  name: 标签页右键菜单
+  description: ''
+  tags: []
+  steps:
+  - action: dtk_context_menu
+    selector:
+      name: TabBar
+      role: page tab list
+    items: []
+  - action: dtk_context_menu
+    selector:
+      name: TabBar
+      role: page tab list
+    items: []
+  - action: dtk_context_menu
+    selector:
+      name: TabBar
+      role: page tab list
+    items: []
+  - action: dtk_context_menu
+    selector:
+      name: TabBar
+      role: page tab list
+    items: []
+  - action: dtk_context_menu
+    selector:
+      name: TabBar
+      role: page tab list
+    items: []
+  - action: dtk_context_menu
+    selector:
+      name: TabBar
+      role: page tab list
+    items: []
+  - action: dtk_context_menu
+    selector:
+      name: TabBar
+      role: page tab list
+    items: []
+  assert_steps:
+  - action: assert_element
+    selector:
+      role: menu
+- id: case_1653163_s1_s1
+  name: 标签页右键菜单重命名标题
+  description: ''
+  tags: []
+  steps:
+  - action: dtk_context_menu
+    selector:
+      name: TabBar
+      role: page tab list
+    items: []
+  - action: dtk_context_menu
+    selector:
+      name: TabBar
+      role: page tab list
+    items: []
+  - action: dtk_context_menu
+    selector:
+      name: TabBar
+      role: page tab list
+    items: []
+  - action: dtk_context_menu
+    selector:
+      name: TabBar
+      role: page tab list
+    items: []
+  assert_steps:
+  - action: assert_element
+    selector:
+      role: menu
+- id: case_1653161_s1_s1
+  name: 插入标签标题格式功能
+  description: ''
+  tags: []
+  steps:
+  - action: dtk_context_menu
+    selector:
+      name: TabBar
+      role: page tab list
+    items: []
+  - action: dtk_context_menu
+    selector:
+      name: TabBar
+      role: page tab list
+    items: []
+  - action: dtk_context_menu
+    selector:
+      name: TabBar
+      role: page tab list
+    items: []
+  - action: dtk_context_menu
+    selector:
+      name: TabBar
+      role: page tab list
+    items: []
+  - action: dtk_context_menu
+    selector:
+      name: TabBar
+      role: page tab list
+    items: []
+  - action: dtk_context_menu
+    selector:
+      name: TabBar
+      role: page tab list
+    items: []
+  assert_steps:
+  - action: assert_element
+    selector:
+      role: menu
+- id: case_1653159_s1_s1
+  name: 插入远程标签标题格式功能
+  description: ''
+  tags: []
+  steps:
+  - action: dtk_context_menu
+    selector:
+      name: TabBar
+      role: page tab list
+    items: []
+  - action: dtk_context_menu
+    selector:
+      name: TabBar
+      role: page tab list
+    items: []
+  - action: dtk_context_menu
+    selector:
+      name: TabBar
+      role: page tab list
+    items: []
+  - action: dtk_context_menu
+    selector:
+      name: TabBar
+      role: page tab list
+    items: []
+  - action: dtk_context_menu
+    selector:
+      name: TabBar
+      role: page tab list
+    items: []
+  - action: dtk_context_menu
+    selector:
+      name: TabBar
+      role: page tab list
+    items: []
+  assert_steps:
+  - action: assert_element
+    selector:
+      role: menu
+- id: case_1653153_s1_s1
+  name: 鼠标指针在标签页上，点击鼠标中键
+  description: ''
+  tags: []
+  steps:
+  - action: dtk_context_menu
+    selector:
+      name: TabBar
+      role: page tab list
+    items: []
+  - action: dtk_context_menu
+    selector:
+      name: TabBar
+      role: page tab list
+    items: []
+  - action: dtk_context_menu
+    selector:
+      name: TabBar
+      role: page tab list
+    items: []
+  assert_steps:
+  - action: assert_element
+    selector:
+      role: menu
+teardown:
+- action: session_stop

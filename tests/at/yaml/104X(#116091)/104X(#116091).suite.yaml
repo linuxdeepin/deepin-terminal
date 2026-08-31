@@ -1,0 +1,74 @@
+name: 104X(#116091)_suite
+app: deepin-terminal
+description: ''
+module: 104X(#116091)
+tags: []
+fast_fail: false
+env_check: []
+setup:
+- action: session_start
+  command: deepin-terminal
+  wait: 3.0
+suites:
+- id: case_1652989_s1_s1
+  name: 正常窗口
+  description: ''
+  tags: []
+  steps: []
+  assert_steps:
+  - action: assert_element
+    selector:
+      name: deepin-terminal
+      role: frame
+- id: case_1652983_s1_s1
+  name: 全屏窗口
+  description: ''
+  tags: []
+  steps: []
+  assert_steps:
+  - action: assert_element
+    selector:
+      name: deepin-terminal
+      role: frame
+- id: case_1652981_s1_s1
+  name: '[005]雷神窗口显示'
+  description: ''
+  tags: []
+  steps: []
+  assert_steps:
+  - action: assert_element
+    selector:
+      name: deepin-terminal
+      role: frame
+- id: case_1652979_s1_s1
+  name: 雷神窗口切换
+  description: ''
+  tags: []
+  steps: []
+  assert_steps:
+  - action: assert_element
+    selector:
+      name: deepin-terminal
+      role: frame
+- id: case_1652977_s1_s1
+  name: windowmod
+  description: ''
+  tags: []
+  steps: []
+  assert_steps:
+  - action: assert_element
+    selector:
+      name: deepin-terminal
+      role: frame
+- id: case_1652975_s1_s1
+  name: 优先级
+  description: ''
+  tags: []
+  steps: []
+  assert_steps:
+  - action: assert_element
+    selector:
+      name: deepin-terminal
+      role: frame
+teardown:
+- action: session_stop

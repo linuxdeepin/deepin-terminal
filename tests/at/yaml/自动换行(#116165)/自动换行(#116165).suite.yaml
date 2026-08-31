@@ -1,0 +1,24 @@
+name: 自动换行(#116165)_suite
+app: deepin-terminal
+description: ''
+module: 自动换行(#116165)
+tags: []
+fast_fail: false
+env_check: []
+setup:
+- action: session_start
+  command: deepin-terminal
+  wait: 3.0
+suites:
+- id: case_1652875_s1_s1
+  name: 终端界面内容自动换行显示
+  description: ''
+  tags: []
+  steps: []
+  assert_steps:
+  - action: assert_element
+    selector:
+      name: deepin-terminal
+      role: frame
+teardown:
+- action: session_stop

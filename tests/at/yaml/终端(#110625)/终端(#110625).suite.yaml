@@ -1,0 +1,34 @@
+name: 终端(#110625)_suite
+app: deepin-terminal
+description: ''
+module: 终端(#110625)
+tags: []
+fast_fail: false
+env_check: []
+setup:
+- action: session_start
+  command: deepin-terminal
+  wait: 3.0
+suites:
+- id: case_1652793_s1_s1
+  name: 【日志适配规范】终端日志配置文件查看
+  description: ''
+  tags: []
+  steps: []
+  assert_steps:
+  - action: assert_element
+    selector:
+      name: deepin-terminal
+      role: frame
+- id: case_1652791_s1_s1
+  name: 【日志适配规范】日志收集工具查看终端应用日志
+  description: ''
+  tags: []
+  steps: []
+  assert_steps:
+  - action: assert_element
+    selector:
+      name: deepin-terminal
+      role: frame
+teardown:
+- action: session_stop

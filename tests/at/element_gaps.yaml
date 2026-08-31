@@ -1,0 +1,262 @@
+version: '1.0'
+app: deepin-terminal
+summary:
+  total_ui_classes: 45
+  classes_with_names: 10
+  classes_missing_names: 35
+gaps:
+- class_name: TermWidgetPage
+  source_file: views/termwidgetpage.cpp
+  base_classes:
+  - QWidget
+  object_names: []
+  accessible_names: []
+  dtk_instantiations: []
+- class_name: TermWidgetPage
+  source_file: views/termwidgetpage.h
+  base_classes:
+  - QWidget
+  object_names: []
+  accessible_names: []
+  dtk_instantiations: []
+- class_name: ThemePreviewArea
+  source_file: views/themepreviewarea.cpp
+  base_classes:
+  - DWidget
+  object_names: []
+  accessible_names: []
+  dtk_instantiations: []
+- class_name: ThemePreviewArea
+  source_file: views/themepreviewarea.h
+  base_classes:
+  - DWidget
+  object_names: []
+  accessible_names: []
+  dtk_instantiations: []
+- class_name: TitleBar
+  source_file: views/titlebar.h
+  base_classes:
+  - QWidget
+  object_names: []
+  accessible_names: []
+  dtk_instantiations: []
+- class_name: CustomCommandOptDlg
+  source_file: customcommand/customcommandoptdlg.cpp
+  base_classes:
+  - DAbstractDialog
+  object_names: []
+  accessible_names: []
+  dtk_instantiations:
+  - DAbstractDialog
+- class_name: CustomCommandOptDlg
+  source_file: customcommand/customcommandoptdlg.h
+  base_classes:
+  - DAbstractDialog
+  object_names: []
+  accessible_names: []
+  dtk_instantiations: []
+- class_name: EncodeListView
+  source_file: encodeplugin/encodelistview.cpp
+  base_classes:
+  - DListView
+  object_names: []
+  accessible_names: []
+  dtk_instantiations:
+  - DListView
+- class_name: EncodeListView
+  source_file: encodeplugin/encodelistview.h
+  base_classes:
+  - DListView
+  object_names: []
+  accessible_names: []
+  dtk_instantiations: []
+- class_name: ServerConfigOptDlg
+  source_file: remotemanage/serverconfigoptdlg.cpp
+  base_classes:
+  - DAbstractDialog
+  object_names: []
+  accessible_names: []
+  dtk_instantiations:
+  - DAbstractDialog
+  - DLabel
+- class_name: ServerConfigOptDlg
+  source_file: remotemanage/serverconfigoptdlg.h
+  base_classes:
+  - DAbstractDialog
+  object_names: []
+  accessible_names: []
+  dtk_instantiations: []
+- class_name: NewDspinBox
+  source_file: settings/newdspinbox.h
+  base_classes:
+  - DSpinBox
+  object_names: []
+  accessible_names: []
+  dtk_instantiations: []
+- class_name: GroupConfigOptDlg
+  source_file: remotemanage/groupconfigoptdlg.cpp
+  base_classes:
+  - DAbstractDialog
+  object_names: []
+  accessible_names: []
+  dtk_instantiations:
+  - DAbstractDialog
+- class_name: GroupConfigOptDlg
+  source_file: remotemanage/groupconfigoptdlg.h
+  base_classes:
+  - DAbstractDialog
+  object_names: []
+  accessible_names: []
+  dtk_instantiations: []
+- class_name: RightPanel
+  source_file: views/rightpanel.h
+  base_classes:
+  - QWidget
+  object_names: []
+  accessible_names: []
+  dtk_instantiations: []
+- class_name: QTabBar
+  source_file: views/tabbar.cpp
+  base_classes:
+  - QWidget
+  object_names: []
+  accessible_names: []
+  dtk_instantiations: []
+- class_name: TabBar
+  source_file: views/tabbar.h
+  base_classes:
+  - DTabBar
+  object_names: []
+  accessible_names: []
+  dtk_instantiations: []
+- class_name: TabRenameDlg
+  source_file: views/tabrenamedlg.h
+  base_classes:
+  - DAbstractDialog
+  object_names: []
+  accessible_names: []
+  dtk_instantiations: []
+- class_name: TabRenameWidget
+  source_file: views/tabrenamewidget.cpp
+  base_classes:
+  - QWidget
+  object_names: []
+  accessible_names: []
+  dtk_instantiations:
+  - DLineEdit
+- class_name: TabRenameWidget
+  source_file: views/tabrenamewidget.h
+  base_classes:
+  - QWidget
+  object_names: []
+  accessible_names: []
+  dtk_instantiations: []
+- class_name: TermCommandLinkButton
+  source_file: views/termcommandlinkbutton.h
+  base_classes:
+  - DPushButton
+  object_names: []
+  accessible_names: []
+  dtk_instantiations: []
+- class_name: SwitchThemeMenu
+  source_file: main/mainwindow.cpp
+  base_classes:
+  - QMenu
+  object_names: []
+  accessible_names: []
+  dtk_instantiations: []
+- class_name: SwitchThemeMenu
+  source_file: main/mainwindow.h
+  base_classes:
+  - QMenu
+  object_names: []
+  accessible_names: []
+  dtk_instantiations: []
+- class_name: MainWindow
+  source_file: main/mainwindow.h
+  base_classes:
+  - DMainWindow
+  object_names: []
+  accessible_names: []
+  dtk_instantiations: []
+- class_name: CommonPanel
+  source_file: views/commonpanel.h
+  base_classes:
+  - QFrame
+  object_names: []
+  accessible_names: []
+  dtk_instantiations: []
+- class_name: TitleStyleRadioButton
+  source_file: views/customthemesettingdialog.cpp
+  base_classes:
+  - DRadioButton
+  object_names: []
+  accessible_names: []
+  dtk_instantiations: []
+- class_name: ColorPushButton
+  source_file: views/customthemesettingdialog.cpp
+  base_classes:
+  - DPushButton
+  object_names: []
+  accessible_names: []
+  dtk_instantiations: []
+- class_name: CustomThemeSettingDialog
+  source_file: views/customthemesettingdialog.cpp
+  base_classes:
+  - DAbstractDialog
+  object_names: []
+  accessible_names: []
+  dtk_instantiations:
+  - DAbstractDialog
+  - DLabel
+  - DSuggestButton
+- class_name: TitleStyleRadioButton
+  source_file: views/customthemesettingdialog.h
+  base_classes:
+  - DRadioButton
+  object_names: []
+  accessible_names: []
+  dtk_instantiations: []
+- class_name: ColorPushButton
+  source_file: views/customthemesettingdialog.h
+  base_classes:
+  - DPushButton
+  object_names: []
+  accessible_names: []
+  dtk_instantiations: []
+- class_name: CustomThemeSettingDialog
+  source_file: views/customthemesettingdialog.h
+  base_classes:
+  - DAbstractDialog
+  object_names: []
+  accessible_names: []
+  dtk_instantiations: []
+- class_name: FocusFrame
+  source_file: views/focusframe.cpp
+  base_classes:
+  - DFrame
+  object_names: []
+  accessible_names: []
+  dtk_instantiations:
+  - DFrame
+- class_name: FocusFrame
+  source_file: views/focusframe.h
+  base_classes:
+  - DFrame
+  object_names: []
+  accessible_names: []
+  dtk_instantiations: []
+- class_name: IconButton
+  source_file: views/iconbutton.h
+  base_classes:
+  - DIconButton
+  object_names: []
+  accessible_names: []
+  dtk_instantiations: []
+- class_name: PageSearchBar
+  source_file: views/pagesearchbar.h
+  base_classes:
+  - DFloatingWidget
+  object_names: []
+  accessible_names: []
+  dtk_instantiations: []

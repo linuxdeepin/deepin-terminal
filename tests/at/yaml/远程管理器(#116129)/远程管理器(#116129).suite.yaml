@@ -1,0 +1,413 @@
+name: 远程管理器(#116129)_suite
+app: deepin-terminal
+description: ''
+module: 远程管理器(#116129)
+tags: []
+fast_fail: false
+env_check: []
+setup:
+- action: session_start
+  command: deepin-terminal
+  wait: 3.0
+suites:
+- id: case_1653149_s1_s1
+  name: 服务器窗口
+  description: ''
+  tags: []
+  steps:
+  - action: dtk_context_menu
+    items:
+    - 远程管理
+  assert_steps:
+  - action: assert_element
+    selector:
+      name: RightPanel
+      role: panel
+- id: case_1653147_s1_s1
+  name: 搜索服务器
+  description: ''
+  tags: []
+  steps:
+  - action: dtk_context_menu
+    items:
+    - 远程管理
+  - action: dtk_context_menu
+    items:
+    - 远程管理
+  - action: dtk_context_menu
+    items:
+    - 远程管理
+  - action: dtk_context_menu
+    items:
+    - 远程管理
+  - action: dtk_context_menu
+    items:
+    - 远程管理
+  - action: dtk_context_menu
+    items:
+    - 远程管理
+  assert_steps:
+  - action: assert_element
+    selector:
+      name: RightPanel
+      role: panel
+- id: case_1653145_s1_s1
+  name: 服务器分组
+  description: ''
+  tags: []
+  steps: []
+  assert_steps:
+  - action: assert_element
+    selector:
+      name: RightPanel
+      role: panel
+- id: case_1653143_s1_s1
+  name: 删除服务器
+  description: ''
+  tags: []
+  steps: []
+  assert_steps:
+  - action: assert_element
+    selector:
+      name: RightPanel
+      role: panel
+- id: case_1653141_s1_s1
+  name: 编辑服务器
+  description: ''
+  tags: []
+  steps:
+  - action: dtk_context_menu
+    items:
+    - 远程管理
+  - action: dtk_context_menu
+    items:
+    - 远程管理
+  - action: dtk_context_menu
+    items:
+    - 远程管理
+  - action: dtk_context_menu
+    items:
+    - 远程管理
+  - action: dtk_context_menu
+    items:
+    - 远程管理
+  - action: dtk_context_menu
+    items:
+    - 远程管理
+  assert_steps:
+  - action: assert_element
+    selector:
+      name: RightPanel
+      role: panel
+- id: case_1653139_s1_s1
+  name: 错误密码
+  description: ''
+  tags: []
+  steps:
+  - action: dtk_context_menu
+    items:
+    - 远程管理
+  assert_steps:
+  - action: assert_element
+    selector:
+      name: RightPanel
+      role: panel
+- id: case_1653137_s1_s1
+  name: 未填写密码
+  description: ''
+  tags: []
+  steps:
+  - action: dtk_context_menu
+    items:
+    - 远程管理
+  assert_steps:
+  - action: assert_element
+    selector:
+      name: RightPanel
+      role: panel
+- id: case_1653135_s1_s1
+  name: 正确连接
+  description: ''
+  tags: []
+  steps: []
+  assert_steps:
+  - action: assert_element
+    selector:
+      name: RightPanel
+      role: panel
+- id: case_1653133_s1_s1
+  name: 连接服务器后操作
+  description: ''
+  tags: []
+  steps:
+  - action: dtk_context_menu
+    items:
+    - 远程管理
+  - action: dtk_context_menu
+    items:
+    - 远程管理
+  - action: dtk_context_menu
+    items:
+    - 远程管理
+  - action: dtk_context_menu
+    items:
+    - 远程管理
+  assert_steps:
+  - action: assert_element
+    selector:
+      name: RightPanel
+      role: panel
+- id: case_1653131_s1_s1
+  name: 错误连接
+  description: ''
+  tags: []
+  steps:
+  - action: dtk_context_menu
+    items:
+    - 远程管理
+  - action: dtk_context_menu
+    items:
+    - 远程管理
+  - action: dtk_context_menu
+    items:
+    - 远程管理
+  - action: dtk_context_menu
+    items:
+    - 远程管理
+  - action: dtk_context_menu
+    items:
+    - 远程管理
+  - action: dtk_context_menu
+    items:
+    - 远程管理
+  - action: dtk_context_menu
+    items:
+    - 远程管理
+  - action: dtk_context_menu
+    items:
+    - 远程管理
+  assert_steps:
+  - action: assert_element
+    selector:
+      name: RightPanel
+      role: panel
+- id: case_1653129_s1_s1
+  name: 远程管理面板自动隐藏
+  description: ''
+  tags: []
+  steps:
+  - action: dtk_context_menu
+    items:
+    - 远程管理
+  - action: dtk_context_menu
+    items:
+    - 远程管理
+  - action: dtk_context_menu
+    items:
+    - 远程管理
+  assert_steps:
+  - action: assert_element
+    selector:
+      name: RightPanel
+      role: panel
+- id: case_1653127_s1_s1
+  name: 上传文件
+  description: ''
+  tags: []
+  steps:
+  - action: dtk_context_menu
+    items:
+    - 远程管理
+  - action: dtk_context_menu
+    items:
+    - 远程管理
+  - action: dtk_context_menu
+    items:
+    - 远程管理
+  - action: dtk_context_menu
+    items:
+    - 远程管理
+  - action: dtk_context_menu
+    items:
+    - 远程管理
+  assert_steps:
+  - action: assert_element
+    selector:
+      name: RightPanel
+      role: panel
+- id: case_1653123_s1_s1
+  name: 必填项
+  description: ''
+  tags: []
+  steps: []
+  assert_steps:
+  - action: assert_element
+    selector:
+      name: RightPanel
+      role: panel
+- id: case_1653121_s1_s1
+  name: '[014]添加按钮'
+  description: ''
+  tags: []
+  steps:
+  - action: dtk_context_menu
+    items:
+    - 远程管理
+  assert_steps:
+  - action: assert_element
+    selector:
+      name: RightPanel
+      role: panel
+- id: case_1653111_s1_s1
+  name: 删除键
+  description: ''
+  tags: []
+  steps: []
+  assert_steps:
+  - action: assert_element
+    selector:
+      name: RightPanel
+      role: panel
+- id: case_1653109_s1_s1
+  name: 退格键
+  description: ''
+  tags: []
+  steps: []
+  assert_steps:
+  - action: assert_element
+    selector:
+      name: RightPanel
+      role: panel
+- id: case_1653107_s1_s1
+  name: 编码
+  description: ''
+  tags: []
+  steps: []
+  assert_steps:
+  - action: assert_element
+    selector:
+      name: RightPanel
+      role: panel
+- id: case_1653105_s1_s1
+  name: 命令
+  description: ''
+  tags: []
+  steps: []
+  assert_steps:
+  - action: assert_element
+    selector:
+      name: RightPanel
+      role: panel
+- id: case_1653103_s1_s1
+  name: 路径
+  description: ''
+  tags: []
+  steps: []
+  assert_steps:
+  - action: assert_element
+    selector:
+      name: RightPanel
+      role: panel
+- id: case_1653101_s1_s1
+  name: 分组
+  description: ''
+  tags: []
+  steps: []
+  assert_steps:
+  - action: assert_element
+    selector:
+      name: RightPanel
+      role: panel
+- id: case_1653099_s1_s1
+  name: 用户名密码
+  description: ''
+  tags: []
+  steps: []
+  assert_steps:
+  - action: assert_element
+    selector:
+      name: RightPanel
+      role: panel
+- id: case_1653097_s1_s1
+  name: 地址和端口
+  description: ''
+  tags: []
+  steps: []
+  assert_steps:
+  - action: assert_element
+    selector:
+      name: RightPanel
+      role: panel
+- id: case_1653095_s1_s1
+  name: 服务器名称
+  description: ''
+  tags: []
+  steps: []
+  assert_steps:
+  - action: assert_element
+    selector:
+      name: RightPanel
+      role: panel
+- id: case_1653087_s1_s1
+  name: 终端标签名称
+  description: ''
+  tags: []
+  steps: []
+  assert_steps:
+  - action: assert_element
+    selector:
+      name: RightPanel
+      role: panel
+- id: case_1653075_s1_s1
+  name: 插入不同类型远程标签标题功能
+  description: ''
+  tags: []
+  steps:
+  - action: dtk_context_menu
+    items:
+    - 远程管理
+  - action: dtk_context_menu
+    items:
+    - 远程管理
+  - action: dtk_context_menu
+    items:
+    - 远程管理
+  assert_steps:
+  - action: assert_element
+    selector:
+      name: RightPanel
+      role: panel
+- id: case_1653073_s1_s1
+  name: 连接服务器后拖拽文件上传
+  description: ''
+  tags: []
+  steps:
+  - action: dtk_context_menu
+    items:
+    - 远程管理
+  - action: dtk_context_menu
+    items:
+    - 远程管理
+  - action: dtk_context_menu
+    items:
+    - 远程管理
+  - action: dtk_context_menu
+    items:
+    - 远程管理
+  assert_steps:
+  - action: assert_element
+    selector:
+      name: RightPanel
+      role: panel
+- id: case_1653069_s1_s1
+  name: 连接远程管理，终端上不显示expect命令
+  description: ''
+  tags: []
+  steps: []
+  assert_steps:
+  - action: assert_element
+    selector:
+      name: RightPanel
+      role: panel
+teardown:
+- action: session_stop

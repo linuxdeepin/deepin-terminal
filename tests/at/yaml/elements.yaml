@@ -1,0 +1,52 @@
+elements:
+  Search:
+    name: Search
+    role: text
+  TabBar:
+    name: TabBar
+    role: page tab list
+  RightPanel:
+    name: RightPanel
+    role: panel
+  deepin-terminal:
+    name: deepin-terminal
+    role: frame
+  n0:
+    name: deepin-terminal
+    role: frame
+  n1:
+    name: TitleBar
+    role: panel
+  n2:
+    name: TabBar
+    role: page tab list
+  n3:
+    name: Terminal
+    role: terminal
+  n4:
+    name: PageSearchBar
+    role: floating panel
+  n5:
+    name: Search
+    role: text
+  n6:
+    name: FindNext
+    role: push button
+  n7:
+    name: FindPrevious
+    role: push button
+  n8:
+    name: RightPanel
+    role: panel
+  n9:
+    name: CommonPanel
+    role: panel
+  n10:
+    name: IconButton
+    role: push button
+  n11:
+    name: TermCommandLinkButton
+    role: push button
+  n12:
+    name: FontSizeSpinBox
+    role: spin button

@@ -1,0 +1,278 @@
+name: 自定义命令(#116137)_suite
+app: deepin-terminal
+description: ''
+module: 自定义命令(#116137)
+tags: []
+fast_fail: false
+env_check: []
+setup:
+- action: session_start
+  command: deepin-terminal
+  wait: 3.0
+suites:
+- id: case_1653025_s1_s1
+  name: 输入名称
+  description: ''
+  tags: []
+  steps:
+  - action: dtk_context_menu
+    items:
+    - 自定义命令
+  - action: dtk_context_menu
+    items:
+    - 自定义命令
+  - action: dtk_context_menu
+    items:
+    - 自定义命令
+  - action: dtk_context_menu
+    items:
+    - 自定义命令
+  - action: dtk_context_menu
+    items:
+    - 自定义命令
+  - action: dtk_context_menu
+    items:
+    - 自定义命令
+  assert_steps:
+  - action: assert_element
+    selector:
+      role: dialog
+- id: case_1653023_s1_s1
+  name: 输入命令
+  description: ''
+  tags: []
+  steps:
+  - action: dtk_context_menu
+    items:
+    - 自定义命令
+  - action: dtk_context_menu
+    items:
+    - 自定义命令
+  - action: dtk_context_menu
+    items:
+    - 自定义命令
+  - action: dtk_context_menu
+    items:
+    - 自定义命令
+  - action: dtk_context_menu
+    items:
+    - 自定义命令
+  - action: dtk_context_menu
+    items:
+    - 自定义命令
+  assert_steps:
+  - action: assert_element
+    selector:
+      role: dialog
+- id: case_1653021_s1_s1
+  name: 键入快捷键
+  description: ''
+  tags: []
+  steps:
+  - action: dtk_context_menu
+    items:
+    - 自定义命令
+  - action: dtk_context_menu
+    items:
+    - 自定义命令
+  - action: dtk_context_menu
+    items:
+    - 自定义命令
+  - action: dtk_context_menu
+    items:
+    - 自定义命令
+  - action: dtk_context_menu
+    items:
+    - 自定义命令
+  - action: dtk_context_menu
+    items:
+    - 自定义命令
+  - action: dtk_context_menu
+    items:
+    - 自定义命令
+  - action: dtk_context_menu
+    items:
+    - 自定义命令
+  assert_steps:
+  - action: assert_element
+    selector:
+      role: dialog
+- id: case_1653019_s1_s1
+  name: 添加约束
+  description: ''
+  tags: []
+  steps:
+  - action: dtk_context_menu
+    items:
+    - 自定义命令
+  - action: dtk_context_menu
+    items:
+    - 自定义命令
+  - action: dtk_context_menu
+    items:
+    - 自定义命令
+  - action: dtk_context_menu
+    items:
+    - 自定义命令
+  assert_steps:
+  - action: assert_element
+    selector:
+      role: dialog
+- id: case_1653017_s1_s1
+  name: 自动粘贴
+  description: ''
+  tags: []
+  steps:
+  - action: dtk_context_menu
+    items:
+    - 自定义命令
+  - action: dtk_context_menu
+    items:
+    - 自定义命令
+  - action: dtk_context_menu
+    items:
+    - 自定义命令
+  - action: dtk_context_menu
+    items:
+    - 自定义命令
+  assert_steps:
+  - action: assert_element
+    selector:
+      role: dialog
+- id: case_1653015_s1_s1
+  name: 搜索
+  description: ''
+  tags: []
+  steps:
+  - action: dtk_context_menu
+    items:
+    - 自定义命令
+  - action: dtk_context_menu
+    items:
+    - 自定义命令
+  - action: dtk_context_menu
+    items:
+    - 自定义命令
+  - action: dtk_context_menu
+    items:
+    - 自定义命令
+  - action: dtk_context_menu
+    items:
+    - 自定义命令
+  - action: dtk_context_menu
+    items:
+    - 自定义命令
+  - action: dtk_context_menu
+    items:
+    - 自定义命令
+  - action: dtk_context_menu
+    items:
+    - 自定义命令
+  assert_steps:
+  - action: assert_element
+    selector:
+      role: dialog
+- id: case_1653013_s1_s1
+  name: 编辑成功
+  description: ''
+  tags: []
+  steps:
+  - action: dtk_context_menu
+    items:
+    - 自定义命令
+  - action: dtk_context_menu
+    items:
+    - 自定义命令
+  - action: dtk_context_menu
+    items:
+    - 自定义命令
+  - action: dtk_context_menu
+    items:
+    - 自定义命令
+  - action: dtk_context_menu
+    items:
+    - 自定义命令
+  - action: dtk_context_menu
+    items:
+    - 自定义命令
+  assert_steps:
+  - action: assert_element
+    selector:
+      role: dialog
+- id: case_1653009_s1_s1
+  name: 删除
+  description: ''
+  tags: []
+  steps:
+  - action: dtk_context_menu
+    items:
+    - 自定义命令
+  - action: dtk_context_menu
+    items:
+    - 自定义命令
+  - action: dtk_context_menu
+    items:
+    - 自定义命令
+  assert_steps:
+  - action: assert_element
+    selector:
+      role: dialog
+- id: case_1653007_s1_s1
+  name: 运行
+  description: ''
+  tags: []
+  steps:
+  - action: dtk_context_menu
+    items:
+    - 自定义命令
+  - action: dtk_context_menu
+    items:
+    - 自定义命令
+  - action: dtk_context_menu
+    items:
+    - 自定义命令
+  - action: dtk_context_menu
+    items:
+    - 自定义命令
+  - action: dtk_context_menu
+    items:
+    - 自定义命令
+  - action: dtk_context_menu
+    items:
+    - 自定义命令
+  assert_steps:
+  - action: assert_element
+    selector:
+      role: dialog
+- id: case_1653003_s1_s1
+  name: 开启
+  description: ''
+  tags: []
+  steps:
+  - action: dtk_context_menu
+    items:
+    - 自定义命令
+  - action: dtk_context_menu
+    items:
+    - 自定义命令
+  - action: dtk_context_menu
+    items:
+    - 自定义命令
+  assert_steps:
+  - action: assert_element
+    selector:
+      role: dialog
+- id: case_1653001_s1_s1
+  name: '[008]隐藏'
+  description: ''
+  tags: []
+  steps:
+  - action: dtk_context_menu
+    items:
+    - 自定义命令
+  assert_steps:
+  - action: assert_element
+    selector:
+      role: dialog
+teardown:
+- action: session_stop

@@ -1,0 +1,112 @@
+name: 查找(#116101)_suite
+app: deepin-terminal
+description: ''
+module: 查找(#116101)
+tags: []
+fast_fail: false
+env_check: []
+setup:
+- action: session_start
+  command: deepin-terminal
+  wait: 3.0
+suites:
+- id: case_1653625_s1_s1
+  name: 查找显示
+  description: ''
+  tags: []
+  steps:
+  - action: keyboard_hot_key
+    key: ctrl+alt+f
+  assert_steps:
+  - action: assert_element
+    selector:
+      name: Search
+      role: text
+- id: case_1653623_s1_s1
+  name: 查找输入框
+  description: ''
+  tags: []
+  steps:
+  - action: keyboard_hot_key
+    key: ctrl+alt+f
+  - action: keyboard_hot_key
+    key: ctrl+alt+f
+  - action: keyboard_hot_key
+    key: ctrl+alt+f
+  - action: keyboard_hot_key
+    key: ctrl+alt+f
+  assert_steps:
+  - action: assert_element
+    selector:
+      name: Search
+      role: text
+- id: case_1653621_s1_s1
+  name: 查找过程
+  description: ''
+  tags: []
+  steps:
+  - action: keyboard_hot_key
+    key: ctrl+alt+f
+  - action: keyboard_hot_key
+    key: ctrl+alt+f
+  assert_steps:
+  - action: assert_element
+    selector:
+      name: Search
+      role: text
+- id: case_1653619_s1_s1
+  name: 向上查找
+  description: ''
+  tags: []
+  steps:
+  - action: keyboard_hot_key
+    key: ctrl+alt+f
+  - action: keyboard_hot_key
+    key: ctrl+alt+f
+  assert_steps:
+  - action: assert_element
+    selector:
+      name: Search
+      role: text
+- id: case_1653617_s1_s1
+  name: 向下查找
+  description: ''
+  tags: []
+  steps:
+  - action: keyboard_hot_key
+    key: ctrl+alt+f
+  - action: keyboard_hot_key
+    key: ctrl+alt+f
+  assert_steps:
+  - action: assert_element
+    selector:
+      name: Search
+      role: text
+- id: case_1653615_s1_s1
+  name: 查找隐藏
+  description: ''
+  tags: []
+  steps:
+  - action: keyboard_hot_key
+    key: ctrl+alt+f
+  - action: keyboard_hot_key
+    key: ctrl+alt+f
+  assert_steps:
+  - action: assert_element
+    selector:
+      name: Search
+      role: text
+- id: case_1653613_s1_s1
+  name: 设置标签标题编号后，对标签页进行分屏操作
+  description: ''
+  tags: []
+  steps:
+  - action: keyboard_hot_key
+    key: ctrl+alt+f
+  assert_steps:
+  - action: assert_element
+    selector:
+      name: Search
+      role: text
+teardown:
+- action: session_stop

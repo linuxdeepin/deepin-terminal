@@ -1,0 +1,187 @@
+name: 设置界面快捷键(#116121)_suite
+app: deepin-terminal
+description: ''
+module: 设置界面快捷键(#116121)
+tags: []
+fast_fail: false
+env_check: []
+setup:
+- action: session_start
+  command: deepin-terminal
+  wait: 3.0
+suites:
+- id: case_1653281_s1_s1
+  name: 粘贴
+  description: ''
+  tags: []
+  steps:
+  - action: dtk_main_menu
+    items:
+    - 设置
+    - 快捷键
+  - action: dtk_main_menu
+    items:
+    - 设置
+    - 快捷键
+  - action: dtk_main_menu
+    items:
+    - 设置
+    - 快捷键
+  assert_steps:
+  - action: assert_element
+    selector:
+      role: dialog
+- id: case_1653271_s1_s1
+  name: 全选
+  description: ''
+  tags: []
+  steps:
+  - action: dtk_main_menu
+    items:
+    - 设置
+    - 快捷键
+  - action: dtk_main_menu
+    items:
+    - 设置
+    - 快捷键
+  - action: dtk_main_menu
+    items:
+    - 设置
+    - 快捷键
+  assert_steps:
+  - action: assert_element
+    selector:
+      role: dialog
+- id: case_1653269_s1_s1
+  name: 新建标签页
+  description: ''
+  tags: []
+  steps:
+  - action: dtk_main_menu
+    items:
+    - 设置
+    - 快捷键
+  - action: dtk_main_menu
+    items:
+    - 设置
+    - 快捷键
+  - action: dtk_main_menu
+    items:
+    - 设置
+    - 快捷键
+  assert_steps:
+  - action: assert_element
+    selector:
+      role: dialog
+- id: case_1653265_s1_s1
+  name: 关闭标签页
+  description: ''
+  tags: []
+  steps:
+  - action: dtk_main_menu
+    items:
+    - 设置
+    - 快捷键
+  - action: dtk_main_menu
+    items:
+    - 设置
+    - 快捷键
+  assert_steps:
+  - action: assert_element
+    selector:
+      role: dialog
+- id: case_1653259_s1_s1
+  name: 纵向分屏
+  description: ''
+  tags: []
+  steps:
+  - action: dtk_main_menu
+    items:
+    - 设置
+    - 快捷键
+  - action: dtk_main_menu
+    items:
+    - 设置
+    - 快捷键
+  assert_steps:
+  - action: assert_element
+    selector:
+      role: dialog
+- id: case_1653253_s1_s1
+  name: 选择下面的工作区
+  description: ''
+  tags: []
+  steps:
+  - action: dtk_main_menu
+    items:
+    - 设置
+    - 快捷键
+  - action: dtk_main_menu
+    items:
+    - 设置
+    - 快捷键
+  - action: dtk_main_menu
+    items:
+    - 设置
+    - 快捷键
+  assert_steps:
+  - action: assert_element
+    selector:
+      role: dialog
+- id: case_1653247_s1_s1
+  name: 关闭工作区
+  description: ''
+  tags: []
+  steps:
+  - action: dtk_main_menu
+    items:
+    - 设置
+    - 快捷键
+  - action: dtk_main_menu
+    items:
+    - 设置
+    - 快捷键
+  - action: dtk_main_menu
+    items:
+    - 设置
+    - 快捷键
+  assert_steps:
+  - action: assert_element
+    selector:
+      role: dialog
+- id: case_1653241_s1_s1
+  name: 隐藏“显示快捷键”
+  description: ''
+  tags: []
+  steps: []
+  assert_steps:
+  - action: assert_element
+    selector:
+      role: dialog
+- id: case_1653235_s1_s1
+  name: 标签页1~9快捷键功能
+  description: ''
+  tags: []
+  steps:
+  - action: dtk_main_menu
+    items:
+    - 设置
+    - 快捷键
+  - action: dtk_main_menu
+    items:
+    - 设置
+    - 快捷键
+  - action: dtk_main_menu
+    items:
+    - 设置
+    - 快捷键
+  - action: dtk_main_menu
+    items:
+    - 设置
+    - 快捷键
+  assert_steps:
+  - action: assert_element
+    selector:
+      role: dialog
+teardown:
+- action: session_stop

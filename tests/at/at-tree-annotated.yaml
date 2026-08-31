@@ -1,0 +1,107 @@
+version: '1.0'
+tree:
+- id: n0
+  role: frame
+  name: deepin-terminal
+  object_name: ''
+  accessible_id: ''
+  classification: container
+  comment: ''
+  annotation_status: ''
+- id: n1
+  role: panel
+  name: TitleBar
+  object_name: ''
+  accessible_id: ''
+  classification: container
+  comment: ''
+  annotation_status: ''
+- id: n2
+  role: page tab list
+  name: TabBar
+  object_name: ''
+  accessible_id: ''
+  classification: interactive
+  comment: ''
+  annotation_status: ''
+- id: n3
+  role: terminal
+  name: Terminal
+  object_name: ''
+  accessible_id: ''
+  classification: container
+  comment: ''
+  annotation_status: ''
+- id: n4
+  role: floating panel
+  name: PageSearchBar
+  object_name: ''
+  accessible_id: ''
+  classification: container
+  comment: ''
+  annotation_status: ''
+  children:
+  - id: n5
+    role: text
+    name: Search
+    object_name: ''
+    accessible_id: ''
+    classification: interactive
+    comment: ''
+    annotation_status: ''
+  - id: n6
+    role: push button
+    name: FindNext
+    object_name: ''
+    accessible_id: ''
+    classification: interactive
+    comment: ''
+    annotation_status: ''
+  - id: n7
+    role: push button
+    name: FindPrevious
+    object_name: ''
+    accessible_id: ''
+    classification: interactive
+    comment: ''
+    annotation_status: ''
+- id: n8
+  role: panel
+  name: RightPanel
+  object_name: ''
+  accessible_id: ''
+  classification: container
+  comment: ''
+  annotation_status: ''
+- id: n9
+  role: panel
+  name: CommonPanel
+  object_name: ''
+  accessible_id: ''
+  classification: container
+  comment: ''
+  annotation_status: ''
+- id: n10
+  role: push button
+  name: IconButton
+  object_name: ''
+  accessible_id: ''
+  classification: interactive
+  comment: ''
+  annotation_status: ''
+- id: n11
+  role: push button
+  name: TermCommandLinkButton
+  object_name: ''
+  accessible_id: ''
+  classification: interactive
+  comment: ''
+  annotation_status: ''
+- id: n12
+  role: spin button
+  name: FontSizeSpinBox
+  object_name: ''
+  accessible_id: ''
+  classification: interactive
+  comment: ''
+  annotation_status: ''

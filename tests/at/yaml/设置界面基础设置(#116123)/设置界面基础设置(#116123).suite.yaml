@@ -1,0 +1,59 @@
+name: 设置界面基础设置(#116123)_suite
+app: deepin-terminal
+description: ''
+module: 设置界面基础设置(#116123)
+tags: []
+fast_fail: false
+env_check: []
+setup:
+- action: session_start
+  command: deepin-terminal
+  wait: 3.0
+suites:
+- id: case_1653231_s1_s1
+  name: '[016]设置界面显示'
+  description: ''
+  tags: []
+  steps:
+  - action: dtk_main_menu
+    items:
+    - 设置
+  assert_steps:
+  - action: assert_element
+    selector:
+      role: dialog
+- id: case_1653229_s1_s1
+  name: 透明度
+  description: ''
+  tags: []
+  steps: []
+  assert_steps:
+  - action: assert_element
+    selector:
+      role: dialog
+- id: case_1653223_s1_s1
+  name: 设置界面功能项显示
+  description: ''
+  tags: []
+  steps:
+  - action: dtk_main_menu
+    items:
+    - 设置
+  - action: dtk_main_menu
+    items:
+    - 设置
+  - action: dtk_main_menu
+    items:
+    - 设置
+  - action: dtk_main_menu
+    items:
+    - 设置
+  - action: dtk_main_menu
+    items:
+    - 设置
+  assert_steps:
+  - action: assert_element
+    selector:
+      role: dialog
+teardown:
+- action: session_stop

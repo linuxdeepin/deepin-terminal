@@ -1,0 +1,35 @@
+name: 自定义命令(#116107)_suite
+app: deepin-terminal
+description: ''
+module: 自定义命令(#116107)
+tags: []
+fast_fail: false
+env_check: []
+setup:
+- action: session_start
+  command: deepin-terminal
+  wait: 3.0
+suites:
+- id: case_1653597_s1_s1
+  name: 列表
+  description: ''
+  tags: []
+  steps:
+  - action: dtk_context_menu
+    items:
+    - 自定义命令
+  - action: dtk_context_menu
+    items:
+    - 自定义命令
+  - action: dtk_context_menu
+    items:
+    - 自定义命令
+  - action: dtk_context_menu
+    items:
+    - 自定义命令
+  assert_steps:
+  - action: assert_element
+    selector:
+      role: dialog
+teardown:
+- action: session_stop

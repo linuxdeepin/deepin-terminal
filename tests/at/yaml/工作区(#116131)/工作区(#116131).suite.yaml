@@ -1,0 +1,84 @@
+name: 工作区(#116131)_suite
+app: deepin-terminal
+description: ''
+module: 工作区(#116131)
+tags: []
+fast_fail: false
+env_check: []
+setup:
+- action: session_start
+  command: deepin-terminal
+  wait: 3.0
+suites:
+- id: case_1653065_s1_s1
+  name: '[011]新建工作区'
+  description: ''
+  tags: []
+  steps: []
+  assert_steps:
+  - action: assert_element
+    selector:
+      name: TabBar
+      role: page tab list
+- id: case_1653063_s1_s1
+  name: 标签页消息提醒
+  description: ''
+  tags: []
+  steps: []
+  assert_steps:
+  - action: assert_element
+    selector:
+      name: TabBar
+      role: page tab list
+- id: case_1653059_s1_s1
+  name: '[012]窗口横向分屏'
+  description: ''
+  tags: []
+  steps: []
+  assert_steps:
+  - action: assert_element
+    selector:
+      name: TabBar
+      role: page tab list
+- id: case_1653057_s1_s1
+  name: '[013]窗口纵向分屏'
+  description: ''
+  tags: []
+  steps: []
+  assert_steps:
+  - action: assert_element
+    selector:
+      name: TabBar
+      role: page tab list
+- id: case_1653055_s1_s1
+  name: 窗口选择
+  description: ''
+  tags: []
+  steps: []
+  assert_steps:
+  - action: assert_element
+    selector:
+      name: TabBar
+      role: page tab list
+- id: case_1653051_s1_s1
+  name: 滚动条显示
+  description: ''
+  tags: []
+  steps: []
+  assert_steps:
+  - action: assert_element
+    selector:
+      name: TabBar
+      role: page tab list
+- id: case_1653049_s1_s1
+  name: 窗口标题显示
+  description: ''
+  tags: []
+  steps: []
+  assert_steps:
+  - action: assert_element
+    selector:
+      name: TabBar
+      role: page tab list
+teardown:
+- action: session_stop

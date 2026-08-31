@@ -1,0 +1,34 @@
+name: 启动终端(#116145)_suite
+app: deepin-terminal
+description: ''
+module: 启动终端(#116145)
+tags: []
+fast_fail: false
+env_check: []
+setup:
+- action: session_start
+  command: deepin-terminal
+  wait: 3.0
+suites:
+- id: case_1652943_s1_s1
+  name: 启动器启动
+  description: ''
+  tags: []
+  steps: []
+  assert_steps:
+  - action: assert_element
+    selector:
+      name: deepin-terminal
+      role: frame
+- id: case_1652935_s1_s1
+  name: '[003]快捷键启动'
+  description: ''
+  tags: []
+  steps: []
+  assert_steps:
+  - action: assert_element
+    selector:
+      name: deepin-terminal
+      role: frame
+teardown:
+- action: session_stop
