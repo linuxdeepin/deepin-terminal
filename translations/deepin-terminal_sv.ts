@@ -531,27 +531,27 @@
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="145"/>
         <source>Shell profile</source>
-        <translation type="unfinished"/>
+        <translation>Skalprofil</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="147"/>
         <source>History size</source>
-        <translation type="unfinished"/>
+        <translation>Historikstorlek</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="149"/>
         <source>Include special character(s) in double click selections</source>
-        <translation type="unfinished"/>
+        <translation>Inkludera specialtecken vid markering med dubbelklick</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="151"/>
         <source>Allow Ctrl + left mouse click to set cursor position</source>
-        <translation type="unfinished"/>
+        <translation>Tillåt Ctrl + vänsterklick för att ange markörposition</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="153"/>
         <source>The HTTP file server used for transmitting debugging information resources</source>
-        <translation type="unfinished"/>
+        <translation>HTTP-filservern som används för att överföra resurser med felsökningsinformation</translation>
     </message>
     <message>
         <location filename="../src/main/mainwindow.cpp" line="1658"/>
@@ -628,27 +628,27 @@
         <location filename="../src/settings/settings_translation.cpp" line="93"/>
         <location filename="../src/views/termwidget.cpp" line="499"/>
         <source>Close other workspaces</source>
-        <translation type="unfinished"/>
+        <translation>Stäng andra arbetsytor</translation>
     </message>
     <message>
         <location filename="../src/views/termwidget.cpp" line="1247"/>
         <source>Could not find &quot;%1&quot;, starting &quot;%2&quot; instead. Please check your shell profile.</source>
-        <translation type="unfinished"/>
+        <translation>Kunde inte hitta &quot;%1&quot;; startar &quot;%2&quot; i stället. Kontrollera skalprofilen.</translation>
     </message>
     <message>
         <location filename="../src/views/termwidget.cpp" line="1253"/>
         <source>Could not open &quot;%1&quot;, unable to run it</source>
-        <translation type="unfinished"/>
+        <translation>Kunde inte öppna &quot;%1&quot;; det kan inte köras</translation>
     </message>
     <message>
         <location filename="../src/views/termwidget.cpp" line="1255"/>
         <source>Could not find &quot;%1&quot;, unable to run it</source>
-        <translation type="unfinished"/>
+        <translation>Kunde inte hitta &quot;%1&quot;; det kan inte köras</translation>
     </message>
     <message>
         <location filename="../src/views/termwidget.cpp" line="1298"/>
         <source>Output has been suspended by pressing Ctrl+S. Pressing Ctrl+Q to resume.</source>
-        <translation type="unfinished"/>
+        <translation>Utdata har stoppats genom att trycka på Ctrl+S. Tryck på Ctrl+Q för att återuppta.</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="95"/>
@@ -685,17 +685,17 @@
         <location filename="../src/customcommand/customcommandoptdlg.cpp" line="627"/>
         <location filename="../src/main/service.cpp" line="416"/>
         <source>please set another one.</source>
-        <translation type="unfinished"/>
+        <translation>ange ett annat.</translation>
     </message>
     <message>
         <location filename="../src/main/terminalapplication.cpp" line="28"/>
         <source>Terminal is an advanced terminal emulator with workspace, multiple windows, remote management, quake mode and other features.</source>
-        <translation type="unfinished"/>
+        <translation>Terminal är en avancerad terminalemulator med arbetsytor, flera fönster, fjärrhantering, Quake-läge och andra funktioner.</translation>
     </message>
     <message>
         <location filename="../src/main/mainwindow.cpp" line="1590"/>
         <source>Tabs</source>
-        <translation type="unfinished"/>
+        <translation>Flikar</translation>
     </message>
     <message>
         <location filename="../src/main/mainwindow.cpp" line="1638"/>
