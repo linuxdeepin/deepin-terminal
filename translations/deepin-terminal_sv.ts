@@ -701,17 +701,17 @@
         <location filename="../src/main/mainwindow.cpp" line="1638"/>
         <location filename="../src/views/tabbar.cpp" line="480"/>
         <source>Close tab</source>
-        <translation type="unfinished"/>
+        <translation>Stäng flik</translation>
     </message>
     <message>
         <location filename="../src/main/mainwindow.cpp" line="1639"/>
         <source>Select tab</source>
-        <translation type="unfinished"/>
+        <translation>Välj flik</translation>
     </message>
     <message>
         <location filename="../src/main/mainwindow.cpp" line="1610"/>
         <source>Switch focus to &quot;+&quot; icon</source>
-        <translation type="unfinished"/>
+        <translation>Flytta fokus till ikonen &quot;+&quot;</translation>
     </message>
     <message>
         <location filename="../src/common/utils.cpp" line="157"/>
@@ -734,54 +734,54 @@
         <location filename="../src/common/utils.cpp" line="182"/>
         <location filename="../src/common/utils.cpp" line="216"/>
         <source>Close this terminal?</source>
-        <translation type="unfinished"/>
+        <translation>Stäng den här terminalen?</translation>
     </message>
     <message>
         <location filename="../src/common/utils.cpp" line="183"/>
         <location filename="../src/common/utils.cpp" line="217"/>
         <source>There is still a process running in this terminal. Closing the terminal will terminate it.</source>
-        <translation type="unfinished"/>
+        <translation>En process körs fortfarande i den här terminalen. Om du stänger terminalen avslutas processen.</translation>
     </message>
     <message>
         <location filename="../src/common/utils.cpp" line="187"/>
         <location filename="../src/common/utils.cpp" line="221"/>
         <source>There are still %1 processes running in this terminal. Closing the terminal will terminate all of them.</source>
-        <translation type="unfinished"/>
+        <translation>%1 processer körs fortfarande i den här terminalen. Om du stänger terminalen avslutas alla processerna.</translation>
     </message>
     <message>
         <location filename="../src/common/utils.cpp" line="192"/>
         <location filename="../src/common/utils.cpp" line="212"/>
         <source>Close this window?</source>
-        <translation type="unfinished"/>
+        <translation>Stäng det här fönstret?</translation>
     </message>
     <message>
         <location filename="../src/common/utils.cpp" line="193"/>
         <location filename="../src/common/utils.cpp" line="213"/>
         <source>There are still processes running in this window. Closing the window will terminate all of them.</source>
-        <translation type="unfinished"/>
+        <translation>Processer körs fortfarande i det här fönstret. Om du stänger fönstret avslutas alla processerna.</translation>
     </message>
     <message>
         <location filename="../src/common/utils.cpp" line="136"/>
         <location filename="../src/main/mainwindow.cpp" line="1768"/>
         <source>Select a directory to save the file</source>
-        <translation type="unfinished"/>
+        <translation>Välj en katalog för att spara filen</translation>
     </message>
     <message>
         <location filename="../src/common/utils.cpp" line="230"/>
         <source>Are you sure you want to uninstall it?</source>
-        <translation type="unfinished"/>
+        <translation>Är du säker på att du vill avinstallera den?</translation>
     </message>
     <message>
         <location filename="../src/common/utils.cpp" line="243"/>
         <location filename="../src/common/utils.cpp" line="247"/>
         <source>Are you sure you want to uninstall this application?</source>
-        <translation type="unfinished"/>
+        <translation>Är du säker på att du vill avinstallera det här programmet?</translation>
     </message>
     <message>
         <location filename="../src/common/utils.cpp" line="244"/>
         <location filename="../src/common/utils.cpp" line="248"/>
         <source>You will not be able to use Terminal any longer.</source>
-        <translation type="unfinished"/>
+        <translation>Du kommer inte längre att kunna använda Terminal.</translation>
     </message>
     <message>
         <location filename="../src/common/utils.cpp" line="253"/>
@@ -802,38 +802,38 @@
     <message>
         <location filename="../src/common/utils.cpp" line="338"/>
         <source>Execute a command in the terminal</source>
-        <translation type="unfinished"/>
+        <translation>Kör ett kommando i terminalen</translation>
     </message>
     <message>
         <location filename="../src/common/utils.cpp" line="341"/>
         <source>Run script string in the terminal</source>
-        <translation type="unfinished"/>
+        <translation>Kör en skriptsträng i terminalen</translation>
     </message>
     <message>
         <location filename="../src/common/utils.cpp" line="332"/>
         <source>Set the work directory</source>
-        <translation type="unfinished"/>
+        <translation>Ange arbetskatalogen</translation>
     </message>
     <message>
         <location filename="../src/common/utils.cpp" line="335"/>
         <source>Set the window mode on starting</source>
-        <translation type="unfinished"/>
+        <translation>Ange fönsterläge vid start</translation>
     </message>
     <message>
         <location filename="../src/common/utils.cpp" line="344"/>
         <source>Run in quake mode</source>
-        <translation type="unfinished"/>
+        <translation>Kör i Quake-läge</translation>
     </message>
     <message>
         <location filename="../src/common/utils.cpp" line="347"/>
         <source>Keep terminal open when command finishes</source>
-        <translation type="unfinished"/>
+        <translation>Håll terminalen öppen när kommandot är klart</translation>
     </message>
     <message>
         <location filename="../src/customcommand/customcommandoptdlg.cpp" line="387"/>
         <location filename="../src/remotemanage/serverconfigoptdlg.cpp" line="476"/>
         <source>The name should be no more than 32 characters</source>
-        <translation type="unfinished"/>
+        <translation>Namnet får högst innehålla 32 tecken</translation>
     </message>
     <message>
         <location filename="../src/common/utils.cpp" line="142"/>
