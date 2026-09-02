@@ -13,7 +13,6 @@
 
 #include <DApplication>
 #include <DApplicationHelper>
-#include <DFontSizeManager>
 #include <DLog>
 #include <DIconButton>
 #include <DPlatformWindowHandle>
@@ -65,57 +64,30 @@ int TermTabStyle::pixelMetric(QStyle::PixelMetric metric, const QStyleOption *op
 
 void TermTabStyle::drawControl(ControlElement element, const QStyleOption *option, QPainter *painter, const QWidget *widget) const
 {
-    if (CE_TabBarTabLabel == element) {
-        if (const QStyleOptionTab *tab = qstyleoption_cast<const QStyleOptionTab *>(option)) {
-            DGuiApplicationHelper *appHelper = DGuiApplicationHelper::instance();
+    const QStyleOptionTab *tab = CE_TabBarTabLabel == element
+            ? qstyleoption_cast<const QStyleOptionTab *>(option)
+            : nullptr;
 
-            QTextOption textOption;
-            textOption.setAlignment(Qt::AlignCenter);
+    if (tab && option->styleObject) {
+        const QString tabIndex = QString::number(tab->row);
+        const QString tabIdentifier = option->styleObject->property(tabIndex.toLatin1()).toString();
+        const bool isChanged = m_tabStatusMap.value(tabIdentifier) == TabTextColorStatus_Changed;
 
-            QFont textFont = QApplication::font();
-            int fontSize = DFontSizeManager::instance()->fontPixelSize(DFontSizeManager::T6);
-            textFont.setPixelSize(fontSize);
-            textFont.setWeight(QFont::Medium);
-            painter->setFont(textFont);
-            QString content = tab->text;
-            QRect tabRect = tab->rect;
-
-            QString strTabIndex = QString::number(tab->row);
-            QObject *styleObject = option->styleObject;
-            // 取出对应index的tab唯一标识identifier
-            QString strTabIdentifier = styleObject->property(strTabIndex.toLatin1()).toString();
-
-            // 由于标签现在可以左右移动切换，index会变化，改成使用唯一标识identifier进行判断
-            if (TabTextColorStatus_Changed == m_tabStatusMap.value(strTabIdentifier)) {
-                if (tab->state & QStyle::State_Selected) {
-                    DPalette pa = appHelper->standardPalette(appHelper->themeType());
-                    painter->setPen(pa.color(DPalette::HighlightedText));
-                } else if (tab->state & QStyle::State_MouseOver) {
-                    painter->setPen(m_tabTextColor);
-                } else {
-                    painter->setPen(m_tabTextColor);
-                }
-            } else {
-                DPalette pa = appHelper->standardPalette(appHelper->themeType());
-                if (tab->state & QStyle::State_Selected)
-                    painter->setPen(pa.color(DPalette::HighlightedText));
-                else if (tab->state & QStyle::State_MouseOver)
-                    painter->setPen(pa.color(DPalette::TextTitle));
-                else
-                    painter->setPen(pa.color(DPalette::TextTitle));
-
-            }
-
-            QFontMetrics fontMetric(textFont);
-            const int TAB_LEFTRIGHT_SPACE = 30;
-            QString elidedText = fontMetric.elidedText(content, Qt::ElideRight, tabRect.width() - TAB_LEFTRIGHT_SPACE, Qt::TextShowMnemonic);
-            painter->drawText(tabRect, elidedText, textOption);
-        } else {
-            QProxyStyle::drawControl(element, option, painter, widget);
+        if (isChanged && !(tab->state & QStyle::State_Selected) && m_tabTextColor.isValid()) {
+            // Keep DTK responsible for text layout and painting so its close-button
+            // fade effect is retained.  The palette carries the notification color
+            // for inactive tabs into DTK's default label renderer.
+            QStyleOptionTab coloredTab(*tab);
+            coloredTab.palette.setColor(QPalette::All, QPalette::WindowText, m_tabTextColor);
+            coloredTab.palette.setColor(QPalette::All, QPalette::Text, m_tabTextColor);
+            coloredTab.palette.setColor(QPalette::All, QPalette::ButtonText, m_tabTextColor);
+            coloredTab.palette.setColor(QPalette::All, QPalette::HighlightedText, m_tabTextColor);
+            QProxyStyle::drawControl(element, &coloredTab, painter, widget);
+            return;
         }
-    } else {
-        QProxyStyle::drawControl(element, option, painter, widget);
     }
+
+    QProxyStyle::drawControl(element, option, painter, widget);
 }
 
 void TermTabStyle::drawPrimitive(QStyle::PrimitiveElement element, const QStyleOption *option, QPainter *painter, const QWidget *widget) const
@@ -188,9 +160,9 @@ TabBar::TabBar(QWidget *parent) : DTabBar(parent), m_rightClickTab(-1)
     connect(this, &DTabBar::dragActionChanged, this, &TabBar::handleDragActionChanged);
 
 #ifdef DTKWIDGET_CLASS_DSizeMode
-    setTabHeight(DSizeModeHelper::element(COMMONHEIGHT_COMPACT, COMMONHEIGHT));
+    setTabHeight(COMMONHEIGHT);
     QObject::connect(DGuiApplicationHelper::instance(), &DGuiApplicationHelper::sizeModeChanged, this, [this](){
-        setTabHeight(DSizeModeHelper::element(COMMONHEIGHT_COMPACT, COMMONHEIGHT));
+        setTabHeight(COMMONHEIGHT);
     });
 #else
     setTabHeight(36);
