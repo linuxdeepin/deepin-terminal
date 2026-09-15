@@ -102,7 +102,7 @@
     <message>
         <location filename="../src/customcommand/customcommandplugin.cpp" line="35"/>
         <source>Custom commands</source>
-        <translation>Komendy niestandardowe</translation>
+        <translation>Własne komendy</translation>
     </message>
 </context>
 <context>
@@ -221,7 +221,7 @@
     <message>
         <location filename="../src/views/listview.cpp" line="870"/>
         <source>Delete Custom Command</source>
-        <translation>Usuń komendę niestandardową</translation>
+        <translation>Usuń własną komendę</translation>
     </message>
     <message>
         <location filename="../src/views/listview.cpp" line="873"/>
@@ -408,7 +408,7 @@
         <location filename="../src/main/mainwindow.cpp" line="1658"/>
         <location filename="../src/settings/settings_translation.cpp" line="63"/>
         <source>Custom commands</source>
-        <translation>Komendy niestandardowe</translation>
+        <translation>Własne komendy</translation>
     </message>
     <message>
         <location filename="../src/main/mainwindow.cpp" line="1658"/>
@@ -1246,7 +1246,7 @@
     <message>
         <location filename="../src/views/termwidget.cpp" line="531"/>
         <source>Custom commands</source>
-        <translation>Komendy niestandardowe</translation>
+        <translation>Własne komendy</translation>
     </message>
     <message>
         <location filename="../src/views/termwidget.cpp" line="533"/>
