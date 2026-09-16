@@ -36,20 +36,26 @@ bool checkImmutableMode() {
 
     // 启动进程并等待其完成
     process.start("deepin-immutable-ctl", arguments);
-    if (!process.waitForStarted()) {
+    if (!process.waitForStarted(3000)) {
         qWarning() << "Failed to start deepin-immutable-ctl:" << process.errorString();
         return false;
     }
 
-    if (!process.waitForFinished()) {
-        qWarning() << "deepin-immutable-ctl did not finish successfully:" << process.errorString();
+    if (!process.waitForFinished(3000)) {
+        qWarning() << "deepin-immutable-ctl did not finish within timeout:" << process.errorString();
+        process.kill();
         return false;
     }
 
     // 获取命令输出
     QByteArray output = process.readAllStandardOutput();
     QString result = QString::fromUtf8(output.trimmed());
-    if (result.split(":").at(1) == "true") {
+    QStringList parts = result.split(":");
+    if (parts.size() < 2) {
+        qWarning() << "Unexpected output from deepin-immutable-ctl:" << result;
+        return false;
+    }
+    if (parts.at(1) == "true") {
         qInfo() << "System is in immutable mode.";
         return true;
     } else {
