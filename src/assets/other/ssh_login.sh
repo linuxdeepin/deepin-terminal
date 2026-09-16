@@ -59,5 +59,12 @@ if { [string length $password] } {
         }
     }
 }
+# Set I/O channels to binary mode for transparent byte forwarding.
+# Fix bug#126865: expect interact mode converts bytes via system locale (UTF-8),
+# corrupting non-UTF-8 (e.g. GBK) data from remote servers.
+fconfigure stdin -translation binary
+fconfigure stdout -translation binary
+fconfigure $spawn_id -translation binary
+
 interact
 
