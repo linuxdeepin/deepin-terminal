@@ -116,6 +116,8 @@ void Settings::init()
         DGuiApplicationHelper::instance()->setPaletteType(DGuiApplicationHelper::DarkType);
         setColorScheme("Dark");
         setExtendColorScheme("");
+    } else if("Light" == colorScheme()) {
+        DGuiApplicationHelper::instance()->setPaletteType(DGuiApplicationHelper::LightType);
     }
     /******** Modify by n014361 wangpeili 2020-01-10:   增加窗口状态选项  ************/
     auto windowState = settings->option("advanced.window.use_on_starting");
