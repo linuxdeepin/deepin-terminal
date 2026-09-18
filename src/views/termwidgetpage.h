@@ -72,7 +72,8 @@ public:
      * @param orientation 方向
      * @return
      */
-    DSplitter *createSubSplit(TermWidget *term, Qt::Orientation orientation);
+    DSplitter *createSubSplit(TermWidget *term, Qt::Orientation orientation,
+                              TermWidget **createdTerm = nullptr);
     /**
      * @brief 关闭分屏
      * @author ut000439 王培利
