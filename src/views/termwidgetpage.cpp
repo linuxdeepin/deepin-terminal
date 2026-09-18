@@ -173,6 +173,7 @@ void TermWidgetPage::split(Qt::Orientation orientation)
     qCDebug(views) << "TermWidgetPage::split - Orientation:" << orientation;
     parentMainWindow()->showPlugin(MainWindow::PLUGIN_TYPE_NONE);
     TermWidget *term = m_currentTerm;
+    TermWidget *newTerm = nullptr;
 
     QSplitter *splitter = qobject_cast<QSplitter *>(term->parent());
     int index = splitter ? splitter->indexOf(term) : m_layout->indexOf(term);
@@ -181,7 +182,7 @@ void TermWidgetPage::split(Qt::Orientation orientation)
     // just add a new term to the splitter.
     if (splitter && splitter->orientation() != orientation) {
         TermProperties properties(term->workingDirectory());
-        TermWidget *newTerm  = createTerm(properties);
+        newTerm = createTerm(properties);
 
         // copy the size of the current term to the new term, so the new term will
         // keep the same size portion as the current term after the splitter relayout.
@@ -192,7 +193,6 @@ void TermWidgetPage::split(Qt::Orientation orientation)
         splitter->setSizes(sizes);
 
         setSplitStyle(splitter);
-        setCurrentTerminal(newTerm);
     } else {
         // if there's no splitter, or the orientation is not correct,
         // create a new splitter, put the 2 terms into the splitter,
@@ -201,15 +201,21 @@ void TermWidgetPage::split(Qt::Orientation orientation)
             // see above splitter->insertWidget part to know why.
             QList<int> sizes = splitter->sizes();
             sizes.insert(index, sizes.at(index));
-            QSplitter *newSplitter = createSubSplit(term, orientation);
+            QSplitter *newSplitter = createSubSplit(term, orientation, &newTerm);
             splitter->insertWidget(index, newSplitter);
             splitter->setSizes(sizes);
             setSplitStyle(splitter);
         } else {
-            QSplitter *newSplitter = createSubSplit(term, orientation);
+            QSplitter *newSplitter = createSubSplit(term, orientation, &newTerm);
             m_layout->insertWidget(index, newSplitter);
         }
     }
+
+    // Request focus only after the new terminal has been inserted into the
+    // visible widget hierarchy. This matters when changing split direction,
+    // where a nested splitter is created.
+    if (newTerm)
+        setCurrentTerminal(newTerm);
 
     /******** Add by ut001000 renfeixiang 2020-08-07:新增分屏时改变大小，bug#41436***************/
     parentMainWindow()->updateMinHeight();
@@ -223,12 +229,15 @@ void TermWidgetPage::split(Qt::Orientation orientation)
     return ;
 }
 
-DSplitter *TermWidgetPage::createSubSplit(TermWidget *term, Qt::Orientation orientation)
+DSplitter *TermWidgetPage::createSubSplit(TermWidget *term, Qt::Orientation orientation,
+                                          TermWidget **createdTerm)
 {
     qCDebug(views) << "Enter TermWidgetPage::createSubSplit";
     TermProperties properties(term->workingDirectory());
     term->setParent(nullptr);
     TermWidget *newTerm  = createTerm(properties);
+    if (createdTerm)
+        *createdTerm = newTerm;
     newTerm->resize(term->size());
 
     // 意义与名称是相反的
@@ -239,7 +248,6 @@ DSplitter *TermWidgetPage::createSubSplit(TermWidget *term, Qt::Orientation orie
     subSplit->insertWidget(0, term);
     subSplit->insertWidget(1, newTerm);
     setSplitStyle(subSplit);
-    setCurrentTerminal(newTerm);
     /******** Modify by ut000439 wangpeili 2020-07-27: fix bug 39371: 分屏线可以拉到边****/
     subSplit->setChildrenCollapsible(false);
     /********************* Modify by n014361 wangpeili End ************************/
