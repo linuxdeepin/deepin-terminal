@@ -27,7 +27,7 @@
     <message>
         <location filename="../src/customcommand/customcommandoptdlg.cpp" line="138"/>
         <source>Add Command</source>
-        <translation>Добавить команду </translation>
+        <translation>Добавить команду</translation>
     </message>
     <message>
         <location filename="../src/customcommand/customcommandoptdlg.cpp" line="147"/>
@@ -61,7 +61,7 @@
         <location filename="../src/customcommand/customcommandoptdlg.cpp" line="624"/>
         <source>OK</source>
         <comment>button</comment>
-        <translation>ОК</translation>
+        <translation>Хорошо</translation>
     </message>
     <message>
         <location filename="../src/customcommand/customcommandoptdlg.cpp" line="380"/>
@@ -89,7 +89,7 @@
     <message>
         <location filename="../src/customcommand/customcommandpanel.cpp" line="196"/>
         <source>Add Command</source>
-        <translation>Добавить команду </translation>
+        <translation>Добавить команду</translation>
     </message>
     <message>
         <location filename="../src/customcommand/customcommandpanel.cpp" line="200"/>
@@ -797,7 +797,7 @@
         <location filename="../src/common/utils.cpp" line="298"/>
         <source>OK</source>
         <comment>button</comment>
-        <translation>ОК</translation>
+        <translation>Хорошо</translation>
     </message>
     <message>
         <location filename="../src/common/utils.cpp" line="338"/>
@@ -1070,7 +1070,7 @@
         <location filename="../src/main/service.cpp" line="412"/>
         <source>OK</source>
         <comment>button</comment>
-        <translation>ОК</translation>
+        <translation>Хорошо</translation>
     </message>
 </context>
 <context>
@@ -1294,7 +1294,7 @@
         <location filename="../src/common/utils.cpp" line="265"/>
         <source>OK</source>
         <comment>button</comment>
-        <translation>ОК</translation>
+        <translation>Хорошо</translation>
     </message>
 </context>
 </TS>
