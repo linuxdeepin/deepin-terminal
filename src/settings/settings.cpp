@@ -28,6 +28,7 @@
 #include <QProcessEnvironment>
 #include <QJsonDocument>
 #include <QHBoxLayout>
+#include <QHash>
 
 DWIDGET_USE_NAMESPACE
 #define PRIVATE_PROPERTY_translateContext "_d_DSettingsWidgetFactory_translateContext"
@@ -39,6 +40,45 @@ DComboBox *Settings::g_shellConfigCombox = nullptr;
 const QString DEFAULT_SHELL = "$SHELL";
 
 Q_DECLARE_LOGGING_CATEGORY(tsettings)
+
+namespace {
+
+QString pascalFromKeyTail(const QString &key)
+{
+    QString tail = key.section('.', -1);
+    QString out;
+    const QStringList parts = tail.split('_', Qt::SkipEmptyParts);
+    for (const QString &part : parts) {
+        if (part.isEmpty())
+            continue;
+        out += part.left(1).toUpper() + part.mid(1);
+    }
+    return out;
+}
+
+QString shortcutAccessibleName(const QString &key)
+{
+    static const QHash<QString, QString> names = {
+        {"shortcuts.terminal.paste", "ShortcutPaste"},
+        {"shortcuts.terminal.copy", "ShortcutCopy"},
+        {"shortcuts.terminal.find", "ShortcutFind"},
+        {"shortcuts.terminal.select_all", "ShortcutSelectAll"},
+        {"shortcuts.tab.new_tab", "ShortcutNewTab"},
+        {"shortcuts.tab.close_tab", "ShortcutCloseTab"},
+        {"shortcuts.tab.close_other_tabs", "ShortcutCloseOtherTabs"},
+        {"shortcuts.tab.previous_tab", "ShortcutPreviousTab"},
+        {"shortcuts.tab.next_tab", "ShortcutNextTab"},
+        {"shortcuts.tab.vertical_split", "ShortcutVerticalSplit"},
+        {"shortcuts.tab.horionzal_split", "ShortcutHorizontalSplit"},
+        {"shortcuts.tab.select_upper_workspace", "ShortcutSelectUpperWorkspace"},
+        {"shortcuts.tab.select_lower_workspace", "ShortcutSelectLowerWorkspace"},
+        {"shortcuts.tab.close_workspace", "ShortcutCloseWorkspace"},
+        {"shortcuts.tab.close_other_workspaces", "ShortcutCloseOtherWorkspaces"},
+    };
+    return names.value(key, "Shortcut" + pascalFromKeyTail(key));
+}
+
+} // namespace
 
 Settings::Settings() : QObject(qApp)
 {
@@ -322,6 +362,12 @@ QPair<QWidget *, QWidget *>  Settings::createTabTitleFormatWidget(QObject *opt, 
     DTK_CORE_NAMESPACE::DSettingsOption *option = qobject_cast<DTK_CORE_NAMESPACE::DSettingsOption *>(opt);
     // tabrenaemewidget 第一个false表示标签重命名 第二个true表示不加标签提示
     TabRenameWidget *tabTitleFormat = new TabRenameWidget(isRemote, true);
+    if (DLineEdit *inputEdit = tabTitleFormat->findChild<DLineEdit *>("TabRenameWidgetInputEdit")) {
+        inputEdit->setAccessibleName(isRemote ? "RemoteTabTitleFormatEdit" : "TabTitleFormatEdit");
+    }
+    if (DPushButton *insertButton = tabTitleFormat->findChild<DPushButton *>("TabRenameWidgetChoseButton")) {
+        insertButton->setAccessibleName(isRemote ? "RemoteTabTitleFormatInsertButton" : "TabTitleFormatInsertButton");
+    }
 
     tabTitleFormat->getInputedit()->setText(option->value().toString());
 
@@ -781,6 +827,7 @@ QPair<QWidget *, QWidget *> Settings::createFontComBoBoxHandle(QObject *obj)
     /******** Modify by ut001000 renfeixiang 2020-06-15:修改 comboBox修改成成员变量，修改DBUS获取失败场景，设置成系统默认等宽字体 Begin***************/
     comboBox = new DComboBox;
     comboBox->setObjectName("SettingsFontFamilyComboBox");//Add by ut001000 renfeixiang 2020-08-14
+    comboBox->setAccessibleName("SettingsFontFamilyComboBox");
 
     QPair<QWidget *, QWidget *> optionWidget =
         DSettingsWidgetFactory::createStandardItem(QByteArray(), option, comboBox);
@@ -832,6 +879,8 @@ QPair<QWidget *, QWidget *> Settings::createCustomSliderHandle(QObject *obj)
     auto option = qobject_cast<DTK_CORE_NAMESPACE::DSettingsOption *>(obj);
 
     DSlider *slider = new DSlider;
+    slider->setObjectName("SettingsOpacitySlider");
+    slider->setAccessibleName("SettingsOpacitySlider");
     slider->setIconSize(QSize(20, 20));
     slider->setLeftIcon(QIcon::fromTheme("dt_opacity_left"));
     slider->setRightIcon(QIcon::fromTheme("dt_opacity_right"));
@@ -858,6 +907,8 @@ QPair<QWidget *, QWidget *> Settings::createValSliderHandle(QObject *obj)
 {
     auto option = qobject_cast<DTK_CORE_NAMESPACE::DSettingsOption *>(obj);
     DSlider *slider = new DSlider;
+    slider->setObjectName("SettingsQuakeAnimationSlider");
+    slider->setAccessibleName("SettingsQuakeAnimationSlider");
     QStringList valTicksList;
     const int maxVal = option->data("max").toInt();
     const int minVal = option->data("min").toInt();
@@ -892,6 +943,13 @@ QPair<QWidget *, QWidget *> Settings::createSpinButtonHandle(QObject *obj)
 {
     auto option = qobject_cast<DTK_CORE_NAMESPACE::DSettingsOption *>(obj);
     auto rightWidget = new NewDspinBox();
+    if (option->key() == "advanced.scroll.history_size") {
+        rightWidget->setObjectName("SettingsHistorySizeSpinBox");
+        rightWidget->setAccessibleName("SettingsHistorySizeSpinBox");
+    } else {
+        rightWidget->setObjectName("FontSizeSpinBox");
+        rightWidget->setAccessibleName("FontSizeSpinBox");
+    }
 
     // 使用新的setRange方法来设置范围，这将自动更新验证器
     int minValue = option->data("min").toInt();
@@ -921,6 +979,7 @@ QPair<QWidget *, QWidget *> Settings::createShortcutEditOptionHandle(/*DSettings
     auto rightWidget = new KeySequenceEdit(option);
 
     rightWidget->setObjectName("OptionShortcutEdit");
+    rightWidget->setAccessibleName(shortcutAccessibleName(option->key()));
     rightWidget->ShortcutDirection(Qt::AlignLeft);
 
     auto optionValue = option->value();
@@ -998,9 +1057,11 @@ QPair<QWidget *, QWidget *> Settings::createShellConfigComboxOptionHandle(QObjec
     DSettingsOption *option = qobject_cast<DTK_CORE_NAMESPACE::DSettingsOption *>(obj);
     // shell配置框
     g_shellConfigCombox = new DComboBox;
+    g_shellConfigCombox->setObjectName("SettingsShellComboBox");
     QPair<QWidget *, QWidget *> optionWidget = DSettingsWidgetFactory::createStandardItem(QByteArray(), option, g_shellConfigCombox);
     // 添加shell配置选项
     addShellOption();
+    g_shellConfigCombox->setAccessibleName("SettingsShellComboBox");
 
     connect(option, &DSettingsOption::valueChanged, g_shellConfigCombox, [ = ](QVariant var) {
         // 恢复默认值

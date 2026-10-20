@@ -170,6 +170,8 @@ void CustomCommandOptDlg::initUI()
         deleteCmdLayout->setSpacing(m_iSpaceSizeZero);
         deleteCmdLayout->setContentsMargins(m_iLayoutSizeZero, m_iLayoutSizeZero, m_iLayoutSizeZero, m_iLayoutSizeZero);
         TermCommandLinkButton *deleteCmdBtn = new TermCommandLinkButton();
+        deleteCmdBtn->setObjectName("CustomDeleteButton");
+        deleteCmdBtn->setAccessibleName("CustomDeleteButton");
         deleteCmdBtn->setFocusPolicy(Qt::TabFocus);
         deleteCmdBtn->setText(tr("Delete Command"));
 
