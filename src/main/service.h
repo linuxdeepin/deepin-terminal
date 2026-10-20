@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2019-2023 UnionTech Software Technology Co., Ltd.
+// SPDX-FileCopyrightText: 2019-2026 UnionTech Software Technology Co., Ltd.
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
@@ -246,6 +246,10 @@ private:
     void showHideOpacityAndBlurOptions(bool isShow);
     // 显示/隐藏debuginfod urls选项
     void showHideDebuginfodUrlsOptions(bool isShow);
+    /**
+     * @brief 为设置界面的选项控件补全稳定的 AccessibleName
+     */
+    void applySettingAccessibleNames();
 
     /**
      * @brief 监听窗口特效开关对应DBus信号，并实时显示/隐藏设置的透明度和背景模糊选项

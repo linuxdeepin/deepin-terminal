@@ -12,6 +12,7 @@
 #include <QDebug>
 #include <QLoggingCategory>
 #include <QTranslator>
+#include <DAboutDialog>
 
 Q_DECLARE_LOGGING_CATEGORY(mainprocess)
 
@@ -73,6 +74,12 @@ void TerminalApplication::handleQuitAction()
 bool TerminalApplication::notify(QObject *object, QEvent *event)
 {
     qCDebug(mainprocess) << "Processing event:" << event->type() << "for object:" << object;
+
+    // 关于对话框由 DTK 创建，首次显示时补一个稳定的 AccessibleName。
+    if (event->type() == QEvent::Show) {
+        if (DAboutDialog *aboutDialog = qobject_cast<DAboutDialog *>(object))
+            aboutDialog->setAccessibleName("AboutDialog");
+    }
     //修复bug#110813
     if (event->type() == QEvent::ApplicationFontChange) {
         qCDebug(mainprocess) << "Branch: handling application font change";

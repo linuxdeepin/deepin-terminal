@@ -272,7 +272,11 @@ void ServerConfigOptDlg::initUI()
     m_VBoxLayout->addLayout(m_pGridLayout);
 
     DPushButton *pCancelButton = new DPushButton(tr("Cancel", "button"));
+    pCancelButton->setObjectName("RemoteCancelButton");
+    pCancelButton->setAccessibleName("RemoteCancelButton");
     DSuggestButton *pAddSaveButton = new DSuggestButton(tr("Add", "button"));
+    pAddSaveButton->setObjectName("RemoteConfirmButton");
+    pAddSaveButton->setAccessibleName("RemoteConfirmButton");
     //Add a line by m000750 zhangmeng 2020-04-22设置回车触发默认按钮
     pAddSaveButton->setDefault(true);
     if (SCT_MODIFY == m_type) {

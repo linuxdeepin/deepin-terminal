@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2019-2023 UnionTech Software Technology Co., Ltd.
+// SPDX-FileCopyrightText: 2019-2026 UnionTech Software Technology Co., Ltd.
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
@@ -18,7 +18,11 @@
 #include <QDebug>
 #include <QDateTime>
 #include <QCheckBox>
+#include <QComboBox>
+#include <QAbstractSlider>
+#include <QAbstractSpinBox>
 #include <QLabel>
+#include <QLineEdit>
 #include <QScroller>
 #include <QJsonObject>
 #include <QLoggingCategory>
@@ -134,6 +138,8 @@ void Service::initSetting(MainWindow *pOwner)
     // 将数据重新读入
     qCDebug(mainprocess)<< "Updating settings";
     m_settingDialog->updateSettings(Settings::instance()->settings);
+    m_settingDialog->setAccessibleName("SettingsDialog");
+    applySettingAccessibleNames();
     // 设置窗口模态为没有模态，不阻塞窗口和进程
     qCDebug(mainprocess)<< "Setting window modality and moving to center";
     m_settingDialog->setWindowModality(Qt::NonModal);
@@ -144,6 +150,109 @@ void Service::initSetting(MainWindow *pOwner)
     showHideOpacityAndBlurOptions(DWindowManagerHelper::instance()->hasComposite());
     // 根据是否开启debuginfod选项初始化debuginfod urls选项的显示与否
     showHideDebuginfodUrlsOptions(Settings::instance()->enableDebuginfod());
+}
+
+void Service::applySettingAccessibleNames()
+{
+    if (nullptr == m_settingDialog)
+        return;
+
+    QWidget *rightFrame = m_settingDialog->findChild<QWidget *>("RightFrame");
+    if (nullptr == rightFrame) {
+        qWarning() << "applySettingAccessibleNames: RightFrame not found";
+        return;
+    }
+
+    // 复选框：控件文本即选项名，按文本映射为稳定的 AccessibleName。
+    const QHash<QString, QString> checkBoxNames = {
+        {"背景模糊", "SettingsBlurBackgroundCheckBox"},
+        {"Blur background", "SettingsBlurBackgroundCheckBox"},
+        {"光标闪烁", "SettingsCursorBlinkCheckBox"},
+        {"Cursor blink", "SettingsCursorBlinkCheckBox"},
+        {"选中文字时自动复制到剪切板", "SettingsCopyOnSelectCheckBox"},
+        {"Copy on select", "SettingsCopyOnSelectCheckBox"},
+        {"按键时滚动", "SettingsScrollOnKeyCheckBox"},
+        {"Scroll on keystroke", "SettingsScrollOnKeyCheckBox"},
+        {"输出时滚动", "SettingsScrollOnOutputCheckBox"},
+        {"Scroll on output", "SettingsScrollOnOutputCheckBox"},
+        {"丢失焦点后隐藏雷神窗口", "SettingsHideQuakeOnFocusOutCheckBox"},
+        {"Hide Quake window after losing focus", "SettingsHideQuakeOnFocusOutCheckBox"},
+        {"禁用Ctrl+S和Ctrl+Q控制", "SettingsDisableCtrlFlowCheckBox"},
+        {"Disable flow control using Ctrl+S, Ctrl+Q", "SettingsDisableCtrlFlowCheckBox"},
+        {"允许OSC52剪贴板访问", "SettingsAllowOsc52CheckBox"},
+        {"Allow OSC52 clipboard access", "SettingsAllowOsc52CheckBox"},
+        {"允许通过 Ctrl + 鼠标左键点击设置光标位置", "SettingsSetCursorPositionCheckBox"},
+        {"Allow Ctrl + left mouse click to set cursor position", "SettingsSetCursorPositionCheckBox"},
+        {"允许通过 Ctrl+滚轮缩放文本大小", "SettingsZoomOnCtrlWheelCheckBox"},
+        {"Allow Ctrl+scrollwheel to zoom text size", "SettingsZoomOnCtrlWheelCheckBox"},
+        {"允许通过 Ctrl+Shift+Up/Down 调整透明度", "SettingsOpacityOnCtrlShiftCheckBox"},
+        {"Allow Ctrl+Shift+Up/Down to adjust opacity", "SettingsOpacityOnCtrlShiftCheckBox"},
+        {"提供调试信息资源的HTTP文件服务器", "SettingsDebuginfodEnableCheckBox"},
+        {"The HTTP file server used for transmitting debugging information resources", "SettingsDebuginfodEnableCheckBox"},
+    };
+
+    const QList<QCheckBox *> checkBoxes = rightFrame->findChildren<QCheckBox *>();
+    for (QCheckBox *checkBox : checkBoxes) {
+        if (!checkBox)
+            continue;
+        const QString text = checkBox->text().trimmed();
+        if (checkBoxNames.contains(text)) {
+            checkBox->setAccessibleName(checkBoxNames.value(text));
+        }
+    }
+
+    // 下拉框/滑块/数字框/输入框：按同一行左侧选项名映射。
+    const QHash<QString, QString> rowNames = {
+        {"启动时使用", "SettingsWindowModeComboBox"},
+        {"Use on starting", "SettingsWindowModeComboBox"},
+        {"Shell配置", "SettingsShellComboBox"},
+        {"Shell profile", "SettingsShellComboBox"},
+        {"字体", "SettingsFontFamilyComboBox"},
+        {"Font", "SettingsFontFamilyComboBox"},
+        {"字体大小", "FontSizeSpinBox"},
+        {"Font size", "FontSizeSpinBox"},
+        {"历史记录大小", "SettingsHistorySizeSpinBox"},
+        {"History size", "SettingsHistorySizeSpinBox"},
+        {"透明度", "SettingsOpacitySlider"},
+        {"Opacity", "SettingsOpacitySlider"},
+        {"雷神窗口动画速度", "SettingsQuakeAnimationSlider"},
+        {"Quake window animation speed", "SettingsQuakeAnimationSlider"},
+        // 该选项在中文界面仍显示英文，故只登记英文文本。
+        {"debuginfod URLs", "SettingsDebuginfodUrlsEdit"},
+        {"在双击选择中包含特殊字符", "SettingsSpecialCharsEdit"},
+        {"Include special character(s) in double click selections", "SettingsSpecialCharsEdit"},
+        {"标签标题格式", "TabTitleFormatEdit"},
+        {"Tab title format", "TabTitleFormatEdit"},
+        {"远程标签标题格式", "RemoteTabTitleFormatEdit"},
+        {"Remote tab title format", "RemoteTabTitleFormatEdit"},
+    };
+
+    const QList<QWidget *> widgets = rightFrame->findChildren<QWidget *>();
+    for (QWidget *row : widgets) {
+        if (!row || !row->objectName().startsWith("CustomWidgetAtContentRow"))
+            continue;
+
+        QString label;
+        const QList<QLabel *> labels = row->findChildren<QLabel *>(QString(), Qt::FindDirectChildrenOnly);
+        for (QLabel *candidate : labels) {
+            if (candidate && !candidate->text().trimmed().isEmpty()) {
+                label = candidate->text().trimmed();
+                break;
+            }
+        }
+        if (label.isEmpty() || !rowNames.contains(label))
+            continue;
+
+        const QString name = rowNames.value(label);
+        if (QWidget *combo = row->findChild<QComboBox *>())
+            combo->setAccessibleName(name);
+        if (QWidget *slider = row->findChild<QAbstractSlider *>())
+            slider->setAccessibleName(name);
+        if (QWidget *spin = row->findChild<QAbstractSpinBox *>())
+            spin->setAccessibleName(name);
+        if (QWidget *edit = row->findChild<QLineEdit *>())
+            edit->setAccessibleName(name);
+    }
 }
 
 void Service::slotSettingsDialogFinished(int result)
@@ -438,6 +547,8 @@ void Service::showSettingDialog(MainWindow *pOwner)
         }
         qCDebug(mainprocess)<< "Showing settings dialog";
         m_settingDialog->show();
+        // 设置页可能按需创建，显示后补齐一次控件名称。
+        QTimer::singleShot(0, this, [this]() { applySettingAccessibleNames(); });
     } else {
         qCWarning(mainprocess)  << "No setting dialog.";
         return;

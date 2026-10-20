@@ -225,6 +225,7 @@ void CustomCommandPanel::initUI()
     m_searchEdit->setFocusPolicy(Qt::StrongFocus);
     m_searchEdit->setFocusProxy(m_searchEdit->lineEdit());
     m_searchEdit->setObjectName("CustomSearchEdit");//Add by ut001000 renfeixiang 2020-08-13
+    m_searchEdit->setAccessibleName("CustomCommandSearchEdit");
     m_searchEdit->setClearButtonEnabled(true);
     DFontSizeManager::instance()->bind(m_searchEdit, DFontSizeManager::T6);
 

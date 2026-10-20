@@ -240,8 +240,10 @@ void RemoteManagementPanel::initUI()
     m_searchEdit->setFocusPolicy(Qt::StrongFocus);
     m_searchEdit->setFocusProxy(m_searchEdit->lineEdit());
     m_searchEdit->setObjectName("RemoteSearchEdit");
+    m_searchEdit->setAccessibleName("RemoteSearchEdit");
     m_listWidget = new ListView(ListType_Remote, this);
     m_listWidget->setObjectName("RemoteManageListWidget");
+    m_listWidget->setAccessibleName("RemoteServerList");
     m_addGroupButton = new DPushButton(this);
     m_addGroupButton->setObjectName("AddServerGroupButton");
     m_addGroupButton->setFocusPolicy(Qt::TabFocus);
