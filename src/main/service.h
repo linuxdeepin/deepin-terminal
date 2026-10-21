@@ -17,6 +17,7 @@
 #include <QObject>
 #include <QSharedMemory>
 #include <QMap>
+#include <QPointer>
 
 
 DWIDGET_USE_NAMESPACE
@@ -265,7 +266,7 @@ private:
 
 private:
     static Service             *g_pService;
-    DSettingsDialog            *m_settingDialog                     = nullptr;// 设置框 全局唯一显示
+    QPointer<DSettingsDialog>   m_settingDialog;// 设置框 全局唯一显示
     CustomThemeSettingDialog   *m_customThemeSettingDialog          = nullptr;// 自定义主题设置对话框 全局唯一
     MainWindow                 *m_settingOwner                      = nullptr;// 设置框的所有者
     DDialog                    *m_settingShortcutConflictDialog     = nullptr;// 设置框，快捷键冲突弹窗

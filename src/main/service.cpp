@@ -548,7 +548,7 @@ void Service::showSettingDialog(MainWindow *pOwner)
         qCDebug(mainprocess)<< "Showing settings dialog";
         m_settingDialog->show();
         // 设置页可能按需创建，显示后补齐一次控件名称。
-        QTimer::singleShot(0, this, [this]() { applySettingAccessibleNames(); });
+        QTimer::singleShot(0, m_settingDialog, [this]() { applySettingAccessibleNames(); });
     } else {
         qCWarning(mainprocess)  << "No setting dialog.";
         return;
