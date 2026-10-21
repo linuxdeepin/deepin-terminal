@@ -4,8 +4,10 @@
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 
-builddir=build
-reportdir=build-ut
+export builddir=build
+export reportdir=build-ut
+export scriptdir="$(cd "$(dirname "$0")" && pwd)"
+export projectdir="$(cd "${scriptdir}/.." && pwd)"
 rm -r $builddir
 rm -r ../$builddir
 rm -r $reportdir
@@ -17,7 +19,10 @@ cd ../$builddir
 cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_SAFETYTEST_ARG="CMAKE_SAFETYTEST_ARG_ON" ..
 make -j8
 #生成asan日志和ut测试xml结果
+set +e
 ./tests/deepin-terminal-test --gtest_output=xml:./report/report_deepin-terminal.xml
+test_exit_code=$?
+set -e
 
 workdir=$(cd ../$(dirname $0)/$builddir; pwd)
 
@@ -35,6 +40,11 @@ mv ./html/index.html ./html/cov_deepin-terminal.html
 #对asan、ut、代码覆盖率结果收集至指定文件夹
 cp -r html ../$reportdir/
 cp -r report ../$reportdir/
-cp -r asan*.log* ../$reportdir/asan_deepin-terminal.log
+cp -r asan*.log* ../$reportdir/asan_deepin-terminal.log 2>/dev/null || true
 
-exit 0
+# 生成摘要 JSON
+echo "==> Generating summary JSON: ../$reportdir/ut-summary.json"
+
+python3 "${scriptdir}/gen-ut-summary.py"
+
+exit $test_exit_code
