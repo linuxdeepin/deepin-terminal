@@ -11,6 +11,10 @@
 
 #include <QTest>
 #include <QApplication>
+#include <cstdlib>
+#ifdef __GNUC__
+extern "C" void __gcov_dump(void);
+#endif
 
 #if defined(CMAKE_SAFETYTEST_ARG_ON)
 #include <sanitizer/asan_interface.h>
@@ -47,5 +51,10 @@ int main(int argc, char *argv[])
 
     QTEST_SET_MAIN_SOURCE_PATH
 
-    return ret;
+    fflush(stdout);
+    fflush(stderr);
+#ifdef __GNUC__
+    __gcov_dump();
+#endif
+    _exit(ret);
 }
