@@ -1140,6 +1140,11 @@ void TabBar::updateTabDragMoveStatus()
     if (nullptr != quakeWindow) {
         qCDebug(views) << "Branch: Quake window is not null";
         TabBar *quakeWindowTabbar = quakeWindow->findChild<TabBar *>(this->metaObject()->className());
+        if (nullptr == quakeWindowTabbar) {
+            qCDebug(views) << "Branch: Quake window tabbar not found, skipping";
+            return;
+        }
+
         if (1 == quakeWindowTabbar->count()) {
             qCDebug(views) << "Branch: Quake window tab is only one, setting movable and dragable to false";
             quakeWindowTabbar->setMovable(false);
