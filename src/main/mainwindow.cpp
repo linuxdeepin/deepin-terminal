@@ -20,6 +20,7 @@
 #include "windowsmanager.h"
 #include "service.h"
 #include "terminalapplication.h"
+#include "treelandwindowpositioner.h"
 
 #include <DSettings>
 #include <DSettingsGroup>
@@ -3241,6 +3242,9 @@ QuakeWindow::QuakeWindow(TermProperties properties, QWidget *parent): MainWindow
 
     //设置窗口属性 不可移动
     sendWindowForhibitMove(true);
+
+    // Wayland 下 move() 无效，需要借助 Treeland 的 dde-shell 协议固定位置
+    m_windowPositioner = new TreelandWindowPositioner(this, this);
 }
 
 QuakeWindow::~QuakeWindow()
@@ -3639,6 +3643,15 @@ void QuakeWindow::showEvent(QShowEvent *event)
     m_desktopMap[m_desktopIndex] = true;
 
     DMainWindow::showEvent(event);
+
+    // Wayland 下客户端不能自行设置窗口位置，改为在窗口映射前把位置提示交给合成器，
+    // 让雷神窗口贴住光标所在屏幕的顶部，而不是被自动放置到屏幕中间。
+    if (m_windowPositioner) {
+        m_windowPositioner->setTargetScreen(
+            TreelandWindowPositioner::screenForPosition(this, QCursor::pos()));
+        m_windowPositioner->applyPosition();
+    }
+
     // Ensure quake window is ready for typing immediately after it is shown.
     QTimer::singleShot(0, this, [this]() {
         focusCurrentPage();

@@ -98,6 +98,35 @@ pkg_search_module(GOBJECT REQUIRED gobject-2.0)
 pkg_check_modules(LIBSECRET REQUIRED libsecret-1)
 pkg_check_modules(XCB_EWMH REQUIRED xcb-ewmh x11)
 
+# Treeland dde-shell fixed window placement support.
+# Wayland clients cannot position their own toplevels, so the quake window asks
+# the Treeland compositor for a fixed position through the private
+# treeland_dde_shell_unstable_v2 protocol. It is optional: without the required
+# development files the code compiles out and the old behavior is kept.
+set(TREELAND_POSITION_SUPPORT OFF)
+if (QT_VERSION_MAJOR EQUAL 6)
+    find_program(WAYLAND_SCANNER_EXECUTABLE wayland-scanner)
+    pkg_check_modules(WAYLAND_CLIENT wayland-client)
+    get_target_property(_qt6_core_includes Qt6::Core INTERFACE_INCLUDE_DIRECTORIES)
+    foreach(_include_dir IN LISTS _qt6_core_includes)
+        if (_include_dir MATCHES "/qt6$")
+            set(_qt6_header_root "${_include_dir}")
+            break()
+        endif()
+    endforeach()
+    if (_qt6_header_root)
+        set(_qt6_gui_private_include "${_qt6_header_root}/QtGui/${Qt6Gui_VERSION}/QtGui")
+        set(_qt6_gui_private_root "${_qt6_header_root}/QtGui/${Qt6Gui_VERSION}")
+        set(_qt6_core_private_include "${_qt6_header_root}/QtCore/${Qt6Core_VERSION}")
+    endif()
+    if (WAYLAND_SCANNER_EXECUTABLE AND WAYLAND_CLIENT_FOUND AND _qt6_header_root
+        AND EXISTS "${_qt6_gui_private_include}/qpa/qplatformwindow_p.h"
+        AND EXISTS "${_qt6_core_private_include}/QtCore/private/qglobal_p.h")
+        set(TREELAND_POSITION_SUPPORT ON)
+    endif()
+endif()
+message("   >>> Treeland fixed window placement: ${TREELAND_POSITION_SUPPORT}")
+
 
 # Compile definitions for TerminalWidget
 # So we can use QT_VERSION_CHECK
@@ -164,6 +193,7 @@ set (DTNG_CPP_FILES
     src/main/terminalapplication.cpp
     src/main/termproperties.cpp    
     src/main/dbusmanager.cpp
+    src/main/treelandwindowpositioner.cpp
     src/remotemanage/groupconfigoptdlg.cpp
     src/remotemanage/remotemanagementpanel.cpp
     src/remotemanage/remotemanagementplugn.cpp
@@ -217,6 +247,7 @@ set (DTNG_HEADER_FILES
     src/main/terminalapplication.h
     src/main/termproperties.h
     src/main/dbusmanager.h
+    src/main/treelandwindowpositioner.h
     src/remotemanage/remotemanagementpanel.h
     src/remotemanage/remotemanagementplugn.h
     src/remotemanage/remotemanagementsearchpanel.h
@@ -250,6 +281,26 @@ set (DTNG_QRC_FILES
     src/assets/resources.qrc
 )
 
+if (TREELAND_POSITION_SUPPORT)
+    set(TREELAND_DDE_SHELL_XML
+        ${CMAKE_CURRENT_SOURCE_DIR}/3rdparty/treeland-protocols/treeland-dde-shell-unstable-v2.xml)
+    set(TREELAND_DDE_SHELL_HEADER
+        ${CMAKE_CURRENT_BINARY_DIR}/treeland-dde-shell-unstable-v2-client-protocol.h)
+    set(TREELAND_DDE_SHELL_CODE
+        ${CMAKE_CURRENT_BINARY_DIR}/treeland-dde-shell-unstable-v2-protocol.c)
+    add_custom_command(OUTPUT ${TREELAND_DDE_SHELL_HEADER}
+        COMMAND ${WAYLAND_SCANNER_EXECUTABLE} client-header
+                ${TREELAND_DDE_SHELL_XML} ${TREELAND_DDE_SHELL_HEADER}
+        DEPENDS ${TREELAND_DDE_SHELL_XML}
+        VERBATIM)
+    add_custom_command(OUTPUT ${TREELAND_DDE_SHELL_CODE}
+        COMMAND ${WAYLAND_SCANNER_EXECUTABLE} private-code
+                ${TREELAND_DDE_SHELL_XML} ${TREELAND_DDE_SHELL_CODE}
+        DEPENDS ${TREELAND_DDE_SHELL_XML} ${TREELAND_DDE_SHELL_HEADER}
+        VERBATIM)
+    list(APPEND DTNG_CPP_FILES ${TREELAND_DDE_SHELL_CODE})
+endif()
+
 # Program
 set (EXE_NAME deepin-terminal)
 
@@ -264,6 +315,10 @@ add_executable (${EXE_NAME}
     ${DTNG_QRC_FILES}
 )
 
+if (TREELAND_POSITION_SUPPORT)
+    target_sources(${EXE_NAME} PRIVATE ${TREELAND_DDE_SHELL_HEADER})
+endif()
+
 target_include_directories(${EXE_NAME}
     PUBLIC
     ${PROJECT_BINARY_DIR}
@@ -274,6 +329,18 @@ target_include_directories(${EXE_NAME}
 )
 
 target_link_libraries (deepin-terminal ${LINK_LIBS} terminalwidget${QT_DESIRED_VERSION})
+
+if (TREELAND_POSITION_SUPPORT)
+    target_include_directories(${EXE_NAME} PRIVATE
+        ${CMAKE_CURRENT_BINARY_DIR}
+        ${_qt6_gui_private_include}
+        ${_qt6_gui_private_root}
+        ${_qt6_core_private_include}
+        ${WAYLAND_CLIENT_INCLUDE_DIRS}
+    )
+    target_compile_definitions(${EXE_NAME} PRIVATE DDE_SHELL_POSITION_SUPPORT=1)
+    target_link_libraries(${EXE_NAME} ${WAYLAND_CLIENT_LIBRARIES})
+endif()
 
 # Install settings
 
