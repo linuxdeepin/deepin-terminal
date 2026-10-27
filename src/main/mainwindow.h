@@ -39,6 +39,8 @@
 
 #include <functional>
 
+class TreelandWindowPositioner;
+
 
 DWIDGET_USE_NAMESPACE
 
@@ -1185,6 +1187,8 @@ private:
     QTimer *m_resizeTimer = nullptr;
     // 记录雷神是否当前桌面显示
     QMap<int, bool> m_desktopMap;
+    // Treeland 下通过 dde-shell 协议固定雷神窗口位置（Wayland 客户端无法自行 move）
+    TreelandWindowPositioner *m_windowPositioner = nullptr;
 
     //Add by ut001000 renfeixiang 2020-11-16
     //获取配置文件中保存的雷神窗口高度

@@ -19,6 +19,7 @@ Build-Depends:
  libgtest-dev,
  libgmock-dev,
  libxcb-ewmh-dev,
+ libwayland-dev,
  libchardet-dev,
  libuchardet-dev (>= 0.0.6),
  libicu-dev
