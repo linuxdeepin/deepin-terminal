@@ -2116,16 +2116,16 @@ void MainWindow::addThemeMenuItems()
         switchThemeMenu->addSeparator();
 
         //添加内置主题项列表
-        themeOneAction = switchThemeMenu->addAction(tr(THEME_ONE_NAME));
-        themeTwoAction = switchThemeMenu->addAction(tr(THEME_TWO_NAME));
-        themeThreeAction = switchThemeMenu->addAction(tr(THEME_THREE_NAME));
-        themeFourAction = switchThemeMenu->addAction(tr(THEME_FOUR_NAME));
-        themeFiveAction = switchThemeMenu->addAction(tr(THEME_FIVE_NAME));
-        themeSixAction = switchThemeMenu->addAction(tr(THEME_SIX_NAME));
-        themeSevenAction = switchThemeMenu->addAction(tr(THEME_SEVEN_NAME));
-        themeEightAction = switchThemeMenu->addAction(tr(THEME_EIGHT_NAME));
-        themeNineAction = switchThemeMenu->addAction(tr(THEME_NINE_NAME));
-        themeTenAction = switchThemeMenu->addAction(tr(THEME_TEN_NAME));
+        themeOneAction = switchThemeMenu->addAction(tr("Elementary"));
+        themeTwoAction = switchThemeMenu->addAction(tr("Empathy"));
+        themeThreeAction = switchThemeMenu->addAction(tr("Tomorrow night blue"));
+        themeFourAction = switchThemeMenu->addAction(tr("Bim"));
+        themeFiveAction = switchThemeMenu->addAction(tr("Freya"));
+        themeSixAction = switchThemeMenu->addAction(tr("Hybrid"));
+        themeSevenAction = switchThemeMenu->addAction(tr("Ocean dark"));
+        themeEightAction = switchThemeMenu->addAction(tr("Deepin"));
+        themeNineAction = switchThemeMenu->addAction(tr("Ura"));
+        themeTenAction = switchThemeMenu->addAction(tr("One light"));
         themeCustomAction = switchThemeMenu->addAction(tr("Custom Theme"));
 
 
