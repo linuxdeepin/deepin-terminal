@@ -488,9 +488,13 @@ TEST_F(UT_MainWindow_Test, OnHandleCloseType)
 
 TEST_F(UT_MainWindow_Test, onWindowSettingChanged)
 {
-    //开启或关闭毛玻璃效果
+    //背景模糊设置项已迁移为 basic.interface.blurred_background，由 onTerminalSettingChanged 处理，
+    //旧 key 走 onWindowSettingChanged 的兜底分支，不应崩溃
     m_normalWindow->onWindowSettingChanged("advanced.window.blurred_background");
-    EXPECT_TRUE(m_normalWindow->enableBlurWindow() == Settings::instance()->backgroundBlur());
+    m_normalWindow->onTerminalSettingChanged("basic.interface.blurred_background");
+    //无 X11 连接的 UT 环境(如 offscreen)下 DMainWindow 不保存模糊窗口属性，跳过属性断言
+    if (QX11Info::connection())
+        EXPECT_TRUE(m_normalWindow->enableBlurWindow() == Settings::instance()->backgroundBlur());
 
     //测试时，默认为普通窗口
     m_normalWindow->onWindowSettingChanged("advanced.window.use_on_starting");
