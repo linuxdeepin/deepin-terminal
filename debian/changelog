@@ -1,3 +1,18 @@
+deepin-terminal (6.5.41) unstable; urgency=medium
+
+  * docs(terminal): add Portuguese help manual
+  * fix(ut): update stale blur setting key in onWindowSettingChanged test
+  * fix(ut): fix crash in TabBar::updateTabDragMoveStatus and enable coverage data flush
+  * feat(test): add ut-summary.json generation for test results and coverage
+  * fix: prevent UAF on settings dialog via QPointer
+  * fix: preserve focus when changing split direction
+  * fix: add AT-SPI accessible names for interactive widgets
+  * feat(at-spi): add accessible names for settings and management UI
+  * feat: add AT-SPI accessible names for UI components
+  * feat: add entries for newest xdg-terminal-exec spec
+
+ -- re2zero <yangwu@uniontech.com>  Fri, 30 Oct 2026 13:48:49 +0800
+
 deepin-terminal (6.5.40) unstable; urgency=medium
 
   * chore: Update version to 6.5.40
