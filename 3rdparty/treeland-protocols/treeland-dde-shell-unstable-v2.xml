@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<protocol name="treeland_dde_shell_unstable_v2">
+    <copyright><![CDATA[
+SPDX-FileCopyrightText: 2024 - 2026 UnionTech Software Technology Co., Ltd.
+SPDX-License-Identifier: MIT
+]]></copyright>
+
+    <description summary="DDE shell surface role for treeland">
+        Warning! This protocol is EXPERIMENTAL and under active development.
+        It may change at any time, including in backward-incompatible ways,
+        without incrementing the interface major version and without prior
+        notice. No compatibility guarantees of any kind are provided. Clients
+        and compositors must track the upstream definition in treeland-protocols
+        and must not rely on the current interface names, requests, events, or
+        semantics remaining stable across releases.
+
+        This protocol lets a privileged DDE client turn a wl_surface
+        into a shell surface that renders below the wlr-layer-shell
+        layer stack, at the overlay level of the workspace, and position
+        it at coordinates relative to an output or auto-place it below
+        the cursor.
+
+        The compositor must reject bind attempts from non-privileged
+        clients.
+
+        The terms "must", "must not", "should", and "may" in this document
+        are to be interpreted as described in RFC 2119.
+    </description>
+
+    <interface name="treeland_dde_shell_manager_v2" version="1">
+        <description summary="factory for DDE shell surfaces">
+            A global that creates treeland_dde_shell_surface_v2 objects for
+            privileged DDE clients implementing parts of the shell user
+            interface.
+
+            The compositor must reject bind attempts from non-privileged
+            clients.
+        </description>
+
+        <enum name="error">
+            <description summary="factory errors">
+                Errors raised by the treeland_dde_shell_manager_v2
+                interface.
+            </description>
+            <entry name="already_shell_surface" value="0" summary="the wl_surface already has a shell surface object" />
+        </enum>
+
+        <request name="destroy" type="destructor">
+            <description summary="destroy the manager">
+                Destroy the treeland_dde_shell_manager_v2 object.
+                Shell surfaces created through this manager are not
+                affected.
+            </description>
+        </request>
+
+        <request name="get_shell_surface">
+            <description summary="create a shell surface from a surface">
+                Create a new treeland_dde_shell_surface_v2 object for the
+                given surface, turning it into a shell surface. Only one
+                shell surface object can be associated with a given
+                wl_surface; the compositor raises already_shell_surface
+                for a second attempt.
+
+                Recommended for use with xdg_surface.
+            </description>
+            <arg name="id" type="new_id" interface="treeland_dde_shell_surface_v2" summary="the new shell surface object" />
+            <arg name="surface" type="object" interface="wl_surface" summary="the surface to create a shell surface for" />
+        </request>
+    </interface>
+
+    <interface name="treeland_dde_shell_surface_v2" version="1">
+        <description summary="shell surface role">
+            A shell surface object assigns the DDE shell surface role to a
+            wl_surface. A shell surface renders either at the overlay level
+            of the workspace (above normal toplevel windows but below
+            layer-shell surfaces) or at the normal window layer, as
+            selected by the set_role request. The default role is overlay.
+
+            The role carries no requests that map, commit, or configure
+            buffer state; the client commits buffers with wl_surface
+            semantics as usual.
+
+            On the server side the object is automatically destroyed when
+            the related wl_surface is destroyed. On the client side,
+            treeland_dde_shell_surface_v2.destroy() must be called before
+            destroying the wl_surface object.
+
+            Positioning requests are mutually exclusive: set_position_hint
+            suggests fixed coordinates relative to an output, while
+            set_cursor_placement_hint asks the compositor to place the
+            surface relative to the cursor. The most recently sent
+            request determines the placement mode. Both requests are
+            hints for the initial placement of the surface: the
+            compositor decides the final position and may adjust it to
+            keep the surface accessible, for example to keep its
+            titlebar area within the output. Clients must not assume the
+            requested position is honored exactly.
+        </description>
+
+        <enum name="role">
+            <description summary="rendering layer for a shell surface">
+                The layer a shell surface renders in. Layers are ordered by
+                z depth. Multiple surfaces can share a single role, and
+                ordering within a single role is undefined.
+            </description>
+            <entry name="normal" value="0" summary="normal window layer, below the overlay layer and participating in regular toplevel stacking" />
+            <entry name="overlay" value="1" summary="workspace overlay layer, above normal toplevels and below layer-shell surfaces" />
+        </enum>
+
+        <enum name="skip_flag" bitfield="true">
+            <description summary="window-listing preferences">
+                Flags indicating that the surface prefers not to be listed
+                in specific shell views. Used by the set_skip_flags
+                request. Compositors should honor these preferences but
+                may ignore them, for example for windows the user must
+                always be able to reach.
+            </description>
+            <entry name="switcher" value="0x1" summary="do not list the window in the task switcher" />
+            <entry name="dock_preview" value="0x2" summary="do not show the window in dock window previews" />
+            <entry name="multitask_view" value="0x4" summary="do not list the window in the multitask view" />
+        </enum>
+
+        <request name="destroy" type="destructor">
+            <description summary="destroy the shell surface object">
+                The treeland_dde_shell_surface_v2 interface is removed from
+                the wl_surface object that was turned into a shell surface
+                with the treeland_dde_shell_manager_v2.get_shell_surface
+                request.
+
+                The shell surface role is lost and the wl_surface is
+                unmapped.
+            </description>
+        </request>
+
+        <request name="set_role">
+            <description summary="assign a rendering layer to this surface">
+                Assign the role identified by the role enum to this shell
+                surface, selecting the layer it renders in. The default
+                role before this request is overlay.
+
+                Assigning the normal role returns the surface to the
+                regular window layer, participating in normal toplevel
+                stacking again.
+            </description>
+            <arg name="role" type="uint" enum="role" summary="the rendering layer for this surface" />
+        </request>
+
+        <request name="set_position_hint">
+            <description summary="suggest a fixed position relative to an output">
+                Suggest a position for the surface. The coordinates are
+                relative to the origin of the given output; for example
+                50,50 suggests placing the surface 50 units right of and
+                50 units below the output's top-left corner, wherever
+                that output currently sits in the global space spanning
+                all outputs.
+
+                The output argument may be null, in which case the
+                compositor uses the primary output as the anchor.
+                Otherwise the output must be a valid, current wl_output.
+                The position is resolved at request time; the compositor
+                does not keep the output associated with this surface
+                afterwards, and the client may release the wl_output
+                proxy once the request has been sent. If the output is
+                later destroyed, the already-applied position is not
+                affected.
+
+                This request is a hint for the initial placement of the
+                surface: the compositor decides the final position and
+                may adjust it to keep the surface accessible. Clients
+                must not assume the requested position is honored
+                exactly.
+            </description>
+            <arg name="output" type="object" interface="wl_output" allow-null="true" summary="the output whose origin anchors the coordinates, or null for the primary output" />
+            <arg name="x" type="int" summary="x coordinate relative to the output origin" />
+            <arg name="y" type="int" summary="y coordinate relative to the output origin" />
+        </request>
+
+        <request name="set_cursor_placement_hint">
+            <description summary="suggest placing the surface relative to the cursor">
+                Suggest placing the surface relative to the current cursor
+                position: horizontally offset by x_offset from the cursor
+                center and vertically offset by y_offset from the bottom
+                of the cursor.
+
+                This request is a hint for the initial placement of the
+                surface: the compositor decides the final position and
+                may adjust it to keep the surface accessible. Clients
+                must not assume the requested position is honored
+                exactly.
+
+                Sending this request switches the placement mode to
+                cursor-relative; see the interface description for the
+                interaction with set_position_hint.
+            </description>
+            <arg name="x_offset" type="int" summary="horizontal offset of the surface center from the cursor center, positive to the right" />
+            <arg name="y_offset" type="int" summary="distance from the bottom of the cursor to the top of the surface" />
+        </request>
+
+        <request name="set_skip_flags">
+            <description summary="set window-listing preferences">
+                Set the shell views that should not list this surface. The
+                flags argument is a bitfield of skip_flag values; setting
+                a flag asks the shell view not to include the surface,
+                clearing it restores default listing. This request
+                replaces any previously set flags.
+            </description>
+            <arg name="flags" type="uint" enum="skip_flag" summary="bitfield of views that should not list this surface" />
+        </request>
+
+        <request name="set_accept_keyboard_focus">
+            <description summary="control whether the surface accepts keyboard focus">
+                Set whether this surface can receive keyboard focus. When
+                set to 0, the surface will not receive keyboard focus even
+                when clicked or activated. When set to 1 (the default), the
+                surface receives keyboard focus normally.
+            </description>
+            <arg name="accept" type="uint" summary="0 to refuse keyboard focus, 1 to accept it" />
+        </request>
+    </interface>
+</protocol>

@@ -46,6 +46,7 @@ FILE(GLOB allSource
     ../src/main/terminalapplication.cpp
     ../src/main/termproperties.cpp
     ../src/main/dbusmanager.cpp
+    ../src/main/treelandwindowpositioner.cpp
     ../src/main/atspidesktop.cpp
 )
 
