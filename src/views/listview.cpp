@@ -628,7 +628,10 @@ inline void ListView::onCustomCommandOptDlgFinished(int result)
         }
     }
 
-    Service::instance()->setIsDialogShow(window(), false);
+    // 删除确认对话框仍显示时，不恢复主窗口焦点，避免 Enter 键事件泄漏到终端
+    if (!(QDialog::Rejected == result && m_pdlg->isDelCurCommand())) {
+        Service::instance()->setIsDialogShow(window(), false);
+    }
 
     if (m_focusState) {
         qCDebug(views) << "Branch: m_focusState is true, restoring focus";
@@ -694,6 +697,9 @@ inline void ListView::onDeleteCustomCommandFinished(int result)
         m_pdlg->closeRefreshDataConnection();
         emit Service::instance()->refreshCommandPanel(m_pdlg->m_currItemData->m_cmdName, m_pdlg->m_currItemData->m_cmdName);
     }
+
+    // 删除确认对话框关闭后，恢复主窗口状态
+    Service::instance()->setIsDialogShow(window(), false);
 }
 
 void ListView::keyPressEvent(QKeyEvent *event)
