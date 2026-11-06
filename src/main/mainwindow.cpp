@@ -3602,11 +3602,11 @@ void QuakeWindow::resizeByCurrentScreen(bool force)
     const QScreen *quakeScreen = QGuiApplication::screenAt(pos());
     const QScreen *cursorScreen = QGuiApplication::screenAt(cursorPoint);
     if (cursorScreen && (force || (!isVisible() && quakeScreen && quakeScreen->serialNumber() != cursorScreen->serialNumber()))) {
-        int windowWidth = cursorScreen->geometry().width();
-        move(cursorScreen->geometry().topLeft());
+        int windowWidth = cursorScreen->availableGeometry().width();
+        move(cursorScreen->availableGeometry().topLeft());
         setFixedWidth(windowWidth);
         setMinimumHeight(60);
-        setMaximumHeight(cursorScreen->geometry().height() * 2 / 3);
+        setMaximumHeight(cursorScreen->availableGeometry().height() * 2 / 3);
         connect(cursorScreen, &QScreen::availableGeometryChanged, this, &QuakeWindow::slotWorkAreaResized, Qt::UniqueConnection);
     }
 }
@@ -3743,7 +3743,7 @@ int QuakeWindow::getQuakeHeight()
 #if (QT_VERSION < QT_VERSION_CHECK(6, 0, 0))
     int screenHeight = qApp->desktop()->screenGeometry().height();
 #else
-    int screenHeight = QGuiApplication::primaryScreen()->geometry().height();
+    int screenHeight = QGuiApplication::primaryScreen()->availableGeometry().height();
 #endif
     int minHeight = screenHeight * 1 / 3;
     return m_winInfoConfig->value(CONFIG_QUAKE_WINDOW_HEIGHT, minHeight).toInt();
