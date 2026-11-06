@@ -6,8 +6,6 @@
 #include "termcommandlinkbutton.h"
 #include "utils.h"
 
-#include <DPaletteHelper>
-
 #include <QDebug>
 #include <QLoggingCategory>
 
@@ -19,11 +17,6 @@ TermCommandLinkButton::TermCommandLinkButton(QWidget *parent)
     qCDebug(views) << "TermCommandLinkButton constructor enter";
     Utils::set_Object_Name(this);
     setAccessibleName("TermCommandLinkButton");
-
-    DPalette palette = DPaletteHelper::instance()->palette(this);
-    qCDebug(views) << "Setting button text color to warning color";
-    palette.setColor(DPalette::ButtonText, palette.color(DPalette::TextWarning));
-    this->setPalette(palette);
 
     qCDebug(views) << "Configuring button properties";
     this->setFlat(true);

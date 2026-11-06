@@ -348,10 +348,6 @@ inline void ServerConfigOptDlg::handleThemeTypeChanged(DGuiApplicationHelper::Co
 
     palette.setBrush(QPalette::WindowText, color);
     m_titleLabel->setPalette(palette);
-
-    palette = DPaletteHelper::instance()->palette(m_delServer);
-    palette.setColor(DPalette::ButtonText, palette.color(DPalette::TextWarning));
-    m_delServer->setPalette(palette);
 }
 
 /**
