@@ -105,7 +105,18 @@ set(TERMINALWIDGET_VERSION_MAJOR "0")
 set(TERMINALWIDGET_VERSION_MINOR "14")
 set(TERMINALWIDGET_VERSION_PATCH "1")
 
-add_subdirectory(3rdparty/terminalwidget)
+# 自研终端组件开关：OFF 编译内嵌三方库 terminalwidget5/6（默认，现状）；
+# ON 将自研源码直接编入 deepin-terminal 主目标、不再构建/链接三方库。
+option(BUILD_SELF_TERMWIDGET "Compile the self-developed DTerminalWidget sources into the executable instead of the vendored QTermWidget library" OFF)
+
+include_directories("src/terminalwidget")
+
+if(BUILD_SELF_TERMWIDGET)
+    add_definitions(-DBUILD_SELF_TERMWIDGET=1)
+else()
+    add_subdirectory(3rdparty/terminalwidget)
+    include_directories("3rdparty/terminalwidget/lib")
+endif()
 
 include_directories(${DtkWidget_INCLUDE_DIRS})
 include_directories(${DtkGui_INCLUDE_DIRS})
@@ -118,7 +129,6 @@ include_directories("src/main")
 include_directories("src/remotemanage")
 include_directories("src/settings")
 include_directories("src/views")
-include_directories("3rdparty/terminalwidget/lib")
 
 set(LINK_LIBS
     Qt${QT_VERSION_MAJOR}::Core
@@ -246,6 +256,32 @@ set (DTNG_HEADER_FILES
     src/views/themepreviewarea.h
 )
 
+# 自研终端组件：源码直接编入主程序（源码集成，非库链接）。
+# 驱动接口两种模式都需要；适配器仅三方模式、自研实现仅自研模式。
+if(BUILD_SELF_TERMWIDGET)
+    list(APPEND DTNG_CPP_FILES
+        src/terminalwidget/dterminaldriver.cpp
+        src/terminalwidget/dterminalcompat.cpp
+        src/terminalwidget/dterminalwidget.cpp
+    )
+    list(APPEND DTNG_HEADER_FILES
+        src/terminalwidget/dterminaldriver.h
+        src/terminalwidget/dterminalcompat.h
+        src/terminalwidget/dterminalwidget.h
+    )
+else()
+    list(APPEND DTNG_CPP_FILES
+        src/terminalwidget/dterminaldriver.cpp
+        src/terminalwidget/dterminalcompat.cpp
+        src/terminalwidget/dcompatterminaldriver.cpp
+    )
+    list(APPEND DTNG_HEADER_FILES
+        src/terminalwidget/dterminaldriver.h
+        src/terminalwidget/dterminalcompat.h
+        src/terminalwidget/dcompatterminaldriver.h
+    )
+endif()
+
 set (DTNG_QRC_FILES
     src/assets/resources.qrc
 )
@@ -273,7 +309,10 @@ target_include_directories(${EXE_NAME}
     ${XCB_EWMH_INCLUDE_DIRS}
 )
 
-target_link_libraries (deepin-terminal ${LINK_LIBS} terminalwidget${QT_DESIRED_VERSION})
+target_link_libraries (deepin-terminal ${LINK_LIBS})
+if(NOT BUILD_SELF_TERMWIDGET)
+    target_link_libraries (deepin-terminal terminalwidget${QT_DESIRED_VERSION})
+endif()
 
 # Install settings
 

@@ -6,14 +6,27 @@
 #ifndef TERMWIDGET_H
 #define TERMWIDGET_H
 
-#include "qtermwidget.h"
 #include "termwidgetpage.h"
+#include "dterminaldriver.h"
+
+#include <QAction>
+
+#ifdef BUILD_SELF_TERMWIDGET
+#include "dterminalwidget.h"
+#else
+#include "qtermwidget.h"
+#endif
+
+class DCompatTerminalDriver;
+class QTextCodec;
 
 /*******************************************************************************
  1. @类名:    TermWidget
  2. @作者:    ut000439 wangpeili
  3. @日期:    2020-08-11
- 4. @说明:
+ 4. @说明:    三方模式继承 QTermWidget（行为与历史版本完全一致）；
+            自研模式（BUILD_SELF_TERMWIDGET）改为持有自研驱动并转发，
+            对外接口保持不变。
 *******************************************************************************/
 
 // 程序名 %n
@@ -61,7 +74,12 @@ struct TabFormat {
 
 class TermProperties;
 struct ServerConfig;
-class TermWidget : public QTermWidget
+class TermWidget
+#ifdef BUILD_SELF_TERMWIDGET
+    : public QWidget
+#else
+    : public QTermWidget
+#endif
 {
     Q_OBJECT
 public:
@@ -268,6 +286,72 @@ public:
      */
     void inputRemotePassword(const QString &remotePassword);
 
+#ifdef BUILD_SELF_TERMWIDGET
+    // ---- D2 上层兼容：自研模式下重声明的旧接口（转发给自研驱动） ----
+    void setHistorySize(int lines);
+    void setTerminalWordCharacters(const QString &wc);
+    void setEnvironment(const QStringList &environment);
+    void setShellProgram(const QString &progname);
+    void setArgs(const QStringList &args);
+    void setTextCodec(QTextCodec *codec);
+    void setAutoClose(bool autoClose);
+    void setWorkingDirectory(const QString &dir);
+    QString workingDirectory();
+    void startShellProgram();
+    void setTerminalFont(const QFont &font);
+    QFont getTerminalFont();
+    void setTerminalOpacity(qreal level);
+    void setColorScheme(const QString &name, bool needReloadTheme = false);
+    static QStringList availableColorSchemes();
+    void sendText(const QString &text);
+    void setKeyboardCursorShape(Konsole::Emulation::KeyboardCursorShape shape);
+    void setBlinkingCursor(bool blink);
+    void enableSetCursorPosition(bool enable);
+    void setFlowControlEnabled(bool enabled);
+    bool flowControlEnabled();
+    void setBidiEnabled(bool enabled);
+    void setMotionAfterPasting(int mode);
+    char getErase();
+    void setBackspaceMode(char *key, int length);
+    void setDeleteMode(char *key, int length);
+    QString title() const;
+    QString selectedText();
+    void setSelectionAll();
+    void setNoHasSelect();
+    bool getIsAllowScroll() const;
+    void setIsAllowScroll(bool isAllowScroll);
+    void setTrackOutput(bool enable);
+    bool isAtEndOfOutput() const;
+    int getSessionId();
+    bool hasRunningProcess();
+    int getForegroundProcessId();
+    void copyClipboard();
+    void pasteClipboard();
+    void zoomIn();
+    void zoomOut();
+    QList<QAction *> filterActions(const QPoint &position);
+    void search(QString txt, bool forwards, bool next);
+    void clearSelection();
+
+signals:
+    void finished();
+    void copyAvailable(bool);
+    void termGetFocus();
+    void termLostFocus();
+    void leftMouseClick();
+    void receivedData(const QString &text);
+    void uninstallTerminal(QString commandname);
+    void urlActivated(const QUrl &url, bool fromContextMenu);
+    void shellWarningMessage(QString currentShell, bool isSuccess);
+    void titleChanged();
+    void titleArgsChange(QString key, QString value);
+    void isTermIdle(bool bIdle);
+    void sig_noMatchFound();
+    void sig_matchFound();
+    void osc52ClipboardRequest(char target, const QString &base64Data);
+    void sendUrlsToTerm(const char *urls);
+#endif
+
 public slots:
     /**
      * @brief Terminal的各项设置生效
@@ -425,6 +509,9 @@ private:
 
     TermWidgetPage *m_page = nullptr;
     TermProperties m_properties;
+
+    // 终端实现驱动：三方模式为 DCompatTerminalDriver，自研模式为 DTerminalWidget
+    DTerminalDriver *m_driver = nullptr;
 
     DMenu *m_menu = nullptr;
     /******** Modify by ut000610 daizhengwen 2020-05-27: 当前窗口是否要进行下载操作****************/

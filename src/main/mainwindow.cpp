@@ -2573,7 +2573,7 @@ void MainWindow::addThemeMenuItems()
 
 void MainWindow::addThemeFromConfig()
 {
-    QStringList themeList = QTermWidget::availableColorSchemes();
+    QStringList themeList = TermWidget::availableColorSchemes();
     themeList.sort();
     for (const QString &strTheme : themeList) {
         // 过滤基础项和已存在的内置项，避免重复

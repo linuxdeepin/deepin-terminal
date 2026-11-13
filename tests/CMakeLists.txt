@@ -29,9 +29,12 @@ include_directories("src/encodeplugin")
 include_directories("src/remotemanage")
 include_directories("src/views")
 include_directories("src/main")
-include_directories("src/3rdparty/terminalwidget/lib/")
-include_directories("src/3rdparty/terminalwidget/lib/history")
-include_directories("src/3rdparty/terminalwidget/lib/history/compact")
+include_directories("src/terminalwidget")
+if(NOT BUILD_SELF_TERMWIDGET)
+    include_directories("src/3rdparty/terminalwidget/lib/")
+    include_directories("src/3rdparty/terminalwidget/lib/history")
+    include_directories("src/3rdparty/terminalwidget/lib/history/compact")
+endif()
 
 FILE(GLOB allSource
     ../src/common/*.cpp
@@ -59,12 +62,23 @@ FILE(GLOB allHeaders
     ../src/views/*.h
 )
 
-FILE(GLOB allThirdPartySource
-    ../3rdparty/terminalwidget/lib/*.cpp
-    ../3rdparty/terminalwidget/lib/history/*.cpp
-    ../3rdparty/terminalwidget/lib/history/compact/*.cpp
-    ../3rdparty/terminalwidget/lib/encodes/*.cpp
-)
+if(BUILD_SELF_TERMWIDGET)
+    FILE(GLOB allThirdPartySource
+        ../src/terminalwidget/*.cpp
+    )
+    # 三方适配器仅在 OFF 模式存在，ON 模式下剔除
+    list(FILTER allThirdPartySource EXCLUDE REGEX "dcompatterminaldriver")
+else()
+    FILE(GLOB allThirdPartySource
+        ../3rdparty/terminalwidget/lib/*.cpp
+        ../3rdparty/terminalwidget/lib/history/*.cpp
+        ../3rdparty/terminalwidget/lib/history/compact/*.cpp
+        ../3rdparty/terminalwidget/lib/encodes/*.cpp
+        ../src/terminalwidget/dterminaldriver.cpp
+        ../src/terminalwidget/dterminalcompat.cpp
+        ../src/terminalwidget/dcompatterminaldriver.cpp
+    )
+endif()
 
 FILE(GLOB qrcFiles
     ../src/assets/resources.qrc
@@ -91,21 +105,32 @@ FILE(GLOB allTestSource
     src/views/*.cpp
 )
 
-set(UI ../3rdparty/terminalwidget/lib/SearchBar.ui)
-if(QT_VERSION_MAJOR EQUAL 6)
-    qt6_wrap_ui(UI_SRCS ${UI})
-else()
-    qt5_wrap_ui(UI_SRCS ${UI})
+if(BUILD_SELF_TERMWIDGET)
+    # 自研模式下暂缓直接依赖三方内部类的用例（渲染模块落地后逐一适配恢复）。
+    # 注意：GLOB 返回绝对路径，须用 REGEX 过滤而非 REMOVE_ITEM
+    list(FILTER allTestSource EXCLUDE REGEX "ut_termwidget_test\\.cpp|ut_termwidgetpage_test\\.cpp|ut_mainwindow_test\\.cpp")
 endif()
 
-set(KB_LAYOUT_DIR "${CMAKE_INSTALL_FULL_DATADIR}/${TERMINALWIDGET_LIBRARY_NAME}/kb-layouts")
-set(COLORSCHEMES_DIR "${CMAKE_INSTALL_FULL_DATADIR}/${TERMINALWIDGET_LIBRARY_NAME}/color-schemes")
-set(TRANSLATIONS_DIR "${CMAKE_INSTALL_FULL_DATADIR}/${TERMINALWIDGET_LIBRARY_NAME}/translations")
+if(BUILD_SELF_TERMWIDGET)
+    # 自研组件不含内部 UI，SearchBar.ui 与三方资源宏随三方库一并退休
+    set(UI_SRCS "")
+else()
+    set(UI ../3rdparty/terminalwidget/lib/SearchBar.ui)
+    if(QT_VERSION_MAJOR EQUAL 6)
+        qt6_wrap_ui(UI_SRCS ${UI})
+    else()
+        qt5_wrap_ui(UI_SRCS ${UI})
+    endif()
 
-add_definitions("-DHAVE_POSIX_OPENPT")
-add_definitions("-DKB_LAYOUT_DIR=\"${KB_LAYOUT_DIR}\"")
-add_definitions("-DCOLORSCHEMES_DIR=\"${COLORSCHEMES_DIR}\"")
-add_definitions("-DTRANSLATIONS_DIR=\"${TRANSLATIONS_DIR}\"")
+    set(KB_LAYOUT_DIR "${CMAKE_INSTALL_FULL_DATADIR}/${TERMINALWIDGET_LIBRARY_NAME}/kb-layouts")
+    set(COLORSCHEMES_DIR "${CMAKE_INSTALL_FULL_DATADIR}/${TERMINALWIDGET_LIBRARY_NAME}/color-schemes")
+    set(TRANSLATIONS_DIR "${CMAKE_INSTALL_FULL_DATADIR}/${TERMINALWIDGET_LIBRARY_NAME}/translations")
+
+    add_definitions("-DHAVE_POSIX_OPENPT")
+    add_definitions("-DKB_LAYOUT_DIR=\"${KB_LAYOUT_DIR}\"")
+    add_definitions("-DCOLORSCHEMES_DIR=\"${COLORSCHEMES_DIR}\"")
+    add_definitions("-DTRANSLATIONS_DIR=\"${TRANSLATIONS_DIR}\"")
+endif()
 
 add_executable(${PROJECT_NAME_TEST}
     ${UI_SRCS}
