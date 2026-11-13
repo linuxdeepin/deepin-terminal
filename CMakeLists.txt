@@ -262,6 +262,9 @@ if(BUILD_SELF_TERMWIDGET)
     find_package(ICU COMPONENTS uc i18n REQUIRED)
     pkg_check_modules(chardet REQUIRED chardet)
     include_directories(${chardet_INCLUDE_DIRS})
+    # 自研组件数据目录（配色/键盘布局资源）
+    add_definitions(-DCOLORSCHEMES_DATA_DIR="${CMAKE_SOURCE_DIR}/src/terminalwidget/data/schemes")
+    add_definitions(-DKEYTAB_DATA_DIR="${CMAKE_SOURCE_DIR}/src/terminalwidget/data/keytabs")
     list(APPEND DTNG_CPP_FILES
         src/terminalwidget/dterminaldriver.cpp
         src/terminalwidget/dterminalcompat.cpp
@@ -275,6 +278,9 @@ if(BUILD_SELF_TERMWIDGET)
         src/terminalwidget/dterminalpty.cpp
         src/terminalwidget/dshellsession.cpp
         src/terminalwidget/dencodingdetector.cpp
+        src/terminalwidget/dcolorscheme.cpp
+        src/terminalwidget/dhistorysearch.cpp
+        src/terminalwidget/dterminalview.cpp
     )
     list(APPEND DTNG_HEADER_FILES
         src/terminalwidget/dterminaldriver.h
@@ -289,6 +295,9 @@ if(BUILD_SELF_TERMWIDGET)
         src/terminalwidget/dterminalpty.h
         src/terminalwidget/dshellsession.h
         src/terminalwidget/dencodingdetector.h
+        src/terminalwidget/dcolorscheme.h
+        src/terminalwidget/dhistorysearch.h
+        src/terminalwidget/dterminalview.h
     )
 else()
     list(APPEND DTNG_CPP_FILES

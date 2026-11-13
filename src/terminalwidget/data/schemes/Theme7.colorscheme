@@ -1,0 +1,104 @@
+[General]
+Description=Deepin Terminal Dark Mode Color
+Name=ocean dark
+
+[Background]
+Bold=true
+Color=28, 31, 39
+Transparency=false
+
+[BackgroundIntense]
+Bold=true
+Color=28, 31, 39
+Transparency=false
+
+[Color0]
+Bold=true
+Color=79, 79, 79
+Transparency=false
+
+[Color0Intense]
+Bold=true
+Color=79, 79, 79
+Transparency=false
+
+[Color1]
+Bold=true
+Color=178, 24, 24
+Transparency=false
+
+[Color1Intense]
+Bold=true
+Color=255, 84, 84
+Transparency=false
+
+[Color2]
+Bold=true
+Color=24, 178, 24
+Transparency=false
+
+[Color2Intense]
+Bold=true
+Color=175, 211, 131
+Transparency=false
+
+[Color3]
+Bold=true
+Color=229, 192, 121
+Transparency=false
+
+[Color3Intense]
+Bold=true
+Color=229, 192, 121
+Transparency=false
+
+[Color4]
+Bold=true
+Color=24, 24, 178
+Transparency=false
+
+[Color4Intense]
+Bold=true
+Color=125, 144, 164
+Transparency=false
+
+[Color5]
+Bold=true
+Color=164, 121, 157
+Transparency=false
+
+[Color5Intense]
+Bold=true
+Color=164, 121, 157
+Transparency=false
+
+[Color6]
+Bold=true
+Color=133, 166, 165
+Transparency=false
+
+[Color6Intense]
+Bold=true
+Color=133, 166, 165
+Transparency=false
+
+[Color7]
+Bold=true
+Color=238, 237, 238
+Transparency=false
+
+[Color7Intense]
+Bold=true
+Color=238, 237, 238
+Transparency=false
+
+[Foreground]
+Bold=true
+Color=99, 124, 206
+Transparency=false
+
+[ForegroundIntense]
+Bold=true
+Color=99, 124, 206
+Transparency=false
+

@@ -157,6 +157,13 @@ public:
     QString text(int startIndex, int endIndex, TextOptions options = TextPlain) const;
     void checkSelection(int from, int to);
 
+    /**
+     * 提取 [startLine, endLine] 的纯文本（软换行行不加分隔，其余行尾加换行；
+     * 末行数据短于整列宽时补换行并记录空行位置——与流式输出的语义一致）。
+     * lineStarts 非空时记录每段文本的起始位置（含可能的末尾空行）。
+     */
+    QString extractPlainText(int startLine, int endLine, QList<int> *lineStarts = nullptr) const;
+
     // ---- 行属性 ----
     void setLineFlag(quint8 flag, bool enable);
 
