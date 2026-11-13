@@ -714,6 +714,64 @@ QString DTerminalScreen::text(int startIndex, int endIndex, TextOptions options)
     return result;
 }
 
+QString DTerminalScreen::extractPlainText(int startLine, int endLine, QList<int> *lineStarts) const
+{
+    QString result;
+    int lastLineDataLength = 0;
+
+    for (int line = startLine; line <= endLine; ++line) {
+        if (lineStarts)
+            lineStarts->append(result.length());
+
+        const DTerminalChar *cells = nullptr;
+        QVector<DTerminalChar> buffer;
+        int length = 0;
+        quint8 flags = 0;
+
+        if (line < m_history->lineCount()) {
+            length = m_history->lineLength(line);
+            buffer.resize(length);
+            m_history->lineCells(line, 0, length, buffer.data());
+            cells = buffer.constData();
+            if (m_history->isWrappedLine(line))
+                flags |= LineWrapped;
+        } else {
+            const int screenLine = line - m_history->lineCount();
+            cells = m_lines.value(screenLine).constData();
+            length = m_lines.value(screenLine).count();
+            flags |= m_lineFlags.value(screenLine, LineDefault);
+        }
+
+        for (int col = 0; col < length; ++col) {
+            const DTerminalChar &cell = cells[col];
+            if (cell.codePoint == 0)
+                continue;  // 宽字符延续格
+            if (cell.style & StyleExtended) {
+                if (m_sequenceResolver)
+                    result += m_sequenceResolver(cell.codePoint);
+                else
+                    result += QChar(cell.codePoint);
+            } else {
+                result += QChar(cell.codePoint);
+            }
+        }
+
+        if (line != endLine && !(flags & LineWrapped))
+            result += QLatin1Char('\n');
+
+        lastLineDataLength = length;
+    }
+
+    // 末行数据短于整列宽：补换行并记录末尾空行（与流式输出语义一致）
+    if (lastLineDataLength < m_columnCount) {
+        if (lineStarts)
+            lineStarts->append(result.length());
+        result += QLatin1Char('\n');
+    }
+
+    return result;
+}
+
 // ---- 文本提取 ----
 
 int DTerminalScreen::lineLength(int line) const
