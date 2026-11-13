@@ -70,7 +70,12 @@ DTerminalView::DTerminalView(QWidget *parent)
     setFocusPolicy(Qt::WheelFocus);
     setMouseTracking(true);
 
-    // 滚动条
+    // 滚动条：网格布局内定位（内容区自动让位）
+    auto *gridLayout = new QGridLayout(this);
+    gridLayout->setContentsMargins(0, 0, 0, 0);
+    gridLayout->setSpacing(0);
+    gridLayout->addWidget(m_scrollBar, 0, 1);
+
     m_scrollBar->setCursor(Qt::ArrowCursor);
     m_scrollBar->setMinimum(0);
     m_scrollBar->setMaximum(0);
@@ -100,7 +105,13 @@ DTerminalView::DTerminalView(QWidget *parent)
     // 惯性滚动
     m_inertiaTimer->setInterval(16);
     connect(m_inertiaTimer, &QTimer::timeout, this, [this]() {
-        slideGesture(m_inertiaValue);
+        // 指数衰减缓动
+        slideGesture(m_inertiaVelocity);
+        m_inertiaVelocity *= 0.85;
+        if (qAbs(m_inertiaVelocity) < 0.5) {
+            m_inertiaTimer->stop();
+            m_inertiaVelocity = 0;
+        }
     });
 
     setAcceptDrops(true);
@@ -148,10 +159,12 @@ void DTerminalView::makeImage()
     if (m_screen == nullptr)
         return;
 
-    m_lines = (height() - 1 - m_topMargin * 2) / m_fontHeight;
+    // 以内容区（网格布局让出滚动条后）计算行列数
+    const QRect area = contentsRect();
+    m_lines = (area.height() - 1 - m_topMargin * 2) / m_fontHeight;
     if (m_lines <= 0)
         m_lines = 1;
-    m_columns = (width() - 1 - m_leftMargin * 2) / m_fontWidth;
+    m_columns = (area.width() - 1 - m_leftMargin * 2) / m_fontWidth;
     if (m_columns <= 0)
         m_columns = 1;
 
@@ -304,12 +317,15 @@ void DTerminalView::calcGeometry()
     m_fixedFont = fontMetrics().horizontalAdvance(QLatin1Char('i'))
             == fontMetrics().horizontalAdvance(QLatin1Char('m'));
 
-    m_contentRect = QRect(m_leftMargin + m_leftBaseMargin, m_topMargin + m_topBaseMargin,
-                          qMax(0, width() - m_contentHeight - 2 * (m_leftMargin + m_leftBaseMargin)),
-                          qMax(0, height() - m_contentWidth - 2 * (m_topMargin + m_topBaseMargin)));
+    // 内容区：内容矩形内再扣除边距
+    const QRect area = contentsRect();
+    m_contentRect = QRect(m_leftMargin + m_leftBaseMargin,
+                          m_topMargin + m_topBaseMargin,
+                          qMax(0, area.width() - 2 * (m_leftMargin + m_leftBaseMargin)),
+                          qMax(0, area.height() - 2 * (m_topMargin + m_topBaseMargin)));
 
     if (m_centerContents)
-        m_contentRect.moveCenter(rect().center());
+        m_contentRect.moveCenter(area.center());
 
     m_contentHeight = m_fontHeight * m_lines;
     m_contentWidth = m_fontWidth * m_columns;
@@ -418,16 +434,19 @@ void DTerminalView::paintEvent(QPaintEvent *event)
     QPainter painter(this);
     painter.setRenderHint(QPainter::TextAntialiasing, s_antialiasText);
 
-    // 背景
     const QColor background = m_colorsInverted
             ? m_palette[1].color : m_palette[0].color;
     const QColor foreground = m_colorsInverted
             ? m_palette[0].color : m_palette[1].color;
 
+    // 背景（含透明度混合）
     if (m_backgroundImage.isNull()) {
-        painter.fillRect(rect(), background);
+        drawBackground(painter, contentsRect(), background, true);
     } else {
         painter.drawPixmap(rect(), m_backgroundImage);
+        QColor blend = background;
+        blend.setAlphaF(background.alphaF() * m_opacity);
+        painter.fillRect(contentsRect(), blend);
     }
 
     painter.setBackground(background);
@@ -454,7 +473,7 @@ void DTerminalView::drawBackground(QPainter &painter, const QRect &rect,
 {
     QColor fillColor = color;
     if (useOpacity)
-        fillColor.setAlphaF(m_palette[1].color.alphaF());
+        fillColor.setAlphaF(color.alphaF() * m_opacity);
     painter.fillRect(rect, fillColor);
 }
 
@@ -623,15 +642,100 @@ void DTerminalView::drawLineCharString(QPainter &painter, int x, int y,
     }
 }
 
-// 盒线字符过程化绘制（覆盖常用 16 种；其余回退字体渲染）
+// 盒线字符段方向位
+constexpr uint kLineSegLeft = 1;
+constexpr uint kLineSegRight = 2;
+constexpr uint kLineSegTop = 4;
+constexpr uint kLineSegBottom = 8;
+constexpr uint kLineSegAll = kLineSegLeft | kLineSegRight | kLineSegTop | kLineSegBottom;
+
+// 盒线字符过程化绘制：以码点解析上/下/左/右线段，
+// 支持单线/粗线/双线/虚线变体；未覆盖码点回退字体渲染。
 void DTerminalView::drawLineChar(QPainter &painter, int x, int y, int w, int h,
                                  uint codePoint, bool bold)
 {
+    uint segments = 0;
+    bool heavy = false;
+    bool doubled = false;
+    bool dashed = false;
+
+    switch (codePoint) {
+    // 单线
+    case 0x2500: segments = kLineSegLeft | kLineSegRight; break;            // ─
+    case 0x2502: segments = kLineSegTop | kLineSegBottom; break;            // │
+    case 0x250C: segments = kLineSegRight | kLineSegBottom; break;          // ┌
+    case 0x2510: segments = kLineSegLeft | kLineSegBottom; break;           // ┐
+    case 0x2514: segments = kLineSegRight | kLineSegTop; break;             // └
+    case 0x2518: segments = kLineSegLeft | kLineSegTop; break;              // ┘
+    case 0x251C: segments = kLineSegTop | kLineSegBottom | kLineSegRight; break;  // ├
+    case 0x2524: segments = kLineSegTop | kLineSegBottom | kLineSegLeft; break;   // ┤
+    case 0x252C: segments = kLineSegLeft | kLineSegRight | kLineSegBottom; break; // ┬
+    case 0x2534: segments = kLineSegLeft | kLineSegRight | kLineSegTop; break;    // ┴
+    case 0x253C: segments = kLineSegAll; break;                            // ┼
+    // 粗线
+    case 0x2501: segments = kLineSegLeft | kLineSegRight; heavy = true; break;    // ━
+    case 0x2503: segments = kLineSegTop | kLineSegBottom; heavy = true; break;    // ┃
+    case 0x250F: segments = kLineSegRight | kLineSegBottom; heavy = true; break;  // ┏
+    case 0x2513: segments = kLineSegLeft | kLineSegBottom; heavy = true; break;   // ┓
+    case 0x2517: segments = kLineSegRight | kLineSegTop; heavy = true; break;     // ┗
+    case 0x251B: segments = kLineSegLeft | kLineSegTop; heavy = true; break;      // ┛
+    case 0x2523: segments = kLineSegTop | kLineSegBottom | kLineSegRight; heavy = true; break;  // ┣
+    case 0x252B: segments = kLineSegTop | kLineSegBottom | kLineSegLeft; heavy = true; break;   // ┫
+    case 0x2533: segments = kLineSegLeft | kLineSegRight | kLineSegBottom; heavy = true; break; // ┳
+    case 0x253B: segments = kLineSegLeft | kLineSegRight | kLineSegTop; heavy = true; break;    // ┻
+    case 0x254B: segments = kLineSegAll; heavy = true; break;               // ╋
+    // 双线
+    case 0x2550: segments = kLineSegLeft | kLineSegRight; doubled = true; break;           // ═
+    case 0x2551: segments = kLineSegTop | kLineSegBottom; doubled = true; break;           // ║
+    case 0x2554: segments = kLineSegRight | kLineSegBottom; doubled = true; break;         // ╔
+    case 0x2557: segments = kLineSegLeft | kLineSegBottom; doubled = true; break;          // ╗
+    case 0x255A: segments = kLineSegRight | kLineSegTop; doubled = true; break;            // ╚
+    case 0x255D: segments = kLineSegLeft | kLineSegTop; doubled = true; break;             // ╝
+    case 0x2560: segments = kLineSegTop | kLineSegBottom | kLineSegRight; doubled = true; break;  // ╠
+    case 0x2563: segments = kLineSegTop | kLineSegBottom | kLineSegLeft; doubled = true; break;   // ╣
+    case 0x2566: segments = kLineSegLeft | kLineSegRight | kLineSegBottom; doubled = true; break; // ╦
+    case 0x2569: segments = kLineSegLeft | kLineSegRight | kLineSegTop; doubled = true; break;    // ╩
+    case 0x256C: segments = kLineSegAll; doubled = true; break;              // ╬
+    // 虚线
+    case 0x2504: segments = kLineSegLeft | kLineSegRight; dashed = true; break;  // ┄
+    case 0x2506: segments = kLineSegTop | kLineSegBottom; dashed = true; break;  // ┆
+    default:
+        // 未覆盖的盒线码点回退字体渲染
+        painter.drawText(QRect(x, y, w, h), Qt::AlignCenter, QString(QChar(codePoint)));
+        return;
+    }
+
     Q_UNUSED(bold)
-    Q_UNUSED(codePoint)
-    // 简化实现：以字体渲染线绘字符，保持视觉一致的基础路径
-    painter.drawText(QRect(x, y, w, h), Qt::AlignBottom | Qt::AlignLeft,
-                     QString(QChar(codePoint)));
+
+    const qreal cx = x + w / 2.0;
+    const qreal cy = y + h / 2.0;
+
+    QPen pen = painter.pen();
+    if (heavy)
+        pen.setWidth(3);
+    else
+        pen.setWidth(1);
+    if (dashed)
+        pen.setStyle(Qt::DashLine);
+    painter.setPen(pen);
+
+    if (doubled) {
+        const qreal offset = qMax(1.0, h / 8.0);
+        if (segments & (kLineSegLeft | kLineSegRight)) {
+            painter.drawLine(QPointF(x, cy - offset), QPointF(x + w, cy - offset));
+            painter.drawLine(QPointF(x, cy + offset), QPointF(x + w, cy + offset));
+        }
+        if (segments & (kLineSegTop | kLineSegBottom)) {
+            painter.drawLine(QPointF(cx - offset, y), QPointF(cx - offset, y + h));
+            painter.drawLine(QPointF(cx + offset, y), QPointF(cx + offset, y + h));
+        }
+        return;
+    }
+
+    if (segments & (kLineSegLeft | kLineSegRight))
+        painter.drawLine(QPointF(x, cy), QPointF(x + w, cy));
+    if (segments & (kLineSegTop | kLineSegBottom))
+        painter.drawLine(QPointF(cx, y), QPointF(cx, y + h));
 }
 
 void DTerminalView::drawCursor(QPainter &painter, const QRect &rect,
@@ -887,13 +991,10 @@ void DTerminalView::extendSelection(const QPoint &pos)
     m_selectionState = 2;
 
     if (m_wordSelectionMode) {
-        // 词选：按词边界扩展
+        // 词选：按词边界扩展（图像即当前窗口内容）
         int line = pos.y();
         int column = pos.x();
-        const int historyLines = m_screen->historyLineCount();
 
-        // 屏幕行数据直接以图像访问
-        Q_UNUSED(historyLines)
         while (column > 0 && classifyChar(QChar(m_image[line * m_columns + column - 1].codePoint))
                == classifyChar(QChar(m_image[line * m_columns + column].codePoint)))
             column--;
@@ -1313,7 +1414,27 @@ void DTerminalView::swapColorTable()
 void DTerminalView::setScrollBarPosition(ScrollBarPosition position)
 {
     m_scrollbarLocation = position;
-    update();
+
+    QGridLayout *gridLayout = qobject_cast<QGridLayout *>(layout());
+    if (gridLayout == nullptr)
+        return;
+
+    switch (position) {
+    case NoScrollBar:
+        m_scrollBar->hide();
+        break;
+    case ScrollBarLeft:
+        m_scrollBar->show();
+        gridLayout->addWidget(m_scrollBar, 0, 0);
+        break;
+    case ScrollBarRight:
+    default:
+        m_scrollBar->show();
+        gridLayout->addWidget(m_scrollBar, 0, 1);
+        break;
+    }
+
+    updateImageSize();
 }
 
 void DTerminalView::setScroll(int cursor, int lines)
@@ -1330,8 +1451,7 @@ void DTerminalView::setUsesMouse(bool uses)
 
 void DTerminalView::setOpacity(qreal opacity)
 {
-    Q_UNUSED(opacity)
-    // 透明度经调色板背景 alpha 生效
+    m_opacity = qBound<qreal>(0.0, opacity, 1.0);
     update();
 }
 
@@ -1513,7 +1633,21 @@ void DTerminalView::handleTapAndHoldGesture(QTapAndHoldGesture *gesture)
 
 void DTerminalView::handlePanGesture(QPanGesture *gesture)
 {
-    Q_UNUSED(gesture)
+    switch (gesture->state()) {
+    case Qt::GestureStarted:
+        m_gestureAction = GesturePan;
+        break;
+    case Qt::GestureUpdated:
+        // 内容随手指移动（纵轴）
+        slideGesture(gesture->delta().y());
+        break;
+    case Qt::GestureFinished:
+    case Qt::GestureCanceled:
+        m_gestureAction = GestureNone;
+        break;
+    default:
+        break;
+    }
 }
 
 void DTerminalView::handlePinchGesture(QPinchGesture *gesture)
@@ -1542,7 +1676,18 @@ void DTerminalView::handlePinchGesture(QPinchGesture *gesture)
 
 void DTerminalView::handleSwipeGesture(QSwipeGesture *gesture)
 {
-    Q_UNUSED(gesture)
+    if (gesture->state() != Qt::GestureFinished)
+        return;
+
+    const QSwipeGesture::SwipeDirection direction = gesture->verticalDirection();
+    if (direction == QSwipeGesture::NoDirection)
+        return;
+
+    // 惯性滑动：手指下扫内容上移（速度经缓动衰减；Qt 无手势速度接口，取固定初速）
+    m_inertiaVelocity = (direction == QSwipeGesture::Down ? 1 : -1) * m_fontHeight * 4;
+    if (!m_inertiaTimer->isActive())
+        m_inertiaTimer->start();
+    m_gestureAction = GestureNone;
 }
 
 void DTerminalView::slideGesture(qreal diff)
@@ -1550,5 +1695,7 @@ void DTerminalView::slideGesture(qreal diff)
     if (qAbs(diff) < 1.0)
         return;
 
-    scrollBy(ScrollLines, -static_cast<int>(diff / 10));
+    // 像素差 → 行数；diff 为正（手指下移）时向上滚动显示历史
+    const int lines = qMax(1, static_cast<int>(qAbs(diff) / m_fontHeight));
+    scrollBy(ScrollLines, diff > 0 ? -lines : lines);
 }
