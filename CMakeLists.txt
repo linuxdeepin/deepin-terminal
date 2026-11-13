@@ -268,6 +268,8 @@ if(BUILD_SELF_TERMWIDGET)
         src/terminalwidget/dterminalhistory.cpp
         src/terminalwidget/dtextfilter.cpp
         src/terminalwidget/dterminalscreen.cpp
+        src/terminalwidget/dkeyboardtranslator.cpp
+        src/terminalwidget/dterminalparser.cpp
     )
     list(APPEND DTNG_HEADER_FILES
         src/terminalwidget/dterminaldriver.h
@@ -277,6 +279,8 @@ if(BUILD_SELF_TERMWIDGET)
         src/terminalwidget/dterminalhistory.h
         src/terminalwidget/dtextfilter.h
         src/terminalwidget/dterminalscreen.h
+        src/terminalwidget/dkeyboardtranslator.h
+        src/terminalwidget/dterminalparser.h
     )
 else()
     list(APPEND DTNG_CPP_FILES

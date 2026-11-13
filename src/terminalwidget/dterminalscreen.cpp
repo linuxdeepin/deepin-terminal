@@ -988,6 +988,9 @@ void DTerminalScreen::setHistoryStorage(DTerminalHistory::StorageKind kind, int 
 {
     clearSelection();
 
+    m_historyKind = kind;
+    m_historyMaxLines = maxLines;
+
     DTerminalHistory *oldHistory = m_history;
     DTerminalHistory *newHistory = DTerminalHistory::create(kind, maxLines);
     if (copyContent && oldHistory)
@@ -995,6 +998,11 @@ void DTerminalScreen::setHistoryStorage(DTerminalHistory::StorageKind kind, int 
 
     m_history = newHistory;
     delete oldHistory;
+}
+
+void DTerminalScreen::clearHistoryContent()
+{
+    setHistoryStorage(m_historyKind, m_historyMaxLines, false);
 }
 
 bool DTerminalScreen::hasHistory() const
