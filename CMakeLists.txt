@@ -259,15 +259,24 @@ set (DTNG_HEADER_FILES
 # 自研终端组件：源码直接编入主程序（源码集成，非库链接）。
 # 驱动接口两种模式都需要；适配器仅三方模式、自研实现仅自研模式。
 if(BUILD_SELF_TERMWIDGET)
+    find_package(ICU COMPONENTS uc REQUIRED)
     list(APPEND DTNG_CPP_FILES
         src/terminalwidget/dterminaldriver.cpp
         src/terminalwidget/dterminalcompat.cpp
         src/terminalwidget/dterminalwidget.cpp
+        src/terminalwidget/dterminalutil.cpp
+        src/terminalwidget/dterminalhistory.cpp
+        src/terminalwidget/dtextfilter.cpp
+        src/terminalwidget/dterminalscreen.cpp
     )
     list(APPEND DTNG_HEADER_FILES
         src/terminalwidget/dterminaldriver.h
         src/terminalwidget/dterminalcompat.h
         src/terminalwidget/dterminalwidget.h
+        src/terminalwidget/dterminalutil.h
+        src/terminalwidget/dterminalhistory.h
+        src/terminalwidget/dtextfilter.h
+        src/terminalwidget/dterminalscreen.h
     )
 else()
     list(APPEND DTNG_CPP_FILES
@@ -310,7 +319,9 @@ target_include_directories(${EXE_NAME}
 )
 
 target_link_libraries (deepin-terminal ${LINK_LIBS})
-if(NOT BUILD_SELF_TERMWIDGET)
+if(BUILD_SELF_TERMWIDGET)
+    target_link_libraries (deepin-terminal ICU::uc)
+else()
     target_link_libraries (deepin-terminal terminalwidget${QT_DESIRED_VERSION})
 endif()
 
