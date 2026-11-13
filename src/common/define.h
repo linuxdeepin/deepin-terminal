@@ -20,7 +20,12 @@
 #define STEP_OPACITY 5
 
 // qterminal
+#ifdef BUILD_SELF_TERMWIDGET
+// 自研渲染部件的类名（焦点判定时与 metaObject()->className() 比对；M5 渲染模块落地后对齐最终部件类名）
+const QString TERM_WIDGET_NAME = "DTerminalWidget";
+#else
 const QString TERM_WIDGET_NAME = "Konsole::TerminalScreen";
+#endif
 
 // log
 // 性能测试相关日志
