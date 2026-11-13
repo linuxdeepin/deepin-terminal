@@ -139,6 +139,8 @@ public:
 
     // ---- 历史 ----
     void setHistoryStorage(DTerminalHistory::StorageKind kind, int maxLines, bool copyContent = true);
+    /** 以当前存储方式重建历史（内容清空） */
+    void clearHistoryContent();
     DTerminalHistory *history() { return m_history; }
     bool hasHistory() const;
 
@@ -225,6 +227,8 @@ private:
 
     // ---- 历史 ----
     DTerminalHistory *m_history = nullptr;
+    DTerminalHistory::StorageKind m_historyKind = DTerminalHistory::StorageKind::None;
+    int m_historyMaxLines = -1;
 
     // ---- 光标与外观 ----
     int m_cursorColumn = 0;
