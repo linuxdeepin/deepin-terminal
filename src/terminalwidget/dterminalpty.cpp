@@ -101,6 +101,10 @@ int DTerminalPty::startShell(const QString &program, const QStringList &argument
 
     m_program = program;
 
+    // 参数列表首项是程序名本身（历史约定），剥离后交给 QProcess
+    Q_ASSERT(arguments.count() >= 1);
+    const QStringList userArguments = arguments.mid(1);
+
     QProcessEnvironment env = QProcessEnvironment::systemEnvironment();
     for (const QString &pair : environment) {
         const int separator = pair.indexOf(QLatin1Char('='));
@@ -109,7 +113,7 @@ int DTerminalPty::startShell(const QString &program, const QStringList &argument
     }
     setProcessEnvironment(env);
 
-    start(program, arguments, QIODevice::ReadWrite);
+    start(program, userArguments, QIODevice::ReadWrite);
     if (!waitForStarted(3000))
         return 1;
 
