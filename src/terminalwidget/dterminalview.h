@@ -350,8 +350,7 @@ private:
 
     bool m_dragPending = false;
     QPoint m_dragStart;
-    bool m_possibleTripleClick = false;
-    bool m_userIsResizing = false;
+    bool m_possibleTripleClick = false;    bool m_userIsResizing = false;
     QLabel *m_resizeWidget = nullptr;
     QTimer *m_resizeTimer = nullptr;
 
@@ -366,6 +365,7 @@ private:
 
     QRgb m_blendColor = qRgb(0, 0, 0);
     QPixmap m_backgroundImage;
+    qreal m_opacity = 1.0;
 
     QRegion m_mouseOverSpotArea;
 
@@ -416,7 +416,8 @@ private:
     Qt::GestureState m_tapStatus = Qt::NoGesture;
     GestureAction m_gestureAction = GestureNone;
     QTimer *m_inertiaTimer = nullptr;
-    qreal m_inertiaValue = 0;
+    qreal m_inertiaVelocity = 0;
+    qreal m_lastPanY = 0;
 };
 
 #endif  // DTERMINALVIEW_H
