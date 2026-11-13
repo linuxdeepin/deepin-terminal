@@ -63,6 +63,12 @@ FILE(GLOB allHeaders
 )
 
 if(BUILD_SELF_TERMWIDGET)
+    # 自研头文件仅在自研模式加入目标（保证 automoc 生成 meta 对象）
+    FILE(GLOB selfWidgetHeaders ../src/terminalwidget/*.h)
+    list(APPEND allHeaders ${selfWidgetHeaders})
+endif()
+
+if(BUILD_SELF_TERMWIDGET)
     FILE(GLOB allThirdPartySource
         ../src/terminalwidget/*.cpp
     )
