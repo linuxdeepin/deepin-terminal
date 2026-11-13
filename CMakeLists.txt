@@ -259,7 +259,9 @@ set (DTNG_HEADER_FILES
 # 自研终端组件：源码直接编入主程序（源码集成，非库链接）。
 # 驱动接口两种模式都需要；适配器仅三方模式、自研实现仅自研模式。
 if(BUILD_SELF_TERMWIDGET)
-    find_package(ICU COMPONENTS uc REQUIRED)
+    find_package(ICU COMPONENTS uc i18n REQUIRED)
+    pkg_check_modules(chardet REQUIRED chardet)
+    include_directories(${chardet_INCLUDE_DIRS})
     list(APPEND DTNG_CPP_FILES
         src/terminalwidget/dterminaldriver.cpp
         src/terminalwidget/dterminalcompat.cpp
@@ -270,6 +272,9 @@ if(BUILD_SELF_TERMWIDGET)
         src/terminalwidget/dterminalscreen.cpp
         src/terminalwidget/dkeyboardtranslator.cpp
         src/terminalwidget/dterminalparser.cpp
+        src/terminalwidget/dterminalpty.cpp
+        src/terminalwidget/dshellsession.cpp
+        src/terminalwidget/dencodingdetector.cpp
     )
     list(APPEND DTNG_HEADER_FILES
         src/terminalwidget/dterminaldriver.h
@@ -281,6 +286,9 @@ if(BUILD_SELF_TERMWIDGET)
         src/terminalwidget/dterminalscreen.h
         src/terminalwidget/dkeyboardtranslator.h
         src/terminalwidget/dterminalparser.h
+        src/terminalwidget/dterminalpty.h
+        src/terminalwidget/dshellsession.h
+        src/terminalwidget/dencodingdetector.h
     )
 else()
     list(APPEND DTNG_CPP_FILES
@@ -324,7 +332,7 @@ target_include_directories(${EXE_NAME}
 
 target_link_libraries (deepin-terminal ${LINK_LIBS})
 if(BUILD_SELF_TERMWIDGET)
-    target_link_libraries (deepin-terminal ICU::uc)
+    target_link_libraries (deepin-terminal ICU::uc ICU::i18n chardet uchardet)
 else()
     target_link_libraries (deepin-terminal terminalwidget${QT_DESIRED_VERSION})
 endif()
