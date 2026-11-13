@@ -274,6 +274,8 @@ void DShellSession::runShell()
     QStringList environment = m_environment;
     if (!m_initialWorkingDir.isEmpty() && QDir(m_initialWorkingDir).exists()) {
         m_pty->setWorkingDirectory(m_initialWorkingDir);
+    } else {
+        m_pty->setWorkingDirectory(QDir::homePath());
     }
 
     // 环境变量补充
@@ -283,8 +285,11 @@ void DShellSession::runShell()
         environment << QLatin1String("COLORFGBG=0;15");
 
     const int result = m_pty->startShell(exec, arguments, environment, false);
-    if (result != 0)
+    if (result != 0) {
+        qWarning() << "DShellSession: failed to start shell process" << exec;
+        emit shellWarningMessage(exec, false);
         return;
+    }
 
     m_running = true;
     updateTerminalSize();
@@ -571,6 +576,10 @@ QSize DShellSession::size() const
 void DShellSession::setSize(const QSize &size)
 {
     if (size.width() <= 1 || size.height() <= 1)
+        return;
+
+    // 尺寸未变直接返回，打断会话-视图尺寸联动环路
+    if (size == m_parser->imageSize())
         return;
 
     emit resizeRequest(size);

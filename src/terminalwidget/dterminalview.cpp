@@ -368,6 +368,10 @@ void DTerminalView::setSize(int columns, int lines)
     if (m_screen == nullptr)
         return;
 
+    // 尺寸未变直接返回，打断视图-会话尺寸联动环路
+    if (m_lines == lines && m_columns == columns)
+        return;
+
     m_lines = lines;
     m_columns = columns;
 
