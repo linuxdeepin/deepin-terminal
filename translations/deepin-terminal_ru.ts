@@ -690,7 +690,7 @@
     <message>
         <location filename="../src/main/terminalapplication.cpp" line="28"/>
         <source>Terminal is an advanced terminal emulator with workspace, multiple windows, remote management, quake mode and other features.</source>
-        <translation>Терминал Deepin является передовым эмулятором терминала с рабочими областями, многооконным интерфейсом, удалённым управлением, выпадающим режимом в стиле Quake и другими функциями. </translation>
+        <translation>Терминал — продвинутый эмулятор терминала с рабочими областями, поддержкой нескольких окон, удалённым управлением, режимом Quake и другими функциями.</translation>
     </message>
     <message>
         <location filename="../src/main/mainwindow.cpp" line="1590"/>
