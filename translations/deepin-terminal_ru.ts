@@ -353,7 +353,7 @@
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="43"/>
         <source>Advanced</source>
-        <translation>Дополнительные</translation>
+        <translation>Дополнительно</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="45"/>
