@@ -311,7 +311,7 @@
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="29"/>
         <source>Hide Quake window after losing focus</source>
-        <translation>Скрыть окно Выпадающего Терминала после потери фокуса</translation>
+        <translation>Скрыть окно терминала Quake после потери фокуса</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="31"/>
