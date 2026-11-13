@@ -8,25 +8,36 @@
 
 #include "dterminaldriver.h"
 
+#include <QWidget>
+
+#include <functional>
+
+class DShellSession;
+class DTerminalView;
+class DTerminalTextScanner;
+class DUrlFilter;
+
 /*******************************************************************************
  1. @类名:    DTerminalWidget
  2. @作者:    ut001213 liuzhangjian
- 3. @日期:    2026-11-12
- 4. @说明:    自研终端组件门面（M1 骨架）。对外接口按功能拆分为
-            DTerminalView/DTerminalScreen/DTerminalParser 等模块，
-            后续里程碑逐步填充；本阶段仅保证编译期后端切换可用，
-            实现体均为占位桩。
+ 3. @日期:    2026-11-13
+ 4. @说明:    自研终端组件门面。组装会话/解析/屏幕/显示/配色/
+            搜索各模块，向上层（TermWidget）提供统一驱动接口。
 *******************************************************************************/
 class DTerminalWidget : public DTerminalDriver
 {
     Q_OBJECT
 public:
     explicit DTerminalWidget(QWidget *parent = nullptr);
+    ~DTerminalWidget() override;
 
     QWidget *hostWidget() override;
 
-    /** 供上层（主窗口）获取配色清单；M5 由 DColorScheme 提供数据 */
+    /** 供上层（主窗口）获取配色清单 */
     static QStringList availableColorSchemes();
+
+    /** 卸载确认处理器（M6 由 TermWidget 注入上层对话框回调） */
+    void setUninstallHandler(const std::function<bool(const QString &)> &handler);
 
     void startShell() override;
     int shellSessionId() override;
@@ -77,6 +88,31 @@ public:
     void stepZoomIn() override;
     void stepZoomOut() override;
     QList<QAction *> hotspotActions(const QPoint &position) override;
+
+private slots:
+    void onMatchFound(int startColumn, int startLine, int endColumn, int endLine,
+                      int lastBackwardsPosition, int loseChinese, int matchChinese);
+    void onNoMatchFound();
+
+private:
+    void wireSignals();
+    bool confirmUninstall(const QString &kind);
+
+    DShellSession *m_session = nullptr;
+    DTerminalView *m_view = nullptr;
+    DTerminalTextScanner *m_scanner = nullptr;
+    DUrlFilter *m_urlFilter = nullptr;
+
+    // 搜索状态（deepin 自有搜索流程）
+    bool m_hasSelection = false;
+    int m_searchStartColumn = 0;
+    int m_searchStartLine = 0;
+    int m_searchEndColumn = 0;
+    int m_searchEndLine = 0;
+    int m_lastBackwardsPosition = -1;
+    bool m_isLastForwards = false;
+
+    std::function<bool(const QString &)> m_uninstallHandler;
 };
 
 #endif  // DTERMINALWIDGET_H

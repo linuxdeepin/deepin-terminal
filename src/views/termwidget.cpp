@@ -63,6 +63,12 @@ TermWidget::TermWidget(const TermProperties &properties, QWidget *parent)
 #ifdef BUILD_SELF_TERMWIDGET
     // 自研模式：创建自研终端组件并铺满本控件
     m_driver = new DTerminalWidget(this);
+    static_cast<DTerminalWidget *>(m_driver)->setUninstallHandler([this](const QString &kind) {
+        TermWidgetPage *page = qobject_cast<TermWidgetPage *>(parentWidget());
+        if (page != nullptr)
+            return page->uninstallTerminal(kind);
+        return false;
+    });
     QVBoxLayout *fillLayout = new QVBoxLayout(this);
     fillLayout->setContentsMargins(0, 0, 0, 0);
     fillLayout->addWidget(m_driver->hostWidget());
