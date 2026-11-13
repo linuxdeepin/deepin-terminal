@@ -316,7 +316,12 @@ QList<DTextFilter::Spot *> DTextFilterChain::spots() const
 // ---- 终端图像扫描器 ----
 
 DTerminalTextScanner::DTerminalTextScanner() = default;
-DTerminalTextScanner::~DTerminalTextScanner() = default;
+
+DTerminalTextScanner::~DTerminalTextScanner()
+{
+    // 扫描器拥有上下文存取器
+    delete m_sink;
+}
 
 void DTerminalTextScanner::addFilter(DTextFilter *filter)
 {
