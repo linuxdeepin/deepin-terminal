@@ -311,7 +311,7 @@
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="29"/>
         <source>Hide Quake window after losing focus</source>
-        <translation>Скрыть окно Выпадающего Терминала после потери фокуса</translation>
+        <translation>Скрыть окно терминала Quake после потери фокуса</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="31"/>
@@ -353,7 +353,7 @@
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="43"/>
         <source>Advanced</source>
-        <translation>Дополнительные</translation>
+        <translation>Дополнительно</translation>
     </message>
     <message>
         <location filename="../src/settings/settings_translation.cpp" line="45"/>
@@ -690,7 +690,7 @@
     <message>
         <location filename="../src/main/terminalapplication.cpp" line="28"/>
         <source>Terminal is an advanced terminal emulator with workspace, multiple windows, remote management, quake mode and other features.</source>
-        <translation>Терминал Deepin является передовым эмулятором терминала с рабочими областями, многооконным интерфейсом, удалённым управлением, выпадающим режимом в стиле Quake и другими функциями. </translation>
+        <translation>Терминал — продвинутый эмулятор терминала с рабочими областями, поддержкой нескольких окон, удалённым управлением, режимом Quake и другими функциями.</translation>
     </message>
     <message>
         <location filename="../src/main/mainwindow.cpp" line="1590"/>
@@ -1271,7 +1271,7 @@
     <message>
         <location filename="../src/views/termwidget.cpp" line="1200"/>
         <source>The debuginfod settings will be effective after restart</source>
-        <translation>Настройки debuginfo вступят в силу после перезагрузки</translation>
+        <translation>Настройки debuginfod вступят в силу после перезагрузки</translation>
     </message>
 </context>
 <context>
