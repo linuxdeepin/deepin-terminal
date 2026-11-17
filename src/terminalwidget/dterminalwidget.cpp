@@ -205,7 +205,9 @@ int DTerminalWidget::shellSessionId()
 
 bool DTerminalWidget::hasLiveProcess()
 {
-    return m_session->isRunning();
+    // 3rdparty hasRunningProcess 语义：仅当前台进程组 ≠ shell 自身
+    // （真有命令/应用在前台运行）才算有活动进程；shell 空闲不弹关闭提示
+    return m_session->isForegroundProcessActive();
 }
 
 int DTerminalWidget::foregroundProcessId()
