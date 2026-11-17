@@ -1630,9 +1630,45 @@ void DTerminalView::keyPressEvent(QKeyEvent *event)
 
 bool DTerminalView::handleShortcutOverride(QKeyEvent *event)
 {
-    bool override = false;
-    emit shortcutOverrideCheck(event, override);
-    return override;
+    const int modifiers = event->modifiers();
+
+    // 单修饰键组合交由宿主裁决是否覆盖（3rdparty overrideShortcutCheck 同款）
+    if (modifiers != Qt::NoModifier) {
+        int modifierCount = 0;
+        unsigned int currentModifier = Qt::ShiftModifier;
+        while (currentModifier <= Qt::KeypadModifier) {
+            if (modifiers & currentModifier)
+                modifierCount++;
+            currentModifier <<= 1;
+        }
+        if (modifierCount < 2) {
+            bool override = false;
+            emit shortcutOverrideCheck(event, override);
+            if (override) {
+                event->accept();
+                return true;
+            }
+        }
+    }
+
+    // 终端必需的按键覆盖应用快捷键（3rdparty 同，清单取自 QLineEdit::event）
+    const int keyCode = event->key() | modifiers;
+    switch (keyCode) {
+    case Qt::Key_Tab:
+    case Qt::Key_Backtab:  // Shift+Tab，vim 补全等需要
+    case Qt::Key_Tab | Qt::ShiftModifier:
+    case Qt::Key_Delete:
+    case Qt::Key_Home:
+    case Qt::Key_End:
+    case Qt::Key_Backspace:
+    case Qt::Key_Left:
+    case Qt::Key_Right:
+    case Qt::Key_Escape:
+        event->accept();
+        return true;
+    default:
+        return false;
+    }
 }
 
 // ---- IME ----
@@ -1704,14 +1740,25 @@ void DTerminalView::blinkCursorEvent()
 void DTerminalView::setBlinkingCursor(bool blink)
 {
     m_hasBlinkingCursor = blink;
-    if (blink) {
-        // 3rdparty 在启动时以系统间隔起定时器（非构造期一次设定）
+
+    if (blink && !m_blinkCursorTimer->isActive())
         m_blinkCursorTimer->start(QApplication::cursorFlashTime() / 2);
-    } else {
+
+    if (!blink && m_blinkCursorTimer->isActive()) {
         m_blinkCursorTimer->stop();
-        m_cursorBlinking = false;
+        // 处于隐藏相位时翻回，保证关闭闪烁后光标立即可见（3rdparty 同）
+        if (m_cursorBlinking)
+            blinkCursorEvent();
+        else
+            m_cursorBlinking = false;
     }
-    update();
+
+    // deepin 修复同款：按当前焦点同步定时器，
+    // 避免"设置光标闪烁后非焦点光标也在闪烁"
+    if (hasFocus())
+        focusInEvent(nullptr);
+    else
+        focusOutEvent(nullptr);
 }
 
 void DTerminalView::bell(const QString &message)
@@ -1902,6 +1949,11 @@ bool DTerminalView::event(QEvent *event)
     if (event->type() == QEvent::ShortcutOverride)
         handleShortcutOverride(static_cast<QKeyEvent *>(event));
 
+    // 主题切换时同步滚动条调色板（3rdparty 同：视图自身调色板被配色
+    // 冻结，滚动条跟随应用调色板才随浅/深主题重绘，否则右侧留旧色）
+    if (event->type() == QEvent::PaletteChange || event->type() == QEvent::ApplicationPaletteChange)
+        m_scrollBar->setPalette(QApplication::palette());
+
     return QWidget::event(event);
 }
 
@@ -1909,14 +1961,38 @@ void DTerminalView::focusInEvent(QFocusEvent *event)
 {
     emit focusInTerminal();
     QWidget::focusInEvent(event);
+
+    // 失焦时停掉的闪烁定时器按需恢复（3rdparty 同）
+    if (m_hasBlinkingCursor)
+        m_blinkCursorTimer->start();
     updateCursor();
+
+    if (m_hasBlinker)
+        m_blinkTimer->start();
 }
 
 void DTerminalView::focusOutEvent(QFocusEvent *event)
 {
     emit focusLeftTerminal();
     QWidget::focusOutEvent(event);
+
+    // 失焦即停止闪烁并复位隐藏相位（3rdparty 同：
+    // 光标保持可见的失焦样式，不再闪烁）
+    m_cursorBlinking = false;
     updateCursor();
+
+    m_blinkCursorTimer->stop();
+    if (m_blinking)
+        blinkEvent();
+    m_blinkTimer->stop();
+}
+
+bool DTerminalView::focusNextPrevChild(bool next)
+{
+    Q_UNUSED(next)
+    // 禁用 Tab/Shift+Tab 焦点切换（3rdparty 同）：QWidget::event 会先于
+    // keyPressEvent 拦截 Tab 走焦点链，返回 false 让按键落到终端
+    return false;
 }
 
 void DTerminalView::showEvent(QShowEvent *event)

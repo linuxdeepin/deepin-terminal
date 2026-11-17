@@ -214,6 +214,8 @@ protected:
     void resizeEvent(QResizeEvent *event) override;
     void focusInEvent(QFocusEvent *event) override;
     void focusOutEvent(QFocusEvent *event) override;
+    // 禁用 Tab/Shift+Tab 焦点切换（3rdparty 同：让终端程序如 vim/fish 补全接管）
+    bool focusNextPrevChild(bool next) override;
     void keyPressEvent(QKeyEvent *event) override;
     void mouseDoubleClickEvent(QMouseEvent *event) override;
     void mousePressEvent(QMouseEvent *event) override;
