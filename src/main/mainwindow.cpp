@@ -2579,11 +2579,11 @@ void MainWindow::addThemeFromConfig()
         // 过滤基础项和已存在的内置项，避免重复
         if (strTheme == THEME_DARK || strTheme == THEME_LIGHT || strTheme == QLatin1String("customTheme"))
             continue;
-        if (strTheme == QLatin1String("Theme1") || strTheme == QLatin1String("Theme2") ||
-            strTheme == QLatin1String("Theme3") || strTheme == QLatin1String("Theme4") ||
-            strTheme == QLatin1String("Theme5") || strTheme == QLatin1String("Theme6") ||
-            strTheme == QLatin1String("Theme7") || strTheme == QLatin1String("Theme8") ||
-            strTheme == QLatin1String("Theme9") || strTheme == QLatin1String("Theme10"))
+        if (strTheme == QLatin1String(THEME_ONE) || strTheme == QLatin1String(THEME_TWO) ||
+            strTheme == QLatin1String(THEME_THREE) || strTheme == QLatin1String(THEME_FOUR) ||
+            strTheme == QLatin1String(THEME_FIVE) || strTheme == QLatin1String(THEME_SIX) ||
+            strTheme == QLatin1String(THEME_SEVEN) || strTheme == QLatin1String(THEME_EIGHT) ||
+            strTheme == QLatin1String(THEME_NINE) || strTheme == QLatin1String(THEME_TEN))
             continue;
 
         if (themeBuiltinActionMap.contains(strTheme))

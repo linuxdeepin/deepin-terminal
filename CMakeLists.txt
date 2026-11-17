@@ -75,7 +75,6 @@ else()
     set(QT_VERSION_MAJOR 5)
 endif()
 message("   >>> Found Qt version: ${QT_VERSION_MAJOR}")
-set(QT_DESIRED_VERSION ${QT_VERSION_MAJOR})
 
 if (QT_VERSION_MAJOR MATCHES 6)
     set(DTK_VERSION_MAJOR 6)
@@ -98,25 +97,7 @@ pkg_search_module(GOBJECT REQUIRED gobject-2.0)
 pkg_check_modules(LIBSECRET REQUIRED libsecret-1)
 pkg_check_modules(XCB_EWMH REQUIRED xcb-ewmh x11)
 
-
-# Compile definitions for TerminalWidget
-# So we can use QT_VERSION_CHECK
-set(TERMINALWIDGET_VERSION_MAJOR "0")
-set(TERMINALWIDGET_VERSION_MINOR "14")
-set(TERMINALWIDGET_VERSION_PATCH "1")
-
-# 自研终端组件开关：OFF 编译内嵌三方库 terminalwidget5/6（默认，现状）；
-# ON 将自研源码直接编入 deepin-terminal 主目标、不再构建/链接三方库。
-option(BUILD_SELF_TERMWIDGET "Compile the self-developed DTerminalWidget sources into the executable instead of the vendored QTermWidget library" OFF)
-
 include_directories("src/terminalwidget")
-
-if(BUILD_SELF_TERMWIDGET)
-    add_definitions(-DBUILD_SELF_TERMWIDGET=1)
-else()
-    add_subdirectory(3rdparty/terminalwidget)
-    include_directories("3rdparty/terminalwidget/lib")
-endif()
 
 include_directories(${DtkWidget_INCLUDE_DIRS})
 include_directories(${DtkGui_INCLUDE_DIRS})
@@ -257,60 +238,44 @@ set (DTNG_HEADER_FILES
 )
 
 # 自研终端组件：源码直接编入主程序（源码集成，非库链接）。
-# 驱动接口两种模式都需要；适配器仅三方模式、自研实现仅自研模式。
-if(BUILD_SELF_TERMWIDGET)
-    find_package(ICU COMPONENTS uc i18n REQUIRED)
-    pkg_check_modules(chardet REQUIRED chardet)
-    include_directories(${chardet_INCLUDE_DIRS})
-    # 自研组件数据目录（配色/键盘布局资源）
-    add_definitions(-DCOLORSCHEMES_DATA_DIR="${CMAKE_SOURCE_DIR}/src/terminalwidget/data/schemes")
-    add_definitions(-DKEYTAB_DATA_DIR="${CMAKE_SOURCE_DIR}/src/terminalwidget/data/keytabs")
-    list(APPEND DTNG_CPP_FILES
-        src/terminalwidget/dterminaldriver.cpp
-        src/terminalwidget/dterminalcompat.cpp
-        src/terminalwidget/dterminalwidget.cpp
-        src/terminalwidget/dterminalutil.cpp
-        src/terminalwidget/dterminalhistory.cpp
-        src/terminalwidget/dtextfilter.cpp
-        src/terminalwidget/dterminalscreen.cpp
-        src/terminalwidget/dkeyboardtranslator.cpp
-        src/terminalwidget/dterminalparser.cpp
-        src/terminalwidget/dterminalpty.cpp
-        src/terminalwidget/dshellsession.cpp
-        src/terminalwidget/dencodingdetector.cpp
-        src/terminalwidget/dcolorscheme.cpp
-        src/terminalwidget/dhistorysearch.cpp
-        src/terminalwidget/dterminalview.cpp
-    )
-    list(APPEND DTNG_HEADER_FILES
-        src/terminalwidget/dterminaldriver.h
-        src/terminalwidget/dterminalcompat.h
-        src/terminalwidget/dterminalwidget.h
-        src/terminalwidget/dterminalutil.h
-        src/terminalwidget/dterminalhistory.h
-        src/terminalwidget/dtextfilter.h
-        src/terminalwidget/dterminalscreen.h
-        src/terminalwidget/dkeyboardtranslator.h
-        src/terminalwidget/dterminalparser.h
-        src/terminalwidget/dterminalpty.h
-        src/terminalwidget/dshellsession.h
-        src/terminalwidget/dencodingdetector.h
-        src/terminalwidget/dcolorscheme.h
-        src/terminalwidget/dhistorysearch.h
-        src/terminalwidget/dterminalview.h
-    )
-else()
-    list(APPEND DTNG_CPP_FILES
-        src/terminalwidget/dterminaldriver.cpp
-        src/terminalwidget/dterminalcompat.cpp
-        src/terminalwidget/dcompatterminaldriver.cpp
-    )
-    list(APPEND DTNG_HEADER_FILES
-        src/terminalwidget/dterminaldriver.h
-        src/terminalwidget/dterminalcompat.h
-        src/terminalwidget/dcompatterminaldriver.h
-    )
-endif()
+find_package(ICU COMPONENTS uc i18n REQUIRED)
+pkg_check_modules(chardet REQUIRED chardet)
+include_directories(${chardet_INCLUDE_DIRS})
+# 自研组件数据目录（配色/键盘布局资源）
+add_definitions(-DCOLORSCHEMES_DATA_DIR="${CMAKE_SOURCE_DIR}/src/terminalwidget/data/schemes")
+add_definitions(-DKEYTAB_DATA_DIR="${CMAKE_SOURCE_DIR}/src/terminalwidget/data/keytabs")
+list(APPEND DTNG_CPP_FILES
+    src/terminalwidget/dterminaldriver.cpp
+    src/terminalwidget/dterminalwidget.cpp
+    src/terminalwidget/dterminalutil.cpp
+    src/terminalwidget/dterminalhistory.cpp
+    src/terminalwidget/dtextfilter.cpp
+    src/terminalwidget/dterminalscreen.cpp
+    src/terminalwidget/dkeyboardtranslator.cpp
+    src/terminalwidget/dterminalparser.cpp
+    src/terminalwidget/dterminalpty.cpp
+    src/terminalwidget/dshellsession.cpp
+    src/terminalwidget/dencodingdetector.cpp
+    src/terminalwidget/dcolorscheme.cpp
+    src/terminalwidget/dhistorysearch.cpp
+    src/terminalwidget/dterminalview.cpp
+)
+list(APPEND DTNG_HEADER_FILES
+    src/terminalwidget/dterminaldriver.h
+    src/terminalwidget/dterminalwidget.h
+    src/terminalwidget/dterminalutil.h
+    src/terminalwidget/dterminalhistory.h
+    src/terminalwidget/dtextfilter.h
+    src/terminalwidget/dterminalscreen.h
+    src/terminalwidget/dkeyboardtranslator.h
+    src/terminalwidget/dterminalparser.h
+    src/terminalwidget/dterminalpty.h
+    src/terminalwidget/dshellsession.h
+    src/terminalwidget/dencodingdetector.h
+    src/terminalwidget/dcolorscheme.h
+    src/terminalwidget/dhistorysearch.h
+    src/terminalwidget/dterminalview.h
+)
 
 set (DTNG_QRC_FILES
     src/assets/resources.qrc
@@ -340,11 +305,7 @@ target_include_directories(${EXE_NAME}
 )
 
 target_link_libraries (deepin-terminal ${LINK_LIBS})
-if(BUILD_SELF_TERMWIDGET)
-    target_link_libraries (deepin-terminal ICU::uc ICU::i18n chardet uchardet)
-else()
-    target_link_libraries (deepin-terminal terminalwidget${QT_DESIRED_VERSION})
-endif()
+target_link_libraries (deepin-terminal ICU::uc ICU::i18n chardet uchardet)
 
 # Install settings
 

@@ -9,6 +9,29 @@
 
 #include <QVector>
 
+namespace {
+
+int s_minFontSize = 5;
+int s_maxFontSize = 50;
+
+}  // namespace
+
+void DTerminalUtil::setFontSizeLimit(int min, int max)
+{
+    s_minFontSize = min;
+    s_maxFontSize = max;
+}
+
+int DTerminalUtil::minFontSize()
+{
+    return s_minFontSize;
+}
+
+int DTerminalUtil::maxFontSize()
+{
+    return s_maxFontSize;
+}
+
 int DTerminalUtil::displayWidth(const QString &text)
 {
     const QVector<uint> codePoints = text.toUcs4();
