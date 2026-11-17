@@ -237,7 +237,7 @@ DTerminalPaletteEntry DColorScheme::paletteEntry(int index, uint randomSeed) con
     if (randomSeed != 0 && m_randomTable != nullptr && !m_randomTable[index].isNull()) {
         const RandomRange &range = m_randomTable[index];
 
-        // 基于原色做 HSV 偏移（3rdparty 同语义：随机化的是偏移量，保持可读性）
+        // 基于原色做 HSV 偏移（随机化的是偏移量，保持可读性）
         const int hueDifference = range.hue ? (rand() % range.hue) - range.hue / 2 : 0;
         const int saturationDifference = range.saturation ? (rand() % range.saturation) - range.saturation / 2 : 0;
         const int valueDifference = range.value ? (rand() % range.value) - range.value / 2 : 0;
@@ -372,7 +372,7 @@ QList<const DColorScheme *> DColorSchemeRegistry::allSchemes()
 
 void DColorSchemeRegistry::reloadScheme(const QString &origName)
 {
-    // 按路径重新加载主题（deepin 自有功能）
+    // 按路径重新加载主题
     const QString path = findSchemePath(origName);
     if (path.isEmpty())
         return;

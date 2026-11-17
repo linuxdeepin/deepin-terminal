@@ -26,20 +26,18 @@ class QDropEvent;
 
 /*******************************************************************************
  1. @类名:    DTerminalView
- 2. @作者:    ut001213 liuzhangjian
- 3. @日期:    2026-11-13
- 4. @说明:    终端显示部件（自研实现）。渲染屏幕图像、处理键盘/
+ 2. @说明:    终端显示部件。渲染屏幕图像、处理键盘/
             鼠标/触控输入、选区与剪贴板、滚动条与输出跟踪。
-            整合历史实现中"显示部件 + 屏幕窗口"两层：
+            整合"显示部件 + 屏幕窗口"两层：
             滚动窗口模型内置于本类。
-            保留 deepin 自有行为：触控手势（捏合/滑动/惯性）、
-            Ctrl+点击定位光标、输出滚动许可、选区状态跟踪。
+            触控手势（捏合/滑动/惯性）、Ctrl+点击定位光标、
+            输出滚动许可、选区状态跟踪。
 *******************************************************************************/
 class DTerminalView : public QWidget
 {
     Q_OBJECT
 public:
-    /** 键盘光标形状（与配置/解析器取值对齐） */
+    /** 键盘光标形状 */
     enum class DCursorShape {
         Block = 0,
         Underline = 1,
@@ -214,7 +212,7 @@ protected:
     void resizeEvent(QResizeEvent *event) override;
     void focusInEvent(QFocusEvent *event) override;
     void focusOutEvent(QFocusEvent *event) override;
-    // 禁用 Tab/Shift+Tab 焦点切换（3rdparty 同：让终端程序如 vim/fish 补全接管）
+    // 禁用 Tab/Shift+Tab 焦点切换（让终端程序如 vim/fish 补全接管）
     bool focusNextPrevChild(bool next) override;
     void keyPressEvent(QKeyEvent *event) override;
     void mouseDoubleClickEvent(QMouseEvent *event) override;
@@ -274,7 +272,7 @@ private:
     void enableBell();
     void swapColorTable();
 
-    // ---- 手势（deepin 自有移植） ----
+    // ---- 手势 ----
     void handleTapGesture(QTapGesture *gesture);
     void handleTapAndHoldGesture(QTapAndHoldGesture *gesture);
     void handlePanGesture(QPanGesture *gesture);
@@ -320,7 +318,7 @@ private:
     int m_contentWidth = 0;
 
     QVector<DTerminalChar> m_image;      // [lines*columns] 视图步幅镜像
-    QVector<DTerminalChar> m_windowBuffer;  // 屏幕步幅暂存（3rdparty ScreenWindow::_windowBuffer 同角色）
+    QVector<DTerminalChar> m_windowBuffer;  // 屏幕步幅暂存
     QVector<quint8> m_lineFlags;
 
     bool m_resizing = false;
@@ -401,7 +399,7 @@ private:
     int m_sessionId = 0;
     bool m_drawLineChars = true;
 
-    // deepin：选区状态跟踪
+    // 选区状态跟踪
     int m_selStartLine = 0;
     int m_selStartColumn = 0;
     int m_selEndLine = 0;
@@ -410,12 +408,12 @@ private:
 
     bool m_isAllowScroll = true;
 
-    // 滚动窗口状态（整合 ScreenWindow）
+    // 滚动窗口状态
     int m_windowLines = 0;
     int m_currentLine = 0;
     bool m_trackOutput = true;
 
-    // 手势状态（deepin 自有移植）
+    // 手势状态
     qreal m_scaleFactor = 1.0;
     qreal m_currentStepScaleFactor = 1.0;
     qint64 m_tapBeginTime = 0;

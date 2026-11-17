@@ -45,7 +45,7 @@ DTerminalCellColor::DTerminalCellColor(quint8 colorSpace, int value)
 
 namespace {
 
-// ---- GB18030 字体宽度修正（deepin 自有贡献移植，改名整合） ----
+// ---- GB18030 字体宽度修正 ----
 
 // GB18030 字体下 0x00-0xFF 的直接宽度表：-1 控制符、1/2 单元格宽度
 constexpr int8_t kGB18030DirectWidth[256] = {
@@ -134,16 +134,16 @@ int DCharWidth::widthByUnicodeData(uint codePoint)
     if (codePoint >= 0xd800 && codePoint <= 0xdfff)
         return -1;
 
-    // 先判宽字符（与历史实现判定顺序一致），再判组合字符
+    // 先判宽字符，再判组合字符
     const int eastAsianWidth = u_getIntPropertyValue(static_cast<UChar32>(codePoint), UCHAR_EAST_ASIAN_WIDTH);
     if (eastAsianWidth == U_EA_WIDE || eastAsianWidth == U_EA_FULLWIDTH)
         return 2;
 
-    // 终端宽度特例（与 konsole wcwidth 表对齐，ICU EAW 对这两类无此语义）
+    // 终端宽度特例（ICU EAW 对这两类无此语义）
     // 国旗 Regional Indicator 组件按 2 格
     if (codePoint >= 0x1f1e6 && codePoint <= 0x1f1ff)
         return 2;
-    // 零宽格式/双向控制字符按 0 格（konsole LUT_0 对应区间）
+    // 零宽格式/双向控制字符按 0 格
     if ((codePoint >= 0x200b && codePoint <= 0x200f)
             || (codePoint >= 0x202a && codePoint <= 0x202e)
             || (codePoint >= 0x2060 && codePoint <= 0x206f)

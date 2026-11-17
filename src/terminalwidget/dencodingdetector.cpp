@@ -17,7 +17,7 @@
 
 #include <cstdio>
 
-// GB18030 → UTF-8 转换时的特殊码点保护（deepin 自有数据）
+// GB18030 → UTF-8 转换时的特殊码点保护
 namespace {
 
 const QHash<QByteArray, QByteArray> &gb18030ToUtf8Replacements()

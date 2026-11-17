@@ -22,17 +22,15 @@ class QTextCodec;
 
 /*******************************************************************************
  1. @类名:    DTerminalDriver
- 2. @作者:    ut001213 liuzhangjian
- 3. @日期:    2026-11-12
- 4. @说明:    终端实现的统一驱动接口。上层 TermWidget 只依赖该接口，
-            由 DCompatTerminalDriver（三方 QTermWidget 适配，仅 OFF 模式编译）
-            或 DTerminalWidget（自研实现，ON 模式）提供，实现编译期后端切换。
+ 2. @说明:    终端实现的统一驱动接口。上层 TermWidget 只依赖该接口，
+            由 DCompatTerminalDriver（仅 OFF 模式编译）
+            或 DTerminalWidget（ON 模式）提供，实现编译期后端切换。
 *******************************************************************************/
 class DTerminalDriver : public QWidget
 {
     Q_OBJECT
 public:
-    /** 光标形状，取值与配置项（0/1/2）对齐 */
+    /** 光标形状 */
     enum class DCursorStyle {
         Block = 0,
         Underline = 1,

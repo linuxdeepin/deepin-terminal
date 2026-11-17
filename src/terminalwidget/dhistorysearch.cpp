@@ -165,7 +165,7 @@ bool DHistorySearch::searchRange(int startColumn, int startLine, int endColumn, 
                 }
             }
 
-            // 中文字符统计（deepin 自有 BUG22626 修复移植）：
+            // 中文字符统计：
             // 物理行被折成多个逻辑行时，需要统计未匹配段的中文字符
             static const QRegularExpression chinesePattern(
                 QStringLiteral("[\u4E00-\u9FA5，《。》、？；：【】～！￥（）]+"));

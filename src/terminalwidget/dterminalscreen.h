@@ -18,7 +18,7 @@
 
 class DTerminalView;
 
-// 屏幕模式（下标即取值，与历史实现一致）
+// 屏幕模式（下标即取值）
 enum DTerminalScreenMode {
     ModeOrigin = 0,      // 光标相对滚动区定位
     ModeWrap,            // 列尾自动换行
@@ -32,9 +32,7 @@ enum DTerminalScreenMode {
 
 /*******************************************************************************
  1. @类名:    DTerminalScreen
- 2. @作者:    ut001213 liuzhangjian
- 3. @日期:    2026-11-13
- 4. @说明:    终端屏幕缓冲（自研实现）。持有当前屏幕图像（每行
+ 2. @说明:    终端屏幕缓冲。持有当前屏幕图像（每行
             变长字符单元 + 行属性）、滚动历史、光标与外观状态、
             选区模型，支持 VT 屏幕指令与尺寸变更回绕。
 *******************************************************************************/
@@ -147,7 +145,7 @@ public:
     // ---- 选区 ----
     void setSelectionStart(int column, int line, bool blockSelectionMode);
     void setSelectionEnd(int column, int line);
-    /** 屏幕全选（deepin 自有功能移植） */
+    /** 屏幕全选 */
     void setSelectionAll();
     void getSelectionStart(int &column, int &line) const;
     void getSelectionEnd(int &column, int &line) const;
@@ -159,7 +157,7 @@ public:
 
     /**
      * 提取 [startLine, endLine] 的纯文本（软换行行不加分隔，其余行尾加换行；
-     * 末行数据短于整列宽时补换行并记录空行位置——与流式输出的语义一致）。
+     * 末行数据短于整列宽时补换行并记录空行位置）。
      * lineStarts 非空时记录每段文本的起始位置（含可能的末尾空行）。
      */
     QString extractPlainText(int startLine, int endLine, QList<int> *lineStarts = nullptr) const;
@@ -184,7 +182,7 @@ public:
     void setForegroundNameProvider(const std::function<QString(int)> &provider) { m_foregroundNameProvider = provider; }
     void setSessionId(int sessionId) { m_sessionId = sessionId; }
 
-    // ---- deepin 扩展：滚动毛刺修复 ----
+    // ---- 滚动毛刺修复 ----
     int oldTotalLines() { return m_oldTotalLines; }
     bool consumeResizeFlag();
     void setReflowEnabled(bool enable) { m_reflowEnabled = enable; }
@@ -196,7 +194,7 @@ private:
     DTerminalScreen(const DTerminalScreen &) = delete;
     DTerminalScreen &operator=(const DTerminalScreen &) = delete;
 
-    // 行内定位（与 konsole loc(X,Y)=Y*_columns+X 同约定：先列后行）
+    // 行内定位（约定：先列后行）
     int cellIndex(int column, int line) const { return line * m_columnCount + column; }
 
     void clearRange(int from, int to, char fillChar, bool resetLineFlags = true);

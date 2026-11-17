@@ -237,7 +237,7 @@ public:
 
     bool isWrappedLine(int line) const override
     {
-        // 与历史实现一致：文件存储按"标志字节非零"判定软换行
+        // 文件存储按"标志字节非零"判定软换行
         if (line >= 0 && line <= lineCount()) {
             quint8 flag = 0;
             m_flags.readAt(reinterpret_cast<char *>(&flag), 1, line);
@@ -300,7 +300,7 @@ public:
                 endLine = startOfLine(current + 1);
             }
 
-            // 按新宽度切分（与历史实现一致：文件存储不识别双高行）
+            // 按新宽度切分（文件存储不识别双高行）
             while ((endLine - startLine) / qint64(sizeof(DTerminalChar)) > columns) {
                 startLine += qint64(columns) * sizeof(DTerminalChar);
                 newIndex.append(startLine);
