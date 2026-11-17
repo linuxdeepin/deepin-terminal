@@ -19,9 +19,7 @@ class DUrlFilter;
 
 /*******************************************************************************
  1. @类名:    DTerminalWidget
- 2. @作者:    ut001213 liuzhangjian
- 3. @日期:    2026-11-13
- 4. @说明:    自研终端组件门面。组装会话/解析/屏幕/显示/配色/
+ 2. @说明:    终端组件门面。组装会话/解析/屏幕/显示/配色/
             搜索各模块，向上层（TermWidget）提供统一驱动接口。
 *******************************************************************************/
 class DTerminalWidget : public DTerminalDriver
@@ -103,7 +101,7 @@ private:
     DTerminalTextScanner *m_scanner = nullptr;
     DUrlFilter *m_urlFilter = nullptr;
 
-    // 搜索状态（deepin 自有搜索流程）
+    // 搜索状态
     bool m_hasSelection = false;
     int m_searchStartColumn = 0;
     int m_searchStartLine = 0;

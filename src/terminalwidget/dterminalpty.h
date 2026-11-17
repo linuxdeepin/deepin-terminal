@@ -18,15 +18,13 @@ class QTextCodec;
 
 /*******************************************************************************
  1. @类名:    DTerminalPty
- 2. @作者:    ut001213 liuzhangjian
- 3. @日期:    2026-11-13
- 4. @说明:    终端伪终端（自研直实现）。整合历史实现中
-            "进程 + pty 设备 + 事件层" 的多级结构：
+ 2. @说明:    终端伪终端。整合"进程 + pty 设备 + 事件层"
+            的多级结构：
             父进程经 posix_openpt 打开主端并监听可读；
             子进程修饰器建立会话、接管控制终端并把从端
             接到标准输入输出。进程退出由 QProcess 机制回收。
-            保留 deepin 自有行为：卸载命令检测（remove/purge）、
-            expect 密码屏蔽、乱码输出过滤、非 UTF-8 分块缓冲。
+            卸载命令检测（remove/purge）、expect 密码屏蔽、
+            乱码输出过滤、非 UTF-8 分块缓冲。
 *******************************************************************************/
 class DTerminalPty : public QProcess
 {
@@ -109,7 +107,7 @@ private:
     int m_sessionId = 0;
     bool m_uninstallDetected = false;
 
-    // deepin 自有行为状态
+    // 命令输出屏蔽与缓冲状态
     bool m_blockCommandOutput = false;   // expect 密码屏蔽
     int m_blockIndex = -1;
     const QTextCodec *m_textCodec = nullptr;

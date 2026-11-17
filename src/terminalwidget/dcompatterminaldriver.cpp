@@ -11,7 +11,7 @@ DCompatTerminalDriver::DCompatTerminalDriver(QTermWidget *host)
     : DTerminalDriver(host)
     , m_host(host)
 {
-    // 三方信号 → 驱动信号（逐条透传，保持连接顺序与原实现一致）
+    // 三方信号 → 驱动信号（逐条透传，保持连接顺序）
     connect(m_host, &QTermWidget::finished, this, &DTerminalDriver::shellFinished);
     connect(m_host, &QTermWidget::copyAvailable, this, &DTerminalDriver::copyStateChanged);
     connect(m_host, &QTermWidget::termGetFocus, this, &DTerminalDriver::focusInTerminal);

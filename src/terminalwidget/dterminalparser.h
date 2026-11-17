@@ -22,7 +22,7 @@ class QTextDecoder;
 class QTimer;
 class QKeyEvent;
 
-// 终端活动状态（与历史实现的 NOTIFY* 取值对齐）
+// 终端活动状态
 enum DTerminalActivity {
     ActivityNormal = 0,
     ActivityBell = 1,
@@ -80,9 +80,7 @@ private:
 
 /*******************************************************************************
  2. @类名:    DTerminalParser
- 3. @作者:    ut001213 liuzhangjian
- 4. @日期:    2026-11-13
- 5. @说明:    终端 VT 解析器（自研实现）。消费 shell 输出字节流，
+ 3. @说明:    终端 VT 解析器。消费 shell 输出字节流，
             解码后经词法分析拆分为指令，驱动主/备两块屏幕；
             同时负责键盘/鼠标事件到转义序列的转换。
 *******************************************************************************/
@@ -130,7 +128,7 @@ public:
     bool programUsesMouse() const { return m_usesMouse; }
     bool programBracketedPasteMode() const { return m_bracketedPaste; }
 
-    // ---- deepin 扩展 ----
+    // ---- 扩展 ----
     void setSessionId(int sessionId) { m_sessionId = sessionId; }
     /** bash 长提示符光标修正所需的前台进程名提供者（M4 注入） */
     void setForegroundNameProvider(const std::function<QString(int)> &provider) { m_foregroundNameProvider = provider; }

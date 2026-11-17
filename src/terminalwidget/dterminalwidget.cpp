@@ -93,8 +93,7 @@ DTerminalWidget::DTerminalWidget(QWidget *parent)
     layout->setContentsMargins(0, 0, 0, 0);
     layout->addWidget(m_view);
 
-    // 焦点代理：上层 TermWidget setFocus() 直接落到视图
-    // （3rdparty QTermWidget::setFocusProxy(terminalDisplay) 同方案），
+    // 焦点代理：上层 TermWidget setFocus() 直接落到视图，
     // 否则首启焦点停在 TermWidget 上，必须再点一次视图才能输入
     setFocusPolicy(Qt::StrongFocus);
     setFocusProxy(m_view);
@@ -115,7 +114,7 @@ void DTerminalWidget::wireSignals()
     // 输出即达时同步窗口位置（不经 10/40ms 节流）。必须接在
     // receivedData → outputReceived 之前：外层"智能滚动"会在
     // outputReceived 时读 atOutputEnd()，视图状态滞后会被误判为
-    // "不在底部"而禁用跟随（3rdparty ScreenWindow 同步更新，无此竞态）
+    // "不在底部"而禁用跟随
     connect(m_session, &DShellSession::receivedData, m_view, [this](const QString &) {
         m_view->syncOutputTracking();
     });
@@ -205,7 +204,7 @@ int DTerminalWidget::shellSessionId()
 
 bool DTerminalWidget::hasLiveProcess()
 {
-    // 3rdparty hasRunningProcess 语义：仅当前台进程组 ≠ shell 自身
+    // hasRunningProcess 语义：仅当前台进程组 ≠ shell 自身
     // （真有命令/应用在前台运行）才算有活动进程；shell 空闲不弹关闭提示
     return m_session->isForegroundProcessActive();
 }
@@ -217,7 +216,7 @@ int DTerminalWidget::foregroundProcessId()
 
 QString DTerminalWidget::shellTitle()
 {
-    // 3rdparty QTermWidget::title 语义：优先 shell 用户标题（OSC 0，
+    // title 语义：优先 shell 用户标题（OSC 0，
     // fish 的 prompt 用它上报路径），为空时回退 NameRole
     const QString title = m_session->userTitle();
     if (!title.isEmpty())
@@ -431,7 +430,7 @@ void DTerminalWidget::resetSelection()
 
 void DTerminalWidget::resetSelectionGuard()
 {
-    // 搜索框出现时重置选区状态，避免后续流程误判（deepin 自有）
+    // 搜索框出现时重置选区状态，避免后续流程误判
     m_hasSelection = false;
 }
 

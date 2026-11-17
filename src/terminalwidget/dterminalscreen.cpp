@@ -70,7 +70,7 @@ void DTerminalScreen::cursorRight(int n)
         n = 1;
     if (n > kMaxScreenArgument)
         n = kMaxScreenArgument;
-    // konsole 定宽网格下 screenLineColumns 恒等于列数；自研变长行必须
+    // 定宽网格下 screenLineColumns 恒等于列数；变长行必须
     // 钳制到网格宽度，否则 fish 的 ESC[nC 光标重画被行尾截断（空行还下溢为 -1）
     m_cursorColumn = qMin(m_columnCount - 1, m_cursorColumn + n);
 }
@@ -547,7 +547,7 @@ void DTerminalScreen::displayCharacter(uint c)
     if (c <= 0xFFFF) {
         m_urlExtractor.appendUrlText(QChar(static_cast<ushort>(c)));
     } else {
-        // 超平面字符拆为代理对（deepin 自有修正移植）
+        // 超平面字符拆为代理对
         m_urlExtractor.appendUrlText(QChar::highSurrogate(c));
         m_urlExtractor.appendUrlText(QChar::lowSurrogate(c));
     }
@@ -764,7 +764,7 @@ QString DTerminalScreen::extractPlainText(int startLine, int endLine, QList<int>
         lastLineDataLength = length;
     }
 
-    // 末行数据短于整列宽：补换行并记录末尾空行（与流式输出语义一致）
+    // 末行数据短于整列宽：补换行并记录末尾空行
     if (lastLineDataLength < m_columnCount) {
         if (lineStarts)
             lineStarts->append(result.length());
@@ -838,7 +838,7 @@ int DTerminalScreen::copyLineToText(QString &out, int line, int start, int count
 
     // 历史行：无尾随空白，无需裁剪
     if (line < m_history->lineCount()) {
-        // 短行选区：起点越过行尾时本行无内容（对齐下方屏幕分支的处理）
+        // 短行选区：起点越过行尾时本行无内容
         if (start >= lineLen) {
             start = lineLen;
             count = 0;
@@ -980,7 +980,7 @@ void DTerminalScreen::getImage(DTerminalChar *dest, int size, int startLine, int
     Q_ASSERT(startLine >= 0);
     Q_ASSERT(endLine >= startLine && endLine < m_history->lineCount() + m_lineCount);
 
-    // 与 3rdparty Screen::getImage 一致：dest 必须按屏幕列数步幅且容量
+    // dest 必须按屏幕列数步幅且容量
     // >= mergedLines * 列数。视图步幅的重排由 DTerminalView 经
     // m_windowBuffer staging 完成，此处不得静默截断（截断会在 resize
     // 过渡期留下陈旧行，产生"新行内容与上一行相同"的错位画面）

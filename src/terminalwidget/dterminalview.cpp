@@ -53,7 +53,7 @@ int cellDisplayWidth(const DTerminalChar &cell)
     return width > 0 ? width : 1;
 }
 
-// BiDi run 分块：Common/Inherited 视为可混排（与 3rdparty isSameScript 同规则）
+// BiDi run 分块：Common/Inherited 视为可混排
 bool isSameScript(QChar::Script script, QChar::Script lastScript)
 {
     return (script == lastScript)
@@ -61,8 +61,7 @@ bool isSameScript(QChar::Script script, QChar::Script lastScript)
         || ((script == QChar::Script_Inherited) && (lastScript != QChar::Script_Common));
 }
 
-// 256 色索引 → RGB（xterm 标准映射：0-15 调色板、16-231 色立方、232-255 灰度，
-// 与 3rdparty color256 同语义）
+// 256 色索引 → RGB（xterm 标准映射：0-15 调色板、16-231 色立方、232-255 灰度）
 QColor mapIndex256(int index, const DTerminalPaletteEntry (&palette)[20])
 {
     if (index < 16)
@@ -105,16 +104,16 @@ DTerminalView::DTerminalView(QWidget *parent)
     setFocusPolicy(Qt::WheelFocus);
     setMouseTracking(true);
 
-    // 初始隐藏滚动条，输出超屏后自动显示并保持常显（3rdparty 默认策略）。
-    // 滚动条几何不放布局：3rdparty 在 calcGeometry 里手动 resize+move，
+    // 初始隐藏滚动条，输出超屏后自动显示并保持常显。
+    // 滚动条几何不放布局：在 calcGeometry 里手动 resize+move，
     // 放进空布局会被垂直居中（跑到窗口中间）
     m_scrollBar->hide();
     m_scrollbarLocation = NoScrollBar;
 
     m_scrollBar->setCursor(Qt::ArrowCursor);
-    // deepin 定制（3rdparty 同，2020 wangpeili）：15px 宽、底部留 15px 适配窗口圆角
+    // 15px 宽、底部留 15px 适配窗口圆角
     m_scrollBar->setStyleSheet(QStringLiteral("margin: 0px 0 15px 0;width: 15"));
-    // 终端背景对比度不足时滚动条自填充背景（非 transient 样式，3rdparty 同）
+    // 终端背景对比度不足时滚动条自填充背景（非 transient 样式）
     if (!m_scrollBar->style()->styleHint(QStyle::SH_ScrollBar_Transient, nullptr, m_scrollBar))
         m_scrollBar->setAutoFillBackground(true);
     m_scrollBar->setMinimum(0);
@@ -129,7 +128,7 @@ DTerminalView::DTerminalView(QWidget *parent)
     // 闪烁
     m_blinkTimer->setInterval(kTextBlinkDelay);
     connect(m_blinkTimer, &QTimer::timeout, this, &DTerminalView::blinkEvent);
-    // 跟随系统光标闪烁间隔（与 3rdparty 一致：cursorFlashTime()/2）
+    // 跟随系统光标闪烁间隔（cursorFlashTime()/2）
     m_blinkCursorTimer->setInterval(QApplication::cursorFlashTime() / 2);
     connect(m_blinkCursorTimer, &QTimer::timeout, this, &DTerminalView::blinkCursorEvent);
 
@@ -202,7 +201,7 @@ void DTerminalView::makeImage()
 
     const QRect area = contentsRect();
 
-    // 滚动条几何：手动定位到窗口侧边并铺满高度（3rdparty calcGeometry 同）
+    // 滚动条几何：手动定位到窗口侧边并铺满高度
     m_scrollBar->resize(m_scrollBar->sizeHint().width(), area.height());
     const int scrollBarWidth = m_scrollBar->isHidden()
             ? 0 : m_scrollBar->style()->styleHint(QStyle::SH_ScrollBar_Transient, nullptr, m_scrollBar)
@@ -217,7 +216,7 @@ void DTerminalView::makeImage()
         break;
     }
 
-    // 以内容区计算行列数（konsole calcGeometry 镜像：内容高 = height - 2*topMargin + 1，
+    // 以内容区计算行列数（内容高 = height - 2*topMargin + 1，
     // 内容宽 = width - 2*leftMargin - scrollBar，均不含 -1 偏差）
     m_lines = (area.height() + 1 - m_topMargin * 2) / m_fontHeight;
     if (m_lines <= 0)
@@ -244,8 +243,8 @@ void DTerminalView::makeImage()
 
 void DTerminalView::refillImage(int mergedStart, int mergedEnd)
 {
-    // 3rdparty 两步式：ScreenWindow 以屏幕列数步幅取图（getImage），
-    // TerminalDisplay 再逐行拷进视图步幅镜像。直接用屏幕步幅写视图
+    // 两步式：以屏幕列数步幅取图（getImage），
+    // 再逐行拷进视图步幅镜像。直接用屏幕步幅写视图
     // 镜像会在 resize 过渡期（view/screen 列数短暂不同步）产生对角线
     // 错位与陈旧行；本方法同时补齐视图超出屏幕的区域（fillUnusedArea 语义）
     const int mergedLines = mergedEnd - mergedStart + 1;
@@ -306,8 +305,8 @@ void DTerminalView::updateImage()
     if (!m_hasBlinker && m_blinkTimer->isActive())
         m_blinkTimer->stop();
 
-    // 与 deepin 版 3rdparty 一致：全量重绘。区域级 diff 重绘在
-    // 窗口 map/resize/expose 生命周期下会留下永不重绘的陈旧区域
+    // 全量重绘。区域级 diff 重绘在窗口 map/resize/expose 生命周期下
+    // 会留下永不重绘的陈旧区域
     // （diff 判"未变化"→ 背部存储丢失的像素无人补画）
     update();
 }
@@ -352,7 +351,7 @@ void DTerminalView::notifyOutputChanged()
     m_scrollBar->setMaximum(scrollMax);
     m_scrollBar->setValue(qBound(0, m_currentLine, scrollMax));
 
-    // 首次超屏显示滚动条并保持常显（反复显隐会改变列数引发重排，deepin 教训）
+    // 首次超屏显示滚动条并保持常显（反复显隐会改变列数引发重排）
     if (m_scrollbarLocation == NoScrollBar && m_lines > 1 && totalLines > m_lines)
         setScrollBarPosition(ScrollBarRight);
 
@@ -372,11 +371,11 @@ void DTerminalView::scrollTo(int line)
     m_currentLine = qBound(0, line, scrollMax);
     m_scrollBar->setValue(m_currentLine);
 
-    // 滚动位置决定是否跟随输出（3rdparty 同：滚到最底即恢复跟随）
+    // 滚动位置决定是否跟随输出（滚到最底即恢复跟随）
     m_trackOutput = (m_currentLine == scrollMax);
 
     updateImage();
-    processFilters();  // 滚动改变窗口内容，热点需重扫（3rdparty scrolled→updateFilters 同）
+    processFilters();  // 滚动改变窗口内容，热点需重扫
     update();
 }
 
@@ -473,7 +472,7 @@ void DTerminalView::resizeEvent(QResizeEvent *event)
 
     updateImageSize();
     propagateSize();
-    processFilters();  // 列数/行数变化后热点需重扫（3rdparty resizeEvent 同）
+    processFilters();  // 列数/行数变化后热点需重扫
     update();
 
     if (m_resizeTimer->isActive())
@@ -484,7 +483,7 @@ void DTerminalView::resizeEvent(QResizeEvent *event)
 
 QSize DTerminalView::sizeHint() const
 {
-    // 与 3rdparty setSize 同公式：边距 + 滚动条条带 + 整格内容
+    // 边距 + 滚动条条带 + 整格内容
     const int scrollBarWidth = m_scrollBar->isHidden()
             ? 0 : m_scrollBar->style()->styleHint(QStyle::SH_ScrollBar_Transient, nullptr, m_scrollBar)
               ? 0 : m_scrollBar->sizeHint().width();
@@ -524,7 +523,7 @@ void DTerminalView::setFont(const QFont &font)
 
 void DTerminalView::setVTFont(const QFont &font)
 {
-    // 字号限制（deepin 自有 BUG42250/BUG42412 修复移植）
+    // 字号限制
     if (font.pointSize() < Konsole::__minFontSize || font.pointSize() > Konsole::__maxFontSize)
         return;
 
@@ -545,7 +544,7 @@ void DTerminalView::paintEvent(QPaintEvent *event)
     QPainter painter(this);
     painter.setRenderHint(QPainter::TextAntialiasing, s_antialiasText);
 
-    // 调色板槽位遵循 konsole 约定：[0]=前景、[1]=背景（与 resolveColor 一致）
+    // 调色板槽位：[0]=前景、[1]=背景
     const QColor background = m_colorsInverted
             ? m_palette[0].color : m_palette[1].color;
     const QColor foreground = m_colorsInverted
@@ -614,7 +613,7 @@ void DTerminalView::drawContent(QPainter &painter, const QRect &rect)
 
         const quint8 lineProperty = m_lineFlags.value(y, quint8(LineDefault));
 
-        // 双宽/双高行的文本缩放（与 3rdparty 语义一致：DW 横向 2 倍、
+        // 双宽/双高行的文本缩放（DW 横向 2 倍、
         // DH 上半行纵向 2 倍；下半行无标志、不缩放）
         QTransform textScale;
         if (lineProperty & LineDoubleWidth)
@@ -654,8 +653,8 @@ void DTerminalView::drawContent(QPainter &painter, const QRect &rect)
             // 按相同样式聚合连续片段（BiDi 开启时按书写方向脚本分块）
             const DTerminalChar &styleRef = cell;
             if (cell.codePoint == ' ' && !(lineProperty & LineDoubleWidth)) {
-                // 空格段：整段并入单个 run，只画背景不产生文本（3rdparty 同，
-                // 也避免超宽字形后的空格造成裁剪）
+                // 空格段：整段并入单个 run，只画背景不产生文本
+                // （也避免超宽字形后的空格造成裁剪）
                 while (x + length <= rect.right() && x + length < m_columns) {
                     const DTerminalChar &next = m_image[y * m_columns + x + length];
                     if (next.codePoint != ' ' || next.style != styleRef.style
@@ -685,7 +684,7 @@ void DTerminalView::drawContent(QPainter &painter, const QRect &rect)
                 }
             }
 
-            // 宽字符延续格并入本片段（与 3rdparty 一致：缩放与裁剪都需要整格宽度）
+            // 宽字符延续格并入本片段（缩放与裁剪都需要整格宽度）
             if (x + length <= rect.right() && x + length < m_columns
                     && m_image[y * m_columns + x + length].codePoint == 0)
                 length++;
@@ -717,7 +716,7 @@ void DTerminalView::drawContent(QPainter &painter, const QRect &rect)
         // 恢复单宽单高
         painter.setWorldTransform(QTransform(textScale.inverted()), true);
 
-        // 双高上半行由两行组成，跳过下半行（与 3rdparty 一致）
+        // 双高上半行由两行组成，跳过下半行
         if ((lineProperty & LineDoubleHeightTop) && y < m_lines - 1)
             y++;
     }
@@ -791,7 +790,7 @@ void DTerminalView::drawCharacters(QPainter &painter, const QRect &rect,
     } else if (m_bidiEnabled) {
         painter.drawText(rect, Qt::AlignBottom | Qt::AlignLeft, text);
     } else {
-        // 终端无 RTL 布局用例：默认强制 LTR（3rdparty 同语义），
+        // 终端无 RTL 布局用例：默认强制 LTR，
         // 但仍允许 RTL 字符按自身方向成形
         painter.drawText(rect, Qt::AlignBottom | Qt::AlignLeft, QChar(0x202D) + text);
     }
@@ -945,7 +944,7 @@ void DTerminalView::drawCursor(QPainter &painter, const QRect &rect,
         }
         break;
     case DCursorShape::Underline:
-        // 不区分焦点：整数像素 1px 高矩形，避免端点抗锯齿残留（3rdparty 同）
+        // 不区分焦点：整数像素 1px 高矩形，避免端点抗锯齿残留
         {
             const QRect intRect = cursorRect.toAlignedRect();
             const QColor lineColor = m_cursorColor.isValid() ? m_cursorColor : foregroundColor;
@@ -994,7 +993,7 @@ void DTerminalView::drawPreeditString(QPainter &painter, const QRect &rect)
 QRect DTerminalView::preeditRect() const
 {
     const QPoint cursor = cursorPosition();
-    // 按实际字符宽度布局（至少 1 格），与 3rdparty string_width 语义一致
+    // 按实际字符宽度布局（至少 1 格）
     const int width = qMax(1, DTerminalUtil::displayWidth(m_preedit.preeditString));
     return QRect(m_leftMargin + m_leftBaseMargin + cursor.x() * m_fontWidth,
                  m_topMargin + m_topBaseMargin + cursor.y() * m_fontHeight,
@@ -1020,7 +1019,7 @@ QColor DTerminalView::resolveColor(const DTerminalCellColor &color) const
     case ColorSpaceIndex256:
         return mapIndex256(color.primary, m_palette);
     case ColorSpaceDefault:
-        // 粗体默认色走亮色变体（3rdparty BASE_COLORS 偏移同语义）
+        // 粗体默认色走亮色变体
         return m_palette[(color.primary == kDefaultForeIndex ? 0 : 1)
                          + (color.secondary ? 10 : 0)].color;
     case ColorSpaceRgb:
@@ -1041,13 +1040,13 @@ void DTerminalView::paintScannerSpots(QPainter &painter)
     if (m_scanner == nullptr)
         return;
 
-    // 3rdparty：画笔取鼠标所在字符的前景色，下划线颜色与文字一致
+    // 画笔取鼠标所在字符的前景色，下划线颜色与文字一致
     int cursorLine = 0, cursorColumn = 0;
     getCharacterPosition(mapFromGlobal(QCursor::pos()), cursorLine, cursorColumn);
     if (cursorLine >= 0 && cursorLine < m_lines && cursorColumn >= 0 && cursorColumn < m_columns)
         painter.setPen(QPen(resolveColor(m_image[cursorLine * m_columns + cursorColumn].fg)));
 
-    // 只给悬停中的链接画实线下划线（3rdparty paintFilters 同：检查区四周
+    // 只给悬停中的链接画实线下划线（检查区四周
     // 收 1px，防止指针停在链接边界上时仍显示下划线）
     bool hoveringLink = false;
     const QList<DTextFilter::Spot *> spots = m_scanner->spots();
@@ -1058,7 +1057,7 @@ void DTerminalView::paintScannerSpots(QPainter &painter)
         if (!spotRegion(spot, true).contains(mapFromGlobal(QCursor::pos())))
             continue;
 
-        // 逐行画下划线：行尾空白裁剪、右缘 -1 不压线邻格（3rdparty 同）
+        // 逐行画下划线：行尾空白裁剪、右缘 -1 不压线邻格
         for (int line = spot->startLine(); line <= spot->endLine(); ++line) {
             int startColumn = 0;
             int endColumn = m_columns - 1;
@@ -1086,7 +1085,7 @@ void DTerminalView::paintScannerSpots(QPainter &painter)
         }
     }
 
-    // 3rdparty：悬停链接且按住 Ctrl 才切换小手，否则 IBeam
+    // 悬停链接且按住 Ctrl 才切换小手，否则 IBeam
     if (hoveringLink && (QApplication::queryKeyboardModifiers() & Qt::ControlModifier)) {
         if (cursor().shape() != Qt::PointingHandCursor)
             setCursor(Qt::PointingHandCursor);
@@ -1097,7 +1096,7 @@ void DTerminalView::paintScannerSpots(QPainter &painter)
 
 QRegion DTerminalView::spotRegion(DTextFilter::Spot *spot, bool inset) const
 {
-    // 热点单元格区域（列按半开区间），3rdparty mouseMove/paintFilters 同构
+    // 热点单元格区域（列按半开区间）
     QRegion region;
     QRect r;
     if (spot->startLine() == spot->endLine()) {
@@ -1214,7 +1213,7 @@ void DTerminalView::pasteClipboard()
     bracketText(text);
     const QByteArray utf8 = text.toUtf8();
     emit sendStringToEmulation(utf8.constData());
-    // 粘贴取消当前选区（3rdparty emitSelection 同）；选区色在 getImage 时
+    // 粘贴取消当前选区；选区色在 getImage 时
     // 套用，清除后必须重取图，否则旧高亮残留
     if (m_screen != nullptr) {
         m_screen->clearSelection();
@@ -1235,7 +1234,7 @@ void DTerminalView::pasteSelection()
     bracketText(text);
     const QByteArray utf8 = text.toUtf8();
     emit sendStringToEmulation(utf8.constData());
-    // 粘贴取消当前选区（3rdparty emitSelection 同）；选区色在 getImage 时
+    // 粘贴取消当前选区；选区色在 getImage 时
     // 套用，清除后必须重取图，否则旧高亮残留
     if (m_screen != nullptr) {
         m_screen->clearSelection();
@@ -1299,7 +1298,7 @@ void DTerminalView::extendSelection(const QPoint &pos)
     if (m_screen == nullptr)
         return;
 
-    // 选区拖出窗口上下边界时自动滚动视图（3rdparty 同语义，按格计算）
+    // 选区拖出窗口上下边界时自动滚动视图（按格计算）
     if (pos.y() > m_lines - 1)
         m_scrollBar->setValue(m_scrollBar->value() + pos.y() - m_lines + 1);
     else if (pos.y() < 0)
@@ -1313,7 +1312,7 @@ void DTerminalView::extendSelection(const QPoint &pos)
     const QPoint anchor = m_selectionInitial;
 
     if (m_wordSelectionMode) {
-        // 词选：双向找词边界，可跨软换行行（3rdparty 同语义）
+        // 词选：双向找词边界，可跨软换行行
         const bool leftNotRight = (here.y() < anchor.y())
                 || (here.y() == anchor.y() && here.x() < anchor.x());
         QPoint left = leftNotRight ? here : anchor;
@@ -1351,7 +1350,7 @@ void DTerminalView::extendSelection(const QPoint &pos)
         start = left;
         end = right;
     } else if (m_lineSelectionMode) {
-        // 行选：沿软换行链扩展整行（3rdparty 同语义）
+        // 行选：沿软换行链扩展整行
         const bool aboveNotBelow = (here.y() < anchor.y());
         QPoint above = aboveNotBelow ? here : anchor;
         QPoint below = aboveNotBelow ? anchor : here;
@@ -1378,7 +1377,7 @@ void DTerminalView::extendSelection(const QPoint &pos)
                                 m_columnSelectionMode);
     m_screen->setSelectionEnd(end.x(), end.y() + windowTopLine);
 
-    // deepin：选区状态跟踪
+    // 选区状态跟踪
     int startLine = 0, startColumn = 0, endLine = 0, endColumn = 0;
     m_screen->getSelectionStart(startColumn, startLine);
     m_screen->getSelectionEnd(endColumn, endLine);
@@ -1408,7 +1407,7 @@ void DTerminalView::mousePressEvent(QMouseEvent *event)
         int charLine = 0, charColumn = 0;
         getCharacterPosition(event->pos(), charLine, charColumn);
 
-        // deepin：Ctrl+点击定位光标
+        // Ctrl+点击定位光标
         if (m_cursorPositionSetEnable && (event->modifiers() & Qt::ControlModifier)) {
             int line = charLine;
             int column = charColumn;
@@ -1434,7 +1433,7 @@ void DTerminalView::mousePressEvent(QMouseEvent *event)
                     && (event->modifiers() & Qt::ControlModifier);
 
             if (m_usesMouse && !(event->modifiers() & Qt::ShiftModifier)) {
-                // 程序接管鼠标：报告事件（行号换算滚动偏移，3rdparty 同）
+                // 程序接管鼠标：报告事件（行号换算滚动偏移）
                 emit mouseEvent(0, charColumn + 1,
                                 charLine + 1 + m_scrollBar->value() - m_scrollBar->maximum(), 0);
             } else {
@@ -1447,7 +1446,7 @@ void DTerminalView::mousePressEvent(QMouseEvent *event)
                 initSelectionState();
             }
 
-            // 点击链接即激活热点（3rdparty 同：打开与否由上层 onUrlActivated
+            // 点击链接即激活热点（打开与否由上层 onUrlActivated
             // 的 Ctrl 门槛决定）；三击全选不激活
             if (!m_possibleTripleClick && m_scanner != nullptr) {
                 DTextFilter::Spot *spot = m_scanner->spotAt(charLine, charColumn);
@@ -1485,7 +1484,7 @@ void DTerminalView::mouseMoveEvent(QMouseEvent *event)
     getCharacterPosition(event->pos(), charLine, charColumn);
 
     // 链接热点悬停：跟踪悬停区并触发重绘（下划线与指针在 paint 时按全局
-    // 鼠标位置现算，3rdparty 同；mouseMove 只负责重绘触发）
+    // 鼠标位置现算；mouseMove 只负责重绘触发）
     if (m_scanner != nullptr) {
         DTextFilter::Spot *spot = m_scanner->spotAt(charLine, charColumn);
         const QRegion previousHotspotArea = m_mouseOverSpotArea;
@@ -1552,7 +1551,7 @@ void DTerminalView::mouseDoubleClickEvent(QMouseEvent *event)
     int charLine = 0, charColumn = 0;
     getCharacterPosition(event->pos(), charLine, charColumn);
 
-    // 程序接管鼠标：把双击转成第二次单击上报（首次单击已由 press 上报，3rdparty 同）
+    // 程序接管鼠标：把双击转成第二次单击上报（首次单击已由 press 上报）
     if (m_usesMouse && !(event->modifiers() & Qt::ShiftModifier)) {
         emit mouseEvent(0, charColumn + 1,
                         charLine + 1 + m_scrollBar->value() - m_scrollBar->maximum(), 0);
@@ -1590,13 +1589,13 @@ void DTerminalView::wheelEvent(QWheelEvent *event)
     if (m_screen == nullptr)
         return;
 
-    // 窗口激活且有焦点时，Ctrl+滚轮交给父级处理（缩放等，3rdparty 同）
+    // 窗口激活且有焦点时，Ctrl+滚轮交给父级处理（缩放等）
     if (isActiveWindow() && hasFocus() && event->modifiers() == Qt::ControlModifier) {
         QWidget::wheelEvent(event);
         return;
     }
 
-    // 滚轮滚动时初始化键盘选择状态（3rdparty 同）
+    // 滚轮滚动时初始化键盘选择状态
     initKeyboardSelection();
 
     if (event->angleDelta().x() != 0)
@@ -1606,12 +1605,12 @@ void DTerminalView::wheelEvent(QWheelEvent *event)
     const QPoint pos = event->position().toPoint();
 
     if (!m_usesMouse && m_scrollBar->maximum() > 0) {
-        // 程序未接管鼠标：滚轮滚动视图（3rdparty _mouseMarks 同语义：
-        // _mouseMarks=终端自处理鼠标，与 m_usesMouse 相反）
+        // 程序未接管鼠标：滚轮滚动视图（终端自处理鼠标，
+        // 与 m_usesMouse 相反）
         const int steps = delta / 120;
         scrollBy(ScrollLines, -steps);
     } else if (!m_usesMouse && m_alternateScreen && m_alternateScrolling) {
-        // 无历史可滚 + 备用屏：滚轮转为上下键（每 5 度一行，3rdparty 同）
+        // 无历史可滚 + 备用屏：滚轮转为上下键（每 5 度一行）
         const int key = delta > 0 ? Qt::Key_Up : Qt::Key_Down;
         const int wheelDegrees = delta / 8;
         const int linesToScroll = qAbs(wheelDegrees) / 5;
@@ -1693,7 +1692,7 @@ void DTerminalView::keyPressEvent(QKeyEvent *event)
             scrollBy(ScrollPages, 1);
             emitKeyPressSignal = false;
         } else if (event->key() == Qt::Key_Up) {
-            // Shift+上下键：滚动历史并重新初始化选择锚点（3rdparty 同语义）
+            // Shift+上下键：滚动历史并重新初始化选择锚点
             initKeyboardSelection();
             scrollBy(ScrollLines, -1);
             emitKeyPressSignal = false;
@@ -1718,7 +1717,7 @@ void DTerminalView::keyPressEvent(QKeyEvent *event)
         }
     }
 
-    // 按键重启光标闪烁并复位相位（3rdparty 同）
+    // 按键重启光标闪烁并复位相位
     if (m_hasBlinkingCursor) {
         m_blinkCursorTimer->start(QApplication::cursorFlashTime() / 2);
         if (m_cursorBlinking)
@@ -1730,7 +1729,7 @@ void DTerminalView::keyPressEvent(QKeyEvent *event)
     if (emitKeyPressSignal)
         emit keyPressed(event);
 
-    // 按键滚动（3rdparty 2020-02-14 wangpeili 修改同款）：粘贴滚动模式为
+    // 按键滚动：粘贴滚动模式为
     // "移至末尾"时，普通按键后滚到底部——输入行滚出可见区后回车即回到底
     switch (m_motionAfterPasting) {
     case MoveStartScreenWindow:
@@ -1754,7 +1753,7 @@ bool DTerminalView::handleShortcutOverride(QKeyEvent *event)
 {
     const int modifiers = event->modifiers();
 
-    // 单修饰键组合交由宿主裁决是否覆盖（3rdparty overrideShortcutCheck 同款）
+    // 单修饰键组合交由宿主裁决是否覆盖
     if (modifiers != Qt::NoModifier) {
         int modifierCount = 0;
         unsigned int currentModifier = Qt::ShiftModifier;
@@ -1773,7 +1772,7 @@ bool DTerminalView::handleShortcutOverride(QKeyEvent *event)
         }
     }
 
-    // 终端必需的按键覆盖应用快捷键（3rdparty 同，清单取自 QLineEdit::event）
+    // 终端必需的按键覆盖应用快捷键（清单取自 QLineEdit::event）
     const int keyCode = event->key() | modifiers;
     switch (keyCode) {
     case Qt::Key_Tab:
@@ -1868,14 +1867,14 @@ void DTerminalView::setBlinkingCursor(bool blink)
 
     if (!blink && m_blinkCursorTimer->isActive()) {
         m_blinkCursorTimer->stop();
-        // 处于隐藏相位时翻回，保证关闭闪烁后光标立即可见（3rdparty 同）
+        // 处于隐藏相位时翻回，保证关闭闪烁后光标立即可见
         if (m_cursorBlinking)
             blinkCursorEvent();
         else
             m_cursorBlinking = false;
     }
 
-    // deepin 修复同款：按当前焦点同步定时器，
+    // 按当前焦点同步定时器，
     // 避免"设置光标闪烁后非焦点光标也在闪烁"
     if (hasFocus())
         focusInEvent(nullptr);
@@ -1939,7 +1938,7 @@ void DTerminalView::setScrollBarPosition(ScrollBarPosition position)
     // 重新计算几何（含滚动条手动定位与列数让位）并把新尺寸同步给屏幕模型
     updateImageSize();
     propagateSize();
-    processFilters();  // 列数/行数变化后热点需重扫（3rdparty resizeEvent 同）
+    processFilters();  // 列数/行数变化后热点需重扫
     update();
 }
 
@@ -2072,7 +2071,7 @@ bool DTerminalView::event(QEvent *event)
     if (event->type() == QEvent::ShortcutOverride)
         handleShortcutOverride(static_cast<QKeyEvent *>(event));
 
-    // 主题切换时同步滚动条调色板（3rdparty 同：视图自身调色板被配色
+    // 主题切换时同步滚动条调色板（视图自身调色板被配色
     // 冻结，滚动条跟随应用调色板才随浅/深主题重绘，否则右侧留旧色）
     if (event->type() == QEvent::PaletteChange || event->type() == QEvent::ApplicationPaletteChange)
         m_scrollBar->setPalette(QApplication::palette());
@@ -2085,7 +2084,7 @@ void DTerminalView::focusInEvent(QFocusEvent *event)
     emit focusInTerminal();
     QWidget::focusInEvent(event);
 
-    // 失焦时停掉的闪烁定时器按需恢复（3rdparty 同）
+    // 失焦时停掉的闪烁定时器按需恢复
     if (m_hasBlinkingCursor)
         m_blinkCursorTimer->start();
     updateCursor();
@@ -2099,8 +2098,8 @@ void DTerminalView::focusOutEvent(QFocusEvent *event)
     emit focusLeftTerminal();
     QWidget::focusOutEvent(event);
 
-    // 失焦即停止闪烁并复位隐藏相位（3rdparty 同：
-    // 光标保持可见的失焦样式，不再闪烁）
+    // 失焦即停止闪烁并复位隐藏相位（光标保持可见的
+    // 失焦样式，不再闪烁）
     m_cursorBlinking = false;
     updateCursor();
 
@@ -2113,7 +2112,7 @@ void DTerminalView::focusOutEvent(QFocusEvent *event)
 bool DTerminalView::focusNextPrevChild(bool next)
 {
     Q_UNUSED(next)
-    // 禁用 Tab/Shift+Tab 焦点切换（3rdparty 同）：QWidget::event 会先于
+    // 禁用 Tab/Shift+Tab 焦点切换：QWidget::event 会先于
     // keyPressEvent 拦截 Tab 走焦点链，返回 false 让按键落到终端
     return false;
 }
@@ -2128,7 +2127,7 @@ void DTerminalView::hideEvent(QHideEvent *event)
     QWidget::hideEvent(event);
 }
 
-// ---- 手势（deepin 自有移植） ----
+// ---- 手势 ----
 
 void DTerminalView::gestureEvent(QGestureEvent *event)
 {

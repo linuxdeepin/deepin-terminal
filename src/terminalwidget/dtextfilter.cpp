@@ -160,7 +160,7 @@ DRegexFilter::Spot *DRegexFilter::createSpot(int startLine, int startColumn, int
 // ---- URL 过滤器 ----
 
 namespace {
-// URL 模式（含端口边界，deepin 自有修正移植）：
+// URL 模式（含端口边界）：
 // 协议:// 或 www. 开头；端口部分受 0-65535 与非贪婪边界约束，
 // 避免把边界字符吞进 URL 导致 QUrl::StrictMode 拒绝
 const QRegularExpression kFullUrlPattern(QLatin1String("(www\\.(?!\\.)|[a-z][a-z0-9+.-]*://)[\\w.@-]+"
@@ -344,7 +344,7 @@ QString DTerminalTextScanner::buildLineText(const DTerminalChar *lineCells, int 
         }
     }
 
-    // 去除行尾普通空白（与历史实现"不含尾部空白"的文本展开一致）
+    // 去除行尾普通空白
     int end = lineText.length();
     while (end > 0 && lineText.at(end - 1) == QLatin1Char(' ')
            && (lineCells[end - 1].style == StylePlain)) {

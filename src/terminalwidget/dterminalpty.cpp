@@ -258,7 +258,7 @@ void DTerminalPty::sendToProcess(const char *buffer, int length, const QTextCode
             setProperty("isSendByRemoteManage", QVariant(false));
         }
 
-        // 卸载命令检测（deepin 自有功能）：确认后等待系统空闲执行清理
+        // 卸载命令检测：确认后等待系统空闲执行清理
         if (!isTerminalRemoved() && (wouldRemoveTerminal(shellCommand) || wouldPurgeTerminal(shellCommand))) {
             const QString removalKind = wouldPurgeTerminal(shellCommand) ? QLatin1String("purge")
                                                                          : QLatin1String("remove");
@@ -275,7 +275,7 @@ void DTerminalPty::sendToProcess(const char *buffer, int length, const QTextCode
         }
     }
 
-    // GB 系编码且非命令执行：先转 UTF-8 再写入（deepin 自有编码修复）
+    // GB 系编码且非命令执行：先转 UTF-8 再写入
     if (m_textCodec != nullptr && QString(m_textCodec->name()).toUpper().startsWith(QLatin1String("GB"))
             && !m_isCommandExec) {
         QTextCodec *utf8Codec = QTextCodec::codecForName("UTF-8");
@@ -317,8 +317,6 @@ void DTerminalPty::onMasterReadable()
 
     handleIncomingData(QByteArray(buffer, static_cast<int>(count)));
 }
-
-// ---- deepin 自有行为（移植整合） ----
 
 bool DTerminalPty::isTerminalRemoved()
 {
@@ -452,7 +450,7 @@ void DTerminalPty::handleIncomingData(const QByteArray &data)
         }
     }
 
-    // 上传下载乱码抑制（deepin bug 修复）
+    // 上传下载乱码抑制
     if (recvData.contains(QLatin1String("bash: $'\\212"))
             || recvData.contains(QStringLiteral("bash: **0800000000022d："))
             || recvData.contains(QStringLiteral("**^XB0800000000022d"))

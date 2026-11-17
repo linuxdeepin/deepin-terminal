@@ -7,7 +7,6 @@
 
 #ifdef BUILD_SELF_TERMWIDGET
 
-// 与三方 TerminalDisplay 中的默认取值保持一致：
 // 最小值 0（未设置），最大值 0x7fffffff（未设置）
 namespace Konsole {
 

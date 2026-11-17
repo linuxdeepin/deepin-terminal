@@ -20,7 +20,7 @@
 //   普通字符按当前字符集翻译后落屏；ESC 起始序列按后续字符分类
 //   逐步收敛为 ESC/CSI/OSC/VT52 指令；OSC 以 BEL 或 ST 终止。
 // 支持 xterm 扩展：鼠标协议、焦点上报、括贴模式、DECRQM 查询、
-// 24 位真彩/256 色、OSC52 剪贴板（分块，deepin 自有扩展）。
+// 24 位真彩/256 色、OSC52 剪贴板（分块）。
 
 namespace {
 
@@ -923,7 +923,7 @@ void DTerminalParser::restoreCursorState()
 
 void DTerminalParser::resetParserModes()
 {
-    // MODE_Allow132Columns 不重置（对齐 xterm 行为）
+    // MODE_Allow132Columns 不重置
     resetParserMode(ParserMode132Columns);
     saveParserMode(ParserMode132Columns);
     resetParserMode(ParserModeMouse1000);
@@ -968,7 +968,6 @@ void DTerminalParser::setParserMode(DTerminalParserMode mode)
     case ParserModeMouse1001:
     case ParserModeMouse1002:
     case ParserModeMouse1003:
-        // 保留历史实现的行为约定
         emit programUsesMouseChanged(false);
         break;
     case ParserModeMouse1007:
@@ -998,7 +997,6 @@ void DTerminalParser::resetParserMode(DTerminalParserMode mode)
     case ParserModeMouse1001:
     case ParserModeMouse1002:
     case ParserModeMouse1003:
-        // 保留历史实现的行为约定
         emit programUsesMouseChanged(true);
         break;
     case ParserModeMouse1007:
