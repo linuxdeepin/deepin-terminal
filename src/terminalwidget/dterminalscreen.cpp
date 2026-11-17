@@ -70,7 +70,9 @@ void DTerminalScreen::cursorRight(int n)
         n = 1;
     if (n > kMaxScreenArgument)
         n = kMaxScreenArgument;
-    m_cursorColumn = qMin(screenLineColumns(m_cursorRow) - 1, m_cursorColumn + n);
+    // konsole 定宽网格下 screenLineColumns 恒等于列数；自研变长行必须
+    // 钳制到网格宽度，否则 fish 的 ESC[nC 光标重画被行尾截断（空行还下溢为 -1）
+    m_cursorColumn = qMin(m_columnCount - 1, m_cursorColumn + n);
 }
 
 void DTerminalScreen::setMargins(int top, int bottom)
@@ -836,12 +838,16 @@ int DTerminalScreen::copyLineToText(QString &out, int line, int start, int count
 
     // 历史行：无尾随空白，无需裁剪
     if (line < m_history->lineCount()) {
-        start = qBound(0, start, lineLen - 1);
-
-        if (count == -1)
-            count = lineLen - start;
-        else
-            count = qMin(start + count, lineLen) - start;
+        // 短行选区：起点越过行尾时本行无内容（对齐下方屏幕分支的处理）
+        if (start >= lineLen) {
+            start = lineLen;
+            count = 0;
+        } else {
+            if (count == -1)
+                count = lineLen - start;
+            else
+                count = qMin(start + count, lineLen) - start;
+        }
 
         Q_ASSERT(start >= 0);
         Q_ASSERT(count >= 0);
@@ -974,9 +980,13 @@ void DTerminalScreen::getImage(DTerminalChar *dest, int size, int startLine, int
     Q_ASSERT(startLine >= 0);
     Q_ASSERT(endLine >= startLine && endLine < m_history->lineCount() + m_lineCount);
 
+    // 与 3rdparty Screen::getImage 一致：dest 必须按屏幕列数步幅且容量
+    // >= mergedLines * 列数。视图步幅的重排由 DTerminalView 经
+    // m_windowBuffer staging 完成，此处不得静默截断（截断会在 resize
+    // 过渡期留下陈旧行，产生"新行内容与上一行相同"的错位画面）
     const int mergedLines = endLine - startLine + 1;
     Q_ASSERT(size >= mergedLines * m_columnCount);
-    Q_UNUSED(size);
+    Q_UNUSED(size)
 
     const int linesInHistoryBuffer = qBound(0, m_history->lineCount() - startLine, mergedLines);
     const int linesInScreenBuffer = mergedLines - linesInHistoryBuffer;
@@ -1294,7 +1304,7 @@ void DTerminalScreen::clearRange(int from, int to, char fillChar, bool resetLine
     const bool isDefaultCh = (clearChar == DTerminalChar());
 
     for (int y = topLine; y <= bottomLine; ++y) {
-        if (y >= m_lineFlags.size())
+        if (y >= m_lines.size() || y >= m_lineFlags.size())
             break;
         m_lineFlags[y] = LineDefault;
 

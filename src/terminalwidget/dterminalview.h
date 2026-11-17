@@ -125,6 +125,7 @@ public:
     void setUsesMouse(bool uses);
     bool usesMouse() const { return m_usesMouse; }
     void setAlternateScrolling(bool enable) { m_alternateScrolling = enable; }
+    void setAlternateScreen(bool alternate) { m_alternateScreen = alternate; }
     void setBracketedPasteMode(bool mode) { m_bracketedPasteMode = mode; }
     bool bracketedPasteMode() const { return m_bracketedPasteMode; }
     void bell(const QString &message);
@@ -149,6 +150,8 @@ public:
     bool atEndOfOutput() const;
     void setTrackOutput(bool track) { m_trackOutput = track; }
     bool trackOutput() const { return m_trackOutput; }
+    // 输出即达时同步窗口位置（不经节流）：外层"智能滚动"会即时读 atOutputEnd()
+    void syncOutputTracking();
     QPoint cursorPosition() const;
 
     // ---- 尺寸 ----
@@ -243,13 +246,15 @@ private:
     QRect imageToWidget(const QRect &imageArea) const;
     QRect preeditRect() const;
     void paintScannerSpots(QPainter &painter);
+    void updateCursor();
+    QColor resolveColor(const DTerminalCellColor &color) const;
 
     // ---- 几何与图像 ----
     void calcGeometry();
     void propagateSize();
     void updateImageSize();
     void makeImage();
-    void scrollImage(int lines, const QRect &region);
+    void refillImage(int mergedStart, int mergedEnd);
     QPoint cursorCell() const;
 
     // ---- 交互 ----
@@ -311,7 +316,8 @@ private:
     int m_contentHeight = 0;
     int m_contentWidth = 0;
 
-    QVector<DTerminalChar> m_image;      // [lines*columns]
+    QVector<DTerminalChar> m_image;      // [lines*columns] 视图步幅镜像
+    QVector<DTerminalChar> m_windowBuffer;  // 屏幕步幅暂存（3rdparty ScreenWindow::_windowBuffer 同角色）
     QVector<quint8> m_lineFlags;
 
     bool m_resizing = false;
@@ -320,6 +326,8 @@ private:
     bool m_bidiEnabled = false;
     bool m_usesMouse = false;
     bool m_alternateScrolling = true;
+    bool m_alternateScreen = false;
+    bool m_imageRecreated = false;
     bool m_bracketedPasteMode = false;
 
     QPoint m_selectionInitial;      // 初始选择点
@@ -403,7 +411,6 @@ private:
     int m_windowLines = 0;
     int m_currentLine = 0;
     bool m_trackOutput = true;
-    int m_scrollCount = 0;
 
     // 手势状态（deepin 自有移植）
     qreal m_scaleFactor = 1.0;

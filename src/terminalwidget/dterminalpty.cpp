@@ -225,6 +225,13 @@ void DTerminalPty::sendToProcess(const char *buffer, int length, const QTextCode
 {
     m_textCodec = codec;
 
+    // 与 handleIncomingData 的非 UTF-8 行缓冲联动：UTF-8 是默认会话编码，
+    // 仅 GB 系编码启用行缓冲。fish 等 shell 的回车重绘块不含换行（⏎ 弃行
+    // hack + 提示符），UTF-8 下误入行缓冲会被 m_pendingBytes 永久扣留，
+    // 表现为首次回车后提示符不再绘制
+    m_utf8 = (codec == nullptr)
+            || QString(codec->name()).toUpper().startsWith(QLatin1String("UTF"));
+
     if (length == 0)
         return;
 
@@ -437,7 +444,7 @@ void DTerminalPty::handleIncomingData(const QByteArray &data)
                 const QString helpData = recvData.replace(QLatin1Char('\n'), QString());
                 recvData = QLatin1String("\r\n") + helpData + QLatin1String("\r\n");
                 outData = recvData.toUtf8();
-                emit dataReceived(outData.constData(), outData.count(), m_textCodec);
+                emit dataReceived(outData.constData(), outData.count(), m_isCommandExec);
             } else {
                 ++m_blockIndex;
             }
@@ -493,5 +500,5 @@ void DTerminalPty::handleIncomingData(const QByteArray &data)
         }
     }
 
-    emit dataReceived(outData.constData(), outData.count(), m_textCodec);
+    emit dataReceived(outData.constData(), outData.count(), m_isCommandExec);
 }

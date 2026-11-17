@@ -72,6 +72,9 @@ TermWidget::TermWidget(const TermProperties &properties, QWidget *parent)
     QVBoxLayout *fillLayout = new QVBoxLayout(this);
     fillLayout->setContentsMargins(0, 0, 0, 0);
     fillLayout->addWidget(m_driver->hostWidget());
+    // 焦点代理到自研视图（3rdparty QTermWidget::setFocusProxy 同方案），
+    // 否则首启焦点停在 TermWidget 上，须点击视图后才能输入
+    setFocusProxy(m_driver->hostWidget());
 #else
     // 三方模式：以适配器包裹自身，行为链路与原实现一致
     m_driver = new DCompatTerminalDriver(this);

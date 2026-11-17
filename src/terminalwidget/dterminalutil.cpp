@@ -138,6 +138,18 @@ int DCharWidth::widthByUnicodeData(uint codePoint)
     const int eastAsianWidth = u_getIntPropertyValue(static_cast<UChar32>(codePoint), UCHAR_EAST_ASIAN_WIDTH);
     if (eastAsianWidth == U_EA_WIDE || eastAsianWidth == U_EA_FULLWIDTH)
         return 2;
+
+    // 终端宽度特例（与 konsole wcwidth 表对齐，ICU EAW 对这两类无此语义）
+    // 国旗 Regional Indicator 组件按 2 格
+    if (codePoint >= 0x1f1e6 && codePoint <= 0x1f1ff)
+        return 2;
+    // 零宽格式/双向控制字符按 0 格（konsole LUT_0 对应区间）
+    if ((codePoint >= 0x200b && codePoint <= 0x200f)
+            || (codePoint >= 0x202a && codePoint <= 0x202e)
+            || (codePoint >= 0x2060 && codePoint <= 0x206f)
+            || codePoint == 0xfeff)
+        return 0;
+
     if (u_getIntPropertyValue(static_cast<UChar32>(codePoint), UCHAR_CANONICAL_COMBINING_CLASS) != 0)
         return 0;
     return 1;
