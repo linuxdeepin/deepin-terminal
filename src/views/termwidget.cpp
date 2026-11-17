@@ -177,8 +177,8 @@ TermWidget::TermWidget(const TermProperties &properties, QWidget *parent) : QTer
     QString currentEnvLanguage = Utils::getCurrentEnvLanguage();
     // 判断是维吾尔语或者藏语时
     if (QStringLiteral("bo_CN") == currentEnvLanguage || QStringLiteral("ug_CN") == currentEnvLanguage) {
-        // 启用双向文本渲染支持
-        setBidiEnabled(true);
+        // 禁用双向文本渲染，强制走 LTR 路径避免 RTL 重排与 cell 网格错位
+        setBidiEnabled(false);
     }
 
     // fix bug#67979 Shell配置中设置无效shell程序名后，新增窗口无悬浮框提示
