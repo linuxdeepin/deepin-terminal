@@ -1,3 +1,15 @@
+deepin-terminal (6.5.42) unstable; urgency=medium
+
+  * [skip CI] Translate deepin-terminal.ts in ru
+  * [skip CI] Translate deepin-terminal.ts in ru
+  * [skip CI] Translate deepin-terminal.ts in ru
+  * [skip CI] Translate deepin-terminal.ts in ru
+  * fix: prevent terminal close on custom command deletion
+  * fix: use availableGeometry for quake window to avoid dock overlap
+  * chore: Update version to 6.5.41
+
+ -- pengfeixx <63588879+pengfeixx@users.noreply.github.com>  Tue, 17 Nov 2026 20:22:47 +0800
+
 deepin-terminal (6.5.41) unstable; urgency=medium
 
   * docs(terminal): add Portuguese help manual
