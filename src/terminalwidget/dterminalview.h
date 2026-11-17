@@ -248,6 +248,7 @@ private:
     QRect imageToWidget(const QRect &imageArea) const;
     QRect preeditRect() const;
     void paintScannerSpots(QPainter &painter);
+    QRegion spotRegion(DTextFilter::Spot *spot, bool inset) const;
     void updateCursor();
     QColor resolveColor(const DTerminalCellColor &color) const;
 
