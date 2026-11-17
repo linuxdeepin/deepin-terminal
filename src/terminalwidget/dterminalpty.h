@@ -105,7 +105,7 @@ private:
     int m_windowLines = 24;
     char m_erase = '\b';
     bool m_xonXoff = false;
-    bool m_utf8 = false;
+    bool m_utf8 = true;   // 会话编码：默认 UTF-8，sendToProcess 按会话 codec 同步
     int m_sessionId = 0;
     bool m_uninstallDetected = false;
 

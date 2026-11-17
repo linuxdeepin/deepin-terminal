@@ -82,6 +82,7 @@ DTerminalWidget::DTerminalWidget(QWidget *parent)
     // 屏幕切换
     connect(parser, &DTerminalParser::primaryScreenInUse, this, [this, parser](bool primary) {
         m_view->setScreen(primary ? parser->primaryScreen() : parser->alternateScreen());
+        m_view->setAlternateScreen(!primary);
         m_view->updateImage();
     });
 
@@ -91,6 +92,12 @@ DTerminalWidget::DTerminalWidget(QWidget *parent)
     QVBoxLayout *layout = new QVBoxLayout(this);
     layout->setContentsMargins(0, 0, 0, 0);
     layout->addWidget(m_view);
+
+    // 焦点代理：上层 TermWidget setFocus() 直接落到视图
+    // （3rdparty QTermWidget::setFocusProxy(terminalDisplay) 同方案），
+    // 否则首启焦点停在 TermWidget 上，必须再点一次视图才能输入
+    setFocusPolicy(Qt::StrongFocus);
+    setFocusProxy(m_view);
 
     wireSignals();
 
@@ -105,6 +112,14 @@ DTerminalWidget::~DTerminalWidget()
 
 void DTerminalWidget::wireSignals()
 {
+    // 输出即达时同步窗口位置（不经 10/40ms 节流）。必须接在
+    // receivedData → outputReceived 之前：外层"智能滚动"会在
+    // outputReceived 时读 atOutputEnd()，视图状态滞后会被误判为
+    // "不在底部"而禁用跟随（3rdparty ScreenWindow 同步更新，无此竞态）
+    connect(m_session, &DShellSession::receivedData, m_view, [this](const QString &) {
+        m_view->syncOutputTracking();
+    });
+
     // 会话 → 驱动信号
     connect(m_session, &DShellSession::finished, this, &DTerminalDriver::shellFinished);
     connect(m_session, &DShellSession::receivedData, this, &DTerminalDriver::outputReceived);

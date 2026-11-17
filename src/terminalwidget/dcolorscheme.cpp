@@ -234,14 +234,19 @@ DTerminalPaletteEntry DColorScheme::paletteEntry(int index, uint randomSeed) con
 
     DTerminalPaletteEntry entry = paletteTable()[index];
 
-    if (m_randomTable != nullptr && !m_randomTable[index].isNull()) {
+    if (randomSeed != 0 && m_randomTable != nullptr && !m_randomTable[index].isNull()) {
         const RandomRange &range = m_randomTable[index];
 
-        // 按种子与随机范围生成颜色
-        const qreal hue = (randomSeed % 256) * (range.hue / qreal(255));
-        QColor color = QColor::fromHsvF(hue / 360.0,
-                                        range.saturation / 255.0,
-                                        range.value / 255.0);
+        // 基于原色做 HSV 偏移（3rdparty 同语义：随机化的是偏移量，保持可读性）
+        const int hueDifference = range.hue ? (rand() % range.hue) - range.hue / 2 : 0;
+        const int saturationDifference = range.saturation ? (rand() % range.saturation) - range.saturation / 2 : 0;
+        const int valueDifference = range.value ? (rand() % range.value) - range.value / 2 : 0;
+
+        QColor color = entry.color;
+        const int newHue = qAbs((color.hue() + hueDifference) % 360);
+        const int newSaturation = qMin(qAbs(color.saturation() + saturationDifference), 255);
+        const int newValue = qMin(qAbs(color.value() + valueDifference), 255);
+        color.setHsv(newHue, newSaturation, newValue);
         entry.color = color;
     }
 

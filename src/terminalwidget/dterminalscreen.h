@@ -196,8 +196,8 @@ private:
     DTerminalScreen(const DTerminalScreen &) = delete;
     DTerminalScreen &operator=(const DTerminalScreen &) = delete;
 
-    // 行内定位
-    int cellIndex(int line, int column) const { return line * m_columnCount + column; }
+    // 行内定位（与 konsole loc(X,Y)=Y*_columns+X 同约定：先列后行）
+    int cellIndex(int column, int line) const { return line * m_columnCount + column; }
 
     void clearRange(int from, int to, char fillChar, bool resetLineFlags = true);
     void moveRange(int dest, int sourceBegin, int sourceEnd);

@@ -582,6 +582,10 @@ void DShellSession::setSize(const QSize &size)
     if (size == m_parser->imageSize())
         return;
 
+    // 正向链路：视图几何 → 屏幕模型。parser 双屏 resize 并经
+    // imageSizeChanged 同步 pty 窗口尺寸，触发 shell 按新尺寸重排输出
+    m_parser->setImageSize(size.height(), size.width());
+
     emit resizeRequest(size);
 }
 
