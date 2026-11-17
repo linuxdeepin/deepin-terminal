@@ -217,6 +217,11 @@ int DTerminalWidget::foregroundProcessId()
 
 QString DTerminalWidget::shellTitle()
 {
+    // 3rdparty QTermWidget::title 语义：优先 shell 用户标题（OSC 0，
+    // fish 的 prompt 用它上报路径），为空时回退 NameRole
+    const QString title = m_session->userTitle();
+    if (!title.isEmpty())
+        return title;
     return m_session->title(DShellSession::NameRole);
 }
 
