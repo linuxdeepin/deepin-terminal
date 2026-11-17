@@ -376,6 +376,7 @@ void DTerminalView::scrollTo(int line)
     m_trackOutput = (m_currentLine == scrollMax);
 
     updateImage();
+    processFilters();  // 滚动改变窗口内容，热点需重扫（3rdparty scrolled→updateFilters 同）
     update();
 }
 
@@ -472,6 +473,7 @@ void DTerminalView::resizeEvent(QResizeEvent *event)
 
     updateImageSize();
     propagateSize();
+    processFilters();  // 列数/行数变化后热点需重扫（3rdparty resizeEvent 同）
     update();
 
     if (m_resizeTimer->isActive())
@@ -1039,17 +1041,98 @@ void DTerminalView::paintScannerSpots(QPainter &painter)
     if (m_scanner == nullptr)
         return;
 
+    // 3rdparty：画笔取鼠标所在字符的前景色，下划线颜色与文字一致
+    int cursorLine = 0, cursorColumn = 0;
+    getCharacterPosition(mapFromGlobal(QCursor::pos()), cursorLine, cursorColumn);
+    if (cursorLine >= 0 && cursorLine < m_lines && cursorColumn >= 0 && cursorColumn < m_columns)
+        painter.setPen(QPen(resolveColor(m_image[cursorLine * m_columns + cursorColumn].fg)));
+
+    // 只给悬停中的链接画实线下划线（3rdparty paintFilters 同：检查区四周
+    // 收 1px，防止指针停在链接边界上时仍显示下划线）
+    bool hoveringLink = false;
     const QList<DTextFilter::Spot *> spots = m_scanner->spots();
     for (DTextFilter::Spot *spot : spots) {
         if (spot->kind() != DTextFilter::Spot::KindLink)
             continue;
-        const QRect imageArea(spot->startColumn(), spot->startLine(),
-                              spot->endColumn() - spot->startColumn() + 1,
-                              spot->endLine() - spot->startLine() + 1);
-        const QRect area = imageToWidget(imageArea);
-        painter.setPen(QPen(painter.pen().color(), 1, Qt::DashLine));
-        painter.drawLine(area.bottomLeft(), area.bottomRight());
+
+        if (!spotRegion(spot, true).contains(mapFromGlobal(QCursor::pos())))
+            continue;
+
+        // 逐行画下划线：行尾空白裁剪、右缘 -1 不压线邻格（3rdparty 同）
+        for (int line = spot->startLine(); line <= spot->endLine(); ++line) {
+            int startColumn = 0;
+            int endColumn = m_columns - 1;
+            while (QChar(m_image[line * m_columns + endColumn].codePoint).isSpace() && endColumn > 0)
+                --endColumn;
+            ++endColumn;  // 行尾第一个空白字符（半开右缘）
+
+            if (line == spot->startLine())
+                startColumn = spot->startColumn();
+            if (line == spot->endLine())
+                endColumn = spot->endColumn();
+
+            QRect r;
+            r.setCoords(startColumn * m_fontWidth + 1 + m_leftMargin + m_leftBaseMargin,
+                        line * m_fontHeight + 1 + m_topMargin + m_topBaseMargin,
+                        endColumn * m_fontWidth - 1 + m_leftMargin + m_leftBaseMargin,
+                        (line + 1) * m_fontHeight - 1 + m_topMargin + m_topBaseMargin);
+
+            // 基线：字形坐落的不可见线；下划线画在其下方 underlinePos 处
+            const QFontMetrics metrics(font());
+            const int baseline = r.bottom() - metrics.descent();
+            const int underlinePos = baseline + metrics.underlinePos();
+            painter.drawLine(r.left(), underlinePos, r.right(), underlinePos);
+            hoveringLink = true;
+        }
     }
+
+    // 3rdparty：悬停链接且按住 Ctrl 才切换小手，否则 IBeam
+    if (hoveringLink && (QApplication::queryKeyboardModifiers() & Qt::ControlModifier)) {
+        if (cursor().shape() != Qt::PointingHandCursor)
+            setCursor(Qt::PointingHandCursor);
+    } else if (cursor().shape() != Qt::IBeamCursor) {
+        setCursor(Qt::IBeamCursor);
+    }
+}
+
+QRegion DTerminalView::spotRegion(DTextFilter::Spot *spot, bool inset) const
+{
+    // 热点单元格区域（列按半开区间），3rdparty mouseMove/paintFilters 同构
+    QRegion region;
+    QRect r;
+    if (spot->startLine() == spot->endLine()) {
+        r.setCoords(spot->startColumn() * m_fontWidth + m_leftMargin + m_leftBaseMargin,
+                    spot->startLine() * m_fontHeight + m_topMargin + m_topBaseMargin,
+                    spot->endColumn() * m_fontWidth + m_leftMargin + m_leftBaseMargin,
+                    (spot->endLine() + 1) * m_fontHeight - 1 + m_topMargin + m_topBaseMargin);
+        region |= r;
+    } else {
+        r.setCoords(spot->startColumn() * m_fontWidth + m_leftMargin + m_leftBaseMargin,
+                    spot->startLine() * m_fontHeight + m_topMargin + m_topBaseMargin,
+                    m_columns * m_fontWidth - 1 + m_leftMargin + m_leftBaseMargin,
+                    (spot->startLine() + 1) * m_fontHeight - 1 + m_topMargin + m_topBaseMargin);
+        region |= r;
+        for (int line = spot->startLine() + 1; line < spot->endLine(); ++line) {
+            r.setCoords(m_leftMargin + m_leftBaseMargin,
+                        line * m_fontHeight + m_topMargin + m_topBaseMargin,
+                        m_columns * m_fontWidth - 1 + m_leftMargin + m_leftBaseMargin,
+                        (line + 1) * m_fontHeight - 1 + m_topMargin + m_topBaseMargin);
+            region |= r;
+        }
+        r.setCoords(m_leftMargin + m_leftBaseMargin,
+                    spot->endLine() * m_fontHeight + m_topMargin + m_topBaseMargin,
+                    spot->endColumn() * m_fontWidth + m_leftMargin + m_leftBaseMargin,
+                    (spot->endLine() + 1) * m_fontHeight - 1 + m_topMargin + m_topBaseMargin);
+        region |= r;
+    }
+
+    if (inset) {
+        QRegion shrunk;
+        for (const QRect &rect : region)
+            shrunk |= rect.adjusted(1, 1, -1, -1);
+        return shrunk;
+    }
+    return region;
 }
 
 // ---- 过滤 ----
@@ -1131,6 +1214,12 @@ void DTerminalView::pasteClipboard()
     bracketText(text);
     const QByteArray utf8 = text.toUtf8();
     emit sendStringToEmulation(utf8.constData());
+    // 粘贴取消当前选区（3rdparty emitSelection 同）；选区色在 getImage 时
+    // 套用，清除后必须重取图，否则旧高亮残留
+    if (m_screen != nullptr) {
+        m_screen->clearSelection();
+        updateImage();
+    }
     if (m_motionAfterPasting == MoveEndScreenWindow)
         scrollToEnd();
     else if (m_motionAfterPasting == MoveStartScreenWindow)
@@ -1146,6 +1235,12 @@ void DTerminalView::pasteSelection()
     bracketText(text);
     const QByteArray utf8 = text.toUtf8();
     emit sendStringToEmulation(utf8.constData());
+    // 粘贴取消当前选区（3rdparty emitSelection 同）；选区色在 getImage 时
+    // 套用，清除后必须重取图，否则旧高亮残留
+    if (m_screen != nullptr) {
+        m_screen->clearSelection();
+        updateImage();
+    }
 }
 
 void DTerminalView::setSelection(const QString &text)
@@ -1342,16 +1437,23 @@ void DTerminalView::mousePressEvent(QMouseEvent *event)
                 // 程序接管鼠标：报告事件（行号换算滚动偏移，3rdparty 同）
                 emit mouseEvent(0, charColumn + 1,
                                 charLine + 1 + m_scrollBar->value() - m_scrollBar->maximum(), 0);
-                return;
+            } else {
+                m_screen->clearSelection();
+                // 选区色在 getImage 时套用：清除后必须重取图，否则旧高亮残留
+                updateImage();
+                const QPoint pos(charColumn, charLine);
+                m_selectionInitial = pos;
+                m_selectionCurrent = pos;
+                initSelectionState();
             }
 
-            m_screen->clearSelection();
-            // 选区色在 getImage 时套用：清除后必须重取图，否则旧高亮残留
-            updateImage();
-            const QPoint pos(charColumn, charLine);
-            m_selectionInitial = pos;
-            m_selectionCurrent = pos;
-            initSelectionState();
+            // 点击链接即激活热点（3rdparty 同：打开与否由上层 onUrlActivated
+            // 的 Ctrl 门槛决定）；三击全选不激活
+            if (!m_possibleTripleClick && m_scanner != nullptr) {
+                DTextFilter::Spot *spot = m_scanner->spotAt(charLine, charColumn);
+                if (spot != nullptr && spot->kind() == DTextFilter::Spot::KindLink)
+                    spot->activate(QLatin1String("click-action"));
+            }
         }
     } else if (event->button() == Qt::MiddleButton) {
         if (m_usesMouse) {
@@ -1382,6 +1484,17 @@ void DTerminalView::mouseMoveEvent(QMouseEvent *event)
     int charLine = 0, charColumn = 0;
     getCharacterPosition(event->pos(), charLine, charColumn);
 
+    // 链接热点悬停：跟踪悬停区并触发重绘（下划线与指针在 paint 时按全局
+    // 鼠标位置现算，3rdparty 同；mouseMove 只负责重绘触发）
+    if (m_scanner != nullptr) {
+        DTextFilter::Spot *spot = m_scanner->spotAt(charLine, charColumn);
+        const QRegion previousHotspotArea = m_mouseOverSpotArea;
+        m_mouseOverSpotArea = QRegion();
+        if (spot != nullptr && spot->kind() == DTextFilter::Spot::KindLink)
+            m_mouseOverSpotArea = spotRegion(spot, false);
+        update(m_mouseOverSpotArea | previousHotspotArea);
+    }
+
     // 程序接管鼠标时的移动上报
     if (m_usesMouse && !(event->buttons() & Qt::LeftButton)) {
         emit mouseEvent(3, charColumn + 1,
@@ -1403,14 +1516,6 @@ void DTerminalView::mouseMoveEvent(QMouseEvent *event)
                 m_lineSelectionMode = true;
         }
         extendSelection(QPoint(charColumn, charLine));
-        return;
-    }
-
-    // 热点悬停
-    if (m_scanner != nullptr) {
-        DTextFilter::Spot *spot = m_scanner->spotAt(charLine, charColumn);
-        const bool linkHover = spot != nullptr && spot->kind() == DTextFilter::Spot::KindLink;
-        setCursor(linkHover ? Qt::PointingHandCursor : Qt::IBeamCursor);
     }
 }
 
@@ -1625,6 +1730,23 @@ void DTerminalView::keyPressEvent(QKeyEvent *event)
     if (emitKeyPressSignal)
         emit keyPressed(event);
 
+    // 按键滚动（3rdparty 2020-02-14 wangpeili 修改同款）：粘贴滚动模式为
+    // "移至末尾"时，普通按键后滚到底部——输入行滚出可见区后回车即回到底
+    switch (m_motionAfterPasting) {
+    case MoveStartScreenWindow:
+        scrollTo(0);
+        break;
+    case MoveEndScreenWindow:
+        if (!(event->key() == Qt::Key_Control
+                || event->key() == Qt::Key_Shift
+                || event->key() == Qt::Key_Alt)) {
+            scrollToEnd();
+        }
+        break;
+    case NoMoveScreenWindow:
+        break;
+    }
+
     event->accept();
 }
 
@@ -1817,6 +1939,7 @@ void DTerminalView::setScrollBarPosition(ScrollBarPosition position)
     // 重新计算几何（含滚动条手动定位与列数让位）并把新尺寸同步给屏幕模型
     updateImageSize();
     propagateSize();
+    processFilters();  // 列数/行数变化后热点需重扫（3rdparty resizeEvent 同）
     update();
 }
 
