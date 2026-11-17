@@ -6,7 +6,6 @@
 #include "dterminalview.h"
 
 #include "dcolorscheme.h"
-#include "dterminalcompat.h"
 #include "dterminalparser.h"
 #include "dterminalscreen.h"
 
@@ -524,7 +523,7 @@ void DTerminalView::setFont(const QFont &font)
 void DTerminalView::setVTFont(const QFont &font)
 {
     // 字号限制
-    if (font.pointSize() < Konsole::__minFontSize || font.pointSize() > Konsole::__maxFontSize)
+    if (font.pointSize() < DTerminalUtil::minFontSize() || font.pointSize() > DTerminalUtil::maxFontSize())
         return;
 
     QFont adjusted = font;

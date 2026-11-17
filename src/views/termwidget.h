@@ -8,25 +8,17 @@
 
 #include "termwidgetpage.h"
 #include "dterminaldriver.h"
+#include "dterminalwidget.h"
 
 #include <QAction>
 
-#ifdef BUILD_SELF_TERMWIDGET
-#include "dterminalwidget.h"
-#else
-#include "qtermwidget.h"
-#endif
-
-class DCompatTerminalDriver;
 class QTextCodec;
 
 /*******************************************************************************
  1. @类名:    TermWidget
  2. @作者:    ut000439 wangpeili
  3. @日期:    2020-08-11
- 4. @说明:    三方模式继承 QTermWidget（行为与历史版本完全一致）；
-            自研模式（BUILD_SELF_TERMWIDGET）改为持有自研驱动并转发，
-            对外接口保持不变。
+ 4. @说明:    持有自研驱动（DTerminalWidget）并转发，对外接口保持不变。
 *******************************************************************************/
 
 // 程序名 %n
@@ -74,12 +66,7 @@ struct TabFormat {
 
 class TermProperties;
 struct ServerConfig;
-class TermWidget
-#ifdef BUILD_SELF_TERMWIDGET
-    : public QWidget
-#else
-    : public QTermWidget
-#endif
+class TermWidget : public QWidget
 {
     Q_OBJECT
 public:
@@ -286,8 +273,7 @@ public:
      */
     void inputRemotePassword(const QString &remotePassword);
 
-#ifdef BUILD_SELF_TERMWIDGET
-    // ---- D2 上层兼容：自研模式下重声明的旧接口（转发给自研驱动） ----
+    // ---- 旧接口重声明（转发给自研驱动） ----
     void setHistorySize(int lines);
     void setTerminalWordCharacters(const QString &wc);
     void setEnvironment(const QStringList &environment);
@@ -304,7 +290,6 @@ public:
     void setColorScheme(const QString &name, bool needReloadTheme = false);
     static QStringList availableColorSchemes();
     void sendText(const QString &text);
-    void setKeyboardCursorShape(Konsole::Emulation::KeyboardCursorShape shape);
     void setBlinkingCursor(bool blink);
     void enableSetCursorPosition(bool enable);
     void setFlowControlEnabled(bool enabled);
@@ -350,7 +335,6 @@ signals:
     void sig_matchFound();
     void osc52ClipboardRequest(char target, const QString &base64Data);
     void sendUrlsToTerm(const char *urls);
-#endif
 
 public slots:
     /**
@@ -425,7 +409,7 @@ private slots:
      */
     void onHostnameChanged();
 
-    void onQTermWidgetReceivedData(QString value);
+    void onTerminalReceivedData(QString value);
     void onTermWidgetReceivedData(QString value);
     void onExitRemoteServer();
     void onUrlActivated(const QUrl &url, bool fromContextMenu);
@@ -510,7 +494,7 @@ private:
     TermWidgetPage *m_page = nullptr;
     TermProperties m_properties;
 
-    // 终端实现驱动：三方模式为 DCompatTerminalDriver，自研模式为 DTerminalWidget
+    // 终端实现驱动
     DTerminalDriver *m_driver = nullptr;
 
     DMenu *m_menu = nullptr;

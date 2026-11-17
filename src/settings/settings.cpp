@@ -10,6 +10,7 @@
 #include "service.h"
 #include "dbusmanager.h"
 #include "tabrenamewidget.h"
+#include "dterminalutil.h"
 
 #include <DSettingsOption>
 #include <DSettingsWidgetFactory>
@@ -240,14 +241,15 @@ void Settings::init()
 
     /***add begin by ut001121 zhangmeng 20200912 设置字号限制 修复42250***/
     auto option = settings->option("basic.interface.font_size");
-    Konsole::__minFontSize = option->data("min").isValid() ? option->data("min").toInt() : DEFAULT_MIN_FONT_SZIE;
-    Konsole::__maxFontSize = option->data("max").isValid() ? option->data("max").toInt() : DEFAULT_MAX_FONT_SZIE;
+    int minFontSize = option->data("min").isValid() ? option->data("min").toInt() : DEFAULT_MIN_FONT_SZIE;
+    int maxFontSize = option->data("max").isValid() ? option->data("max").toInt() : DEFAULT_MAX_FONT_SZIE;
 
     // 校验正确
-    if (Konsole::__minFontSize > Konsole::__maxFontSize) {
+    if (minFontSize > maxFontSize) {
         qCDebug(tsettings) << "Font size range invalid, swapping min and max";
-        qSwap(Konsole::__minFontSize, Konsole::__maxFontSize);
+        qSwap(minFontSize, maxFontSize);
     }
+    DTerminalUtil::setFontSizeLimit(minFontSize, maxFontSize);
 
     /***add end by ut001121***/
 

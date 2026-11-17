@@ -40,6 +40,11 @@ class DTerminalUtil
 public:
     /** 字符串在终端上的显示列宽（各码点单元格宽度之和） */
     static int displayWidth(const QString &text);
+
+    /** 字体大小上下限：启动时由设置模块写入，视图层据此钳制字号 */
+    static void setFontSizeLimit(int min, int max);
+    static int minFontSize();
+    static int maxFontSize();
 };
 
 /*******************************************************************************

@@ -4,11 +4,7 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 
 #include "termwidget.h"
-#ifdef BUILD_SELF_TERMWIDGET
 #include "dterminalwidget.h"
-#else
-#include "dcompatterminaldriver.h"
-#endif
 #include "define.h"
 #include "settings.h"
 #include "termproperties.h"
@@ -43,7 +39,6 @@
 #include <QTextCodec>
 
 DWIDGET_USE_NAMESPACE
-using namespace Konsole;
 
 #ifdef QT_DEBUG
 Q_LOGGING_CATEGORY(views,"org.deepin.terminal.views")
@@ -52,16 +47,11 @@ Q_LOGGING_CATEGORY(views,"org.deepin.terminal.views",QtInfoMsg)
 #endif
 
 TermWidget::TermWidget(const TermProperties &properties, QWidget *parent)
-#ifdef BUILD_SELF_TERMWIDGET
     : QWidget(parent)
-#else
-    : QTermWidget(0, parent)
-#endif
     , m_properties(properties)
 {
     qCDebug(views) << "TermWidget constructor enter";
-#ifdef BUILD_SELF_TERMWIDGET
-    // 自研模式：创建自研终端组件并铺满本控件
+    // 创建自研终端组件并铺满本控件
     m_driver = new DTerminalWidget(this);
     static_cast<DTerminalWidget *>(m_driver)->setUninstallHandler([this](const QString &kind) {
         TermWidgetPage *page = qobject_cast<TermWidgetPage *>(parentWidget());
@@ -72,13 +62,8 @@ TermWidget::TermWidget(const TermProperties &properties, QWidget *parent)
     QVBoxLayout *fillLayout = new QVBoxLayout(this);
     fillLayout->setContentsMargins(0, 0, 0, 0);
     fillLayout->addWidget(m_driver->hostWidget());
-    // 焦点代理到自研视图（3rdparty QTermWidget::setFocusProxy 同方案），
-    // 否则首启焦点停在 TermWidget 上，须点击视图后才能输入
+    // 焦点代理到终端视图，否则首启焦点停在 TermWidget 上，须点击视图后才能输入
     setFocusProxy(m_driver->hostWidget());
-#else
-    // 三方模式：以适配器包裹自身，行为链路与原实现一致
-    m_driver = new DCompatTerminalDriver(this);
-#endif
     Utils::set_Object_Name(this);
     setAccessibleName("Terminal");
     // 窗口数量加1
@@ -124,7 +109,6 @@ TermWidget::TermWidget(const TermProperties &properties, QWidget *parent)
         m_driver->applyOpacity(Settings::instance()->opacity());
     }
     /********************* Modify by ut000610 daizhengwen End ************************/
-    //setScrollBarPosition(QTermWidget::ScrollBarRight);//commend byq nyq
 
     /******** Modify by n014361 wangpeili 2020-01-13:              ****************/
     qCDebug(views) << "Branch: Setting up theme";
@@ -242,7 +226,7 @@ void TermWidget::initConnections()
 {
     qCDebug(views) << "TermWidget::initConnections enter";
     // 输出滚动，会在每个输出判断是否设置了滚动，即时设置
-    connect(m_driver, &DTerminalDriver::outputReceived, this, &TermWidget::onQTermWidgetReceivedData);
+    connect(m_driver, &DTerminalDriver::outputReceived, this, &TermWidget::onTerminalReceivedData);
 
     // 接收到输出
     connect(m_driver, &DTerminalDriver::outputReceived, this, &TermWidget::onTermWidgetReceivedData);
@@ -291,8 +275,7 @@ void TermWidget::initConnections()
     connect(m_driver, &DTerminalDriver::clipboardRequestFromShell,
             this, &TermWidget::handleOSC52Clipboard);
 
-#ifdef BUILD_SELF_TERMWIDGET
-    // 自研模式：把驱动信号转发为上层依赖的旧信号名（D2 兼容）
+    // 把驱动信号转发为上层依赖的旧信号名（兼容）
     connect(m_driver, &DTerminalDriver::shellFinished, this, &TermWidget::finished);
     connect(m_driver, &DTerminalDriver::copyStateChanged, this, &TermWidget::copyAvailable);
     connect(m_driver, &DTerminalDriver::focusInTerminal, this, &TermWidget::termGetFocus);
@@ -309,7 +292,6 @@ void TermWidget::initConnections()
     connect(m_driver, &DTerminalDriver::searchHitFound, this, &TermWidget::sig_matchFound);
     connect(m_driver, &DTerminalDriver::clipboardRequestFromShell, this, &TermWidget::osc52ClipboardRequest);
     connect(m_driver, &DTerminalDriver::droppedUrlsArrived, this, &TermWidget::sendUrlsToTerm);
-#endif
 }
 
 inline void TermWidget::onSetTerminalFont()
@@ -327,9 +309,9 @@ inline void TermWidget::onSig_noMatchFound()
     parentPage()->setMismatchAlert(true);
 }
 
-inline void TermWidget::onQTermWidgetReceivedData(QString value)
+inline void TermWidget::onTerminalReceivedData(QString value)
 {
-    qCDebug(views) << "Enter TermWidget::onQTermWidgetReceivedData";
+    qCDebug(views) << "Enter TermWidget::onTerminalReceivedData";
     Q_UNUSED(value)
 
     // 完善终端输出滚动相关功能，默认设置为"智能滚动"(即滚动条滑到最底下时自动滚动)
@@ -1246,8 +1228,7 @@ void TermWidget::setTermFontSize(const int fontSize)
 void TermWidget::setCursorShape(int shape)
 {
     qCDebug(views) << "Enter TermWidget::setCursorShape:" << shape;
-    Konsole::Emulation::KeyboardCursorShape cursorShape = Konsole::Emulation::KeyboardCursorShape(shape);
-    m_driver->setCursorStyle(static_cast<DTerminalDriver::DCursorStyle>(cursorShape));
+    m_driver->setCursorStyle(static_cast<DTerminalDriver::DCursorStyle>(shape));
 }
 
 void TermWidget::setPressingScroll(bool enable)
@@ -1547,11 +1528,7 @@ void TermWidget::wheelEvent(QWheelEvent *event)
     }
 
     if (!handled) {
-#ifdef BUILD_SELF_TERMWIDGET
         QWidget::wheelEvent(event);
-#else
-        QTermWidget::wheelEvent(event);
-#endif
     }
 }
 
@@ -1583,8 +1560,7 @@ void TermWidget::showShellMessage(QString strWarnings)
     DMessageManager::instance()->sendMessage(this, shellWarningsMessage);
 }
 
-#ifdef BUILD_SELF_TERMWIDGET
-// ---- D2 上层兼容：自研模式下旧接口统一转发给自研驱动（旧名委托是命名规范的既定例外） ----
+// ---- 旧接口统一转发给自研驱动（旧名委托是命名规范的既定例外） ----
 void TermWidget::setHistorySize(int lines) { m_driver->setHistoryLimit(lines); }
 void TermWidget::setTerminalWordCharacters(const QString &wc) { m_driver->setWordChars(wc); }
 void TermWidget::setEnvironment(const QStringList &environment) { m_driver->setShellEnv(environment); }
@@ -1601,7 +1577,6 @@ void TermWidget::setTerminalOpacity(qreal level) { m_driver->applyOpacity(level)
 void TermWidget::setColorScheme(const QString &name, bool needReloadTheme) { m_driver->applyColorScheme(name, needReloadTheme); }
 QStringList TermWidget::availableColorSchemes() { return DTerminalWidget::availableColorSchemes(); }
 void TermWidget::sendText(const QString &text) { m_driver->sendToShell(text); }
-void TermWidget::setKeyboardCursorShape(Konsole::Emulation::KeyboardCursorShape shape) { m_driver->setCursorStyle(static_cast<DTerminalDriver::DCursorStyle>(shape)); }
 void TermWidget::setBlinkingCursor(bool blink) { m_driver->setCursorBlink(blink); }
 void TermWidget::enableSetCursorPosition(bool enable) { m_driver->enableCursorReposition(enable); }
 void TermWidget::setFlowControlEnabled(bool enabled) { m_driver->setFlowControl(enabled); }
@@ -1629,6 +1604,5 @@ void TermWidget::zoomOut() { m_driver->stepZoomOut(); }
 QList<QAction *> TermWidget::filterActions(const QPoint &position) { return m_driver->hotspotActions(position); }
 void TermWidget::search(QString txt, bool forwards, bool next) { m_driver->searchText(txt, forwards, next); }
 void TermWidget::clearSelection() { m_driver->resetSelection(); }
-#endif
 
 

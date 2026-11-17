@@ -15,16 +15,13 @@
 #include <QFont>
 #include <QWidget>
 
-#include "dterminalcompat.h"
-
 class QAction;
 class QTextCodec;
 
 /*******************************************************************************
  1. @类名:    DTerminalDriver
  2. @说明:    终端实现的统一驱动接口。上层 TermWidget 只依赖该接口，
-            由 DCompatTerminalDriver（仅 OFF 模式编译）
-            或 DTerminalWidget（ON 模式）提供，实现编译期后端切换。
+            由 DTerminalWidget 提供。
 *******************************************************************************/
 class DTerminalDriver : public QWidget
 {
