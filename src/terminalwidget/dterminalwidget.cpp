@@ -15,7 +15,6 @@
 #include "dtextfilter.h"
 
 #include <QAction>
-#include <QCoreApplication>
 #include <QDebug>
 #include <QDir>
 #include <QFileInfo>
@@ -49,25 +48,25 @@ public:
 
 constexpr int kZoomStep = 1;
 
-// 键盘布局目录解析
-// Debug 构建（RUNDIR_KEYBOARD_LAYOUT_FIRST）优先读二进制旁的 kb-layouts/，
-// 否则（以及找不到时）回退到安装路径 KB_LAYOUT_DIR。
+// 键盘布局目录解析：系统安装目录（KB_LAYOUT_DIR）优先，须含至少一个 *.keytab；
+// 缺失或为空时回退工程源码数据目录（仅 Debug 构建带 SOURCE_DATA_DIR 宏）。
 QString getKbLayoutDir()
 {
-    QString dir;
-#if defined(RUNDIR_KEYBOARD_LAYOUT_FIRST)
-    QDir appDir(QCoreApplication::applicationDirPath());
-    if (appDir.exists(QStringLiteral("kb-layouts"))) {
-        dir = appDir.absoluteFilePath(QStringLiteral("kb-layouts"));
-    }
+    QStringList candidates;
+    candidates << QStringLiteral(KB_LAYOUT_DIR);
+#if defined(SOURCE_DATA_DIR)
+    candidates << QStringLiteral(SOURCE_DATA_DIR "/keytabs");
 #endif
-    if (dir.isEmpty()) {
-        const QDir installedDir(QStringLiteral(KB_LAYOUT_DIR));
-        if (installedDir.exists())
-            dir = installedDir.absolutePath();
+    for (const QString &candidate : candidates) {
+        const QDir dir(candidate);
+        if (dir.exists() && !dir.entryList(QStringList() << QStringLiteral("*.keytab"),
+                                           QDir::Files).isEmpty()) {
+            qDebug() << "Found keyboard layout directory:" << candidate;
+            return candidate;
+        }
     }
-    qDebug() << "Found keyboard layout directory:" << dir;
-    return dir;
+    qDebug() << "Found keyboard layout directory:" << QString();
+    return QString();
 }
 
 }  // namespace
