@@ -16,3 +16,4 @@ deepin-terminal.pro.user
 .npm-cache/
 .trellis/
 obj-*-linux-gnu/
+.zcode/

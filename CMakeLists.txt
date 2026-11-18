@@ -246,25 +246,18 @@ if (CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
     set(CMAKE_INSTALL_PREFIX /usr CACHE PATH "Install path prefix, prepended onto install directories" FORCE)
 endif ()
 
-# 资源安装到 share/deepin-terminal/{kb-layouts,color-schemes}，运行期优先读
-# 二进制旁的目录（Debug 构建时拷贝），找不到再回退安装路径。
-option(RUNDIR_KEYBOARD_LAYOUT_FIRST "Load keyboard layouts from application runtime directory" OFF)
-if (CMAKE_BUILD_TYPE MATCHES Debug)
-    set(RUNDIR_KEYBOARD_LAYOUT_FIRST ON)  # Debug 下启用运行目录加载
-endif ()
-
+# 数据资源安装与运行期解析：系统目录（安装路径）优先，目录缺失或没有匹配
+# 文件时回退工程源码数据目录（仅 Debug 构建带 SOURCE_DATA_DIR 宏，保证本机
+# 不安装也能加载；系统目录存在但为空同样视为未命中，见 listSchemePaths）。
 set(KB_LAYOUT_DIR "${CMAKE_INSTALL_PREFIX}/share/deepin-terminal/kb-layouts")
 set(COLORSCHEMES_DIR "${CMAKE_INSTALL_PREFIX}/share/deepin-terminal/color-schemes")
 message(STATUS "Keyboard layouts will be installed in: ${KB_LAYOUT_DIR}")
 message(STATUS "Color schemes will be installed in: ${COLORSCHEMES_DIR}")
 add_definitions(-DKB_LAYOUT_DIR="${KB_LAYOUT_DIR}")
 add_definitions(-DCOLORSCHEMES_DIR="${COLORSCHEMES_DIR}")
-if (RUNDIR_KEYBOARD_LAYOUT_FIRST)
-    add_definitions(-DRUNDIR_KEYBOARD_LAYOUT_FIRST)
-    # 运行期按“二进制旁 kb-layouts/、color-schemes/”解析（与 3rdparty 同名），
-    # 拷贝源码 keytabs/schemes 过去，保证 Debug 直跑二进制（不 install）也能加载
-    file(COPY src/terminalwidget/data/keytabs/ DESTINATION ${CMAKE_BINARY_DIR}/kb-layouts)
-    file(COPY src/terminalwidget/data/schemes/ DESTINATION ${CMAKE_BINARY_DIR}/color-schemes)
+if (CMAKE_BUILD_TYPE MATCHES Debug)
+    # Debug 兜底：系统目录无可用配置时回退工程自带数据目录
+    add_definitions(-DSOURCE_DATA_DIR="${CMAKE_SOURCE_DIR}/src/terminalwidget/data")
 endif ()
 list(APPEND DTNG_CPP_FILES
     src/terminalwidget/dterminaldriver.cpp

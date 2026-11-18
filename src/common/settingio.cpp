@@ -375,7 +375,6 @@ const char hexDigits[] = "0123456789ABCDEF";
 
 QString SettingIO::unescapedString(const QString &src)
 {
-    qDebug() << "Enter SettingIO::unescapedString";
     static const char escapeCodes[][2] = {
         { 'a', '\a' },
         { 'b', '\b' },
@@ -494,7 +493,6 @@ end:
 
 QString SettingIO::canTransfer(const QString &str)
 {
-    qDebug() << "Enter SettingIO::canTransfer";
     QString res;
     //如果有%U，是Uincode字符串
     if (str.contains("%U") || str.contains("%u")) {
