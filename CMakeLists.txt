@@ -261,7 +261,10 @@ add_definitions(-DKB_LAYOUT_DIR="${KB_LAYOUT_DIR}")
 add_definitions(-DCOLORSCHEMES_DIR="${COLORSCHEMES_DIR}")
 if (RUNDIR_KEYBOARD_LAYOUT_FIRST)
     add_definitions(-DRUNDIR_KEYBOARD_LAYOUT_FIRST)
+    # 运行期按“二进制旁 kb-layouts/、color-schemes/”解析（与 3rdparty 同名），
+    # 拷贝源码 keytabs/schemes 过去，保证 Debug 直跑二进制（不 install）也能加载
     file(COPY src/terminalwidget/data/keytabs/ DESTINATION ${CMAKE_BINARY_DIR}/kb-layouts)
+    file(COPY src/terminalwidget/data/schemes/ DESTINATION ${CMAKE_BINARY_DIR}/color-schemes)
 endif ()
 list(APPEND DTNG_CPP_FILES
     src/terminalwidget/dterminaldriver.cpp
