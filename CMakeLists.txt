@@ -153,7 +153,7 @@ set (DTNG_CPP_FILES
     src/main/windowsmanager.cpp
     src/main/mainwindow.cpp
     src/main/terminalapplication.cpp
-    src/main/termproperties.cpp    
+    src/main/termproperties.cpp
     src/main/dbusmanager.cpp
     src/remotemanage/groupconfigoptdlg.cpp
     src/remotemanage/remotemanagementpanel.cpp
@@ -241,9 +241,28 @@ set (DTNG_HEADER_FILES
 find_package(ICU COMPONENTS uc i18n REQUIRED)
 pkg_check_modules(chardet REQUIRED chardet)
 include_directories(${chardet_INCLUDE_DIRS})
-# 自研组件数据目录（配色/键盘布局资源）
-add_definitions(-DCOLORSCHEMES_DATA_DIR="${CMAKE_SOURCE_DIR}/src/terminalwidget/data/schemes")
-add_definitions(-DKEYTAB_DATA_DIR="${CMAKE_SOURCE_DIR}/src/terminalwidget/data/keytabs")
+# 安装前缀归一化：默认前缀改为 /usr（须在下方数据目录宏之前，否则宏会记下 /usr/local）
+if (CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
+    set(CMAKE_INSTALL_PREFIX /usr CACHE PATH "Install path prefix, prepended onto install directories" FORCE)
+endif ()
+
+# 资源安装到 share/deepin-terminal/{kb-layouts,color-schemes}，运行期优先读
+# 二进制旁的目录（Debug 构建时拷贝），找不到再回退安装路径。
+option(RUNDIR_KEYBOARD_LAYOUT_FIRST "Load keyboard layouts from application runtime directory" OFF)
+if (CMAKE_BUILD_TYPE MATCHES Debug)
+    set(RUNDIR_KEYBOARD_LAYOUT_FIRST ON)  # Debug 下启用运行目录加载
+endif ()
+
+set(KB_LAYOUT_DIR "${CMAKE_INSTALL_PREFIX}/share/deepin-terminal/kb-layouts")
+set(COLORSCHEMES_DIR "${CMAKE_INSTALL_PREFIX}/share/deepin-terminal/color-schemes")
+message(STATUS "Keyboard layouts will be installed in: ${KB_LAYOUT_DIR}")
+message(STATUS "Color schemes will be installed in: ${COLORSCHEMES_DIR}")
+add_definitions(-DKB_LAYOUT_DIR="${KB_LAYOUT_DIR}")
+add_definitions(-DCOLORSCHEMES_DIR="${COLORSCHEMES_DIR}")
+if (RUNDIR_KEYBOARD_LAYOUT_FIRST)
+    add_definitions(-DRUNDIR_KEYBOARD_LAYOUT_FIRST)
+    file(COPY src/terminalwidget/data/keytabs/ DESTINATION ${CMAKE_BINARY_DIR}/kb-layouts)
+endif ()
 list(APPEND DTNG_CPP_FILES
     src/terminalwidget/dterminaldriver.cpp
     src/terminalwidget/dterminalwidget.cpp
@@ -309,10 +328,6 @@ target_link_libraries (deepin-terminal ICU::uc ICU::i18n chardet uchardet)
 
 # Install settings
 
-if (CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
-    set(CMAKE_INSTALL_PREFIX /usr)
-endif ()
-
 # Installation
 
 #install(TARGETS deepin-terminal DESTINATION ${CMAKE_INSTALL_PREFIX}/share/deepin-terminal)
@@ -328,6 +343,18 @@ install(FILES ${CMAKE_CURRENT_BINARY_DIR}/deepin-terminal
         PERMISSIONS OWNER_READ OWNER_EXECUTE
         GROUP_READ GROUP_EXECUTE
         WORLD_READ WORLD_EXECUTE)
+
+# 自研终端组件数据资源（键盘布局/配色），与 3rdparty qtermwidget 同构
+install(DIRECTORY
+    src/terminalwidget/data/keytabs/
+    DESTINATION "${KB_LAYOUT_DIR}"
+    FILES_MATCHING PATTERN "*.keytab"
+)
+install(DIRECTORY
+    src/terminalwidget/data/schemes/
+    DESTINATION "${COLORSCHEMES_DIR}"
+    FILES_MATCHING PATTERN "*.colorscheme"
+)
 
 # translation files
 TRANSLATION_GENERATE(QM_FILES ${CMAKE_SOURCE_DIR}/translations)

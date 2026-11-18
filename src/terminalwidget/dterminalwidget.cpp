@@ -15,7 +15,9 @@
 #include "dtextfilter.h"
 
 #include <QAction>
+#include <QCoreApplication>
 #include <QDebug>
+#include <QDir>
 #include <QFileInfo>
 #include <QFont>
 #include <QTextCodec>
@@ -47,6 +49,27 @@ public:
 
 constexpr int kZoomStep = 1;
 
+// 键盘布局目录解析
+// Debug 构建（RUNDIR_KEYBOARD_LAYOUT_FIRST）优先读二进制旁的 kb-layouts/，
+// 否则（以及找不到时）回退到安装路径 KB_LAYOUT_DIR。
+QString getKbLayoutDir()
+{
+    QString dir;
+#if defined(RUNDIR_KEYBOARD_LAYOUT_FIRST)
+    QDir appDir(QCoreApplication::applicationDirPath());
+    if (appDir.exists(QStringLiteral("kb-layouts"))) {
+        dir = appDir.absoluteFilePath(QStringLiteral("kb-layouts"));
+    }
+#endif
+    if (dir.isEmpty()) {
+        const QDir installedDir(QStringLiteral(KB_LAYOUT_DIR));
+        if (installedDir.exists())
+            dir = installedDir.absolutePath();
+    }
+    qDebug() << "Found keyboard layout directory:" << dir;
+    return dir;
+}
+
 }  // namespace
 
 DTerminalWidget::DTerminalWidget(QWidget *parent)
@@ -63,7 +86,7 @@ DTerminalWidget::DTerminalWidget(QWidget *parent)
     m_scanner->addFilter(m_urlFilter);
 
     // 默认键盘映射
-    m_session->setKeymapFile(QStringLiteral(KEYTAB_DATA_DIR "/default.keytab"));
+    m_session->setKeymapFile(getKbLayoutDir() + QStringLiteral("/default.keytab"));
 
     DTerminalParser *parser = m_session->parser();
     DTerminalScreen *screen = parser->primaryScreen();

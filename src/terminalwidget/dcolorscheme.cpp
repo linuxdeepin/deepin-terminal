@@ -302,7 +302,7 @@ QStringList DColorSchemeRegistry::listSchemePaths()
     QStringList paths;
 
     // 数据目录（安装路径）
-    const QString dataDir = QStringLiteral(COLORSCHEMES_DATA_DIR);
+    const QString dataDir = QStringLiteral(COLORSCHEMES_DIR);
     const QDir dir(dataDir);
     if (dir.exists()) {
         const QStringList entries = dir.entryList(QStringList() << QStringLiteral("*.colorscheme"),
