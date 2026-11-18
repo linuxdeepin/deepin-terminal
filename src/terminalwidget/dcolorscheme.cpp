@@ -6,6 +6,7 @@
 #include "dcolorscheme.h"
 
 #include <QColor>
+#include <QCoreApplication>
 #include <QDebug>
 #include <QDir>
 #include <QFileInfo>
@@ -301,10 +302,19 @@ QStringList DColorSchemeRegistry::listSchemePaths()
 {
     QStringList paths;
 
-    // 数据目录（安装路径）
-    const QString dataDir = QStringLiteral(COLORSCHEMES_DIR);
-    const QDir dir(dataDir);
-    if (dir.exists()) {
+    // 数据目录：Debug 构建（RUNDIR_KEYBOARD_LAYOUT_FIRST）优先读二进制旁的
+    // color-schemes/（与 keytab 同机制），找不到再回退安装路径 COLORSCHEMES_DIR。
+    QStringList dataDirs;
+#if defined(RUNDIR_KEYBOARD_LAYOUT_FIRST)
+    const QDir appDir(QCoreApplication::applicationDirPath());
+    if (appDir.exists(QStringLiteral("color-schemes")))
+        dataDirs << appDir.absoluteFilePath(QStringLiteral("color-schemes"));
+#endif
+    dataDirs << QStringLiteral(COLORSCHEMES_DIR);
+    for (const QString &dataDir : dataDirs) {
+        const QDir dir(dataDir);
+        if (!dir.exists())
+            continue;
         const QStringList entries = dir.entryList(QStringList() << QStringLiteral("*.colorscheme"),
                                                   QDir::Files);
         for (const QString &entry : entries)
