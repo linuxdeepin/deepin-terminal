@@ -383,8 +383,13 @@ QList<const DColorScheme *> DColorSchemeRegistry::allSchemes()
 
 void DColorSchemeRegistry::reloadScheme(const QString &origName)
 {
-    // 按路径重新加载主题
-    const QString path = findSchemePath(origName);
+    // 优先按文件路径直接重读
+    // 否则按方案名在数据目录中查找
+    QString path;
+    if (origName.endsWith(QLatin1String(".colorscheme")) && QFile::exists(origName))
+        path = origName;
+    else
+        path = findSchemePath(origName);
     if (path.isEmpty())
         return;
 
@@ -393,7 +398,10 @@ void DColorSchemeRegistry::reloadScheme(const QString &origName)
     scheme->setName(schemeName);
     scheme->read(path);
 
-    delete m_schemes.value(schemeName, nullptr);
+    DColorScheme *oldScheme = const_cast<DColorScheme *>(m_schemes.value(schemeName, nullptr));
+    if (oldScheme != nullptr)
+        m_modified.remove(oldScheme);
+    delete oldScheme;
     m_schemes.insert(schemeName, scheme);
     m_modified.insert(scheme);
 }

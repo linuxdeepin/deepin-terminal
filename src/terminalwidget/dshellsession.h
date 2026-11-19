@@ -236,6 +236,7 @@ private:
     // 标题参数
     QString m_userName;
     QString m_programName;
+    QString m_currentDirForTitle;
     QTimer *m_titleArgsTimer = nullptr;
 };
 
