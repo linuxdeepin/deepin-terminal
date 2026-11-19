@@ -333,6 +333,7 @@ private:
 
     QPoint m_selectionInitial;      // 初始选择点
     QPoint m_selectionCurrent;      // 当前选择点
+    int m_selectionBaseLine = 0;    // 选区基准行：按下时冻结，拖动全程用它换算屏幕坐标
     QPoint m_tripleSelectionBegin;
     int m_selectionState = 0;       // 0 无选择
     bool m_wordSelectionMode = false;

@@ -79,14 +79,14 @@ TermWidget::TermWidget(const TermProperties &properties, QWidget *parent)
 
     // 设置系统环境变量 - 这是必须的，确保shell能正确显示提示符和支持tab补全
     QProcessEnvironment env = QProcessEnvironment::systemEnvironment();
-    
+
     // 设置debuginfod
     if (Settings::instance()->enableDebuginfod()) {
         if (!env.contains("DEBUGINFOD_URLS")) {
             env.insert("DEBUGINFOD_URLS", Settings::instance()->debuginfodUrls());
         }
     }
-    
+
     // 将系统环境变量传递给终端，确保PS1、USER、HOME、PATH等重要变量可用
     m_driver->setShellEnv(env.toStringList());
 
@@ -114,7 +114,7 @@ TermWidget::TermWidget(const TermProperties &properties, QWidget *parent)
     qCDebug(views) << "Branch: Setting up theme";
     // theme
     QString theme = "Dark";
-   
+
     // 检查用户是否选择了特定主题
     QString expandThemeStr = Settings::instance()->extendColorScheme();
     if (!expandThemeStr.isEmpty()) {
@@ -315,15 +315,18 @@ inline void TermWidget::onTerminalReceivedData(QString value)
     Q_UNUSED(value)
 
     // 完善终端输出滚动相关功能，默认设置为"智能滚动"(即滚动条滑到最底下时自动滚动)
-    if (!Settings::instance()->OutputtingScroll()) {
+    const bool outScroll = Settings::instance()->OutputtingScroll();
+    const bool allowScroll = m_driver->allowScrollOnOutput();
+    const bool atEnd = m_driver->atOutputEnd();
+    if (!outScroll) {
         m_driver->setAllowScrollOnOutput(true);
         return;
     }
-    
+
     // 智能滚动：只在用户在底部时才自动滚动
     // 这样用户向上滚动查看历史时不会被强制拉回
-    if (m_driver->allowScrollOnOutput()) {
-        m_driver->setFollowOutput(m_driver->atOutputEnd());
+    if (allowScroll) {
+        m_driver->setFollowOutput(atEnd);
         m_driver->setAllowScrollOnOutput(true);
     }
 }
@@ -1330,7 +1333,7 @@ void TermWidget::onSettingValueChanged(const QString &keyName)
                 << ", auto effective when happen";
         return;
     }
-    
+
     if ("advanced.cursor.include_special_characters_in_double_click_selections" == keyName) {
         m_driver->setWordChars(Settings::instance()->wordCharacters());
         return;

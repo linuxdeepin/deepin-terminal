@@ -93,13 +93,7 @@ DTerminalView::DTerminalView(QWidget *parent)
     defaultScheme.fillPalette(m_palette);
 
     setAttribute(Qt::WA_InputMethodEnabled, true);
-    setAttribute(Qt::WA_OpaquePaintEvent, false);
-    // 背景自填充：脏区先擦成终端底色。否则 diff 判"无变化"的行与
-    // QWidget::scroll 新暴露的条带保持未初始化的黑色（黑边根因）
-    QPalette selfPal = QWidget::palette();
-    selfPal.setBrush(QPalette::Window, m_palette[1].color);
-    QWidget::setPalette(selfPal);
-    setAutoFillBackground(true);
+    setAttribute(Qt::WA_OpaquePaintEvent);
     setFocusPolicy(Qt::WheelFocus);
     setMouseTracking(true);
 
@@ -233,9 +227,15 @@ void DTerminalView::makeImage()
     // 同步滚动条范围
     const int totalLines = m_screen->lineCount() + m_screen->historyLineCount();
     const int scrollMax = qMax(0, totalLines - m_lines);
+    // 同步滚动条范围。内部同步须屏蔽 valueChanged 否则重排瞬态中
+    // scrollTo 会按"当前行==最大行"误关输出跟随，缩放锚定随之中断
+    m_scrollBar->blockSignals(true);
     m_scrollBar->setMaximum(scrollMax);
     m_scrollBar->setPageStep(m_lines);
-    m_scrollBar->setValue(qBound(0, m_currentLine, scrollMax));
+    // 缩放/窗口变化后当前行可能越过新范围，钳制避免底部出现空白遮挡
+    m_currentLine = qBound(0, m_currentLine, scrollMax);
+    m_scrollBar->setValue(m_currentLine);
+    m_scrollBar->blockSignals(false);
 
     updateImage();
 }
@@ -274,6 +274,11 @@ void DTerminalView::refillImage(int mergedStart, int mergedEnd)
 void DTerminalView::updateImage()
 {
     if (m_screen == nullptr)
+        return;
+
+    // 网格未初始化（行列数尚未由几何计算得出）时不取图：
+    // 此时 mergedStart/End 会倒挂，镜像被清空后不再恢复
+    if (m_lines <= 0 || m_columns <= 0)
         return;
 
     const int historyLines = m_screen->historyLineCount();
@@ -327,10 +332,17 @@ void DTerminalView::updateLineProperties()
 
 void DTerminalView::syncOutputTracking()
 {
-    if (m_screen == nullptr || !m_trackOutput || !m_isAllowScroll)
+    if (m_screen == nullptr || !m_trackOutput)
         return;
 
-    m_currentLine = m_screen->historyLineCount();  // 跟随输出（未节流）
+    const int totalLines = m_screen->lineCount() + m_screen->historyLineCount();
+    const int newLine = qMax(0, totalLines - m_lines);  // 跟随输出（未节流）
+    if (newLine != m_currentLine) {
+        m_currentLine = newLine;
+        // 立即重取图：只改滚动位置不重取，显示内容与屏幕真值脱节，
+        // 下一次交互触发的重取会让文本"跳位"（拖选区错位根因）
+        updateImage();
+    }
 }
 
 void DTerminalView::notifyOutputChanged()
@@ -338,17 +350,28 @@ void DTerminalView::notifyOutputChanged()
     if (m_screen == nullptr)
         return;
 
-    if (m_trackOutput && m_isAllowScroll) {
-        const int historyLines = m_screen->historyLineCount();
-        m_currentLine = historyLines;  // 跟随输出
-    }
-
     m_screen->resetScrolledLines();
 
     const int totalLines = m_screen->lineCount() + m_screen->historyLineCount();
     const int scrollMax = qMax(0, totalLines - m_lines);
+
+    // 只看跟踪标志，无"距底一页"容差（用户向上翻页查看历史时，
+    // 输出与缩放都不应把视口拉回底部）
+    if (m_trackOutput) {
+        m_currentLine = scrollMax;
+    } else {
+        // 历史满容量时最旧行被丢弃，按丢弃数平移视口保持内容稳定
+        m_currentLine = qMax(0, m_currentLine - m_screen->droppedLines());
+    }
+    m_screen->resetDroppedLines();
+
+    // 当前行绝不允许越出有效滚动范围。内部同步屏蔽 valueChanged，
+    // 防止误触发 scrollTo 翻转输出跟随（见 makeImage 同款注释）
+    m_currentLine = qBound(0, m_currentLine, scrollMax);
+    m_scrollBar->blockSignals(true);
     m_scrollBar->setMaximum(scrollMax);
-    m_scrollBar->setValue(qBound(0, m_currentLine, scrollMax));
+    m_scrollBar->setValue(m_currentLine);
+    m_scrollBar->blockSignals(false);
 
     // 首次超屏显示滚动条并保持常显（反复显隐会改变列数引发重排）
     if (m_scrollbarLocation == NoScrollBar && m_lines > 1 && totalLines > m_lines)
@@ -368,7 +391,14 @@ void DTerminalView::scrollTo(int line)
     const int totalLines = m_screen->lineCount() + m_screen->historyLineCount();
     const int scrollMax = qMax(0, totalLines - m_lines);
     m_currentLine = qBound(0, line, scrollMax);
+    // 滚动条范围先按最新总量同步：缩放重排后旧范围可能小于真实
+    // 底部，直接 setValue 会被 QScrollBar 钳制并触发 valueChanged
+    // 回环，把 m_currentLine 覆盖回钳制值、跟踪标志被误翻——
+    // 多步缩放丢贴底的根因
+    m_scrollBar->blockSignals(true);
+    m_scrollBar->setMaximum(scrollMax);
     m_scrollBar->setValue(m_currentLine);
+    m_scrollBar->blockSignals(false);
 
     // 滚动位置决定是否跟随输出（滚到最底即恢复跟随）
     m_trackOutput = (m_currentLine == scrollMax);
@@ -418,7 +448,15 @@ int DTerminalView::windowColumnCount() const
 void DTerminalView::calcGeometry()
 {
     m_fontHeight = fontMetrics().height() + m_drawTextAdditionHeight;
-    m_fontWidth = fontMetrics().horizontalAdvance(QLatin1Char(' '));
+    // 格宽取代表性字符集的平均宽度：单用空格宽度，某些字号下（hinting 取整）会比
+    // 字母平均推进窄约 8%，文字按字形实际宽度排布会逐字漂移——行尾溢出
+    // 裁切、选中高亮与文字错位皆源于此
+    static const char16_t kRepChars[] = u"ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+                                        "abcdefgjijklmnopqrstuvwxyz"
+                                        "0123456789./+@";
+    const QString repString = QString::fromUtf16(kRepChars, 66);
+    m_fontWidth = qRound(static_cast<double>(fontMetrics().horizontalAdvance(repString))
+                         / static_cast<double>(repString.size()));
     m_fontAscent = fontMetrics().ascent();
     m_fixedFont = fontMetrics().horizontalAdvance(QLatin1Char('i'))
             == fontMetrics().horizontalAdvance(QLatin1Char('m'));
@@ -469,8 +507,18 @@ void DTerminalView::resizeEvent(QResizeEvent *event)
         m_resizeWidget->show();
     }
 
+    // 贴底意图在重排前捕获
+    const bool wasTracking = m_trackOutput;
+
     updateImageSize();
     propagateSize();
+
+    // 重排后再按新屏幕状态重取图并按锚定复位滚动位置（同 setVTFont）
+    updateImage();
+    if (wasTracking)
+        scrollToEnd();
+    else
+        scrollTo(m_currentLine);
     processFilters();  // 列数/行数变化后热点需重扫
     update();
 
@@ -526,14 +574,45 @@ void DTerminalView::setVTFont(const QFont &font)
     if (font.pointSize() < DTerminalUtil::minFontSize() || font.pointSize() > DTerminalUtil::maxFontSize())
         return;
 
+    // 缩放期间暂停输出跟随。该标志在视图内不再参与跟随判定，恢复由应用层输出回调处理
+    m_isAllowScroll = false;
+
+    const bool wasTracking = m_trackOutput;
+
     QFont adjusted = font;
     adjusted.setKerning(false);
     adjusted.setFixedPitch(true);
+    // 强制 full hinting 让字形步进取整为整数像素。slight hinting 下 advance 是小数（如 13.8px），
+    // 与 REPCHAR 平均取整出的格宽必有残差，整行连续排布时逐字漂移；
+    // 选中反色把行切成多段后，各段按 col*格宽 重新锚定，文本会在选中
+    // 瞬间跳位、选区边界空隙忽宽忽窄（对齐 3rdparty "ensure the letters
+    // are aligned properly"）
+    adjusted.setHintingPreference(QFont::PreferFullHinting);
+    // styleName 独立存储会锁死字重，粗体渲染（StyleBold 换 weight）失效
+    adjusted.setStyleName(QString());
     QWidget::setFont(adjusted);
 
     calcGeometry();
-    propagateSize();
+    // 重算行列数、同步滚动条并重建镜像。仅 propagateSize 会因镜像尺寸
+    // 未变而跳过重建，行列保持旧值导致缩放后内容被遮挡
+    updateImageSize();
+    propagateSize();  // 经会话同步触发屏幕按新列数重排换行
+
+    // 重排后再按新屏幕状态重取图：否则视图仍画重排前的旧布局，
+    // 拖动选区触发重取时内容会突然移位
+    updateImage();
+    processFilters();  // 列数/行数变化后热点需重扫
     update();
+
+    // 锚定须在末尾执行：重排（含屏幕行并入历史）可能在本函数中后段
+    // 才完成，此前任何时刻算出的底部都会过期。贴底意图下锚底后
+    // scrollTo 会按"当前行==最大行"恢复跟踪标志，后续延迟重算
+    // （notifyOutputChanged 等）持续以底部为基准
+    if (wasTracking) {
+        scrollToEnd();
+    } else {
+        scrollTo(m_currentLine);
+    }
 }
 
 // ---- 绘制 ----
@@ -558,7 +637,7 @@ void DTerminalView::paintEvent(QPaintEvent *event)
     } else {
         painter.drawPixmap(rect(), m_backgroundImage);
         QColor blend = background;
-        blend.setAlphaF(background.alphaF() * m_opacity);
+        blend.setAlphaF(m_opacity);
         painter.fillRect(contentsRect(), blend);
     }
 
@@ -592,10 +671,18 @@ void DTerminalView::paintEvent(QPaintEvent *event)
 void DTerminalView::drawBackground(QPainter &painter, const QRect &rect,
                                    const QColor &color, bool useOpacity)
 {
-    QColor fillColor = color;
-    if (useOpacity)
-        fillColor.setAlphaF(color.alphaF() * m_opacity);
-    painter.fillRect(rect, fillColor);
+    if (useOpacity && m_opacity < 1.0) {
+        // 半透明背景以"替换"合成写回窗面像素，
+        // SourceOver 叠加在旧帧不透明像素上永远不透
+        QColor fillColor(color);
+        fillColor.setAlphaF(m_opacity);
+        painter.save();
+        painter.setCompositionMode(QPainter::CompositionMode_Source);
+        painter.fillRect(rect, fillColor);
+        painter.restore();
+    } else {
+        painter.fillRect(rect, color);
+    }
 }
 
 void DTerminalView::drawContent(QPainter &painter, const QRect &rect)
@@ -788,6 +875,27 @@ void DTerminalView::drawCharacters(QPainter &painter, const QRect &rect,
         drawLineCharString(painter, rect.x(), rect.y(), text, style);
     } else if (m_bidiEnabled) {
         painter.drawText(rect, Qt::AlignBottom | Qt::AlignLeft, text);
+    } else if (!(style.style & StyleExtended)
+               && QFontMetrics(painter.font()).horizontalAdvance(text) != rect.width()) {
+        // 兜底：字形步进与格宽不一致时（个别字体/字号下 full hinting
+        // 仍不取整，或同段内各字符 advance 不均），整段自然流动会相对
+        // 格栅漂移，且选区切段后各段按 col*格宽 重新锚定，文本在选中
+        // 瞬间跳位、选区边界空隙忽宽忽窄。改为逐码点按自身占格数定位，
+        // 与选区/光标/命中测试永远同栅。注意矩形必须给足码点的占格宽度
+        // （drawText 会裁剪到矩形，宽字符画进 1 格宽矩形会缺右半）；
+        // 扩展字符序列需按字形自然排布，不走此路径
+        const QVector<uint> codePoints = text.toUcs4();
+        int cellOffset = 0;
+        for (int i = 0; i < codePoints.size(); ++i) {
+            const uint codePoint = codePoints[i];
+            const int cells = qMax(1, DCharWidth::cellWidth(codePoint));
+            const QString glyph = codePoint <= 0xFFFF
+                    ? QString(QChar(codePoint)) : QString::fromUcs4(&codePoint, 1);
+            painter.drawText(QRect(rect.x() + cellOffset * m_fontWidth, rect.y(),
+                                   cells * m_fontWidth, rect.height()),
+                             Qt::AlignBottom | Qt::AlignLeft, QChar(0x202D) + glyph);
+            cellOffset += cells;
+        }
     } else {
         // 终端无 RTL 布局用例：默认强制 LTR，
         // 但仍允许 RTL 字符按自身方向成形
@@ -1209,6 +1317,8 @@ void DTerminalView::pasteClipboard()
     if (text.isEmpty())
         return;
 
+    // 换行转回车：裸 \n 进 PTY 会丢失换行
+    text.replace(QLatin1Char('\n'), QLatin1Char('\r'));
     bracketText(text);
     const QByteArray utf8 = text.toUtf8();
     emit sendStringToEmulation(utf8.constData());
@@ -1230,6 +1340,8 @@ void DTerminalView::pasteSelection()
     if (text.isEmpty())
         return;
 
+    // 换行转回车：裸 \n 进 PTY 会丢失换行
+    text.replace(QLatin1Char('\n'), QLatin1Char('\r'));
     bracketText(text);
     const QByteArray utf8 = text.toUtf8();
     emit sendStringToEmulation(utf8.constData());
@@ -1255,13 +1367,30 @@ void DTerminalView::setSelectionAll()
 
     m_screen->setSelectionAll();
     selectionChanged();
+    // 选区色在 getImage 时套用：重建镜像再重绘，否则只 update 画的是旧镜像
+    updateImage();
     update();
 }
 
 void DTerminalView::getCharacterPosition(const QPoint &widgetPoint, int &line, int &column) const
 {
-    column = (widgetPoint.x() - m_leftMargin - m_leftBaseMargin) / m_fontWidth;
+    // 列映射加半格宽取整（对齐 3rdparty TerminalDisplay::getCharacterPosition）：
+    // 点击按"最近格边界"语义解析；截断会让格内左半的点击落到左边一格，
+    // 选中/光标定位整体偏移一格
+    const int hitX = widgetPoint.x() + m_fontWidth / 2 - m_leftMargin - m_leftBaseMargin;
+    column = hitX / m_fontWidth;
     line = (widgetPoint.y() - m_topMargin - m_topBaseMargin) / m_fontHeight;
+
+    // 越界保护
+    // 点击内容区之外会算出超出行列数，须 clamp 防止后续换算出大偏移
+    if (line < 0)
+        line = 0;
+    if (line >= m_lines)
+        line = qMax(0, m_lines - 1);
+    if (column < 0)
+        column = 0;
+    if (column > m_columns)
+        column = m_columns;
 }
 
 void DTerminalView::initSelectionState()
@@ -1370,8 +1499,9 @@ void DTerminalView::extendSelection(const QPoint &pos)
     m_selectionCurrent = end;
     m_selectionState = 2;
 
-    // 屏幕坐标（窗口）→ 全局坐标（含历史）
-    const int windowTopLine = m_currentLine;
+    // 屏幕坐标（窗口）→ 全局坐标（含历史）。用按下时冻结的基准行，
+    // 拖动期间视图滚动/输出跟随不会让选区错位
+    const int windowTopLine = m_selectionBaseLine;
     m_screen->setSelectionStart(start.x(), start.y() + windowTopLine,
                                 m_columnSelectionMode);
     m_screen->setSelectionEnd(end.x(), end.y() + windowTopLine);
@@ -1442,6 +1572,9 @@ void DTerminalView::mousePressEvent(QMouseEvent *event)
                 const QPoint pos(charColumn, charLine);
                 m_selectionInitial = pos;
                 m_selectionCurrent = pos;
+                // 冻结基准行：拖动期间输出回调可能改变 m_currentLine，
+                // 起点/终点必须用同一基准换算，否则高亮与文本错位
+                m_selectionBaseLine = m_currentLine;
                 initSelectionState();
             }
 
@@ -1502,6 +1635,11 @@ void DTerminalView::mouseMoveEvent(QMouseEvent *event)
 
     if (m_dragPending && (event->buttons() & Qt::LeftButton)
             && (event->pos() - m_dragStart).manhattanLength() > QApplication::startDragDistance()) {
+        // 拖拽启动时清除选区
+        // clearSelection 后再 doDrag）
+        m_screen->clearSelection();
+        // 选区色在 getImage 时套用：清除后必须重取图，否则旧高亮残留
+        updateImage();
         doDrag();
         m_dragPending = false;
         return;
@@ -1524,6 +1662,16 @@ void DTerminalView::mouseReleaseEvent(QMouseEvent *event)
 
     if (event->button() == Qt::LeftButton) {
         emit busySelecting(false);
+
+        // 点击选中区未拖动：松开时取消选区
+        if (m_dragPending) {
+            m_dragPending = false;
+            m_screen->clearSelection();
+            // 选区色在 getImage 时套用：清除后必须重取图，否则旧高亮残留
+            updateImage();
+            m_selectionState = 0;
+            return;
+        }
 
         int charLine = 0, charColumn = 0;
         getCharacterPosition(event->pos(), charLine, charColumn);
@@ -1633,7 +1781,9 @@ void DTerminalView::doDrag()
     if (m_screen == nullptr)
         return;
 
-    const QString text = m_screen->selectedText(DTerminalScreen::TextKeepBreaks);
+    // 拖拽内容取 Selection 剪贴板
+    // 启动拖拽前屏幕选区已被清除，不能再从屏幕选区取文本
+    const QString text = QApplication::clipboard()->text(QClipboard::Selection);
     if (text.isEmpty())
         return;
 
@@ -1937,6 +2087,14 @@ void DTerminalView::setScrollBarPosition(ScrollBarPosition position)
     // 重新计算几何（含滚动条手动定位与列数让位）并把新尺寸同步给屏幕模型
     updateImageSize();
     propagateSize();
+
+    // 重排后再按新屏幕状态重取图并按锚定复位滚动位置（同 setVTFont）
+    const bool wasTracking = m_trackOutput;
+    updateImage();
+    if (wasTracking)
+        scrollToEnd();
+    else
+        scrollTo(m_currentLine);
     processFilters();  // 列数/行数变化后热点需重扫
     update();
 }
@@ -1956,6 +2114,17 @@ void DTerminalView::setUsesMouse(bool uses)
 void DTerminalView::setOpacity(qreal opacity)
 {
     m_opacity = qBound<qreal>(0.0, opacity, 1.0);
+
+    // 滚动条外观随透明度同步
+    const bool isTransparent = m_opacity < 1.0;
+    m_scrollBar->setAutoFillBackground(!isTransparent);
+    QPalette pal = m_scrollBar->palette();
+    QColor bgColor = pal.color(QPalette::Window);
+    bgColor.setAlpha(isTransparent ? 0 : 255);
+    pal.setColor(QPalette::Window, bgColor);
+    m_scrollBar->setPalette(pal);
+    m_scrollBar->update();
+
     update();
 }
 
@@ -1976,10 +2145,6 @@ void DTerminalView::setPalette(const DTerminalPaletteEntry *table)
 {
     for (int i = 0; i < 20; ++i)
         m_palette[i] = table[i];
-    // 背景自填充的擦除色随主题同步（换配色即时生效）
-    QPalette selfPal = QWidget::palette();
-    selfPal.setBrush(QPalette::Window, m_palette[1].color);
-    QWidget::setPalette(selfPal);
     update();
 }
 

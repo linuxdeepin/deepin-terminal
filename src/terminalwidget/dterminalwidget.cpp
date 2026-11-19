@@ -19,6 +19,7 @@
 #include <QDir>
 #include <QFileInfo>
 #include <QFont>
+#include <QKeyEvent>
 #include <QTextCodec>
 #include <QVBoxLayout>
 
@@ -169,6 +170,18 @@ void DTerminalWidget::wireSignals()
         m_session->sendText(QString::fromUtf8(text));
     });
 
+    // Ctrl+左键定位光标：按偏移注入左/右方向键序列
+    connect(m_view, &DTerminalView::cursorPositionChanged, this, [this](int count) {
+        if (count == 0)
+            return;
+        const int steps = qAbs(count);
+        const int key = count > 0 ? Qt::Key_Right : Qt::Key_Left;
+        for (int i = 0; i < steps; ++i) {
+            QKeyEvent e(QEvent::KeyPress, key, Qt::NoModifier);
+            m_session->sendKeyEvent(&e);
+        }
+    });
+
     // 视图尺寸 → 会话
     connect(m_view, &DTerminalView::fontMetricChanged, this, [this](int, int) {
         m_session->setSize(QSize(m_view->columnCount(), m_view->lineCount()));
@@ -313,8 +326,15 @@ void DTerminalWidget::applyColorScheme(const QString &name, bool reloadTheme)
     if (scheme == nullptr)
         return;
 
-    if (schemeName == QLatin1String("customTheme") && reloadTheme)
-        registry->reloadScheme(schemeName);
+    // 自定义主题编辑后按文件路径重读。重读会替换注册表内方案对象，需重新获取指针
+    if (schemeName == QLatin1String("customTheme") && reloadTheme) {
+        registry->reloadScheme(isFile ? name : schemeName);
+        scheme = registry->findScheme(schemeName);
+        if (scheme == nullptr)
+            scheme = registry->defaultScheme();
+        if (scheme == nullptr)
+            return;
+    }
 
     DTerminalPaletteEntry table[20];
     scheme->fillPalette(table, m_view->randomSeed());
@@ -425,7 +445,8 @@ bool DTerminalWidget::atOutputEnd()
 
 QString DTerminalWidget::selectionText()
 {
-    return m_session->parser()->currentScreen()->selectedText();
+    // 保留硬换行，TextPlain 会把行间分隔变成空格
+    return m_session->parser()->currentScreen()->selectedText(DTerminalScreen::TextKeepBreaks);
 }
 
 void DTerminalWidget::copyToClipboard()

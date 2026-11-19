@@ -15,8 +15,9 @@
 
 #define STEP_OPACITY 5
 
-// 终端渲染部件的类名（焦点判定时与 metaObject()->className() 比对）
-const QString TERM_WIDGET_NAME = "DTerminalWidget";
+// 终端渲染部件的类名（焦点判定时与 metaObject()->className() 比对）。
+// 焦点代理链最终落在视图类上，须与其类名一致，否则焦点判定恒为假
+const QString TERM_WIDGET_NAME = "DTerminalView";
 
 // log
 // 性能测试相关日志

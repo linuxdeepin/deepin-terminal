@@ -538,6 +538,18 @@ void DShellSession::onUpdateTitleArgs()
         m_programName = programName;
         emit titleArgsChange(QLatin1String("%n"), m_programName);
     }
+
+    // UI 层 %d 由 %D 派生，此处不发则两者恒为空占位）
+    updateWorkingDirectory();
+    QString dir;
+    if (isForegroundProcessActive() && updateForegroundProcessInfo())
+        dir = m_foregroundProcessInfo->currentDir(&ok);
+    if (dir.isEmpty())
+        dir = m_sessionProcessInfo->validCurrentDir();
+    if (m_currentDirForTitle != dir) {
+        m_currentDirForTitle = dir;
+        emit titleArgsChange(QLatin1String("%D"), m_currentDirForTitle);
+    }
 }
 
 // ---- 输入 ----
