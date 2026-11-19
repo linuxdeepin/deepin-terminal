@@ -394,7 +394,7 @@ QString SettingIO::unescapedString(const QString &src)
     static const int numEscapeCodes = sizeof(escapeCodes) / sizeof(escapeCodes[0]);
 
     QString stringResult;
-    int escapeVal = 0;
+    unsigned int escapeVal = 0;
     QChar ch;
     int i = 0;
 normal:
@@ -458,6 +458,10 @@ hexEscape:
     }
     if ((ch >= '0' && ch <= '9') || (ch >= 'A' && ch <= 'F')) {
         // qDebug() << "Branch: valid hex digit in sequence";
+        if (escapeVal > 0x0FFFFFFFu) {
+            stringResult += QChar(escapeVal);
+            goto normal;
+        }
         escapeVal <<= 4;
         escapeVal += strchr(hexDigits, ch.toLatin1()) - hexDigits;
         ++i;
@@ -478,6 +482,10 @@ octEscape:
     ch = src.at(i);
     if (ch >= '0' && ch <= '7') {
         // qDebug() << "Branch: valid octal digit";
+        if (escapeVal > 0x1FFFFFFFu) {
+            stringResult += QChar(escapeVal);
+            goto normal;
+        }
         escapeVal <<= 3;
         escapeVal += ch.toLatin1() - '0';
         ++i;
