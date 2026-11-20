@@ -1324,6 +1324,10 @@ void TerminalDisplay::updateImage()
   update();
   //-------------------------------------------------
 
+  if (qApp->inputMethod()) {
+      qApp->inputMethod()->update(Qt::ImQueryAll);
+  }
+
   if ( _hasBlinker && !_blinkTimer->isActive()) _blinkTimer->start( TEXT_BLINK_DELAY );
   if (!_hasBlinker && _blinkTimer->isActive()) { _blinkTimer->stop(); _blinking = false; }
   delete[] dirtyMask;
