@@ -9,7 +9,7 @@
 #include "mainwindow.h"
 #include "tabbar.h"
 #include "termwidget.h"
-#include "TerminalDisplay.h"
+#include "dterminalview.h"
 #include "../stub.h"
 #include "settings.h"
 #include "ut_stub_defines.h"
@@ -108,6 +108,9 @@ void UT_MainWindow_Test::TearDown()
 {
     delete m_normalWindow;
     delete m_quakeWindow;
+    // 部分用例以 deleteLater() 释放自建窗口，这里主动排空延迟删除队列，
+    // 避免窗口泄漏到后续用例/后续套件（泄漏会拖慢其它用例的定时器与事件处理）
+    QCoreApplication::sendPostedEvents(nullptr, QEvent::DeferredDelete);
 }
 
 static QObject *ut_shortcut_sender()
@@ -1220,6 +1223,12 @@ TEST_F(UT_MainWindow_Test, slotShortcutNewTab)
  3. @日期:    2020-12-25
  4. @说明:    slotShortcutPaste单元测试
 *******************************************************************************/
+static bool ut_terminalView_paste_hasRunned = false;
+static void ut_terminalView_paste()
+{
+    ut_terminalView_paste_hasRunned = true;
+}
+
 TEST_F(UT_MainWindow_Test, slotShortcutPaste)
 {
     //默认一个tab
@@ -1227,10 +1236,21 @@ TEST_F(UT_MainWindow_Test, slotShortcutPaste)
     EXPECT_TRUE(mainWindow->currentPage());
     EXPECT_TRUE(mainWindow->currentPage()->currentTerminal());
 
-    UT_STUB_QWIDGET_HASFOCUS_CREATE;
+    TermWidget *w = mainWindow->currentPage()->currentTerminal();
+    DTerminalView *display = w->findChild<DTerminalView *>();
+    ASSERT_TRUE(display);
+
+    // 快捷键应把粘贴请求送达当前终端视图：
+    //   MainWindow::slotShortcutPaste -> TermWidgetPage::pasteClipboard
+    //     -> TermWidget::pasteClipboard -> DTerminalWidget::pasteFromClipboard
+    //       -> DTerminalView::pasteClipboard
+    Stub stub;
+    stub.set(ADDR(DTerminalView, pasteClipboard), ut_terminalView_paste);
+    ut_terminalView_paste_hasRunned = false;
+
     mainWindow->slotShortcutPaste();
-    //m_terminalDisplay 触发hasFocus函数
-    EXPECT_TRUE(UT_STUB_QWIDGET_HASFOCUS_RESULT);
+
+    EXPECT_TRUE(ut_terminalView_paste_hasRunned);
     mainWindow->deleteLater();
 }
 
@@ -1265,11 +1285,12 @@ TEST_F(UT_MainWindow_Test, slotShortcutZoomIn)
     ASSERT_TRUE(mainWindow->currentPage());
     ASSERT_TRUE(mainWindow->currentPage()->currentTerminal());
     TermWidget *w = mainWindow->currentPage()->currentTerminal();
-    TerminalDisplay *display = w->findChild<TerminalDisplay*>();
+    DTerminalView *display = w->findChild<DTerminalView *>();
+    ASSERT_TRUE(display);
 
-    int oldFontSize = display->getVTFont().pointSize();
+    int oldFontSize = display->terminalFont().pointSize();
     mainWindow->slotShortcutZoomIn();
-    int newFontSize = display->getVTFont().pointSize();
+    int newFontSize = display->terminalFont().pointSize();
     EXPECT_TRUE((oldFontSize + 1) == newFontSize);
     //
     delete mainWindow;
@@ -1286,10 +1307,11 @@ TEST_F(UT_MainWindow_Test, slotShortcutZoomOut)
     MainWindow *mainWindow = new NormalWindow(TermProperties("/"));
     ASSERT_TRUE(mainWindow->currentPage());
     TermWidget *w = mainWindow->currentPage()->currentTerminal();
-    TerminalDisplay *display = w->findChild<TerminalDisplay*>();
-    int oldFontSize = display->getVTFont().pointSize();
+    DTerminalView *display = w->findChild<DTerminalView *>();
+    ASSERT_TRUE(display);
+    int oldFontSize = display->terminalFont().pointSize();
     mainWindow->slotShortcutZoomOut();
-    int newFontSize = display->getVTFont().pointSize();
+    int newFontSize = display->terminalFont().pointSize();
     EXPECT_TRUE((oldFontSize - 1) == newFontSize);
     //
     delete mainWindow;
@@ -1459,6 +1481,12 @@ TEST_F(UT_MainWindow_Test, updateTabStatus)
  3. @日期:    2021-2-22
  4. @说明:    slotShortcutSelectAll单元测试
 *******************************************************************************/
+static bool ut_mainWindow_update_hasRunned = false;
+static void ut_mainWindow_update()
+{
+    ut_mainWindow_update_hasRunned = true;
+}
+
 TEST_F(UT_MainWindow_Test, slotShortcutSelectAll)
 {
     //默认一个tab
@@ -1468,19 +1496,19 @@ TEST_F(UT_MainWindow_Test, slotShortcutSelectAll)
 
     TermWidget *w = mainWindow->currentPage()->currentTerminal();
     ASSERT_TRUE(w);
+    ASSERT_TRUE(w->findChild<DTerminalView *>());
 
-    TerminalDisplay *display = w->findChild<TerminalDisplay *>();
-    ASSERT_TRUE(display);
-
-    ScreenWindow *screen = display->_screenWindow;
-    ASSERT_TRUE(display);
-
-    screen->_bufferNeedsUpdate = false;
+    // 全选后应请求终端重绘：
+    //   MainWindow::slotShortcutSelectAll -> TermWidgetPage::selectAll
+    //     -> TermWidget::setSelectionAll -> DTerminalWidget::selectAllText
+    //       -> DTerminalView::setSelectionAll -> updateImage() + update()
+    Stub stub;
+    stub.set((void (QWidget::*)())ADDR(QWidget, update), ut_mainWindow_update);
+    ut_mainWindow_update_hasRunned = false;
 
     mainWindow->slotShortcutSelectAll();
 
-    //全选后，需要更新screen，update 为 true
-    EXPECT_TRUE(screen->_bufferNeedsUpdate);
+    EXPECT_TRUE(ut_mainWindow_update_hasRunned);
 
     delete mainWindow;
 }

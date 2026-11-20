@@ -89,10 +89,6 @@ FILE(GLOB allTestSource
     src/views/*.cpp
 )
 
-# 暂缓直接依赖三方内部类的用例（渲染模块落地后逐一适配恢复）。
-# 注意：GLOB 返回绝对路径，须用 REGEX 过滤而非 REMOVE_ITEM
-list(FILTER allTestSource EXCLUDE REGEX "ut_termwidget_test\\.cpp|ut_termwidgetpage_test\\.cpp|ut_mainwindow_test\\.cpp")
-
 # 自研组件不含内部 UI
 set(UI_SRCS "")
 
