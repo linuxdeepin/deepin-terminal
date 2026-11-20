@@ -7,10 +7,11 @@
 #include "termwidgetpage.h"
 #include "termwidget.h"
 #include "service.h"
-#include "TerminalDisplay.h"
+#include "dterminaldriver.h"
+#include "dterminalview.h"
+#include "dshellsession.h"
 #include "../stub.h"
 #include "ut_stub_defines.h"
-#include "ColorScheme.h"
 
 //Qt单元测试相关头文件
 #include <QTest>
@@ -110,28 +111,18 @@ TEST_F(UT_TermWidgetPage_Test, TermWidgetPageTest2)
     TermWidget *currTermWidget = termWidgetPage.m_currentTerm;
     EXPECT_NE(currTermWidget, nullptr);
 
-    enum class KeyboardCursorShape {
-        BlockCursor = 0,
-        UnderlineCursor = 1,
-        IBeamCursor = 2
-    };
-
-    Konsole::TerminalDisplay *termDisplay = currTermWidget->m_termDisplay;
+    DTerminalView *termDisplay = currTermWidget->findChild<DTerminalView *>();
     EXPECT_NE(termDisplay, nullptr);
 
     //改光标形状
-    Konsole::Emulation::KeyboardCursorShape blockShape = Konsole::Emulation::KeyboardCursorShape::BlockCursor;
-    Konsole::Emulation::KeyboardCursorShape underlineShape = Konsole::Emulation::KeyboardCursorShape::UnderlineCursor;
-    Konsole::Emulation::KeyboardCursorShape ibeamShape = Konsole::Emulation::KeyboardCursorShape::IBeamCursor;
+    termWidgetPage.setcursorShape(static_cast<int>(DTerminalDriver::DCursorStyle::Block));
+    EXPECT_EQ(DTerminalView::DCursorShape::Block, termDisplay->cursorShape());
 
-    termWidgetPage.setcursorShape(static_cast<int>(blockShape));
-    EXPECT_EQ(blockShape, termDisplay->_cursorShape);
+    termWidgetPage.setcursorShape(static_cast<int>(DTerminalDriver::DCursorStyle::Underline));
+    EXPECT_EQ(DTerminalView::DCursorShape::Underline, termDisplay->cursorShape());
 
-    termWidgetPage.setcursorShape(static_cast<int>(underlineShape));
-    EXPECT_EQ(underlineShape, termDisplay->_cursorShape);
-
-    termWidgetPage.setcursorShape(static_cast<int>(ibeamShape));
-    EXPECT_EQ(ibeamShape, termDisplay->_cursorShape);
+    termWidgetPage.setcursorShape(static_cast<int>(DTerminalDriver::DCursorStyle::IBeam));
+    EXPECT_EQ(DTerminalView::DCursorShape::IBeam, termDisplay->cursorShape());
 
 }
 
@@ -312,22 +303,18 @@ TEST_F(UT_TermWidgetPage_Test, setBlinkingCursor)
     termWidgetPage.resize(800, 600);
     termWidgetPage.show();
 
-    // setBlinkingCursor 的调用链：
+    // 自研实现下直接观测 view 的光标闪烁状态
     //   TermWidgetPage::setBlinkingCursor
-    //     -> QTermWidget::setBlinkingCursor
-    //       -> TerminalDisplay::setBlinkingCursor
-    //         -> focusInEvent/focusOutEvent
-    //           -> updateCursor() -> update(QRect)  ← 有参重载
-    // Qt6 中不再触发 QWidget::update() 无参版本，因此 stub 有参重载。
-    Stub stub;
-    stub.set((void (QWidget::*)(const QRect &))ADDR(QWidget, update), ut_terminalDisplay_update);
-    ut_terminalDisplay_update_hasRunned = false;
-    termWidgetPage.setBlinkingCursor(false);
-    EXPECT_TRUE(ut_terminalDisplay_update_hasRunned);
+    //     -> TermWidget::setBlinkingCursor
+    //       -> DTerminalWidget::setCursorBlink -> DTerminalView::setBlinkingCursor
+    DTerminalView *view = termWidgetPage.findChild<DTerminalView *>();
+    ASSERT_TRUE(view);
 
-    ut_terminalDisplay_update_hasRunned = false;
+    termWidgetPage.setBlinkingCursor(false);
+    EXPECT_FALSE(view->blinkingCursor());
+
     termWidgetPage.setBlinkingCursor(true);
-    EXPECT_TRUE(ut_terminalDisplay_update_hasRunned);
+    EXPECT_TRUE(view->blinkingCursor());
 }
 
 TEST_F(UT_TermWidgetPage_Test, setPressingScroll)
@@ -340,7 +327,7 @@ TEST_F(UT_TermWidgetPage_Test, setPressingScroll)
     termWidgetPage.resize(800, 600);
     termWidgetPage.show();
 
-    TerminalDisplay *display = termWidgetPage.findChild<TerminalDisplay *>();
+    DTerminalView *display = termWidgetPage.findChild<DTerminalView *>();
     ASSERT_TRUE(display);
     termWidgetPage.setPressingScroll(false);
     EXPECT_TRUE(display->motionAfterPasting() == 0);
@@ -442,12 +429,15 @@ TEST_F(UT_TermWidgetPage_Test, setTextCodec)
     termWidgetPage.resize(800, 600);
     termWidgetPage.show();
 
-    Session *session = termWidgetPage.findChild<Session *>();
+    // 自研实现下编解码器落在 DShellSession -> DTerminalParser
+    DShellSession *session = termWidgetPage.findChild<DShellSession *>();
     ASSERT_TRUE(session);
-    ASSERT_TRUE(session->emulation());
+    ASSERT_TRUE(session->parser());
 
     termWidgetPage.setTextCodec(QTextCodec::codecForName("UTF-8"));
-    EXPECT_TRUE(session->emulation()->_codec->name() == "UTF-8");
+    const QTextCodec *codec = session->parser()->codec();
+    ASSERT_TRUE(codec);
+    EXPECT_TRUE(codec->name() == "UTF-8");
 }
 
 #endif

@@ -18,7 +18,10 @@ UT_Dbusmanager_Test::UT_Dbusmanager_Test()
 
 UT_Dbusmanager_Test::~UT_Dbusmanager_Test()
 {
-    m_pDbusManager->deleteLater();
+    // 确定性析构：DBusManager 注册了会话总线对象/服务，
+    // 若改用 deleteLater()，析构会被推迟到后续用例/套件的事件循环里，
+    // 与 DBus 线程的消息投递并发，曾导致进程 SIGSEGV。
+    delete m_pDbusManager;
 }
 
 #ifdef UT_DBUSMANAGER_TEST

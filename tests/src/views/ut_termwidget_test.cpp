@@ -7,8 +7,6 @@
 #include "service.h"
 #include "termwidget.h"
 #include "termwidgetpage.h"
-#include "qtermwidget.h"
-#include "TerminalDisplay.h"
 #include "../stub.h"
 #include "tabbar.h"
 #include "ut_stub_defines.h"
