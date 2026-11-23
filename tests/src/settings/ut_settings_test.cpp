@@ -241,5 +241,43 @@ TEST_F(UT_Settings_Test, handleWidthFont)
     EXPECT_TRUE(Settings::instance()->comboBox->count() > 0);
 }
 
+TEST_F(UT_Settings_Test, resolveMigratedFollowSystem)
+{
+    const Settings::LegacyThemeState validFollow{true, 0};
+    const Settings::LegacyThemeState validLight{true, 1};
+    const Settings::LegacyThemeState validDark{true, 2};
+    const Settings::LegacyThemeState invalidValue{true, 9};
+    const Settings::LegacyThemeState readFailed{false, -1};
+
+    // 内置/自定义配色优先，不跟随系统
+    EXPECT_FALSE(Settings::resolveMigratedFollowSystem(validFollow, "Theme4"));
+    // 旧应用主题槽读取失败：保守按显式主题处理
+    EXPECT_FALSE(Settings::resolveMigratedFollowSystem(readFailed, ""));
+    // 旧槽值：0=跟随系统，1=浅色，2=深色
+    EXPECT_TRUE(Settings::resolveMigratedFollowSystem(validFollow, ""));
+    EXPECT_FALSE(Settings::resolveMigratedFollowSystem(validLight, ""));
+    EXPECT_FALSE(Settings::resolveMigratedFollowSystem(validDark, ""));
+    // 非法值按 dtkgui 的处理规则归一为跟随系统
+    EXPECT_TRUE(Settings::resolveMigratedFollowSystem(invalidValue, ""));
+}
+
+TEST_F(UT_Settings_Test, followSystemThemePersistence)
+{
+    Settings *settings = Settings::instance();
+    const bool oldFollow = settings->followSystemTheme();
+    const bool oldMigrated = settings->legacyThemeModeMigrated();
+
+    settings->setFollowSystemTheme(true);
+    EXPECT_TRUE(settings->followSystemTheme());
+    settings->setFollowSystemTheme(false);
+    EXPECT_FALSE(settings->followSystemTheme());
+    settings->setLegacyThemeModeMigrated(true);
+    EXPECT_TRUE(settings->legacyThemeModeMigrated());
+
+    // 还原，避免影响开发机配置和后续用例
+    settings->setFollowSystemTheme(oldFollow);
+    settings->setLegacyThemeModeMigrated(oldMigrated);
+}
+
 
 #endif

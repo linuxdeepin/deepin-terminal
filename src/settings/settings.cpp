@@ -18,6 +18,9 @@
 #include <DGuiApplicationHelper>
 #include <DKeySequenceEdit>
 #include <DSysInfo>
+#ifdef DTKCORE_CLASS_DConfigFile
+#include <DConfig>
+#endif
 
 #include <QApplication>
 #include <QStandardPaths>
@@ -163,50 +166,34 @@ void Settings::init()
     // 加载自定义配置
     settings->setBackend(m_backend);
     /*
-     * 主题分：标题栏(colorScheme)、终端界面(extendColorScheme) 、gsetting
-     * colorScheme必为Dark或Light，extendColorScheme为空时是系统主题，不为空时是自带主题,gsettings为Dark或Light或unknownType
+     * 主题分：标题栏(colorScheme)、终端界面(extendColorScheme) 、跟随系统状态(follow_system)
+     * colorScheme必为Dark或Light，extendColorScheme为空时是系统主题，不为空时是自带主题
      * 例如
-     * 1.为Dark主题时:  colorScheme：Dark             extendColorScheme：""           gsettings：Dark
-     * 2.为Bim主题时:   colorScheme：Dark             extendColorScheme：Theme4       gsettings：Dark
-     * 3.随系统时:      colorScheme：Dark or Light    extendColorScheme：""           gsettings：unknownType
+     * 1.为Dark主题时:  colorScheme：Dark             extendColorScheme：""           follow_system：false
+     * 2.为Bim主题时:   colorScheme：Dark             extendColorScheme：Theme4       follow_system：false
+     * 3.随系统时:      colorScheme：Dark or Light    extendColorScheme：""           follow_system：true
      * 要求以下三个场景启动时，主题为Dark
      * 1.首次运行终端，colorScheme=""
      * 2.删除conf文件，colorScheme=""
      * 3.人为修改conf，colorScheme=不可预知
      * 综上即colorScheme非Light且非Dark时，修改主题为Dark
+     *
+     * 终端不再读写全局应用主题槽（org.deepin.dtk.preference.themeType），
+     * “跟随系统/浅色/深色”的状态改为本地持久化，避免从终端启动的应用修改主题时
+     * 把终端一起带跑（详见 main.cpp 中的 DontSaveApplicationTheme）。
      */
     if("Light" != colorScheme() && "Dark" != colorScheme()) {
         qCDebug(tsettings) << "Setting default color scheme to Dark";
-        DGuiApplicationHelper::instance()->setPaletteType(DGuiApplicationHelper::DarkType);
         setColorScheme("Dark");
         setExtendColorScheme("");
+        setFollowSystemTheme(false);
+        setLegacyThemeModeMigrated(true);
         qCDebug(tsettings) << "Color scheme initialized";
-    } else if (DGuiApplicationHelper::instance()->paletteType() == DGuiApplicationHelper::UnknownType
-               && extendColorScheme().isEmpty()) {
-        // 跟随系统模式：colorScheme 可能因上次关闭后系统主题变化而过期，需同步为当前系统主题
-        QString sysTheme = (DGuiApplicationHelper::instance()->themeType() == DGuiApplicationHelper::LightType) ? "Light" : "Dark";
-        if (colorScheme() != sysTheme) {
-            qCDebug(tsettings) << "Syncing colorScheme to system theme:" << colorScheme() << "->" << sysTheme;
-            setColorScheme(sysTheme);
-        }
+    } else if (!legacyThemeModeMigrated()) {
+        migrateLegacyThemeMode();
     }
 
-    // 按 colorScheme 对齐 paletteType，激活 dtkgui 的 isCustomPalette() 过滤，
-    // 避免外部应用切主题时 dde-appearance 经 DPlatformTheme 把 palette 推送到本进程 qApp。
-    // 跟随系统模式（extendColorScheme 为空且 paletteType 为 UnknownType）保持原状。
-    {
-        auto helper = DGuiApplicationHelper::instance();
-        const bool isFollowSystem = extendColorScheme().isEmpty()
-                                    && helper->paletteType() == DGuiApplicationHelper::UnknownType;
-        if (!isFollowSystem) {
-            const auto desiredType = (colorScheme() == "Light")
-                                     ? DGuiApplicationHelper::LightType
-                                     : DGuiApplicationHelper::DarkType;
-            if (helper->paletteType() != desiredType) {
-                helper->setPaletteType(desiredType);
-            }
-        }
-    }
+    applyThemeMode();
     /******** Modify by n014361 wangpeili 2020-01-10:   增加窗口状态选项  ************/
     auto windowState = settings->option("advanced.window.use_on_starting");
     QMap<QString, QVariant> windowStateMap;
@@ -686,6 +673,99 @@ void Settings::setExtendColorScheme(const QString &name)
         return;
     }
     settings->option("basic.interface.expand_theme")->setValue(name);
+}
+
+bool Settings::followSystemTheme() const
+{
+    const bool follow = settings->option("basic.interface.follow_system")->value().toBool();
+    qCDebug(tsettings) << "Follow system theme:" << follow;
+    return follow;
+}
+
+void Settings::setFollowSystemTheme(bool follow)
+{
+    qCDebug(tsettings) << "Setting follow system theme to:" << follow;
+    settings->option("basic.interface.follow_system")->setValue(follow);
+}
+
+bool Settings::legacyThemeModeMigrated() const
+{
+    const bool migrated = settings->option("basic.interface.theme_migrated")->value().toBool();
+    qCDebug(tsettings) << "Legacy theme mode migrated:" << migrated;
+    return migrated;
+}
+
+void Settings::setLegacyThemeModeMigrated(bool migrated)
+{
+    qCDebug(tsettings) << "Setting legacy theme mode migrated to:" << migrated;
+    settings->option("basic.interface.theme_migrated")->setValue(migrated);
+}
+
+void Settings::migrateLegacyThemeMode()
+{
+    // 老版本升级：跟随系统的状态只存在于旧的应用主题槽里，读取一次后不再使用
+    LegacyThemeState legacy{false, -1};
+#ifdef DTKCORE_CLASS_DConfigFile
+    DConfig legacyConfig(QStringLiteral("org.deepin.dtk.preference"));
+    if (legacyConfig.isValid()) {
+        const QVariant legacyValue = legacyConfig.value(QStringLiteral("themeType"));
+        if (legacyValue.isValid()) {
+            legacy.valid = true;
+            legacy.themeType = legacyValue.toInt();
+        }
+    }
+#endif
+    const bool followSystem = resolveMigratedFollowSystem(legacy, extendColorScheme());
+    qCInfo(tsettings) << "Migrating theme mode from legacy app theme slot, valid:" << legacy.valid
+                      << ", legacyThemeType:"
+                      << (legacy.valid ? QString::number(legacy.themeType) : QStringLiteral("unavailable"))
+                      << ", followSystem:" << followSystem;
+    setFollowSystemTheme(followSystem);
+    setLegacyThemeModeMigrated(true);
+}
+
+void Settings::applyThemeMode()
+{
+    auto helper = DGuiApplicationHelper::instance();
+    if (followSystemTheme() && extendColorScheme().isEmpty()) {
+        // 跟随系统模式：paletteType 保持 UnknownType，由系统主题驱动浅/深；
+        // colorScheme 可能因上次关闭后系统主题变化而过期，需同步为当前系统主题
+        if (helper->paletteType() != DGuiApplicationHelper::UnknownType) {
+            helper->setPaletteType(DGuiApplicationHelper::UnknownType);
+        }
+        const QString sysTheme = (helper->themeType() == DGuiApplicationHelper::LightType) ? "Light" : "Dark";
+        if (colorScheme() != sysTheme) {
+            qCDebug(tsettings) << "Syncing colorScheme to system theme:" << colorScheme() << "->" << sysTheme;
+            setColorScheme(sysTheme);
+        }
+        return;
+    }
+
+    // 显式浅色/深色或内置配色：内置配色总是显式主题，本地状态需与之一致
+    if (followSystemTheme()) {
+        setFollowSystemTheme(false);
+    }
+    // 固定 paletteType，激活 dtkgui 的 isCustomPalette() 过滤，系统主题变化不再影响终端界面
+    const auto desiredType = (colorScheme() == "Light")
+                             ? DGuiApplicationHelper::LightType
+                             : DGuiApplicationHelper::DarkType;
+    if (helper->paletteType() != desiredType) {
+        helper->setPaletteType(desiredType);
+    }
+}
+
+bool Settings::resolveMigratedFollowSystem(const LegacyThemeState &legacy, const QString &extendTheme)
+{
+    // 内置/自定义配色优先，不跟随系统
+    if (!extendTheme.isEmpty())
+        return false;
+    // 读不到旧值：保守按显式主题处理，保持当前 colorScheme 不变
+    if (!legacy.valid)
+        return false;
+    // 与 dtkgui 对非法槽值的处理保持一致：归一为 UnknownType（跟随系统）
+    if (legacy.themeType < 0 || legacy.themeType > 2)
+        return true;
+    return legacy.themeType == 0;
 }
 
 QString Settings::wordCharacters() const

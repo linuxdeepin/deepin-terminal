@@ -48,6 +48,18 @@
                             "hide": true,
                             "reset": false,
                             "default": ""
+                        },
+                        {
+                            "key": "follow_system",
+                            "hide": true,
+                            "reset": false,
+                            "default": false
+                        },
+                        {
+                            "key": "theme_migrated",
+                            "hide": true,
+                            "reset": false,
+                            "default": false
                         }
                     ]
                 },
