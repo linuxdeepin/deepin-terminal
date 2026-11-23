@@ -2953,6 +2953,10 @@ void MainWindow::themeActionTriggeredSlot(QAction *action)
     qCDebug(mainprocess) << "Enter MainWindow::themeActionTriggeredSlot";
     Settings::instance()->bSwitchTheme = true;
     switchThemeAction(action);
+    // 只有点击提交才落盘“是否跟随系统”（hover 预览走 themeActionHoveredSlot）。
+    // 不能依赖 paletteTypeChanged 信号：悬停已把 paletteType 改成本次要选的类型时，
+    // 点击里的 setPaletteType 是空操作，不会发出信号，状态就会落回旧值。
+    Settings::instance()->setFollowSystemTheme(action == autoThemeAction);
 }
 
 void MainWindow::themeActionHoveredSlot(QAction *action)

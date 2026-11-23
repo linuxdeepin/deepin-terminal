@@ -172,6 +172,34 @@ public:
      * @param name
      */
     void setExtendColorScheme(const QString &name);
+
+    /**
+     * @brief 终端主题是否跟随系统
+     *
+     * 浅/深/跟随系统的状态在本地持久化，不再使用全局应用主题槽
+     * （详见 main.cpp 中的 DontSaveApplicationTheme）。
+     */
+    bool followSystemTheme() const;
+    void setFollowSystemTheme(bool follow);
+    /**
+     * @brief 旧版应用主题状态是否已迁移（只迁移一次）
+     */
+    bool legacyThemeModeMigrated() const;
+    void setLegacyThemeModeMigrated(bool migrated);
+    /**
+     * @brief 旧版应用主题槽的读取结果
+     */
+    struct LegacyThemeState {
+        bool valid;     // false: 旧槽读取失败，迁移时按显式主题兜底
+        int themeType;  // 0=跟随系统 1=浅色 2=深色，其它值按 dtkgui 规则归一为跟随系统
+    };
+    /**
+     * @brief 计算迁移后的“跟随系统”状态（纯函数，便于单元测试）
+     * @param legacy 旧版应用主题槽的读取结果
+     * @param extendTheme 终端当前内置/自定义配色，非空时不跟随系统
+     * @return 迁移后是否跟随系统
+     */
+    static bool resolveMigratedFollowSystem(const LegacyThemeState &legacy, const QString &extendTheme);
     /**
      * @brief 颜色转字符串
      * @author ut000125 sunchengxi
@@ -344,6 +372,14 @@ private:
      * @author ut001121 zhangmeng
      */
     void init();
+    /**
+     * @brief 从旧版应用主题槽迁移“是否跟随系统”（只执行一次）
+     */
+    void migrateLegacyThemeMode();
+    /**
+     * @brief 按本地状态应用浅/深/跟随系统的调色板
+     */
+    void applyThemeMode();
 
 private:
     Settings();

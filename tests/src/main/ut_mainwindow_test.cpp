@@ -707,6 +707,42 @@ TEST_F(UT_MainWindow_Test, switchThemeActionTestOne)
 }
 
 /*******************************************************************************
+ 1. @函数:    themeActionTriggeredSlot
+ 2. @说明:    悬停预览后再点击同一主题项时，“是否跟随系统”仍需正确落盘
+*******************************************************************************/
+TEST_F(UT_MainWindow_Test, themeActionTriggeredPersistsFollowSystem)
+{
+    ASSERT_NE(m_normalWindow->switchThemeMenu, nullptr);
+    ASSERT_NE(m_normalWindow->autoThemeAction, nullptr);
+    ASSERT_NE(m_normalWindow->darkThemeAction, nullptr);
+
+    Settings *settings = Settings::instance();
+    const bool oldFollow = settings->followSystemTheme();
+    const QString oldColor = settings->colorScheme();
+    const QString oldExtend = settings->extendColorScheme();
+
+    // 悬停预览“跟随系统”已把 paletteType 改成 UnknownType，点击里的 setPaletteType
+    // 不会变化也不会发信号，因此不能依赖 paletteTypeChanged 落盘
+    settings->bSwitchTheme = false;
+    m_normalWindow->themeActionHoveredSlot(m_normalWindow->autoThemeAction);
+    settings->bSwitchTheme = true;
+    m_normalWindow->themeActionTriggeredSlot(m_normalWindow->autoThemeAction);
+    EXPECT_TRUE(settings->followSystemTheme());
+
+    // 反向场景：悬停并点击深色主题
+    settings->bSwitchTheme = false;
+    m_normalWindow->themeActionHoveredSlot(m_normalWindow->darkThemeAction);
+    settings->bSwitchTheme = true;
+    m_normalWindow->themeActionTriggeredSlot(m_normalWindow->darkThemeAction);
+    EXPECT_FALSE(settings->followSystemTheme());
+
+    // 还原，避免影响开发机配置和后续用例
+    settings->setFollowSystemTheme(oldFollow);
+    settings->setColorScheme(oldColor);
+    settings->setExtendColorScheme(oldExtend);
+}
+
+/*******************************************************************************
  1. @函数:    setThemeCheckItemSlot
  2. @作者:    ut000125 sunchengxi
  3. @日期:    2020-11-05

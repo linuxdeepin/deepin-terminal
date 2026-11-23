@@ -13,6 +13,7 @@
 
 
 #include <DApplication>
+#include <DGuiApplicationHelper>
 #include <DLog>
 #if (QT_VERSION < QT_VERSION_CHECK(6, 0, 0))
 #include <DApplicationSettings>
@@ -28,6 +29,7 @@
 #include <QUrl>
 
 DWIDGET_USE_NAMESPACE
+DGUI_USE_NAMESPACE
 
 DCORE_USE_NAMESPACE
 
@@ -64,6 +66,11 @@ bool checkImmutableMode() {
 
 int main(int argc, char *argv[])
 {
+    // 终端不再读写全局应用主题槽（org.deepin.dtk.preference.themeType）：
+    // 避免从终端启动的应用修改主题时把终端一起带跑，也避免终端主题泄漏给子进程。
+    // 该属性只影响本进程对应用主题槽的读写，跟随系统主题仍由系统主题驱动。
+    // 必须在任何 DGuiApplicationHelper 主题接口调用之前设置。
+    DGuiApplicationHelper::setAttribute(DGuiApplicationHelper::DontSaveApplicationTheme, true);
     qCDebug(mainprocess) << "Application starting with arguments:" << QCoreApplication::arguments();
     if (checkImmutableMode())
         setenv("PWD", getenv("HOME"), 1);
