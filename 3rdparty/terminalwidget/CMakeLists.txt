@@ -107,6 +107,7 @@ set(SRCS
     lib/Vt102Emulation.cpp
     lib/EscapeSequenceUrlExtractor.cpp
     lib/encodes/detectcode.cpp
+    lib/encodes/utf8multibytecount.cpp
 )
 
 # Only the Headers that need to be moc'd go here
