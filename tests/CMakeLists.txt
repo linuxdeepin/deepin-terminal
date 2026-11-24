@@ -1,4 +1,4 @@
-# SPDX-FileCopyrightText: 2022 UnionTech Software Technology Co., Ltd.
+# SPDX-FileCopyrightText: 2022-2026 UnionTech Software Technology Co., Ltd.
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 
@@ -63,6 +63,7 @@ FILE(GLOB allThirdPartySource
     ../3rdparty/terminalwidget/lib/*.cpp
     ../3rdparty/terminalwidget/lib/history/*.cpp
     ../3rdparty/terminalwidget/lib/history/compact/*.cpp
+    ../3rdparty/terminalwidget/lib/encodes/utf8multibytecount.cpp
 )
 
 FILE(GLOB qrcFiles
@@ -88,6 +89,7 @@ FILE(GLOB allTestSource
     src/remotemanage/*.cpp
     src/settings/*.cpp
     src/views/*.cpp
+    src/3rdparty/terminalwidget/lib/*.cpp
 )
 
 set(UI ../3rdparty/terminalwidget/lib/SearchBar.ui)

@@ -1,5 +1,5 @@
 // Copyright (C) 2019 ~ 2020 Uniontech Software Technology Co.,Ltd.
-// SPDX-FileCopyrightText: 2022 UnionTech Software Technology Co., Ltd.
+// SPDX-FileCopyrightText: 2022-2026 UnionTech Software Technology Co., Ltd.
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
@@ -315,7 +315,7 @@ QString SettingIO::unescapedString(const QString &src)
     static const int numEscapeCodes = sizeof(escapeCodes) / sizeof(escapeCodes[0]);
 
     QString stringResult;
-    int escapeVal = 0;
+    unsigned int escapeVal = 0;
     QChar ch;
     int i = 0;
 normal:
@@ -363,6 +363,10 @@ hexEscape:
     if (ch >= 'a')
         ch = ch.unicode() - ('a' - 'A');
     if ((ch >= '0' && ch <= '9') || (ch >= 'A' && ch <= 'F')) {
+        if (escapeVal > 0x0FFFFFFF) {  // 0x0FFFFFFF << 4 = 0xFFFFFFF0, max before 32-bit overflow
+            stringResult += QChar(escapeVal);
+            goto normal;
+        }
         escapeVal <<= 4;
         escapeVal += strchr(hexDigits, ch.toLatin1()) - hexDigits;
         ++i;
@@ -380,6 +384,10 @@ octEscape:
 
     ch = src.at(i);
     if (ch >= '0' && ch <= '7') {
+        if (escapeVal > 0x1FFFFFFF) {  // 0x1FFFFFFF << 3 = 0xFFFFFFF8, max before 32-bit overflow
+            stringResult += QChar(escapeVal);
+            goto normal;
+        }
         escapeVal <<= 3;
         escapeVal += ch.toLatin1() - '0';
         ++i;
