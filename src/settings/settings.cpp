@@ -765,7 +765,9 @@ bool Settings::resolveMigratedFollowSystem(const LegacyThemeState &legacy, const
     // 与 dtkgui 对非法槽值的处理保持一致：归一为 UnknownType（跟随系统）
     if (legacy.themeType < 0 || legacy.themeType > 2)
         return true;
-    return legacy.themeType == 0;
+    // themeType=0 是 DTK 配置默认值，并非用户显式选择"跟随系统"——保守返回 false，
+    // 保持当前 colorScheme 不变，避免首次启动误判为跟随系统导致主题错误
+    return false;
 }
 
 QString Settings::wordCharacters() const

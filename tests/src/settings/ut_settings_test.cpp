@@ -253,8 +253,8 @@ TEST_F(UT_Settings_Test, resolveMigratedFollowSystem)
     EXPECT_FALSE(Settings::resolveMigratedFollowSystem(validFollow, "Theme4"));
     // 旧应用主题槽读取失败：保守按显式主题处理
     EXPECT_FALSE(Settings::resolveMigratedFollowSystem(readFailed, ""));
-    // 旧槽值：0=跟随系统，1=浅色，2=深色
-    EXPECT_TRUE(Settings::resolveMigratedFollowSystem(validFollow, ""));
+    // 旧槽值：0=DTK默认值（非显式跟随系统），1=浅色，2=深色
+    EXPECT_FALSE(Settings::resolveMigratedFollowSystem(validFollow, ""));
     EXPECT_FALSE(Settings::resolveMigratedFollowSystem(validLight, ""));
     EXPECT_FALSE(Settings::resolveMigratedFollowSystem(validDark, ""));
     // 非法值按 dtkgui 的处理规则归一为跟随系统
