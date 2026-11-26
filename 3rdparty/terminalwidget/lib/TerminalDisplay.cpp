@@ -1324,6 +1324,10 @@ void TerminalDisplay::updateImage()
   update();
   //-------------------------------------------------
 
+  // 终端输出、换行或滚动后光标位置可能变化，Qt 只会在焦点变化时重新查询
+  // 输入法光标矩形，因此这里在矩形变化时主动上报，让候选窗跟随光标。
+  updateInputMethodCursorRect();
+
   if ( _hasBlinker && !_blinkTimer->isActive()) _blinkTimer->start( TEXT_BLINK_DELAY );
   if (!_hasBlinker && _blinkTimer->isActive()) { _blinkTimer->stop(); _blinking = false; }
   delete[] dirtyMask;
@@ -3354,6 +3358,20 @@ QVariant TerminalDisplay::inputMethodQuery( Qt::InputMethodQuery query ) const
     }
 
     return QVariant();
+}
+
+void TerminalDisplay::updateInputMethodCursorRect()
+{
+    if ( !hasFocus() || !qApp || !qApp->inputMethod() )
+        return;
+
+    // 坐标系与 inputMethodQuery(Qt::ImCursorRectangle) 保持一致
+    const QRect cursorRect = imageToWidget( QRect(cursorPosition(), QSize(1,1)) );
+    if ( cursorRect == _inputMethodCursorRect )
+        return;
+
+    _inputMethodCursorRect = cursorRect;
+    qApp->inputMethod()->update( Qt::ImCursorRectangle );
 }
 
 bool TerminalDisplay::handleShortcutOverrideEvent(QKeyEvent* keyEvent)
