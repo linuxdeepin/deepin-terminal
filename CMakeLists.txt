@@ -340,7 +340,7 @@ install(FILES ${CMAKE_CURRENT_BINARY_DIR}/deepin-terminal
         GROUP_READ GROUP_EXECUTE
         WORLD_READ WORLD_EXECUTE)
 
-# 自研终端组件数据资源（键盘布局/配色），与 3rdparty qtermwidget 同构
+# 终端组件数据资源（键盘布局/配色）
 install(DIRECTORY
     src/terminalwidget/data/keytabs/
     DESTINATION "${KB_LAYOUT_DIR}"

@@ -8,11 +8,6 @@ filters:
     source_language: en_US
     translation_files_expression: translations/deepin-terminal_<lang>.ts
   - filter_type: file
-    source_file: 3rdparty/terminalwidget/lib/translations/terminalwidget.ts
-    file_format: QT
-    source_language: en_US
-    translation_files_expression: 3rdparty/terminalwidget/lib/translations/terminalwidget_<lang>.ts
-  - filter_type: file
     source_file: translations/desktop/desktop.ts
     file_format: QT
     source_language: en_US
