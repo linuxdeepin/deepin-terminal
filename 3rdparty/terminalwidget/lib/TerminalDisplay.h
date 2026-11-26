@@ -887,6 +887,12 @@ private:
     };
     InputMethodData _inputMethodData;
 
+    // 光标矩形变化时主动通知输入法，避免候选窗停留在旧位置
+    void updateInputMethodCursorRect();
+
+    // 最近一次上报给输入法的光标矩形（widget 坐标）
+    QRect _inputMethodCursorRect;
+
     static bool _antialiasText;   // do we antialias or not
 
     //the delay in milliseconds between redrawing blinking text
