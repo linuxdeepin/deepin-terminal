@@ -35,6 +35,7 @@
 #include <DSysInfo>
 
 #include <QApplication>
+#include <QElapsedTimer>
 #include <QInputDialog>
 #include <QJsonArray>
 #include <QJsonDocument>
@@ -2303,8 +2304,10 @@ void MainWindow::pressCtrlU()
 void MainWindow::sleep(int msec)
 {
     // qCDebug(mainprocess) << "Enter MainWindow::sleep";
-    QTime dieTime = QTime::currentTime().addMSecs(msec);
-    while (QTime::currentTime() < dieTime) {
+    //使用单调时钟计时，避免系统校时(时钟回拨)导致多睡
+    QElapsedTimer timer;
+    timer.start();
+    while (!timer.hasExpired(msec)) {
         QCoreApplication::processEvents(QEventLoop::AllEvents, 100);
     }
 }

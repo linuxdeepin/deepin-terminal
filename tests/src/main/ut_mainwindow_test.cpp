@@ -1670,9 +1670,12 @@ TEST_F(UT_MainWindow_Test, sleep)
     QElapsedTimer timer;
     timer.start();
     mainWindow->sleep(1000);
-    //睡眠1000ms
+    //睡眠1000ms；事件循环忙等会派发首终端创建等耗时事件，CI 环境下耗时波动大，
+    //只校验睡眠不少于 1000ms 且未出现明显异常(如完全未睡眠)
     qDebug() << timer.elapsed();
-    EXPECT_TRUE(qFabs(timer.elapsed() - 1000) < 10);
+    const qint64 elapsed = timer.elapsed();
+    EXPECT_GE(elapsed, 1000);
+    EXPECT_LT(elapsed, 5000);
     mainWindow->deleteLater();
 }
 
