@@ -14,6 +14,7 @@
 //Qt单元测试相关头文件
 #include <QTest>
 #include <QApplication>
+#include <QEvent>
 #include <QScreen>
 #include <QtConcurrent/QtConcurrent>
 #include <QDebug>
@@ -221,5 +222,39 @@ TEST_F(UI_WindowsManager_Test, getNormalWindowList)
     //增加一个window
     EXPECT_TRUE(WindowsManager::instance()->getNormalWindowList().size() == (oldCount + 1));
 }
+
+#ifdef TERMINAL_HAVE_LAYER_SHELL
+TEST_F(UI_WindowsManager_Test, quakeLayerShellFallbackState)
+{
+    // 若雷神还在就关闭
+    if (WindowsManager::instance()->getQuakeWindow()) {
+        WindowsManager::instance()->getQuakeWindow()->closeAllTab();
+        WindowsManager::instance()->m_quakeWindow = nullptr;
+    }
+
+    WindowsManager::instance()->runQuakeWindow(m_quakeTermProperty);
+    auto *quake = qobject_cast<QuakeWindow *>(WindowsManager::instance()->getQuakeWindow());
+    ASSERT_NE(quake, nullptr);
+
+    // 测试进程使用 offscreen 平台，必须回退到原有的 X11 行为
+    EXPECT_FALSE(quake->isLayerShellMode());
+    EXPECT_EQ(quake->isQuakeWindowShown(), quake->isVisible());
+    EXPECT_GT(quake->getQuakeHeight(), 0);
+
+    // 非 layer 模式下底部拖拽处理不接管非鼠标事件
+    QEvent userEvent(QEvent::User);
+    EXPECT_FALSE(quake->handleLayerShellResize(quake, &userEvent));
+
+    // 显隐仍走 QWidget 路径
+    quake->hide();
+    EXPECT_FALSE(quake->isQuakeWindowShown());
+    quake->showQuakeWindow();
+    EXPECT_TRUE(quake->isQuakeWindowShown());
+
+    // 关闭雷神窗口
+    quake->closeAllTab();
+    WindowsManager::instance()->m_quakeWindow = nullptr;
+}
+#endif
 
 #endif

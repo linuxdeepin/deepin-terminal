@@ -97,6 +97,27 @@ include(FindPkgConfig)
 pkg_search_module(GOBJECT REQUIRED gobject-2.0)
 pkg_check_modules(LIBSECRET REQUIRED libsecret-1)
 pkg_check_modules(XCB_EWMH REQUIRED xcb-ewmh x11)
+pkg_get_variable(WAYLAND_PROTOCOLS_DATADIR wayland-protocols pkgdatadir)
+
+# --- wlr-layer-shell support (Wayland quake terminal) -------------------------
+set(HAVE_LAYER_SHELL FALSE)
+if (QT_VERSION_MAJOR MATCHES 6 AND WAYLAND_PROTOCOLS_DATADIR)
+    find_package(Qt6 QUIET COMPONENTS WaylandClient GuiPrivate)
+    if (TARGET Qt6::WaylandClientPrivate AND TARGET Qt6::qtwaylandscanner AND TARGET Qt6::GuiPrivate)
+        if (NOT TARGET Wayland::Scanner)
+            find_program(WAYLAND_SCANNER_EXECUTABLE NAMES wayland-scanner)
+            if (WAYLAND_SCANNER_EXECUTABLE)
+                add_executable(Wayland::Scanner IMPORTED)
+                set_target_properties(Wayland::Scanner PROPERTIES
+                    IMPORTED_LOCATION "${WAYLAND_SCANNER_EXECUTABLE}")
+            endif()
+        endif()
+        if (TARGET Wayland::Scanner)
+            set(HAVE_LAYER_SHELL TRUE)
+        endif()
+    endif()
+endif()
+message("   >>> Build with layer-shell: ${HAVE_LAYER_SHELL}")
 
 
 # Compile definitions for TerminalWidget
@@ -250,6 +271,23 @@ set (DTNG_QRC_FILES
     src/assets/resources.qrc
 )
 
+if (HAVE_LAYER_SHELL)
+    list(APPEND DTNG_CPP_FILES
+        src/waylandlayershell/layershellwindow.cpp
+        src/waylandlayershell/qwaylandlayershellintegration_p.cpp
+        src/waylandlayershell/qwaylandlayershellsurface_p.cpp
+        src/waylandlayershell/quakelayershell.cpp
+        src/waylandlayershell/treelandlayershellextension.cpp
+    )
+    list(APPEND DTNG_HEADER_FILES
+        src/waylandlayershell/layershellwindow.h
+        src/waylandlayershell/qwaylandlayershellintegration_p.h
+        src/waylandlayershell/qwaylandlayershellsurface_p.h
+        src/waylandlayershell/quakelayershell.h
+        src/waylandlayershell/treelandlayershellextension.h
+    )
+endif()
+
 # Program
 set (EXE_NAME deepin-terminal)
 
@@ -274,6 +312,21 @@ target_include_directories(${EXE_NAME}
 )
 
 target_link_libraries (deepin-terminal ${LINK_LIBS} terminalwidget${QT_DESIRED_VERSION})
+
+if (HAVE_LAYER_SHELL)
+    target_compile_definitions(deepin-terminal PRIVATE TERMINAL_HAVE_LAYER_SHELL)
+    target_include_directories(deepin-terminal PRIVATE
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/waylandlayershell)
+    target_link_libraries(deepin-terminal
+        Qt6::WaylandClientPrivate
+        Qt6::GuiPrivate)
+
+    set(LAYER_SHELL_PROTOCOLS
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/waylandlayershell/protocol/wlr-layer-shell-unstable-v1.xml
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/waylandlayershell/protocol/treeland-layer-shell-extension-unstable-v1.xml
+        ${WAYLAND_PROTOCOLS_DATADIR}/stable/xdg-shell/xdg-shell.xml)
+    qt_generate_wayland_protocol_client_sources(${EXE_NAME} FILES ${LAYER_SHELL_PROTOCOLS})
+endif()
 
 # Install settings
 
