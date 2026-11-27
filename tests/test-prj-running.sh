@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# SPDX-FileCopyrightText: 2022 UnionTech Software Technology Co., Ltd.
+# SPDX-FileCopyrightText: 2022 - 2026 UnionTech Software Technology Co., Ltd.
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 
@@ -28,7 +28,16 @@ workdir=$(cd ../$(dirname $0)/$builddir; pwd)
 
 mkdir -p report
 #统计代码覆盖率并生成html报告
-lcov -d $workdir -c -o ./coverage.info
+# lcov 2.x 采集时会严格校验 gcda 行号一致性，CI 上偶发
+# "ERROR: (inconsistent) mismatched end line" 直接中断整个脚本，
+# 导致用例全部通过仍拿不到覆盖率报告；lcov >= 2 时忽略该类错误
+# 继续采集（lcov 1.x 不支持 --ignore-errors，保持原行为）。
+LCOV_MAJOR=$(lcov --version 2>/dev/null | grep -oE '[0-9]+(\.[0-9]+)+' | head -1 | cut -d. -f1)
+LCOV_IGN=""
+if [ "${LCOV_MAJOR:-0}" -ge 2 ]; then
+    LCOV_IGN="--ignore-errors inconsistent,mismatch"
+fi
+lcov $LCOV_IGN -d $workdir -c -o ./coverage.info
 
 lcov --extract ./coverage.info '*/src/*' -o ./coverage.info
 
