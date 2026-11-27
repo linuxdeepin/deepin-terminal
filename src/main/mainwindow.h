@@ -49,6 +49,13 @@ class ShortcutManager;
 class MainWindowPluginInterface;
 class CustomCommandPlugin;
 class QShowEvent;
+class QScreen;
+
+#ifdef TERMINAL_HAVE_LAYER_SHELL
+namespace TerminalLayerShell {
+class QuakeLayerShell;
+}
+#endif
 
 
 /*******************************************************************************
@@ -1086,6 +1093,26 @@ public:
     void bottomToTopAnimation();
     /******** Add by ut001000 renfeixiang 2020-11-16 End***************/
 
+    /**
+     * @brief 是否使用 wlr-layer-shell（Wayland 雷神窗口）
+     */
+    bool isLayerShellMode() const;
+
+    /**
+     * @brief 雷神窗口当前是否显示（layer-shell 下 QWidget 可能保持 visible 但 surface 已 unmap）
+     */
+    bool isQuakeWindowShown() const;
+
+    /**
+     * @brief 显示雷神窗口（layer-shell 下重新映射 surface，触发合成器显示动画）
+     */
+    void showQuakeWindow();
+
+    /**
+     * @brief 按鼠标所在屏幕调整雷神窗口（X11 移动窗口，layer-shell 切换 output）
+     */
+    void adaptToCursorScreen();
+
 public slots:
     /**
      * @brief 处理resize信号,延迟一段时间处理,避免处理过快,界面显示有延迟
@@ -1190,6 +1217,11 @@ private:
     //获取配置文件中保存的雷神窗口高度
     int getQuakeHeight();
     /**
+     * @brief 按指定屏幕的可用区域计算雷神窗口高度
+     * @param screen 目标屏幕，nullptr 时使用主屏
+     */
+    int getQuakeHeight(const QScreen *screen);
+    /**
      * @brief 动画效果使用的设置雷神窗口高度的函数
      * @author ut001000 任飞翔
      * @param h 雷神窗口高度
@@ -1227,6 +1259,20 @@ private:
     void sendWindowForhibitMove(bool forhibit);
 
     void resizeByCurrentScreen(bool force);
+
+#ifdef TERMINAL_HAVE_LAYER_SHELL
+    /**
+     * @brief layer-shell 下由客户端实现底部边缘拖拽 resize（没有窗管）
+     * @return true 表示事件已被处理
+     */
+    bool handleLayerShellResize(QObject *watched, QEvent *event);
+
+    TerminalLayerShell::QuakeLayerShell *m_quakeLayerShell = nullptr;
+    bool m_layerResizeActive = false;
+    bool m_layerResizeCursorSet = false;
+    int m_layerResizeStartY = 0;
+    int m_layerResizeStartHeight = 0;
+#endif
 };
 
 #endif  // MAINWINDOW_H

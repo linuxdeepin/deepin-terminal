@@ -21,6 +21,10 @@
 #include "service.h"
 #include "terminalapplication.h"
 
+#ifdef TERMINAL_HAVE_LAYER_SHELL
+#include "quakelayershell.h"
+#endif
+
 #include <DSettings>
 #include <DSettingsGroup>
 #include <DSettingsOption>
@@ -65,6 +69,11 @@ using std::ofstream;
 /******** Add by ut001000 renfeixiang 2020-08-07:将最小宽度和高度设置成全局变量***************/
 const int MainWindow::m_MinWidth = WINDOW_MIN_WIDTH;
 const int MainWindow::m_MinHeight = WINDOW_MIN_HEIGHT;
+
+#ifdef TERMINAL_HAVE_LAYER_SHELL
+// 底部边缘拖拽 resize 的命中范围（像素）
+static const int QUAKE_LAYER_RESIZE_EDGE = 5;
+#endif
 
 
 //qt5.15里，需要补发事件,实现雷神终端的正常隐藏。bug#85079
@@ -3341,6 +3350,33 @@ void QuakeWindow::initWindowAttribute()
     if(Utils::isWayLand()) {
         setWindowFlag(Qt::FramelessWindowHint);
         m_titleBar->setVerResized(true);
+#ifdef TERMINAL_HAVE_LAYER_SHELL
+        // Treeland: make the quake window a top-anchored layer surface so the
+        // compositor can slide it in/out from the top edge.
+        m_quakeLayerShell = new TerminalLayerShell::QuakeLayerShell(this);
+        if (!m_quakeLayerShell->attach()) {
+            delete m_quakeLayerShell;
+            m_quakeLayerShell = nullptr;
+        } else {
+            connect(m_quakeLayerShell, &TerminalLayerShell::QuakeLayerShell::interactiveResizeFinished,
+                    this, [this]() {
+                        m_layerResizeActive = false;
+                        if (m_layerResizeCursorSet) {
+                            QGuiApplication::restoreOverrideCursor();
+                            m_layerResizeCursorSet = false;
+                        }
+                        saveWindowSize();
+                    });
+            connect(m_quakeLayerShell, &TerminalLayerShell::QuakeLayerShell::interactiveResizeRejected,
+                    this, [this]() {
+                        m_layerResizeActive = false;
+                        if (m_layerResizeCursorSet) {
+                            QGuiApplication::restoreOverrideCursor();
+                            m_layerResizeCursorSet = false;
+                        }
+                    });
+        }
+#endif
     }
     //add a line by ut001121 zhangmeng 2020-04-27雷神窗口禁用移动(修复bug#22975)
     setEnableSystemMove(false);//    setAttribute(Qt::WA_Disabled, true);
@@ -3395,7 +3431,7 @@ void QuakeWindow::onAppFocusChangeForQuake(bool checkIsActiveWindow)
         return;
 
     // 雷神窗口隐藏，不处理
-    if (!isVisible())
+    if (!isQuakeWindowShown())
         return;
 
     // 雷神的普通对话框,不处理
@@ -3462,6 +3498,62 @@ void QuakeWindow::hideQuakeWindow()
     bottomToTopAnimation();
 }
 
+bool QuakeWindow::isLayerShellMode() const
+{
+#ifdef TERMINAL_HAVE_LAYER_SHELL
+    return m_quakeLayerShell && m_quakeLayerShell->isActive();
+#else
+    return false;
+#endif
+}
+
+bool QuakeWindow::isQuakeWindowShown() const
+{
+#ifdef TERMINAL_HAVE_LAYER_SHELL
+    if (isLayerShellMode())
+        return m_quakeLayerShell->isMapped();
+#endif
+    return isVisible();
+}
+
+void QuakeWindow::showQuakeWindow()
+{
+#ifdef TERMINAL_HAVE_LAYER_SHELL
+    if (isLayerShellMode()) {
+        // Mapping the surface makes the compositor play its slide-in
+        // animation; showEvent() updates the desktop bookkeeping.
+        m_quakeLayerShell->map();
+        return;
+    }
+#endif
+    show();
+}
+
+void QuakeWindow::adaptToCursorScreen()
+{
+    if (isLayerShellMode()) {
+        // Layer surfaces are bound to a wl_output; re-target the one under the
+        // cursor so the quake window shows up on the active monitor.
+        resizeByCurrentScreen(true);
+        return;
+    }
+
+    // X11: move the window to the screen under the cursor.  Use
+    // availableGeometry() so the window does not overlap a dock/panel.
+    const QScreen *cursorScreen = QGuiApplication::screenAt(QCursor::pos());
+    const QScreen *quakeScreen = QGuiApplication::screenAt(pos());
+    if (!cursorScreen || !quakeScreen
+        || cursorScreen->serialNumber() == quakeScreen->serialNumber()) {
+        return;
+    }
+
+    const QRect available = cursorScreen->availableGeometry();
+    move(available.topLeft());
+    setFixedWidth(available.width());
+    setMinimumHeight(60);
+    setMaximumHeight(available.height() * 2 / 3);
+}
+
 void QuakeWindow::onResizeWindow()
 {
     // qCDebug(mainprocess) << "Enter QuakeWindow::onResizeWindow";
@@ -3473,6 +3565,15 @@ void QuakeWindow::topToBottomAnimation()
     qCDebug(mainprocess) << "Enter QuakeWindow::topToBottomAnimation";
     if (nullptr == currentPage())
         return;
+
+#ifdef TERMINAL_HAVE_LAYER_SHELL
+    // The compositor animates the map transition of the layer surface; there
+    // is no client-side height animation in this mode.
+    if (isLayerShellMode()) {
+        onTopToBottomAnimationFinished();
+        return;
+    }
+#endif
 
     isNotAnimation = false;
     this->setMinimumHeight(2); // 避免窗管强制取消模糊。
@@ -3506,6 +3607,17 @@ inline void QuakeWindow::onTopToBottomAnimationFinished()
 void QuakeWindow::bottomToTopAnimation()
 {
     qCDebug(mainprocess) << "Enter QuakeWindow::bottomToTopAnimation";
+
+#ifdef TERMINAL_HAVE_LAYER_SHELL
+    if (isLayerShellMode()) {
+        // Unmap (instead of destroying) the layer surface so the compositor
+        // slides the quake window back out through the top edge.
+        m_quakeLayerShell->unmap();
+        isNotAnimation = true;
+        return;
+    }
+#endif
+
     if (!isNotAnimation || nullptr == currentPage()) {
         qCInfo(mainprocess)  << "bottomToTopAnimation no need to execute.";
         return;
@@ -3602,10 +3714,30 @@ void QuakeWindow::sendWindowForhibitMove(bool forhibit)
 
 void QuakeWindow::resizeByCurrentScreen(bool force)
 {
-    QPoint cursorPoint = QCursor::pos();
+    QScreen *cursorScreen = QGuiApplication::screenAt(QCursor::pos());
+    if (!cursorScreen)
+        cursorScreen = screen() ? screen() : QGuiApplication::primaryScreen();
+    if (!cursorScreen)
+        return;
+
+#ifdef TERMINAL_HAVE_LAYER_SHELL
+    if (isLayerShellMode()) {
+        const int maxHeight = cursorScreen->availableGeometry().height() * 2 / 3;
+        const int minHeight = qMin(60, maxHeight);
+        const int quakeHeight = qBound(minHeight, getQuakeHeight(cursorScreen), maxHeight);
+
+        setMinimumHeight(60);
+        setMaximumHeight(maxHeight);
+        m_quakeLayerShell->setScreen(cursorScreen);
+        m_quakeLayerShell->updateHeight(quakeHeight);
+        connect(cursorScreen, &QScreen::availableGeometryChanged,
+                this, &QuakeWindow::slotWorkAreaResized, Qt::UniqueConnection);
+        return;
+    }
+#endif
+
     const QScreen *quakeScreen = QGuiApplication::screenAt(pos());
-    const QScreen *cursorScreen = QGuiApplication::screenAt(cursorPoint);
-    if (cursorScreen && (force || (!isVisible() && quakeScreen && quakeScreen->serialNumber() != cursorScreen->serialNumber()))) {
+    if (cursorScreen && (force || (!isQuakeWindowShown() && quakeScreen && quakeScreen->serialNumber() != cursorScreen->serialNumber()))) {
         int windowWidth = cursorScreen->availableGeometry().width();
         move(cursorScreen->availableGeometry().topLeft());
         setFixedWidth(windowWidth);
@@ -3654,7 +3786,7 @@ bool QuakeWindow::event(QEvent *event)
     // qCDebug(mainprocess) << "Enter QuakeWindow::event";
     /***add begin by ut001121 zhangmeng 20200606 切换窗口拉伸属性 修复BUG24430***/
     //Add by ut001000 renfeixiang 2020-11-16 增加雷神动画的标志isNotAnimation， 雷神动画效果时，不进行窗口拉伸属性
-    if (QEvent::HoverMove == event->type() && isNotAnimation)
+    if (QEvent::HoverMove == event->type() && isNotAnimation && !isLayerShellMode())
         switchEnableResize();
 
     /***add end by ut001121***/
@@ -3665,6 +3797,12 @@ bool QuakeWindow::event(QEvent *event)
 bool QuakeWindow::eventFilter(QObject *watched, QEvent *event)
 {
     // qCDebug(mainprocess) << "Enter QuakeWindow::eventFilter";
+#ifdef TERMINAL_HAVE_LAYER_SHELL
+    // A layer surface has no window manager, so the compositor cannot provide
+    // interactive edge resizing; implement the bottom edge on the client side.
+    if (isLayerShellMode() && handleLayerShellResize(watched, event))
+        return true;
+#endif
     //fix bug: 64490 勾选"丢失焦点后隐藏雷神窗口"，最小化雷神终端后不能再次调出雷神终端
     // 丢失焦点后隐藏雷神窗口开关打开的情况下
     if (watched == this &&
@@ -3741,15 +3879,126 @@ if(qVersion() >= QString("5.15.0")) {
 
 }
 
+#ifdef TERMINAL_HAVE_LAYER_SHELL
+bool QuakeWindow::handleLayerShellResize(QObject *watched, QEvent *event)
+{
+    auto *widget = qobject_cast<QWidget *>(watched);
+    if (!widget || widget->window() != this)
+        return false;
+
+    const bool isPress = event->type() == QEvent::MouseButtonPress;
+    const bool isMove = event->type() == QEvent::MouseMove;
+    const bool isRelease = event->type() == QEvent::MouseButtonRelease;
+    const bool isLeave = event->type() == QEvent::Leave;
+    const bool isDeactivate = event->type() == QEvent::WindowDeactivate;
+    const bool isHide = event->type() == QEvent::Hide && widget == this;
+
+    if (!isPress && !isMove && !isRelease && !isLeave && !isDeactivate && !isHide)
+        return false;
+
+    if (isLeave || isDeactivate || isHide) {
+        // A drag that is interrupted by focus loss/hiding must not leave the
+        // resize cursor stuck.  A plain Leave while dragging is normal (the
+        // pointer may leave the widget it started on) and is ignored.
+        if (isDeactivate || isHide)
+            m_layerResizeActive = false;
+        if (!m_layerResizeActive && m_layerResizeCursorSet) {
+            QGuiApplication::restoreOverrideCursor();
+            m_layerResizeCursorSet = false;
+        }
+        return false;
+    }
+
+    auto *mouseEvent = static_cast<QMouseEvent *>(event);
+#if (QT_VERSION < QT_VERSION_CHECK(6, 0, 0))
+    const QPoint local = widget->mapTo(this, mouseEvent->localPos().toPoint());
+    const QPoint global = mouseEvent->screenPos().toPoint();
+#else
+    const QPoint local = widget->mapTo(this, mouseEvent->position().toPoint());
+    const QPoint global = mouseEvent->globalPosition().toPoint();
+#endif
+
+    const bool nearBottom = local.y() >= height() - QUAKE_LAYER_RESIZE_EDGE;
+
+    if (isPress) {
+        if (mouseEvent->button() != Qt::LeftButton || !nearBottom)
+            return false;
+
+        if (!m_layerResizeCursorSet) {
+            QGuiApplication::setOverrideCursor(Qt::SizeVerCursor);
+            m_layerResizeCursorSet = true;
+        }
+
+        // Prefer the compositor-driven resize (treeland layer-shell extension):
+        // the compositor owns the drag and drives the surface through configure
+        // events, so the window follows the pointer without a client round-trip
+        // per motion event.
+        if (auto *handle = windowHandle()) {
+            if (handle->startSystemResize(Qt::BottomEdge))
+                return true;
+        }
+
+        // Fallback for compositors without the extension.
+        m_layerResizeActive = true;
+        m_layerResizeStartY = global.y();
+        m_layerResizeStartHeight = height();
+        return true;
+    }
+
+    if (isRelease) {
+        if (!m_layerResizeActive)
+            return false;
+
+        m_layerResizeActive = false;
+        if (m_layerResizeCursorSet) {
+            QGuiApplication::restoreOverrideCursor();
+            m_layerResizeCursorSet = false;
+        }
+        saveWindowSize();
+        return true;
+    }
+
+    // MouseMove
+    if (m_layerResizeActive) {
+        const int minHeight = minimumHeight();
+        const int maxHeight = qMax(minHeight, maximumHeight());
+        const int targetHeight = qBound(minHeight,
+                                        m_layerResizeStartHeight + (global.y() - m_layerResizeStartY),
+                                        maxHeight);
+        if (targetHeight != height())
+            resize(width(), targetHeight);
+        return true;
+    }
+
+    if (nearBottom) {
+        if (!m_layerResizeCursorSet) {
+            QGuiApplication::setOverrideCursor(Qt::SizeVerCursor);
+            m_layerResizeCursorSet = true;
+        }
+    } else if (m_layerResizeCursorSet) {
+        QGuiApplication::restoreOverrideCursor();
+        m_layerResizeCursorSet = false;
+    }
+
+    return false;
+}
+#endif
+
 int QuakeWindow::getQuakeHeight()
 {
     qCDebug(mainprocess) << "Enter QuakeWindow::getQuakeHeight";
-#if (QT_VERSION < QT_VERSION_CHECK(6, 0, 0))
-    int screenHeight = qApp->desktop()->screenGeometry().height();
-#else
-    int screenHeight = QGuiApplication::primaryScreen()->availableGeometry().height();
+#ifdef TERMINAL_HAVE_LAYER_SHELL
+    if (isLayerShellMode())
+        return getQuakeHeight(screen());
 #endif
-    int minHeight = screenHeight * 1 / 3;
+    return getQuakeHeight(QGuiApplication::primaryScreen());
+}
+
+int QuakeWindow::getQuakeHeight(const QScreen *targetScreen)
+{
+    const QScreen *target = targetScreen ? targetScreen : QGuiApplication::primaryScreen();
+    const int screenHeight = target ? target->availableGeometry().height() : 1080;
+    const int minHeight = screenHeight * 1 / 3;
     return m_winInfoConfig->value(CONFIG_QUAKE_WINDOW_HEIGHT, minHeight).toInt();
 }
 
@@ -3757,6 +4006,10 @@ void QuakeWindow::switchEnableResize()
 {
     // 如果(桌面光标Y坐标)>(雷神窗口Y坐标+雷神高度的1/2),则启用拉伸属性.否则禁用拉伸属性
     // 此方法dtk已经标记废弃
+    // layer-shell 下高度始终由客户端控制，不需要窗管配合的 fixSize 逻辑
+    if (isLayerShellMode())
+        return;
+
     switchEnableResize(QCursor::pos().y() > pos().y() + height() / 2);
 }
 
@@ -3765,16 +4018,14 @@ void QuakeWindow::switchEnableResize(bool isEnable)
     qCDebug(mainprocess) << "Enter QuakeWindow::switchEnableResize";
     if (isEnable) {
         // 设置最小高度和最大高度，解放fixSize设置的不允许拉伸
-#if (QT_VERSION < QT_VERSION_CHECK(6, 0, 0))
-        QDesktopWidget *desktopWidget = QApplication::desktop();
-        QRect screenRect = desktopWidget->screenGeometry(); //获取设备屏幕大小
-#else
-        QRect screenRect = QGuiApplication::primaryScreen()->geometry();
-#endif
+        QScreen *targetScreen = (isLayerShellMode() && screen())
+                                    ? screen()
+                                    : QGuiApplication::primaryScreen();
+        const QRect screenRect = targetScreen ? targetScreen->availableGeometry() : QRect();
         //Add by ut001000 renfeixiang 2020-11-16 修改成使用写好的设置最小值的函数
         updateMinHeight();
         setMaximumHeight(screenRect.height() * 2 / 3);
-    } else {
+    } else if (!isLayerShellMode()) {
         // 窗管和DTK让用fixSize来替代，禁止resize
         setFixedHeight(height());
     }

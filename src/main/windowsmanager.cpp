@@ -36,24 +36,17 @@ void WindowsManager::runQuakeWindow(TermProperties properties)
 void WindowsManager::quakeWindowShowOrHide()
 {
     qCDebug(mainprocess) << "Enter quakeWindowShowOrHide";
-    QPoint cursorPoint = QCursor::pos();
-    const QScreen *quakeScreen = QGuiApplication::screenAt(m_quakeWindow->pos());
-    const QScreen *cursorScreen = QGuiApplication::screenAt(cursorPoint);
-    if (!m_quakeWindow->isVisible() && quakeScreen != nullptr && cursorScreen != nullptr && quakeScreen->serialNumber() != cursorScreen->serialNumber()) {
-        int windowWidth = cursorScreen->geometry().width();
-        m_quakeWindow->move(cursorScreen->geometry().topLeft());
-        m_quakeWindow->setFixedWidth(windowWidth);
-        m_quakeWindow->setMinimumHeight(60);
-        m_quakeWindow->setMaximumHeight(cursorScreen->geometry().height() * 2 / 3);
-    }
+    if (!m_quakeWindow->isQuakeWindowShown())
+        m_quakeWindow->adaptToCursorScreen();
 
     //隐藏 则 显示终端
-    if (!m_quakeWindow->isVisible()) {
+    if (!m_quakeWindow->isQuakeWindowShown()) {
         qCDebug(mainprocess) << "Branch: QuakeWindow is not visible, showing it";
         m_quakeWindow->setAnimationFlag(false);
-        m_quakeWindow->show();
+        m_quakeWindow->showQuakeWindow();
         m_quakeWindow->topToBottomAnimation();
-        m_quakeWindow->activateWindow();
+        if (!m_quakeWindow->isLayerShellMode())
+            m_quakeWindow->activateWindow();
         return;
     }
 
