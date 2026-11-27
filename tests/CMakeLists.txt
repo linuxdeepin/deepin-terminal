@@ -91,6 +91,33 @@ FILE(GLOB allTestSource
     src/views/*.cpp
 )
 
+if (HAVE_LAYER_SHELL)
+    FILE(GLOB layerShellTestSource
+        src/waylandlayershell/*.cpp
+    )
+    FILE(GLOB layerShellTestHeader
+        src/waylandlayershell/*.h
+    )
+    list(APPEND allTestSource ${layerShellTestSource})
+    list(APPEND allTestHeader ${layerShellTestHeader})
+    list(APPEND allSource
+        ../src/waylandlayershell/layershellwindow.cpp
+        ../src/waylandlayershell/qwaylandlayershellintegration_p.cpp
+        ../src/waylandlayershell/qwaylandlayershellsurface_p.cpp
+        ../src/waylandlayershell/quakelayershell.cpp
+        ../src/waylandlayershell/treelandlayershellextension.cpp
+    )
+    list(APPEND allHeaders
+        ../src/waylandlayershell/layershellwindow.h
+        ../src/waylandlayershell/qwaylandlayershellintegration_p.h
+        ../src/waylandlayershell/qwaylandlayershellsurface_p.h
+        ../src/waylandlayershell/quakelayershell.h
+        ../src/waylandlayershell/treelandlayershellextension.h
+    )
+    add_definitions(-DTERMINAL_HAVE_LAYER_SHELL)
+    include_directories("../src/waylandlayershell")
+endif()
+
 set(UI ../3rdparty/terminalwidget/lib/SearchBar.ui)
 if(QT_VERSION_MAJOR EQUAL 6)
     qt6_wrap_ui(UI_SRCS ${UI})
@@ -133,6 +160,14 @@ target_include_directories(${PROJECT_NAME_TEST} PUBLIC
 find_package(ICU COMPONENTS i18n uc REQUIRED)
 
 target_link_libraries(${PROJECT_NAME_TEST} PUBLIC ${LINK_LIBS} Qt${QT_VERSION_MAJOR}::Test ${GTEST_LIBRARIES} ${GTEST_MAIN_LIBRARIES} -lpthread -lm ICU::i18n ICU::uc chardet uchardet)
+
+if (HAVE_LAYER_SHELL)
+    target_link_libraries(${PROJECT_NAME_TEST} PUBLIC Qt6::WaylandClientPrivate Qt6::GuiPrivate)
+    qt_generate_wayland_protocol_client_sources(${PROJECT_NAME_TEST} FILES
+        ${CMAKE_CURRENT_SOURCE_DIR}/../src/waylandlayershell/protocol/wlr-layer-shell-unstable-v1.xml
+        ${CMAKE_CURRENT_SOURCE_DIR}/../src/waylandlayershell/protocol/treeland-layer-shell-extension-unstable-v1.xml
+        ${WAYLAND_PROTOCOLS_DATADIR}/stable/xdg-shell/xdg-shell.xml)
+endif()
 
 #------------------------------ 创建'make test'指令---------------------------------------
 add_custom_target(test
